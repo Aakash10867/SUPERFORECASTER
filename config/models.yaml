@@ -24,11 +24,16 @@ limits:
   gemini-3.7-flash:        {rpm: 5,  rpd: 20}
   gemini-3.6-flash:        {rpm: 5,  rpd: 20}
   gemini-3.5-flash:        {rpm: 5,  rpd: 20}
-  gemini-3-flash:          {rpm: 5,  rpd: 20}
+  gemini-3-flash-preview:          {rpm: 5,  rpd: 20}
   gemini-2.5-flash:        {rpm: 5,  rpd: 20}
 
   # Embeddings, used for similarity checks. Very generous limits.
   gemini-embedding-001:    {rpm: 100, rpd: 1000}
+
+  # Aliases that always point at whatever is current. Used as the last entry in
+  # each chain so a task can survive future model renames.
+  gemini-flash-latest:      {rpm: 5,  rpd: 20}
+  gemini-flash-lite-latest: {rpm: 15, rpd: 500}
 
 chains:
   # Reading pages and pulling out macro-relevant articles. High volume, low
@@ -37,15 +42,17 @@ chains:
     - gemini-3.5-flash-lite
     - gemini-3.1-flash-lite
     - gemini-2.5-flash-lite
-    - gemini-3-flash
+    - gemini-3-flash-preview
+    - gemini-flash-lite-latest
 
   # Agents proposing questions. Moderate volume, moderate difficulty.
   propose:
     - gemini-3.1-flash-lite
     - gemini-3.5-flash-lite
     - gemini-2.5-flash-lite
-    - gemini-3-flash
+    - gemini-3-flash-preview
     - gemini-3.5-flash
+    - gemini-flash-lite-latest
 
   # Judging a system's proposals against the gates and picking a winner.
   # This is the most important judgement in the pipeline, so it gets the
@@ -54,18 +61,20 @@ chains:
     - gemini-3.7-flash
     - gemini-3.6-flash
     - gemini-3.5-flash
-    - gemini-3-flash
+    - gemini-3-flash-preview
     - gemini-2.5-flash
     - gemini-3.5-flash-lite
     - gemini-3.1-flash-lite
+    - gemini-flash-latest
 
   # Portfolio-level checks: linked-answer duplicates, tag assignment.
   gate:
     - gemini-3.5-flash
-    - gemini-3-flash
+    - gemini-3-flash-preview
     - gemini-2.5-flash
     - gemini-3.5-flash-lite
     - gemini-3.1-flash-lite
+    - gemini-flash-latest
 
   # Matching a proposed tag against existing lexicon entries.
   lexicon:
