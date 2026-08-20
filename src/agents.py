@@ -12,6 +12,7 @@ created ourselves.
 from __future__ import annotations
 
 import datetime as dt
+import random
 from dataclasses import dataclass, field
 
 
@@ -143,7 +144,7 @@ RULES EVERY QUESTION MUST OBEY:
    would examine. If you cannot name the reasoning, you have not got any, and
    you should not propose the question.
 
-8. HORIZON. Deadline must be between 7 and 730 days from today. Beyond two
+8. HORIZON. Deadline must be between 7 and 731 days from today. Beyond two
    years, forecasting stops beating guesswork. Short horizons are GOOD -- a
    question resolving in ten days is perfectly forecastable and gives feedback
    fastest. Do not stretch a deadline just to make it look substantial.
@@ -168,7 +169,21 @@ For each question return:
 - "tag_justification": one sentence on why the primary tag is primary
 - "source": the headline of the article this came from
 
-Propose AT MOST 3 questions. Quality matters enormously more than quantity.
+HOW MANY TO PROPOSE
+
+Propose UP TO 3 questions, and each must come from a DIFFERENT source article.
+Never propose two questions about the same story.
+
+Read the whole list before choosing. The loudest story of the day is not
+necessarily the one that yields the best question of your shape -- and other
+agents are reading the same articles, so if you only ever pick the most
+prominent story, the whole system considers one idea instead of several. Look
+for the scheduled decision, the strained deadline or the stated intention that
+a hurried reader would pass over.
+
+Quality still matters far more than quantity. One excellent question beats
+three mediocre ones, and zero beats one forced.
+
 Return ONLY a JSON array, or [] if nothing fits your shape.
 
 TODAY'S ARTICLES:
@@ -193,7 +208,21 @@ def run_agent(router, system_key, system_cfg, shape_key, shape_cfg,
               articles, settings, papers_desc, today, log, seq,
               other_domains: str = "") -> list[Proposal]:
     """Run one agent over today's articles."""
-    context = "\n\n".join(a.as_context() for a in articles)
+    # Present the articles in a different order to each agent.
+    #
+    # Articles arrive in page order, so the front page comes first -- and every
+    # agent anchored on it. On one run all three global-macro agents read 68
+    # articles and proposed the same debt-limit question three times, while the
+    # roadless rule, FBI headquarters and data-centre stories were never
+    # considered at all.
+    #
+    # The shuffle is seeded on the agent's identity, so it is deterministic:
+    # the same agent sees the same order on a re-run, but different agents see
+    # different orders and therefore notice different stories.
+    ordered = list(articles)
+    random.Random(f"{system_key}/{shape_key}/{today.isoformat()}").shuffle(ordered)
+
+    context = "\n\n".join(a.as_context() for a in ordered)
     # Keep well inside the token limit; articles are already condensed.
     context = context[:120000]
 
@@ -226,10 +255,20 @@ def run_agent(router, system_key, system_cfg, shape_key, shape_cfg,
         return []
 
     proposals = []
+    seen_sources = set()
     for item in result:
         if not isinstance(item, dict):
             continue
         q = str(item.get("question", "")).strip()
+
+        # One question per source article. Without this an agent will happily
+        # return three rewordings of the same story.
+        src_key = " ".join(str(item.get("source", "")).lower().split())[:80]
+        if src_key and src_key in seen_sources:
+            log.info(f"  rejected (same article as an earlier proposal): {q[:60]}...")
+            continue
+        if src_key:
+            seen_sources.add(src_key)
         deadline = str(item.get("deadline", "")).strip()
         if not q or not deadline:
             continue
@@ -238,7 +277,7 @@ def run_agent(router, system_key, system_cfg, shape_key, shape_cfg,
         if not bucket:
             log.info(
                 f"  rejected (horizon): {q[:70]}... deadline {deadline} is "
-                "outside the 7-730 day window"
+                "outside the 7-731 day window"
             )
             continue
 
