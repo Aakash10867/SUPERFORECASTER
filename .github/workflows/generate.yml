@@ -1,0 +1,84 @@
+name: Generate Questions
+
+# Manual trigger only. You drop PDFs into /inbox, then run this from the
+# Actions tab. Nothing happens on a schedule.
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run (read and reason, but write nothing)"
+        type: boolean
+        default: false
+      as_of_date:
+        description: "Treat this as today's date, YYYY-MM-DD (leave blank for real today). Use this when feeding older papers, or every deadline will be wrong."
+        type: string
+        default: ""
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install poppler
+        # pdftotext handles multi-column newspaper layouts far better than the
+        # pure-Python fallback. Worth the extra ten seconds.
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq poppler-utils
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Verify model names
+        env:
+          SUPERFORECASTER_API: ${{ secrets.SUPERFORECASTER_API }}
+        run: python verify_models.py
+        continue-on-error: true
+
+      - name: Run the pipeline
+        env:
+          SUPERFORECASTER_API: ${{ secrets.SUPERFORECASTER_API }}
+        run: |
+          if [ -n "${{ inputs.as_of_date }}" ]; then
+            DATE_ARG="--date ${{ inputs.as_of_date }}"
+          else
+            DATE_ARG=""
+          fi
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            DRY_ARG="--dry-run"
+          else
+            DRY_ARG=""
+          fi
+          python run.py $DATE_ARG $DRY_ARG
+
+      - name: Commit results
+        if: ${{ inputs.dry_run != true }}
+        run: |
+          git config user.name  "superforecaster-bot"
+          git config user.email "actions@github.com"
+          git add data/ logs/ config/lexicon.csv config/overrides.csv
+          if git diff --staged --quiet; then
+            echo "Nothing changed."
+          else
+            git commit -m "Question run $(date -u +%Y-%m-%d) [skip ci]"
+            git push
+          fi
+
+      - name: Upload log as artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: run-log
+          path: logs/
+          if-no-files-found: ignore
