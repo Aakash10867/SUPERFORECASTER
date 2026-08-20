@@ -244,18 +244,35 @@ class ModelRouter:
             return []
 
         chain = self.chains.get("embed") or []
-        batch_size = 64
+        # The per-minute quota counts individual EMBEDDINGS, not HTTP requests.
+        # A batch of 64 therefore consumes 64 of a 100/minute allowance, so two
+        # batches in quick succession trip the limit -- which is exactly what
+        # happened on the first two live runs. Keep batches small and pace them
+        # by the number of texts they contain.
+        batch_size = 20
 
         for model in chain:
             if not self._available(model):
                 continue
 
+            rpm = max(self._rpm(model), 1)
             out: list[list[float]] = []
             failed = False
 
-            for start in range(0, len(texts), batch_size):
+            start = 0
+            retried_this_batch = False
+            while start < len(texts):
+                start_over = False
                 batch = texts[start:start + batch_size]
-                self._throttle(model)
+
+                # Pace by batch size, not by call count.
+                last = self._last_call_at.get(model)
+                if last is not None:
+                    wait = (60.0 * len(batch) / rpm) - (time.time() - last)
+                    if wait > 0:
+                        time.sleep(wait)
+                self._last_call_at[model] = time.time()
+
                 url = f"{API_ROOT}/{model}:batchEmbedContents"
                 body = {
                     "requests": [
@@ -281,17 +298,23 @@ class ModelRouter:
                 self.stats.calls_by_model[model] += 1
                 self.stats.total_calls += 1
 
-                if r.status_code != 200:
+                if r.status_code == 429 and not retried_this_batch:
+                    # Quota is per minute, so waiting genuinely clears it.
+                    # Retry this batch once before abandoning the model.
+                    self.stats.failures_by_model[model].append("embed-429-retried")
+                    time.sleep(30)
+                    retried_this_batch = True
+                    start_over = True
+                elif r.status_code != 200:
                     self.stats.failures_by_model[model].append(
                         f"embed-http-{r.status_code}")
-                    if r.status_code in (400, 403, 404):
-                        self.stats.exhausted.add(model)
-                    if r.status_code == 429:
-                        # Back off once, then give up on this model.
-                        time.sleep(self._backoff)
+                    if r.status_code in (400, 403, 404, 429):
                         self.stats.exhausted.add(model)
                     failed = True
                     break
+
+                if start_over:
+                    continue
 
                 try:
                     vectors = [e["values"] for e in r.json()["embeddings"]]
@@ -304,6 +327,8 @@ class ModelRouter:
                     failed = True
                     break
                 out.extend(vectors)
+                start += batch_size
+                retried_this_batch = False
 
             if not failed and len(out) == len(texts):
                 return out
