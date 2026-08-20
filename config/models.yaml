@@ -1,0 +1,77 @@
+# ---------------------------------------------------------------------------
+# MODEL FALLBACK CHAINS
+# ---------------------------------------------------------------------------
+# Each task has an ordered list of models. The system tries the first one; if
+# it is rate-limited, unavailable, or errors, it moves to the next. A task only
+# fails if EVERY model in its chain fails.
+#
+# IMPORTANT: if a model name is wrong the system will skip it and move on
+# (you will see this in the run log). Run `python verify_models.py` to get the
+# exact list of model names your API key can actually see, then correct this
+# file.
+#
+# rpm = requests per minute, rpd = requests per day (free tier limits).
+# ---------------------------------------------------------------------------
+
+limits:
+  # Cheap, high-volume models. These do the bulk of the work.
+  gemini-3.1-flash-lite:   {rpm: 15, rpd: 500}
+  gemini-3.5-flash-lite:   {rpm: 15, rpd: 500}
+  gemini-2.5-flash-lite:   {rpm: 10, rpd: 20}
+
+  # "Deep" models. Only 20 requests per day EACH, so they are reserved for
+  # judgement calls, never for bulk reading.
+  gemini-3.7-flash:        {rpm: 5,  rpd: 20}
+  gemini-3.6-flash:        {rpm: 5,  rpd: 20}
+  gemini-3.5-flash:        {rpm: 5,  rpd: 20}
+  gemini-3-flash:          {rpm: 5,  rpd: 20}
+  gemini-2.5-flash:        {rpm: 5,  rpd: 20}
+
+  # Embeddings, used for similarity checks. Very generous limits.
+  gemini-embedding-001:    {rpm: 100, rpd: 1000}
+
+chains:
+  # Reading pages and pulling out macro-relevant articles. High volume, low
+  # difficulty -> cheap models first, deep models only as an emergency backstop.
+  triage:
+    - gemini-3.5-flash-lite
+    - gemini-3.1-flash-lite
+    - gemini-2.5-flash-lite
+    - gemini-3-flash
+
+  # Agents proposing questions. Moderate volume, moderate difficulty.
+  propose:
+    - gemini-3.1-flash-lite
+    - gemini-3.5-flash-lite
+    - gemini-2.5-flash-lite
+    - gemini-3-flash
+    - gemini-3.5-flash
+
+  # Judging a system's proposals against the gates and picking a winner.
+  # This is the most important judgement in the pipeline, so it gets the
+  # deep models first.
+  contest:
+    - gemini-3.7-flash
+    - gemini-3.6-flash
+    - gemini-3.5-flash
+    - gemini-3-flash
+    - gemini-2.5-flash
+    - gemini-3.5-flash-lite
+    - gemini-3.1-flash-lite
+
+  # Portfolio-level checks: linked-answer duplicates, tag assignment.
+  gate:
+    - gemini-3.5-flash
+    - gemini-3-flash
+    - gemini-2.5-flash
+    - gemini-3.5-flash-lite
+    - gemini-3.1-flash-lite
+
+  # Matching a proposed tag against existing lexicon entries.
+  lexicon:
+    - gemini-3.1-flash-lite
+    - gemini-3.5-flash-lite
+    - gemini-2.5-flash-lite
+
+  embed:
+    - gemini-embedding-001
