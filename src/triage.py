@@ -89,40 +89,36 @@ def triage_page(router, paper: Paper, page: Page, cleaned: str, log,
     """
     Extract articles from one cleaned page.
 
-    If the call fails, the page is split in half and each half retried once.
-    Dense broadsheet pages can carry a dozen stories, and the resulting JSON is
-    long enough that some models truncate or choke on it. Asking for a bigger
-    token budget does not help when a model has a hard output ceiling -- giving
-    it less to read does.
+    IMPORTANT: an empty list means "this page genuinely has no macro-relevant
+    news" -- a correct and very common answer, since papers are full of sport,
+    comics, food and listings. Only `None` means the call failed.
+
+    An earlier version tested `if not result`, which is true for BOTH. Every
+    page that correctly contained nothing was logged as a failure and then
+    split and retried, wasting about forty calls a run and filling the log with
+    warnings about the system working properly.
     """
     prompt = PROMPT.format(page_text=cleaned[:60000])
     result, model = router.generate("triage", prompt, temperature=0.2,
                                     max_output_tokens=8192)
 
-    if not result:
+    if result is None:
         words = cleaned.split()
         if depth < 1 and len(words) > 400:
-            # Split on a paragraph boundary near the middle.
             halves = cleaned.split("\n\n")
             mid = len(halves) // 2
             first = "\n\n".join(halves[:mid])
             second = "\n\n".join(halves[mid:])
             log.info(
                 f"  triage retry: splitting {paper.paper_guess} p.{page.number} "
-                f"({len(words)} words) into two halves"
+                f"({len(words)} words) after a failed call"
             )
             return (triage_page(router, paper, page, first, log, depth + 1)
                     + triage_page(router, paper, page, second, log, depth + 1))
 
-        # Report what actually went wrong. "triage failed" on its own sends you
-        # hunting for a prompt problem when the cause may be a server error.
-        recent = []
-        for errs in router.stats.failures_by_model.values():
-            recent.extend(errs[-2:])
-        reason = ", ".join(sorted(set(recent))[-3:]) or "unknown"
         log.warn(
-            f"triage failed on {paper.paper_guess} p.{page.number} "
-            f"({len(words)} words) -- recent model errors: {reason}"
+            f"triage call failed on {paper.paper_guess} p.{page.number} "
+            f"({len(words)} words) -- last error: {router.stats.last_error or 'unknown'}"
         )
         return []
 
@@ -153,6 +149,7 @@ def triage_paper(router, paper: Paper, settings: dict, log) -> list[Article]:
     min_words = settings["filtering"]["min_page_words"]
     articles: list[Article] = []
     skipped = 0
+    no_news = 0
 
     for page in paper.pages:
         cleaned = clean_page(page, settings)
@@ -160,11 +157,13 @@ def triage_paper(router, paper: Paper, settings: dict, log) -> list[Article]:
             skipped += 1
             continue
         found = triage_page(router, paper, page, cleaned, log)
+        if not found:
+            no_news += 1
         articles.extend(found)
 
     log.info(
         f"{paper.paper_guess} ({paper.issue_date_guess or 'date unknown'}): "
-        f"{len(paper.pages)} pages, {skipped} dropped by structural filter, "
-        f"{len(articles)} articles kept"
+        f"{len(paper.pages)} pages | {skipped} dropped as non-journalism | "
+        f"{no_news} read but held no macro news | {len(articles)} articles kept"
     )
     return articles
