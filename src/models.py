@@ -33,6 +33,7 @@ class CallStats:
     failures_by_model: dict = field(default_factory=lambda: defaultdict(list))
     total_calls: int = 0
     exhausted: set = field(default_factory=set)
+    last_error: str = ""   # error from the most recent failed call
 
     def summary(self) -> str:
         lines = []
@@ -133,6 +134,7 @@ class ModelRouter:
                     parsed = _parse_json(payload) if expect_json else payload
                     if parsed is None and expect_json:
                         self.stats.failures_by_model[model].append("unparseable-json")
+                        self.stats.last_error = f"{model}: unparseable-json"
                         # A malformed response is worth one retry, then move on.
                         if attempt < self._max_retries:
                             continue
@@ -140,6 +142,7 @@ class ModelRouter:
                     return parsed, model
 
                 self.stats.failures_by_model[model].append(err)
+                self.stats.last_error = f"{model}: {err}"
 
                 if err == "truncated" and attempt < self._max_retries:
                     continue
