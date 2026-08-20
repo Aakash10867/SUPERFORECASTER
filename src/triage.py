@@ -68,6 +68,14 @@ For each relevant article, return:
   india_macro, global_macro, us_politics, geopolitics
   (an article may belong to more than one; use "" if none fit)
 
+Return AT MOST 8 articles. If a page carries more, keep the most
+macro-relevant ones -- an over-long response gets truncated and the whole page
+is lost.
+
+Keep "summary" to 2-3 sentences and "key_facts" to one dense sentence. Brevity
+here is not cosmetic: it is what keeps the response inside the model's output
+limit.
+
 Return ONLY a JSON array. If nothing on this page is relevant, return [].
 
 PAGE TEXT:
@@ -76,12 +84,48 @@ PAGE TEXT:
 ---"""
 
 
-def triage_page(router, paper: Paper, page: Page, cleaned: str, log) -> list[Article]:
+def triage_page(router, paper: Paper, page: Page, cleaned: str, log,
+                depth: int = 0) -> list[Article]:
+    """
+    Extract articles from one cleaned page.
+
+    If the call fails, the page is split in half and each half retried once.
+    Dense broadsheet pages can carry a dozen stories, and the resulting JSON is
+    long enough that some models truncate or choke on it. Asking for a bigger
+    token budget does not help when a model has a hard output ceiling -- giving
+    it less to read does.
+    """
     prompt = PROMPT.format(page_text=cleaned[:60000])
-    result, model = router.generate("triage", prompt, temperature=0.2, max_output_tokens=16384)
+    result, model = router.generate("triage", prompt, temperature=0.2,
+                                    max_output_tokens=8192)
+
     if not result:
-        log.warn(f"triage failed on {paper.paper_guess} p.{page.number}")
+        words = cleaned.split()
+        if depth < 1 and len(words) > 400:
+            # Split on a paragraph boundary near the middle.
+            halves = cleaned.split("\n\n")
+            mid = len(halves) // 2
+            first = "\n\n".join(halves[:mid])
+            second = "\n\n".join(halves[mid:])
+            log.info(
+                f"  triage retry: splitting {paper.paper_guess} p.{page.number} "
+                f"({len(words)} words) into two halves"
+            )
+            return (triage_page(router, paper, page, first, log, depth + 1)
+                    + triage_page(router, paper, page, second, log, depth + 1))
+
+        # Report what actually went wrong. "triage failed" on its own sends you
+        # hunting for a prompt problem when the cause may be a server error.
+        recent = []
+        for errs in router.stats.failures_by_model.values():
+            recent.extend(errs[-2:])
+        reason = ", ".join(sorted(set(recent))[-3:]) or "unknown"
+        log.warn(
+            f"triage failed on {paper.paper_guess} p.{page.number} "
+            f"({len(words)} words) -- recent model errors: {reason}"
+        )
         return []
+
     if not isinstance(result, list):
         return []
 
