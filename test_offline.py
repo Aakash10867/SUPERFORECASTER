@@ -67,6 +67,9 @@ class FakeRouter(models.ModelRouter):
                 "reasoning_value": ("Examining the balance between rising fuel-driven "
                                     "inflation and slowing growth forecasts, plus the "
                                     "governor's recent public statements on liquidity."),
+                "significance": ("Borrowing costs for millions of households, "
+                                 "bank margins, and the rupee's trajectory all "
+                                 "shift depending on the answer."),
                 "primary_tag": "rbi_monetary_policy",
                 "secondary_tags": ["india_inflation", "iran_conflict"],
                 "tertiary_tags": ["indian_rupee"],
@@ -166,6 +169,8 @@ def main() -> int:
                    all(q["resolution_criteria"] for q in questions)))
     checks.append(("all questions have reasoning value",
                    all(q["reasoning_value"] for q in questions)))
+    checks.append(("all questions have named consequences",
+                   all(q["significance"] for q in questions)))
     checks.append(("second run skipped duplicates",
                    len(processed) == 3))
     checks.append(("log written", (config.LOGS / "2026-08-19.md").exists()))
