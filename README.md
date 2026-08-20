@@ -74,7 +74,12 @@ The test is not "did the code run". It is you reading the questions and asking:
 3. **Is it a coin flip?**
    If no amount of thinking would help, the randomness gate is too loose.
 
-4. **Is `reasoning_value` concrete?**
+4. **Is `significance` concrete?**
+   It must name what changes in the world, not gesture at "sets a precedent" or
+   "signals institutional tension". Abstractions here mean the gate was talked
+   past rather than passed.
+
+5. **Is `reasoning_value` concrete?**
    It should name what an analyst would examine, not claim that analysis would
    help. Vague answers here are the clearest early warning that question
    quality is drifting.
@@ -157,11 +162,19 @@ the single biggest trap in the whole system.
 
 ### The gates and the ranking
 
-Two gates, applied to every proposal individually. Fail either and it is out,
+Three gates, applied to every proposal individually. Fail any and it is out,
 however interesting it is:
 
 - **Resolvable** — a specific story will run, in a named paper, when this resolves
 - **Not inherently random** — careful thought could actually beat a coin flip
+- **It matters** — name at least two specific things, *outside the question's own
+  subject*, that would be different depending on the answer
+
+The third gate was added after the first live run produced a perfectly
+forecastable question about whether a single building's construction would be
+halted. It was uncertain, cleanly resolvable, and worthless — nothing outside
+that building turned on the answer. A question can pass every other test and
+still be pointless.
 
 Then survivors are ranked on **one** thing:
 
