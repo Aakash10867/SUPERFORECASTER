@@ -190,10 +190,20 @@ def run_agent(router, system_key, system_cfg, shape_key, shape_cfg,
 
     result, model = router.generate("propose", prompt, temperature=0.6,
                                     max_output_tokens=6000)
-    if not result:
-        log.warn(f"agent {system_key}/{shape_key} produced nothing (model failure)")
+
+    # An empty list means the agent looked and found nothing of its shape in
+    # today's papers. That is a perfectly good outcome and must not be reported
+    # as a failure -- only None means the call itself failed.
+    if result is None:
+        log.warn(
+            f"agent {system_key}/{shape_key} call FAILED "
+            f"(last error: {router.stats.last_error or 'unknown'})"
+        )
         return []
     if not isinstance(result, list):
+        return []
+    if not result:
+        log.info(f"  {system_key}/{shape_key}: nothing of this shape today")
         return []
 
     proposals = []
