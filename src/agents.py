@@ -126,8 +126,10 @@ RULES EVERY QUESTION MUST OBEY:
    would examine. If you cannot name the reasoning, you have not got any, and
    you should not propose the question.
 
-8. HORIZON. Deadline must be between 14 and 730 days from today. Beyond two
-   years, forecasting stops beating guesswork.
+8. HORIZON. Deadline must be between 7 and 730 days from today. Beyond two
+   years, forecasting stops beating guesswork. Short horizons are GOOD -- a
+   question resolving in ten days is perfectly forecastable and gives feedback
+   fastest. Do not stretch a deadline just to make it look substantial.
 
 For each question return:
 - "question": the full question text, with the date inside it
@@ -207,7 +209,7 @@ def run_agent(router, system_key, system_cfg, shape_key, shape_cfg,
         if not bucket:
             log.info(
                 f"  rejected (horizon): {q[:70]}... deadline {deadline} is "
-                "outside the 14-730 day window"
+                "outside the 7-730 day window"
             )
             continue
 
