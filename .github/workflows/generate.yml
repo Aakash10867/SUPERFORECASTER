@@ -67,7 +67,7 @@ jobs:
         run: |
           git config user.name  "superforecaster-bot"
           git config user.email "actions@github.com"
-          git add data/ logs/ config/lexicon.csv config/overrides.csv
+                    git add -A data logs config/lexicon.csv config/overrides.csv 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "Nothing changed."
           else
