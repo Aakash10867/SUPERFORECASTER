@@ -21,7 +21,7 @@ from dataclasses import dataclass, field
 
 import requests
 
-from . import config
+from . import config, quota
 
 API_ROOT = "https://generativelanguage.googleapis.com/v1beta/models"
 
@@ -55,7 +55,30 @@ class ModelRouter:
         self.chains = models_cfg.get("chains", {}) or {}
         self.log = log
         self.stats = CallStats()
-        self.key = config.api_key()
+
+        # Two keys from two different projects = two separate quota pools.
+        self.keys = config.api_keys()                 # [(env_name, key), ...]
+        self.key_names = [n for n, _ in self.keys]
+        self.key_by_name = {n: k for n, k in self.keys}
+        self.key = self.keys[0][1]                    # legacy single-key attr
+
+        # Persistent daily counts. See src/quota.py for why this exists.
+        self.quota = quota.Quota(self.key_names)
+
+        # Deep models are scarce (20/day each). Generation's `contest` step is
+        # the most important judgement in the whole system, so it gets a hard
+        # reserve that forecasting may not touch. A bad question is unfixable;
+        # a slightly worse forecast is refreshed within a week.
+        self.deep_models = set(models_cfg.get("deep_models", []) or [])
+        self.forecast_tasks = set(models_cfg.get("forecast_tasks", []) or [])
+        self.grounding_models = set(models_cfg.get("grounding_models", []) or [])
+        self._deep_reserve = int(
+            settings.get("run", {}).get("deep_reserve_for_generation", 0)
+        )
+
+        # Populated by the most recent grounded call; see generate(grounded=True).
+        self.last_grounding: dict = {}
+
         self._last_call_at: dict[str, float] = {}
         self._max_calls = settings["run"]["max_calls_per_run"]
         self._backoff = settings["run"]["retry_backoff_seconds"]
@@ -69,10 +92,43 @@ class ModelRouter:
     def _rpm(self, model: str) -> int:
         return int(self.limits.get(model, {}).get("rpm", 5))
 
-    def _available(self, model: str) -> bool:
+    def _pick_key(self, model: str) -> str | None:
+        """
+        Return the name of the key with the most remaining quota for `model`,
+        or None if every key is exhausted for it.
+
+        Picking the emptiest key rather than always starting at key one keeps
+        both pools draining evenly, so a burst never strands capacity.
+        """
+        best, best_left = None, 0
+        for name in self.key_names:
+            left = self.quota.remaining(name, model, self._rpd(model))
+            if left > best_left:
+                best, best_left = name, left
+        return best
+
+    def _deep_remaining(self) -> int:
+        """Total deep-model calls left today, across every key."""
+        total = 0
+        for model in self.deep_models:
+            rpd = self._rpd(model)
+            for name in self.key_names:
+                total += self.quota.remaining(name, model, rpd)
+        return total
+
+    def _available(self, model: str, task: str = "") -> bool:
         if model in self.stats.exhausted:
             return False
-        return self.stats.calls_by_model[model] < self._rpd(model)
+        if self._pick_key(model) is None:
+            return False
+        # Forecasting may not eat into generation's deep reserve.
+        if (
+            task in self.forecast_tasks
+            and model in self.deep_models
+            and self._deep_remaining() <= self._deep_reserve
+        ):
+            return False
+        return True
 
     def _throttle(self, model: str) -> None:
         """Space calls out so we stay under requests-per-minute."""
@@ -97,6 +153,7 @@ class ModelRouter:
         expect_json: bool = True,
         temperature: float = 0.4,
         max_output_tokens: int = 4096,
+        grounded: bool = False,
     ):
         """
         Run `prompt` through the fallback chain for `task`.
@@ -117,20 +174,36 @@ class ModelRouter:
             return None, None
 
         for model in chain:
-            if not self._available(model):
+            if not self._available(model, task):
+                continue
+            if grounded and model not in self.grounding_models:
+                # Only some models can search. Silently skipping a model that
+                # cannot ground would give us an ungrounded answer that LOOKS
+                # verified, which is the one failure we cannot tolerate here.
                 continue
 
             for attempt in range(self._max_retries + 1):
+                key_name = self._pick_key(model)
+                if key_name is None:
+                    break
                 self._throttle(model)
                 # A truncated response means the budget was too small, not that
                 # the model is bad -- so retry the same model with more room.
                 budget = max_output_tokens * (2 ** attempt)
                 ok, payload, err = self._post(model, prompt, temperature,
-                                              budget, expect_json)
+                                              budget, expect_json,
+                                              key_name=key_name,
+                                              grounded=grounded)
                 self.stats.calls_by_model[model] += 1
                 self.stats.total_calls += 1
+                # Record and flush immediately. If the run crashes later, the
+                # calls it already made must still count against today.
+                self.quota.record(key_name, model)
+                self.quota.flush()
 
                 if ok:
+                    if grounded:
+                        payload, self.last_grounding = payload
                     parsed = _parse_json(payload) if expect_json else payload
                     if parsed is None and expect_json:
                         self.stats.failures_by_model[model].append("unparseable-json")
@@ -168,28 +241,36 @@ class ModelRouter:
         return None, None
 
     def _post(self, model: str, prompt: str, temperature: float, max_tokens: int,
-              expect_json: bool = True):
+              expect_json: bool = True, key_name: str | None = None,
+              grounded: bool = False):
         url = f"{API_ROOT}/{model}:generateContent"
+        key = self.key_by_name.get(key_name or "", self.key)
         gen_config = {
             "temperature": temperature,
             "maxOutputTokens": max_tokens,
         }
-        if expect_json:
-            # Ask the API to guarantee syntactically valid JSON rather than
-            # hoping the model obeys the instruction. Without this, the deep
-            # models in particular wrap output in prose and code fences, and
-            # a run can lose several calls to unparseable responses.
+        if expect_json and not grounded:
+            # Search grounding and forced-JSON output cannot be combined on the
+            # Gemini API. When grounding, we ask for JSON in the prompt instead
+            # and lean on _parse_json to dig it out of the prose.
+            #
+            # Otherwise: ask the API to guarantee syntactically valid JSON
+            # rather than hoping the model obeys the instruction. Without this,
+            # the deep models in particular wrap output in prose and code
+            # fences, and a run can lose several calls to unparseable responses.
             gen_config["responseMimeType"] = "application/json"
 
         body = {
             "contents": [{"parts": [{"text": prompt}]}],
             "generationConfig": gen_config,
         }
+        if grounded:
+            body["tools"] = [{"google_search": {}}]
         try:
             r = requests.post(
                 url,
                 headers={
-                    "x-goog-api-key": self.key,
+                    "x-goog-api-key": key,
                     "Content-Type": "application/json",
                 },
                 json=body,
@@ -211,6 +292,26 @@ class ModelRouter:
                     # so the log tells us to raise the token budget rather than
                     # sending us hunting for a prompt problem.
                     return False, None, "truncated"
+                if grounded:
+                    # The API happily answers an ungrounded question even when
+                    # you ask for search -- you get a normal-looking reply with
+                    # no groundingMetadata. That would give us a reference-class
+                    # entry marked "verified" that was never verified, so we
+                    # report what actually happened rather than assuming.
+                    meta = cand.get("groundingMetadata") or {}
+                    sources = []
+                    for chunk in (meta.get("groundingChunks") or []):
+                        web = chunk.get("web") or {}
+                        title = web.get("title") or web.get("uri") or ""
+                        if title:
+                            sources.append(title)
+                    queries = meta.get("webSearchQueries") or []
+                    info = {
+                        "fired": bool(meta),
+                        "sources": sources[:10],
+                        "queries": queries[:5],
+                    }
+                    return True, (text, info), None
                 return True, text, None
             except (KeyError, IndexError, ValueError):
                 return False, None, "malformed-response"
@@ -258,6 +359,10 @@ class ModelRouter:
             if not self._available(model):
                 continue
 
+            key_name = self._pick_key(model)
+            if key_name is None:
+                continue
+            embed_key = self.key_by_name.get(key_name, self.key)
             rpm = max(self._rpm(model), 1)
             out: list[list[float]] = []
             failed = False
@@ -289,7 +394,7 @@ class ModelRouter:
                 try:
                     r = requests.post(
                         url,
-                        headers={"x-goog-api-key": self.key,
+                        headers={"x-goog-api-key": embed_key,
                                  "Content-Type": "application/json"},
                         json=body,
                         timeout=180,
@@ -300,6 +405,8 @@ class ModelRouter:
 
                 self.stats.calls_by_model[model] += 1
                 self.stats.total_calls += 1
+                self.quota.record(key_name, model)
+                self.quota.flush()
 
                 if r.status_code == 429 and not retried_this_batch:
                     # Quota is per minute, so waiting genuinely clears it.

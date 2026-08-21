@@ -1,10 +1,20 @@
-name: Generate Questions
+name: Superforecaster
 
 # Manual trigger only. You drop PDFs into /inbox, then run this from the
 # Actions tab. Nothing happens on a schedule.
 on:
   workflow_dispatch:
     inputs:
+      stages:
+        description: "Which stages to run"
+        type: choice
+        default: "all"
+        options:
+          - all
+          - generation
+          - resolution,generation
+          - forecasting,reports
+          - resolution,forecasting,reports
       dry_run:
         description: "Dry run (read and reason, but write nothing)"
         type: boolean
@@ -17,10 +27,16 @@ on:
 permissions:
   contents: write
 
+# Two runs writing to data/ at once would race on the CSVs and on
+# data/quota.json. Queue them instead.
+concurrency:
+  group: superforecaster-run
+  cancel-in-progress: false
+
 jobs:
-  generate:
+  run:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 350
 
     steps:
       - name: Check out repository
@@ -43,35 +59,38 @@ jobs:
       - name: Verify model names
         env:
           SUPERFORECASTER_API: ${{ secrets.SUPERFORECASTER_API }}
+          SUPERFORECASTER_API2: ${{ secrets.SUPERFORECASTER_API2 }}
         run: python verify_models.py
         continue-on-error: true
 
       - name: Run the pipeline
         env:
           SUPERFORECASTER_API: ${{ secrets.SUPERFORECASTER_API }}
+          SUPERFORECASTER_API2: ${{ secrets.SUPERFORECASTER_API2 }}
         run: |
+          ARGS="--stages ${{ inputs.stages }}"
           if [ -n "${{ inputs.as_of_date }}" ]; then
-            DATE_ARG="--date ${{ inputs.as_of_date }}"
-          else
-            DATE_ARG=""
+            ARGS="$ARGS --date ${{ inputs.as_of_date }}"
           fi
           if [ "${{ inputs.dry_run }}" = "true" ]; then
-            DRY_ARG="--dry-run"
-          else
-            DRY_ARG=""
+            ARGS="$ARGS --dry-run"
           fi
-          python run.py $DATE_ARG $DRY_ARG
+          python run.py $ARGS
 
       - name: Commit results
-        if: ${{ inputs.dry_run != true }}
+        # `always()` so that a crashed run still commits the quota counts and
+        # the partial log. Losing the quota file after a failed run would let a
+        # retry burn a second full day's allowance.
+        if: ${{ always() && inputs.dry_run != true }}
         run: |
           git config user.name  "superforecaster-bot"
           git config user.email "actions@github.com"
-                    git add -A data logs config/lexicon.csv config/overrides.csv 2>/dev/null || true
+          git add data/ logs/ config/lexicon.csv config/overrides.csv config/resolutions.csv
           if git diff --staged --quiet; then
             echo "Nothing changed."
           else
-            git commit -m "Question run $(date -u +%Y-%m-%d) [skip ci]"
+            git commit -m "Run $(date -u +%Y-%m-%d) [skip ci]"
+            git pull --rebase --autostash || true
             git push
           fi
 
@@ -81,4 +100,4 @@ jobs:
         with:
           name: run-log
           path: logs/
-          if-no-files-found: ignore
+          if-no-files-found: warn

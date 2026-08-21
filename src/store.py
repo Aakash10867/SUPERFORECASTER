@@ -17,6 +17,7 @@ Design notes
 from __future__ import annotations
 
 import csv
+import json
 from pathlib import Path
 from typing import Iterable
 
@@ -47,7 +48,32 @@ QUESTION_FIELDS = [
     "brier",
     "admitted_by",         # system | human
     "admission_note",
+
+    # ---- stage two additions ---------------------------------------------
+    "shape",               # window | point -- see below
+    "calendar_hooks",      # known scheduled catalysts, "; " separated
+    "resolution_basis",    # confirmed_act | lapsed_absence
+    "outcome_set_by",      # system | human
+    "watch_until",         # absence-watch expiry; blank when not watching
+    "last_refresh",        # date of last full seven-lens refresh
+    "probability",         # current live number, 0-100 (cached for display)
+    "prob_source",         # refresh | persisted | trigger
 ]
+
+# WHY `shape` EXISTS
+# ------------------
+# Scope sensitivity -- the number must move when the time window moves -- is
+# built in by asking each lens for three probabilities at one third, two
+# thirds and the full horizon. That only makes sense for questions where the
+# thing can happen at ANY time before the deadline ("window"). For a question
+# that can only resolve at one scheduled event -- will the Fed hike at the
+# December meeting -- intermediate probabilities are meaningless, so the three
+# horizon numbers are skipped entirely.
+#
+# When a question is ambiguous, classify it as `point`. The failure modes are
+# asymmetric: calling a window a point merely loses a test, while calling a
+# point a window invents numbers that correspond to nothing and then feeds
+# them to a contradiction check.
 
 PROPOSAL_FIELDS = [
     "proposal_id",
@@ -70,12 +96,82 @@ PROPOSAL_FIELDS = [
     "flagged_exceptional",
 ]
 
+# forecasts.csv is the NUMBERS-ONLY scoring spine. Everything else a lens
+# produced -- its abstraction, its enumerated cases, both sides of the
+# argument, its triggers -- lives in data/runs/<date>/<qid>.json, because
+# _flatten() below deliberately collapses newlines and structured reasoning
+# squeezed into a CSV cell is neither readable nor queryable.
 FORECAST_FIELDS = [
     "question_id",
     "date",
-    "model",
+    "model",              # aggregate | <lens id>
+    "probability",        # the live number, 0-100
+    "reason",             # one line; the full text is in the JSON
+    "stage",              # outside | inside_yes | inside_no | reconcile | aggregate
+    "p_one_third",        # window questions only
+    "p_two_thirds",
+    "p_full",
+    "median_raw",         # aggregate rows: median before any adjustment
+    "median_extremized",  # SHADOW ONLY -- never the live number (see §1)
+    "responding_lenses",
+    "abstained_lenses",
+    "config_version",     # which lens definitions produced this
+    "cause",              # refresh | trigger:<id> | screen | creation
+    "grounded",           # yes | no | n/a
+]
+
+LENS_FIELDS = [
+    "question_id",
+    "date",
+    "lens",
+    "status",             # responded | abstained | excluded_audit | failed
     "probability",
-    "reason",
+    "p_one_third",
+    "p_two_thirds",
+    "p_full",
+    "outside_probability",  # frozen before any news was seen
+    "provenance_tier",      # structured | reasoned
+    "reference_entry",      # id of the library entry used, if any
+    "yes_case_strength",
+    "no_case_strength",
+    "audit_result",         # clean | retried_clean | excluded
+    "audit_note",
+    "triggers",             # one line summary; full text in the JSON
+    "moved_from",           # previous probability, blank on first forecast
+    "move_reason",
+    "model",
+    "config_version",
+]
+
+SCREEN_FIELDS = [
+    "question_id",
+    "date",
+    "outcome",            # no_cause | escalate | resolution_nominee | watch_hit
+    "reason",             # one line, ALWAYS recorded -- "looked and found
+                          # nothing" must be distinguishable from "did not look"
+    "articles_considered",
+    "trigger_fired",
+    "model",
+]
+
+DIAGNOSTIC_FIELDS = [
+    "date",
+    "question_id",
+    "kind",               # curve_divergence | trigger_contradiction |
+                          # audit_exclusion | thin_lens_set | abstention_shift |
+                          # coherence_break | unfired_triggers
+    "detail",
+    "severity",           # note | flag
+]
+
+SYSTEM_PROPOSAL_FIELDS = [
+    "date",
+    "kind",               # redundant_lenses | mis_scoped_lens | broken_time_model
+                          # | unfalsifiable_triggers | coverage_gap | fabrication
+    "subject",            # lens id, question id, or reference entry id
+    "evidence",
+    "suggestion",
+    "status",             # open | accepted | rejected
 ]
 
 PROCESSED_FIELDS = [
@@ -104,6 +200,24 @@ PENDING_TAG_FIELDS = [
     "model_justification",
 ]
 
+REFERENCE_INDEX_FIELDS = [
+    "id",
+    "built_by",           # lens id -- entries are NOT shared across lenses
+    "built_on",
+    "frequency_question",
+    "membership_rule",
+    "window",
+    "count",
+    "hits",
+    "rate",
+    "valid_until",
+    "state",              # active | superseded | retired
+    "supersedes",
+    "superseded_by",
+    "verified",           # grounded | unverified
+    "used_by",            # "; " separated question ids -- the blast radius
+]
+
 _SCHEMAS = {
     config.QUESTIONS_CSV: QUESTION_FIELDS,
     config.PROPOSALS_CSV: PROPOSAL_FIELDS,
@@ -111,7 +225,19 @@ _SCHEMAS = {
     config.PROCESSED_CSV: PROCESSED_FIELDS,
     config.WAITING_CSV: WAITING_FIELDS,
     config.PENDING_TAGS_CSV: PENDING_TAG_FIELDS,
+    config.LENS_CSV: LENS_FIELDS,
+    config.SCREENS_CSV: SCREEN_FIELDS,
+    config.DIAGNOSTICS_CSV: DIAGNOSTIC_FIELDS,
+    config.SYSTEM_PROPOSALS_CSV: SYSTEM_PROPOSAL_FIELDS,
+    config.REFERENCE_INDEX_CSV: REFERENCE_INDEX_FIELDS,
 }
+
+RESOLUTION_OVERRIDE_FIELDS = [
+    "question_id",
+    "outcome",         # 1 | 0 | void | reopen
+    "resolved_date",   # optional correction; blank keeps the existing date
+    "note",
+]
 
 
 # ---------------------------------------------------------------------------
@@ -131,6 +257,43 @@ def ensure_files() -> None:
         with open(config.OVERRIDES_CSV, "w", newline="", encoding="utf-8") as fh:
             w = csv.DictWriter(fh, fieldnames=["proposal_id", "note"])
             w.writeheader()
+
+    # resolutions.csv is also hand-edited, but unlike overrides.csv it is
+    # NEVER cleared. Admitting a question is a one-time act; a statement about
+    # what actually happened is permanent. If this file were emptied after a
+    # run, the next recompute would silently revert your correction.
+    if not config.RESOLUTIONS_CSV.exists():
+        with open(config.RESOLUTIONS_CSV, "w", newline="", encoding="utf-8") as fh:
+            w = csv.DictWriter(fh, fieldnames=RESOLUTION_OVERRIDE_FIELDS)
+            w.writeheader()
+
+    # Migrate older CSVs that predate stage two: add any missing columns
+    # without losing data.
+    _migrate(config.QUESTIONS_CSV, QUESTION_FIELDS)
+    _migrate(config.FORECASTS_CSV, FORECAST_FIELDS)
+
+
+def _migrate(path: Path, fields: list[str]) -> None:
+    """
+    Add columns that a file predating this version does not have.
+
+    questions.csv from stage one has no `shape`, `probability` or watch
+    columns. Rather than making you rebuild the file by hand, we read it,
+    fill the new columns with blanks, and write it back.
+    """
+    if not path.exists():
+        return
+    with open(path, "r", newline="", encoding="utf-8") as fh:
+        reader = csv.DictReader(fh)
+        existing = reader.fieldnames or []
+        if all(f in existing for f in fields):
+            return
+        rows = list(reader)
+    with open(path, "w", newline="", encoding="utf-8") as fh:
+        w = csv.DictWriter(fh, fieldnames=fields)
+        w.writeheader()
+        for row in rows:
+            w.writerow({k: _flatten(row.get(k, "")) for k in fields})
 
 
 def read_rows(path: Path) -> list[dict]:
@@ -231,3 +394,140 @@ def read_overrides() -> list[dict]:
 def clear_overrides() -> None:
     with open(config.OVERRIDES_CSV, "w", newline="", encoding="utf-8") as fh:
         csv.DictWriter(fh, fieldnames=["proposal_id", "note"]).writeheader()
+
+
+# ---------------------------------------------------------------------------
+# Stage two accessors
+# ---------------------------------------------------------------------------
+
+def read_resolution_overrides() -> list[dict]:
+    """
+    Hand-written corrections to outcomes. Read fresh every run, never cleared.
+
+    Five operations are supported:
+      outcome=1 / 0   flip or set an outcome
+      outcome=void    the question was ill-posed; excluded from all scoring
+      outcome=reopen  resolved in error; put it back to open
+      resolved_date   correct WHEN it resolved, which matters as much as the
+                      outcome: the day-weighted trail is scored up to
+                      resolution, so a question that actually resolved in
+                      October but lapsed in December was being scored against
+                      an already-decided question for 89 days.
+    """
+    if not config.RESOLUTIONS_CSV.exists():
+        return []
+    with open(config.RESOLUTIONS_CSV, "r", newline="", encoding="utf-8") as fh:
+        return [
+            r for r in csv.DictReader(fh)
+            if (r.get("question_id") or "").strip()
+        ]
+
+
+def question_by_id(qid: str) -> dict | None:
+    for q in read_rows(config.QUESTIONS_CSV):
+        if q.get("id") == qid:
+            return q
+    return None
+
+
+def update_question(qid: str, changes: dict) -> bool:
+    """Update one question in place. Returns False if the id is unknown."""
+    rows = read_rows(config.QUESTIONS_CSV)
+    found = False
+    for r in rows:
+        if r.get("id") == qid:
+            r.update(changes)
+            found = True
+    if found:
+        rewrite(config.QUESTIONS_CSV, rows)
+    return found
+
+
+def watched_questions() -> list[dict]:
+    """
+    Questions that lapsed for want of news and are still being watched.
+
+    Only `lapsed_absence` questions are watched. A question closed by a
+    definitive reported act is settled and needs no further looking.
+    """
+    out = []
+    for q in read_rows(config.QUESTIONS_CSV):
+        if q.get("status") != "resolved":
+            continue
+        if q.get("resolution_basis") != "lapsed_absence":
+            continue
+        if (q.get("outcome_set_by") or "") == "human":
+            # A human decision is terminal for the watch: the system stops
+            # looking and never second-guesses you.
+            continue
+        if not (q.get("watch_until") or "").strip():
+            continue
+        out.append(q)
+    return out
+
+
+def forecasts_for(qid: str) -> list[dict]:
+    return [
+        f for f in read_rows(config.FORECASTS_CSV)
+        if f.get("question_id") == qid
+    ]
+
+
+# -- the per-question JSON record -------------------------------------------
+
+def run_dir(date_iso: str) -> Path:
+    d = config.RUNS / date_iso
+    d.mkdir(parents=True, exist_ok=True)
+    return d
+
+
+def write_run_record(date_iso: str, qid: str, record: dict) -> Path:
+    """
+    Store everything that produced today's number for one question.
+
+    This is the file you read when you want to know WHY, and it is what makes
+    the fast clock work: pre-declared triggers, both sides of every argument,
+    the enumerated cases behind every base rate. CSVs cannot hold it.
+    """
+    path = run_dir(date_iso) / f"{qid}.json"
+    if path.exists():
+        # Two runs in one day: keep both rather than overwriting.
+        try:
+            prior = json.loads(path.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, OSError):
+            prior = None
+        if prior is not None:
+            history = prior.get("_earlier_runs", [])
+            stripped = {k: v for k, v in prior.items() if k != "_earlier_runs"}
+            history.append(stripped)
+            record = dict(record)
+            record["_earlier_runs"] = history
+    with open(path, "w", encoding="utf-8") as fh:
+        json.dump(record, fh, indent=2, ensure_ascii=False)
+    return path
+
+
+def read_run_record(date_iso: str, qid: str) -> dict | None:
+    path = config.RUNS / date_iso / f"{qid}.json"
+    if not path.exists():
+        return None
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return None
+
+
+def latest_run_record(qid: str, before: str | None = None) -> dict | None:
+    """Most recent stored reasoning for a question, optionally before a date."""
+    if not config.RUNS.exists():
+        return None
+    dates = sorted(
+        (d.name for d in config.RUNS.iterdir() if d.is_dir()), reverse=True
+    )
+    for d in dates:
+        if before and d >= before:
+            continue
+        rec = read_run_record(d, qid)
+        if rec:
+            return rec
+    return None

@@ -61,8 +61,64 @@ dedupe:
 
 run:
   # Safety valve: never make more than this many model calls in one run,
-  # regardless of what the pipeline thinks it needs.
-  max_calls_per_run: 400
+  # regardless of what the pipeline thinks it needs. Raised for stage two --
+  # seven lenses x five stages x a dozen questions is a lot more traffic than
+  # generation alone. Note this is a PER-RUN valve sitting under a PER-DAY
+  # ceiling; the daily limits in models.yaml are what actually bind, and they
+  # are now tracked persistently in data/quota.json.
+  max_calls_per_run: 1200
+
+  # Deep models are scarce (20/day each). Generation's contest step is the most
+  # important judgement in the system, so it gets a hard reserve that
+  # forecasting may not touch. A bad question is unfixable; a slightly worse
+  # forecast is refreshed within a week.
+  deep_reserve_for_generation: 40
   # Seconds to wait before retrying a model that returned a transient error.
   retry_backoff_seconds: 8
   max_retries_per_model: 2
+
+# ---------------------------------------------------------------------------
+# FORECASTING (stage two)
+# ---------------------------------------------------------------------------
+forecasting:
+  # A window question is refreshed with a full seven-lens run once it has not
+  # been refreshed for this many days. Measured against the LAST REFRESH, not
+  # a calendar schedule: runs happen when you upload papers, so a fixed
+  # "refresh on Sundays" breaks the moment a day is skipped. Staleness rotation
+  # is self-correcting -- a three-day gap simply makes several come due at once.
+  staleness_days: 7
+
+  # Below this many responding lenses, the question is FLAGGED, not forecast.
+  # It never blocks the run.
+  min_responding_lenses: 3
+
+  # Soft bounds. A lens may cross them, but only by explicitly arguing past it.
+  # Rare-but-real events happen more often than a normal-distribution intuition
+  # suggests, and our ability to rule things out is weaker than it feels.
+  soft_floor: 2
+  soft_ceiling: 98
+
+  # Two retries each, never more, and they do not compound. Retrying until a
+  # check passes does not converge on correctness -- it converges on PASSING
+  # THE CHECK, which would build a filter for detectable leakage rather than
+  # for actual leakage.
+  decomposition_retries: 2     # outside phase: no population found -> abstain
+  contamination_retries: 2     # inside phase: audit flagged a leak -> exclude
+
+  # How long a question that lapsed for want of news keeps being cheaply
+  # watched. Without expiry, two years in, eighty dead questions get screened
+  # every run and the cost creeps. Papers report late, but rarely months late.
+  watch_expiry_days: 90
+
+reference:
+  # Each entry declares its own validity horizon and justifies it, but a lens
+  # left to itself will claim a long horizon to avoid future work. Its claim
+  # can only ever be SHORTER than this ceiling, never longer.
+  max_validity_months: 12
+
+  # Search grounding is used ONLY to verify enumerated historical cases, and
+  # only on the lens's ABSTRACTED population query -- never on the live
+  # question text, and never in the inside phase. Searching the original
+  # question would walk straight through the firewall and pull in this week's
+  # coverage, contaminating the very stage we isolated.
+  verify_with_grounding: true
