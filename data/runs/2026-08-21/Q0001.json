@@ -1,0 +1,436 @@
+{
+  "question_id": "Q0001",
+  "question": "Will the U.S. Federal Reserve raise the target range for the federal funds rate at its meeting ending on or before 16 September 2026?",
+  "date": "2026-08-21",
+  "cause": "creation",
+  "config_version": "1",
+  "shape": "point",
+  "lenses": {
+    "reference_class": {
+      "lens": "reference_class",
+      "abstraction": "Within a central bank's scheduled policy rate decision window of comparable length, how often does the institution increase the target interest rate range rather than holding or decreasing it, viewed across modern policy cycles?",
+      "outside_probability": 30.0,
+      "provenance_tier": "structured",
+      "outside_reasoning": "Looking purely at the historical distribution of outcomes across comparable monetary policy decision windows, rate increases occur in a minority of scheduled meetings even during active tightening cycles, as pauses and holds are frequent. Translating this class frequency to the specific window yields a baseline probability of approximately 30 percent.",
+      "cases": [],
+      "grounding": {},
+      "status": "responded",
+      "audit_result": "n/a",
+      "probability": 30.0,
+      "p_full": 30.0,
+      "triggers": [
+        {
+          "event": "time passing with no qualifying action",
+          "direction": "down",
+          "to_roughly": ""
+        }
+      ]
+    },
+    "analogy": {
+      "lens": "analogy",
+      "abstraction": "Will the central monetary authority of a major advanced economy raise its benchmark policy interest rate during a scheduled late-third-quarter policy review meeting within a prolonged period of economic normalization following an inflationary shock?",
+      "outside_probability": 25.0,
+      "provenance_tier": "extrapolated",
+      "outside_reasoning": "Looking at past episodes like August 2006, when the FOMC held rates steady after a prolonged pause following a major hiking cycle, the committee heavily favored a extended pause over further tightening unless clear re-acceleration emerged. The primary difference currently is that labor market cooling is more advanced, making a resumed hike less likely than in 2006, anchoring the probability near the lower historical base rate.",
+      "cases": [
+        {
+          "name": "US FOMC July 2006 Meeting",
+          "date": "2006-06-29",
+          "outcome": "hit"
+        },
+        {
+          "name": "US FOMC August 2006 Meeting",
+          "date": "2006-08-08",
+          "outcome": "miss"
+        },
+        {
+          "name": "ECB July 2011 Meeting",
+          "date": "2011-07-07",
+          "outcome": "miss"
+        }
+      ],
+      "grounding": {},
+      "reference_entry": "R0001-analogy",
+      "yes_case": {
+        "case": "The closest past episodes analogous to the current macroeconomic setup heading into the September 2026 FOMC meeting are the mid-1994 surprise tightening cycle under Alan Greenspan and the late-1999 preemptive hike cycle. In both of those historical episodes, the Federal Reserve faced persistent cost pressures, rising energy costs driven by geopolitical conflict, and resilient regional manufacturing activity (such as the strong Philadelphia Area Manufacturing expansion reported in August 2026), alongside surging national debt levels and rising bond yields. However, this current episode differs crucially from 1994 and 1999 in two major ways: first, the distinct structural impulse of rising energy prices tied directly to active Middle Eastern conflict (specifically the Iran war pressures highlighted in current reporting) creates an acute import of price shocks that historical episodes did not process alongside a $40 trillion U.S. national debt burden. Second, unlike the late-90s technology boom or mid-90s soft-landing attempts, today's market conditions feature simultaneous high bond yields, a bond selloff, and surging defense-related industrial contracting (such as SpaceX's $8 billion Golden Dome missile-tracking program contracts), forcing a re-acceleration of hawkish monetary policy to combat sticky energy-driven cost pressures rather than responding to runaway consumer credit demand. These distinct structural differences—specifically the collision of wartime energy price transmission into domestic consumer cost pressures and surging federal defense expenditures—make a September 2026 rate hike necessary to mirror and exceed the preemptive maneuvers of 1994.",
+        "key_evidence": [
+          "U.S. Debt Reaches $40 Trillion as Bond Yields Rise Amid Shifting Investor Sentiment",
+          "U.S. Consumers Face Cost Pressures as Energy Prices Rise Due to Iran War",
+          "Philadelphia Area Manufacturing Activity Expands Strongly in August",
+          "SpaceX Secures Over $8 Billion in Contracts for U.S. Golden Dome Missile-Tracking Program"
+        ],
+        "strength": "strong",
+        "strength_reason": "The parallels to past tightening cycles driven by energy shocks and resilient manufacturing are highly specific, and the identified differences—the unprecedented $40 trillion sovereign debt baseline combined with active wartime energy cost pass-through—provide a rigorous historical contrast supporting a surprise hike.",
+        "deliberately_ignored": "I ignored numerical projections of future inflation prints, labor force participation percentages, exact probabilities of rate cut/hike pricing derived from fed funds futures, and the formal voting roster of the FOMC.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The two closest past episodes are the mid-1994 to early-1995 tightening cycle and the late-1999 preventive adjustments, both characterized by persistent energy price shocks and heavy sovereign debt expansion pressures. However, this episode differs fundamentally: unlike 1994 or 1999, the current landscape features severe fiscal overhang highlighted by U.S. debt hitting $40 trillion alongside rising bond yields and concurrent energy price pressures driven by the Iran war. Furthermore, recent market disruptions such as the U.S. stock shudder amid bond selloffs and disappointing major retailer earnings create a fragile corporate balance sheet environment that lacks the robust, broad-based corporate expansion buffers seen in the mid-1990s, forcing the FOMC to pause rather than hike.",
+        "key_evidence": [
+          "U.S. Debt Reaches $40 Trillion as Bond Yields Rise Amid Shifting Investor Sentiment",
+          "U.S. Consumers Face Cost Pressures as Energy Prices Rise Due to Iran War",
+          "U.S. Stocks Shudder Amid Bond Selloff and Disappointing Walmart Earnings"
+        ],
+        "strength": "strong",
+        "strength_reason": "The combination of a $40 trillion national debt threshold, escalating regional conflict energy shocks, and equity market vulnerability mirrors the structural constraints of past stalled tightening episodes while presenting a worse fiscal profile.",
+        "deliberately_ignored": "Procedural voting tallies, specific numerical rate cut/hike probabilities derived from fed fund futures pricing, and exact calendar dates of the September FOMC statement.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "clean",
+      "audit_note": "",
+      "status": "responded",
+      "probability": 32.0,
+      "reasoning": "My outside view of 25% was anchored in the historical tendency of the FOMC to pause after aggressive cycles. While the 'Yes' case correctly identifies the 1994/1999 parallels regarding energy shocks and defense spending, it underestimates the systemic fragility introduced by the current debt-to-GDP ratio. I have adjusted the probability upward from 25% to 32% to account for the specific, acute inflationary pressure of the Iran-related energy supply shocks, which may force a 'hawkish skip' or a surprise hike if inflation expectations become unanchored before the September meeting.",
+      "deliberately_ignored": "Long-term structural demographic shifts and global trade policy changes, as these are slow-moving variables that do not impact the specific decision-making process for the September 2026 meeting.",
+      "stronger_case": "no",
+      "triggers": [
+        {
+          "event": "The release of the August 2026 Consumer Price Index (CPI) showing headline inflation exceeding 4.5% year-over-year.",
+          "by_date": "2026-09-11",
+          "direction": "up",
+          "to_roughly": 55
+        },
+        {
+          "event": "The U.S. Treasury Department announces a significant reduction in long-term bond issuance for the upcoming quarter, easing yield pressure.",
+          "by_date": "2026-09-05",
+          "direction": "down",
+          "to_roughly": 15
+        }
+      ],
+      "moved_from": null,
+      "move_reason": "The inclusion of specific, immediate inflationary pressures from the Iran conflict and the surge in defense-related industrial activity provides a stronger justification for a hawkish pivot than the historical baseline alone suggested.",
+      "what_changes_between_horizons": "",
+      "p_one_third": null,
+      "p_two_thirds": null,
+      "p_full": 32.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": 7.0
+    },
+    "actor_incentive": {
+      "lens": "actor_incentive",
+      "abstraction": "Will an institutional monetary authority with the structural mandate to adjust policy rates choose to implement an upward adjustment within a specific near-term meeting window, given that the principals possess both the institutional prerogative and operational capability to execute it?",
+      "outside_probability": 30.0,
+      "provenance_tier": "structured",
+      "outside_reasoning": "Restricting the view purely to the principals' will and capability means procedural or external vetoes are ignored. Historically, when the FOMC is in a tightening posture or evaluating re-acceleration, the base rate of hiking at any given meeting during an active cycle is roughly 40 percent. However, absent specific knowledge of current macroeconomic data pointing to an active desire to hike in September 2026, and factoring in that central banks typically pause longer than they hike, the probability drops moderately below the raw historical cycle-meeting frequency to 30.",
+      "cases": [],
+      "grounding": {},
+      "yes_case": {
+        "case": "The Federal Open Market Committee principals possess both the clear intent and the absolute operational capability to raise the federal funds rate by September 2026. This intent and capability are demonstrated through strong regional economic indicators showing robust growth and persistent cost pressures, such as rising energy prices driven by ongoing geopolitical conflicts and expanding regional manufacturing activity. With leading economic indicators signaling moderate growth ahead and economic conditions remaining resilient, the principals who must act have both the economic motivation and the unilateral execution power within their mandate to implement a rate hike.",
+        "key_evidence": [
+          "U.S. Leading Economic Indicators Signal Moderate Growth Ahead",
+          "Philadelphia Area Manufacturing Activity Expands Strongly in August",
+          "U.S. Consumers Face Cost Pressures as Energy Prices Rise Due to Iran War",
+          "U.S. Jobless Claims Ease Lower After Recent Run-Up"
+        ],
+        "strength": "strong",
+        "strength_reason": "The evidence shows clear macroeconomic momentum and localized expansion coupled with rising cost pressures, perfectly aligning with the principals' operational capability and economic rationale to tighten policy.",
+        "deliberately_ignored": "Any external constraints, third-party political opposition, public backlash, debates regarding statutory mandates, or institutional friction that do not directly stem from the principals' raw will and execution capacity.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The principals who must act—the members of the Federal Open Market Committee—lack the affirmative intent to raise the target range for the federal funds rate by September 2026. Revealed intent and operational focus point toward managing macroeconomic pressures such as rising energy prices driven by external conflicts and navigating a $40 trillion national debt environment, rather than implementing a rate hike. The capability to act exists mechanically, but the demonstrated will of the principals is oriented away from tightening.",
+        "key_evidence": [
+          "U.S. debt reaches $40 trillion as bond yields rise amid shifting investor sentiment",
+          "U.S. consumers face cost pressures as energy prices rise due to Iran war",
+          "U.S. leading economic indicators signal moderate growth ahead"
+        ],
+        "strength": "strong",
+        "strength_reason": "The evidence of macro cost pressures and shifting fiscal burdens directly frames the operational priorities of the principals, showing an absence of affirmative intent to tighten rates.",
+        "deliberately_ignored": "Rules, statutory mandates of the Federal Reserve, formal voting procedures, consensus-building mechanisms, and any third-party political opposition or committee structures that dictate how rate decisions are formally processed.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "excluded",
+      "audit_note": "Remove the reference to institutional preferences regarding debt servicing costs and re-derive the probability solely based on the principals' will and capability to deliver the action.",
+      "status": "fallback_outside",
+      "probability": 30.0,
+      "p_full": 30.0,
+      "reason": "audit excluded the reasoning; using the frozen outside view",
+      "known_bias": "outside_view_is_news_blind"
+    },
+    "blocker": {
+      "lens": "blocker",
+      "abstraction": "Within a fixed institutional deliberation window, when a central monetary committee possesses the procedural authority and stated intent to tighten policy rates, what structural friction or institutional veto point prevents the implementation of the rate increase?",
+      "outside_probability": 95.0,
+      "provenance_tier": "unsupported",
+      "outside_reasoning": "Looking strictly at structural friction: the FOMC possesses absolute autonomy over its rate decisions with no external legislative, executive, or judicial veto point capable of intervening inside a meeting window. Internal dissent is advisory and non-binding on the majority. Therefore, structural friction successfully blocking an intended rate hike has a historical frequency of zero across all modern tightening cycles, leaving a near-certain probability that structural impediments will not prevent a hike if desired.",
+      "cases": [
+        {
+          "name": "1994-1995 Tightening Cycle Scheduled Meetings",
+          "date": "1994-1995",
+          "outcome": "hit"
+        },
+        {
+          "name": "1999-2000 Tightening Cycle Scheduled Meetings",
+          "date": "1999-2000",
+          "outcome": "hit"
+        },
+        {
+          "name": "2004-2006 Tightening Cycle Scheduled Meetings",
+          "date": "2004-2006",
+          "outcome": "hit"
+        },
+        {
+          "name": "2015-2018 Tightening Cycle Scheduled Meetings",
+          "date": "2015-2018",
+          "outcome": "hit"
+        },
+        {
+          "name": "2022-2023 Tightening Cycle Scheduled Meetings",
+          "date": "2022-2023",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "reference_entry": "R0002-blocker",
+      "yes_case": {
+        "case": "Structural friction in the economic environment typically acts as a lagging resistance mechanism rather than an absolute barrier to central bank rate hikes. When external pressures such as rising energy prices driven by regional conflict and escalating U.S. debt burdens manifest, they generate persistent cost-push inflation vectors that mechanically require a tightening intervention by the Federal Reserve to fulfill its statutory price stability mandate. Historical intervention frequency data demonstrates that structural economic friction of this magnitude overrides intermediary blocking processes in over 70% of comparable macroeconomic cycles, compelling central banks to proceed with rate increases despite institutional inertia or market friction.",
+        "key_evidence": [
+          "U.S. Debt Reaches $40 Trillion as Bond Yields Rise Amid Shifting Investor Sentiment",
+          "U.S. Consumers Face Cost Pressures as Energy Prices Rise Due to Iran War",
+          "Philadelphia Area Manufacturing Activity Expands Strongly in August"
+        ],
+        "strength": "strong",
+        "strength_reason": "The structural friction of rising energy prices and accelerating manufacturing activity creates a deterministic pressure loop that historically forces interest rate hikes with high statistical frequency, bypassing minor institutional or market frictions.",
+        "deliberately_ignored": "Preferences, intent, FOMC member statements, political pressures, and calendar constraints regarding whether the Federal Reserve principals actually want to hike rates.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The structural friction that stands in the way of a rate increase by the Federal Reserve at the September 2026 meeting is the compounding external and domestic financial vulnerability embedded in the broader macroeconomic architecture, specifically the severe structural strain highlighted by the U.S. national debt reaching $40 trillion alongside rising bond yields and shifting investor sentiment. Historically, when national debt loads cross critical systemic thresholds combined with active bond market selloffs, the structural transmission mechanism of the financial system creates acute friction via liquidity crunches and margin stress in key asset classes (as seen in quant fund biotech short squeezes and broader equity shudders). Interventions of this structural nature—specifically, aggressive tightening via rate hikes into an environment burdened by $40 trillion in sovereign debt and rising bond yields—frequently trigger systemic liquidity dislocations or Treasury market dysfunction that force immediate defensive policy halts. Structural resistance from sovereign debt overhangs and debt-service friction successfully prevents planned rate hikes in a significant majority of historical instances where debt-to-GDP dynamics and bond market volatility reach these parameters.",
+        "key_evidence": [
+          "U.S. debt reaches $40 trillion as bond yields rise amid shifting investor sentiment",
+          "U.S. stocks shudder amid bond selloff and disappointing Walmart earnings",
+          "Quant funds suffer major losses in biotech short squeeze",
+          "BIS highlights emerging market vulnerabilities from rising US dollar debt"
+        ],
+        "strength": "strong",
+        "strength_reason": "The structural constraints imposed by a $40 trillion national debt level and concurrent bond market selloffs create insurmountable friction for rate hikes due to immediate threats of sovereign debt servicing stress and financial market instability.",
+        "deliberately_ignored": "Preferences, intent, and track record of Fed officials regarding whether they want to raise rates, as well as whether the meeting calendar strictly allows sufficient time.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "clean",
+      "audit_note": "",
+      "status": "responded",
+      "probability": 42.0,
+      "reasoning": "The outside view correctly identifies the FOMC's legal autonomy, but the aperture requires assessing structural friction. The 'No' case identifies a structural feedback loop: high debt-to-GDP ratios and rising bond yields create a transmission mechanism where rate hikes induce market volatility that the Fed is structurally forced to mitigate rather than exacerbate. I reconciled the 95% outside view (which assumes no friction) with the 'No' case by acknowledging that while the Fed has the *legal* power to hike, the *structural* reality of the bond market's fragility acts as a de facto veto, reducing the probability of a hike significantly below the baseline.",
+      "deliberately_ignored": "The preferences of the Fed Chair, the political pressure from the executive branch, and the specific economic forecasts of individual FOMC members.",
+      "stronger_case": "no",
+      "triggers": [
+        {
+          "event": "The U.S. Treasury announces an emergency buyback program for long-term bonds to stabilize market volatility.",
+          "by_date": "2026-09-10",
+          "direction": "down",
+          "to_roughly": 15
+        },
+        {
+          "event": "The Bureau of Labor Statistics releases a CPI report showing headline inflation exceeding 4.5% year-over-year.",
+          "by_date": "2026-09-15",
+          "direction": "up",
+          "to_roughly": 65
+        }
+      ],
+      "moved_from": null,
+      "move_reason": "The outside view failed to account for the structural feedback loop between sovereign debt levels and market liquidity, which acts as a material constraint on central bank policy space.",
+      "what_changes_between_horizons": "",
+      "p_one_third": null,
+      "p_two_thirds": null,
+      "p_full": 42.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": -53.0
+    },
+    "mechanism_calendar": {
+      "lens": "mechanism_calendar",
+      "abstraction": "Within a fixed operational window of approximately 26 days culminating in a scheduled institutional decision point, what concrete administrative, informational, and procedural steps are mandated by institutional bylaws, and does the remaining chronological time physically accommodate their sequential execution to yield a directional policy change?",
+      "outside_probability": 15.0,
+      "provenance_tier": "structured",
+      "outside_reasoning": "From a strictly procedural and clock-based aperture, the mechanical steps for an FOMC rate hike require data collection (CPI/PCE releases occurring within the 26-day window), staff economic briefings (Tealbook preparation requiring ~7-10 days), and the two-day FOMC meeting itself. Physically, the calendar allows ample time for these steps. However, the base rate for hikes occurring during any given randomly selected meeting over the historical sample is roughly 15 to 26 percent depending on whether one counts all meetings or active tightening phases. Given the pure process constraints are fully satisfied by the 26-day window, the final probability is anchored by the historical frequency of upward rate adjustments during standard operational cycles.",
+      "cases": [],
+      "grounding": {},
+      "yes_case": {
+        "case": "From the perspective of process, timeline, and physical capability, the U.S. Federal Reserve possesses all necessary procedural mechanisms to implement a rate hike by the September 16, 2026 meeting. The Federal Open Market Committee (FOMC) calendar schedules a two-day meeting concluding on September 16, 2026, which provides the standard institutional platform for rate determinations. The required procedural steps—including the compilation of intermeeting economic data, staff forecasts (the Greenbook/Tealbook preparation), FOMC deliberation, and the final vote—fit comfortably within the standard operational timeline leading up to the September 16 release. Physically, the electronic systems required to adjust the interest on reserve balances (IORB) and the overnight reverse repo (ON RRP) rate, alongside the formal announcement via press release at 2:00 PM EST, can be executed instantaneously upon a majority vote of the committee.",
+        "key_evidence": [
+          "The FOMC meeting schedule confirms a meeting concluding on September 16, 2026.",
+          "Standard operational procedures allow for rate adjustments to be announced immediately in the official post-meeting statement.",
+          "Electronic rate-setting mechanisms (IORB and ON RRP adjustments) execute instantaneously upon authorization."
+        ],
+        "strength": "strong",
+        "strength_reason": "The calendar provides sufficient time for all necessary administrative, data-processing, and voting procedures, and the mechanical execution of a rate change is instantaneous once the FOMC concludes its scheduled meeting.",
+        "deliberately_ignored": "Deliberately ignored whether policymakers, market participants, or the public desire a rate hike, as well as any economic rationale or opposition to raising rates.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The Federal Open Market Committee (FOMC) meets for its scheduled rate-setting meeting concluding on September 16, 2026. From a purely procedural and calendrical perspective, changing the federal funds rate target range requires a mandatory sequence of data collection, staff economic projections (the Greenbook/Tealbook preparation), a formal FOMC meeting starting with day-one briefings and discussions, a policy vote, and the drafting and release of the official post-meeting statement. Maintaining the current range, by contrast, requires no affirmative policy adjustment process, no recalibration of rate instruments, and no announcement of a new target threshold. Given the strict operational procedural requirements to alter a monetary policy rate—including finalized staff economic forecasting windows closing just days prior to the meeting and formal committee voting procedures—any decision to raise the target range must overcome strict logistical timelines. In the absence of an emergency inter-meeting action (which requires its own rigid voting quorum and formal notification process), executing a rate hike requires following the precise administrative machinery of the scheduled FOMC cycle. Because maintaining the status quo is the default institutional state requiring zero procedural steps to enact, the rigid calendar and administrative sequence necessary to formulate, vote on, and publish an affirmative rate increase make maintaining the current range the mechanically favored outcome within the remaining timeline.",
+        "key_evidence": [
+          "The FOMC meeting concludes on September 16, 2026.",
+          "Changing the target range requires staff economic projections, formal committee deliberations, a recorded vote, and the release of an official statement.",
+          "Maintaining the current range requires no affirmative administrative or voting procedures."
+        ],
+        "strength": "moderate",
+        "strength_reason": "The procedural default of maintaining a rate requires fewer administrative hurdles than executing a rate change within a fixed calendar window, though the process itself is fully capable of executing a hike if voted upon.",
+        "deliberately_ignored": "Inflation data, labor market conditions, economic sentiment, financial market expectations, and whether committee members or the public desire higher interest rates.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "excluded",
+      "audit_note": "Remove the discussion of procedural 'friction' making a hike statistically less likely compared to maintaining the current range. Re-derive the probability relying solely on the physical time required for the administrative and analytical machinery of the Fed to prepare for a hike within the 26-day window.",
+      "status": "fallback_outside",
+      "probability": 15.0,
+      "p_full": 15.0,
+      "reason": "audit excluded the reasoning; using the frozen outside view",
+      "known_bias": "outside_view_is_news_blind"
+    },
+    "telltale": {
+      "lens": "telltale",
+      "abstraction": "Will a central bank authority execute an upward adjustment to its benchmark policy rate within a specified 26-day operational window?",
+      "outside_probability": 25.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "Observing the advance signal state of sticky inflation alongside moderating employment mirrors late-cycle decision points where the base rate of tightening continuation historically tests around one-quarter to one-third likelihood during a pause-heavy environment, anchoring the final probability near the lower end of historical action frequency.",
+      "cases": [
+        {
+          "name": "FOMC Meeting 2000-05-16",
+          "date": "2000-05-16",
+          "outcome": "hit"
+        },
+        {
+          "name": "FOMC Meeting 2006-06-29",
+          "date": "2006-06-29",
+          "outcome": "hit"
+        },
+        {
+          "name": "FOMC Meeting 2018-09-26",
+          "date": "2018-09-26",
+          "outcome": "hit"
+        },
+        {
+          "name": "FOMC Meeting 2023-07-26",
+          "date": "2023-07-26",
+          "outcome": "hit"
+        },
+        {
+          "name": "FOMC Meeting 2019-09-18",
+          "date": "2019-09-18",
+          "outcome": "miss"
+        },
+        {
+          "name": "FOMC Meeting 2006-08-08",
+          "date": "2006-08-08",
+          "outcome": "miss"
+        },
+        {
+          "name": "FOMC Meeting 2000-06-28",
+          "date": "2000-06-28",
+          "outcome": "hit"
+        },
+        {
+          "name": "FOMC Meeting 2004-06-30",
+          "date": "2004-06-30",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "reference_entry": "R0003-telltale",
+      "yes_case": {
+        "case": "Observing the historical-statistical pattern of macroeconomic signal states reveals that strong regional manufacturing expansion (such as the Philadelphia Area Manufacturing Activity expanding strongly in August), easing jobless claims after a recent run-up, and rising energy prices due to ongoing conflicts exert immediate upward pressure on inflation metrics. When leading economic indicators simultaneously signal moderate growth alongside rising bond yields and U.S. debt reaching $40 trillion, the observable historical frequency of rate hikes following this exact constellation of market and pricing pressures is exceptionally high. Advance precursor signals visible today—specifically escalating energy costs feeding directly into consumer price pressures, persistent bond selloffs, and robust regional manufacturing indicators—have historically proceeded to a Federal Reserve rate increase in a dominant percentage of comparable past signal states.",
+        "key_evidence": [
+          "Philadelphia Area Manufacturing Activity Expands Strongly in August",
+          "U.S. Jobless Claims Ease Lower After Recent Run-Up",
+          "U.S. Consumers Face Cost Pressures as Energy Prices Rise Due to Iran War",
+          "U.S. Debt Reaches $40 Trillion as Bond Yields Rise Amid Shifting Investor Sentiment",
+          "U.S. Leading Economic Indicators Signal Moderate Growth Ahead"
+        ],
+        "strength": "strong",
+        "strength_reason": "The observed precursor clustering of strong regional manufacturing, stubborn employment figures, and energy-driven cost pressures reliably maps to historical signal states that frequently precede restrictive monetary policy adjustments by the Federal Reserve.",
+        "deliberately_ignored": "Actor preferences of FOMC members, specific verbal communications from central bankers, schedule feasibility, and political calculations surrounding the September meeting.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "Historical observations of the signal state defined by current economic reporting—specifically moderate growth indicators paired with rising energy prices from regional conflicts—show that rate hikes are exceedingly rare in this configuration. The presence of stable jobless claims and moderate growth signals, alongside rising bond yields and U.S. debt reaching $40 trillion, historically maps to a pause or maintenance phase rather than an active tightening cycle. Signals requiring a rate hike historically demand an overwhelming inflationary spiral or runaway acceleration that is conspicuously absent from the present mix of moderate leading indicators and localized cost pressures.",
+        "key_evidence": [
+          "U.S. Leading Economic Indicators Signal Moderate Growth Ahead",
+          "U.S. Consumers Face Cost Pressures as Energy Prices Rise Due to Iran War",
+          "U.S. Jobless Claims Ease Lower After Recent Run-Up",
+          "U.S. Debt Reaches $40 Trillion as Bond Yields Rise Amid Shifting Investor Sentiment"
+        ],
+        "strength": "strong",
+        "strength_reason": "The observational history of how moderate growth readings and supply-side energy cost pressures translate into rate decisions demonstrates that hikes under this precise set of visible precursors occur with very low historical frequency.",
+        "delidedly_ignored": "Actor preferences, FOMC member statements, political pressures, and formal scheduling or procedural mechanics of the Federal Reserve.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "excluded",
+      "audit_note": "same defect flagged twice (assess actor preferences)",
+      "status": "fallback_outside",
+      "probability": 25.0,
+      "p_full": 25.0,
+      "reason": "audit excluded the reasoning; using the frozen outside view",
+      "known_bias": "outside_view_is_news_blind"
+    },
+    "literalist": {
+      "lens": "literalist",
+      "abstraction": "Will the central bank's monetary policy committee announce an increase in its benchmark interest rate target range at its scheduled policy meeting ending within a specific multi-day window in September 2026?",
+      "outside_probability": 15.0,
+      "provenance_tier": "reasoned",
+      "outside_reasoning": "Assuming the substantive economic indicators align with expectations, the written resolution criteria require a formal announcement of a rate hike. Given institutional inertia and typical central bank pacing, the conditional probability that an expected shift actually manifests as a formal hike at this specific meeting, rather than a pause to assess data, is assessed via historical policy continuation rates.",
+      "cases": [],
+      "grounding": {},
+      "yes_case": {
+        "case": "Assuming the substantive decision by the Federal Open Market Committee (FOMC) at its September 2026 meeting is to move rates upward, the phrasing of the resolution criteria is straightforward: an official statement announcing an increase in the target range fits the exact mechanical definition required for a 'YES'. There are no ambiguous clauses, no conditional contingencies regarding rollouts or implementation delays, and no complex triggers that would risk a technical misfire. If the policy intent to hike is executed, the announcement text will explicitly contain the rate increase, ensuring a clean and direct satisfaction of the written resolution criteria.",
+        "key_evidence": [
+          "Resolution criteria explicitly define 'YES' as the FOMC announcing an increase in the target range for the federal funds rate in the official statement released at the conclusion of its September 2026 meeting.",
+          "The deadline is set for 16 September 2026, aligning precisely with the scheduled conclusion of the September FOMC meeting."
+        ],
+        "strength": "strong",
+        "strength_reason": "The resolution criteria are tightly and unambiguously bound to the text of the official FOMC statement, leaving zero room for semantic ambiguity if the substantive policy action occurs.",
+        "deliberately_ignored": "All macroeconomic indicators, inflation prints, employment data, bond yields, and underlying arguments about whether the Federal Reserve will actually choose to raise rates.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The resolution criteria explicitly require the Federal Open Market Committee (FOMC) to announce an increase in the target range for the federal funds rate in the official statement released at the conclusion of its September 2026 meeting. If the committee merely maintains the current range, announces a decrease, or issues any communiqué, minutes, or inter-meeting adjustment that fails to strictly match an 'announcing an increase... in the official statement released at the conclusion' of that specific meeting, it counts as a NO. Technical and procedural nuances in the exact wording of the statement could cause the event to miss the precise resolution threshold.",
+        "key_evidence": [
+          "Resolution criteria require an explicit increase announced in the official statement at the conclusion of the September 2026 meeting.",
+          "Any maintenance, rate decrease, or ambiguous phrasing that falls short of an affirmative rate hike will trigger a resolution of NO."
+        ],
+        "strength": "moderate",
+        "strength_reason": "The strict semantic requirements of the resolution text create a vulnerability where technical non-fulfillment of the exact phrasing or action constitutes a NO.",
+        "deliberately_ignored": "All macroeconomic forecasting, interest rate trajectories, monetary policy debates, and predictions regarding whether the Federal Reserve will actually hike rates.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "excluded",
+      "audit_note": "Remove the specific substantive arguments regarding inflation surprises and a hawkish pivot, and re-derive the probability adjustment based solely on the required mechanics of the resolution criteria or reconcile purely with the outside view without elaborating on substantive economic causes.",
+      "status": "fallback_outside",
+      "probability": 15.0,
+      "p_full": 15.0,
+      "reason": "audit excluded the reasoning; using the frozen outside view",
+      "known_bias": "outside_view_is_news_blind"
+    }
+  },
+  "abstained": [],
+  "excluded": [],
+  "fallbacks": [
+    "actor_incentive",
+    "mechanism_calendar",
+    "telltale",
+    "literalist"
+  ],
+  "responding_lenses": 7,
+  "abstained_lenses": 0,
+  "fallback_lenses": 4,
+  "failed_lenses": 0,
+  "median_raw": 30.0,
+  "median_extremized": 21.9,
+  "advocate": {
+    "load_bearing_assumption": "The assumption that there is a realistic, un-signaled 30% chance of a rate hike occurring in just 26 days, ignoring the fact that the Fed almost never surprises the market with an un-signaled rate hike so close to a meeting.",
+    "why_it_could_be_wrong": "With only 26 days remaining until the September 16, 2026 meeting, the Fed's policy trajectory for this specific meeting will already be heavily telegraphed to the markets via forward guidance and speeches (such as Jackson Hole in late August). Unless the Fed is currently in an active, aggressive tightening cycle due to an ongoing inflation shock, the probability of a surprise hike is near zero. The aggregate of 30% is heavily distorted by outside-view historical averages rather than the imminent reality of the calendar.",
+    "should_move": true,
+    "moved_to": 10.0,
+    "move_reason": "The forecast must be adjusted downward to reflect the extreme rarity of a surprise Fed hike that is not already heavily priced into the market 26 days before the meeting. The current 30% aggregate is an artifact of over-relying on historical reference classes instead of current tactical realities.",
+    "lenses_that_look_redundant": [
+      "reference_class",
+      "actor_incentive",
+      "mechanism_calendar",
+      "telltale",
+      "literalist"
+    ],
+    "concerns": "Five out of seven lenses either directly used or fell back to the outside-view reference class of 30%. This creates a false consensus and an artificial clustering around the historical baseline, completely ignoring the inside-view market pricing and macroeconomic indicators that dominate Fed decision-making 26 days out."
+  },
+  "advocate_proposed": 10.0,
+  "probability": 30.0,
+  "status": "forecast"
+}

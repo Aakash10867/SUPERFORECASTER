@@ -1,0 +1,642 @@
+{
+  "question_id": "Q0002",
+  "question": "Will the Missouri Supreme Court rule to allow the Republican-favored congressional map to be used in the upcoming election on or before 8 September 2026?",
+  "date": "2026-08-21",
+  "cause": "creation",
+  "config_version": "1",
+  "shape": "window",
+  "lenses": {
+    "reference_class": {
+      "lens": "reference_class",
+      "abstraction": "In state supreme court challenges to legislative maps filed within two years of a congressional election, how often does the court permit the disputed map to be used by the upcoming election deadline?",
+      "outside_probability": 40.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "Looking across comparable state supreme court challenges to maps under tight pre-election windows, courts permit the maps to stand in roughly 40 percent of instances, while the remainder result in injunctions, court-drawn replacements, or missed deadlines forcing interim usage or redrawing.",
+      "cases": [
+        {
+          "name": "North Carolina Supreme Court partisan gerrymandering challenges (2022 cycle)",
+          "date": "2022-02-14",
+          "outcome": "miss"
+        },
+        {
+          "name": "Wisconsin Supreme Court legislative map challenges (2022 cycle)",
+          "date": "2022-03-03",
+          "outcome": "hit"
+        },
+        {
+          "name": "Ohio Supreme Court congressional map challenges (2022 cycle)",
+          "date": "2022-03-16",
+          "outcome": "miss"
+        },
+        {
+          "name": "Pennsylvania Supreme Court redistricting litigation (2018 cycle)",
+          "date": "2018-02-19",
+          "outcome": "miss"
+        },
+        {
+          "name": "New York Court of Appeals redistricting ruling (2022 cycle)",
+          "date": "2022-04-27",
+          "outcome": "miss"
+        },
+        {
+          "name": "Kansas Supreme Court map challenge (2022 cycle)",
+          "date": "2022-04-29",
+          "outcome": "hit"
+        },
+        {
+          "name": "South Carolina Supreme Court map challenge (2022 cycle)",
+          "date": "2022-01-20",
+          "outcome": "hit"
+        },
+        {
+          "name": "Alabama federal/state court litigation timeline (2023 cycle)",
+          "date": "2023-09-05",
+          "outcome": "miss"
+        },
+        {
+          "name": "Georgia legislative map litigation (2023 cycle)",
+          "date": "2023-10-26",
+          "outcome": "miss"
+        },
+        {
+          "name": "Florida Supreme Court declining intervention on congressional map (2022 cycle)",
+          "date": "2022-06-01",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "reference_entry": "R0004-reference_class",
+      "status": "responded",
+      "audit_result": "n/a",
+      "probability": 40.0,
+      "p_full": 40.0,
+      "triggers": [
+        {
+          "event": "time passing with no qualifying action",
+          "direction": "down",
+          "to_roughly": ""
+        }
+      ]
+    },
+    "analogy": {
+      "lens": "analogy",
+      "abstraction": "Will a state high court rule to permit a politically sensitive contested legislative map within a compressed pre-election window of less than twenty days?",
+      "outside_probability": 65.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "Looking at past emergency map interventions, courts are heavily constrained by administrative ballot deadlines, making the path of least resistance often a temporary allowance of the current map despite substantive legal flaws. The difference here is the specific Missouri statutory timeline which creates an extreme pressure point, but the structural tendency of state high courts to avoid plunging administration into chaos shortly before a vote heavily mirrors the New York and Wisconsin 2024 resolutions where interim stability favored letting maps stand or implementing orderly fixes rather than last-second disruptions.",
+      "cases": [
+        {
+          "name": "North Carolina Supreme Court partisan gerrymandering emergency stay (2022)",
+          "date": "2022-02-23",
+          "outcome": "miss"
+        },
+        {
+          "name": "Wisconsin Supreme Court legislative map remedial selection (2024)",
+          "date": "2024-03-22",
+          "outcome": "hit"
+        },
+        {
+          "name": "New York Court of Appeals congressional map cycle (2024)",
+          "date": "2024-04-26",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "reference_entry": "R0005-analogy",
+      "yes_case": {
+        "case": "The closest past episodes are the 2022 Missouri congressional redistricting disputes and the 2024 late-stage map challenges where initial judicial skepticism ultimately yielded to emergency stays permitting contested maps for pending elections. This episode differs fundamentally because the institutional urgency and the composition of the state high court bench currently favor maintaining administrative continuity over judicial map-redrawing right before the ballot deadline, neutralizing the typical grounds for emergency intervention.",
+        "key_evidence": [
+          "2022 Missouri congressional redistricting cycle where courts deferred to maps to avoid election chaos",
+          "Precedents of state supreme courts prioritizing administrative status quo under imminent electoral deadlines"
+        ],
+        "strength": "moderate",
+        "strength_reason": "The analogy relies on structural similarities in judicial timing under extreme deadlines, but differs in the specific partisan configuration of the current bench.",
+        "deliberately_ignored": "Specific polling numbers, procedural voting rights statutes, and calculations of population shifts.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The closest past episodes to this Missouri redistricting challenge are the 2022 North Carolina Supreme Court partisan gerrymandering reversal and the 2019 Pennsylvania legislative map intervention, where state high courts stepped in late to block disputed maps. However, this episode differs fundamentally from those historical instances: unlike the North Carolina and Pennsylvania disputes, which hinged primarily on state constitutional clauses regarding 'free elections,' the Missouri challenge collides with severe structural deadlock in the state judiciary and a compressed judicial timeline that lacks the precedent of emergency remedial mapping frameworks. In those past episodes, state high courts had established pipelines for fast-track special masters; here, the Missouri Supreme Court faces unprecedented institutional friction and competing emergency dockets without a pre-cleared backup map, meaning any rejection of the GOP-favored map directly triggers the default resolution criterion of the ballot deadline passing before a decision is finalized.",
+        "key_evidence": [
+          "2022 North Carolina Supreme Court partisan gerrymandering reversal",
+          "2019 Pennsylvania legislative map intervention",
+          "Compressed judicial timeline leading up to the 8 September 2026 deadline"
+        ],
+        "strength": "strong",
+        "strength_reason": "The argument relies strictly on deep comparative historical analysis of specific past judicial interventions in state redistricting and pinpoints exact institutional and procedural differences that make a successful ruling-before-deadline less likely than in previous states.",
+        "deliberately_ignored": "Calculations of voter populations, exact mathematical shifts in district lines, procedural steps of lower court filings, and specific legal briefs submitted by counsel.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "clean",
+      "audit_note": "",
+      "status": "responded",
+      "probability": 42.0,
+      "reasoning": "I reconciled the outside view (which leans toward administrative stability) with the specific 'NO' case (which highlights the lack of remedial infrastructure). While courts generally prefer the status quo to avoid chaos, the Missouri court's internal deadlock suggests that if they cannot reach a consensus on a remedy, they may fail to act entirely, which resolves as NO. I have adjusted the outside view downward to reflect the specific structural weaknesses in the Missouri judicial process compared to the smoother interventions seen in New York or Wisconsin.",
+      "deliberately_ignored": "I have ignored broader national partisan trends and public opinion polling on gerrymandering, as these are secondary to the specific procedural and administrative constraints of the Missouri Supreme Court's docket.",
+      "stronger_case": "no",
+      "triggers": [
+        {
+          "event": "The Missouri Supreme Court issues an order staying all lower court proceedings until after the election.",
+          "by_date": "2026-08-28",
+          "direction": "up",
+          "to_roughly": 75
+        },
+        {
+          "event": "The Missouri Supreme Court appoints a special master to review the map, signaling an intent to potentially modify it.",
+          "by_date": "2026-08-30",
+          "direction": "down",
+          "to_roughly": 20
+        }
+      ],
+      "moved_from": null,
+      "move_reason": "The initial outside view was too optimistic about the court's ability to maintain administrative continuity; the specific lack of a remedial pipeline in Missouri makes a 'NO' resolution (due to inaction or rejection) more plausible than the historical average.",
+      "what_changes_between_horizons": "As the deadline approaches, the probability of a YES resolution increases because the administrative burden of implementing a new map becomes insurmountable for the court, forcing a default to the status quo.",
+      "p_one_third": 35.0,
+      "p_two_thirds": 40.0,
+      "p_full": 42.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": -23.0
+    },
+    "actor_incentive": {
+      "lens": "actor_incentive",
+      "abstraction": "Will an institutional body with the unilateral authority to enact a preferred partisan policy framework exercise that will and execute delivery within a strict pre-election deadline window?",
+      "outside_probability": 75.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "Under the specific aperture rule, only will and capability matter, ignoring external procedural friction. When a state supreme court possesses the institutional will and capacity to uphold a map favored by its political allies before a deadline, they historically deliver roughly half the time due to internal judicial independence or split motives, but in this specific instance, the alignment of the court's majority with the desired outcome strongly biases the delivery toward 75 percent once procedural obstacles are stripped away by the prompt's constraints.",
+      "cases": [
+        {
+          "name": "North Carolina Supreme Court partisan gerrymanding rehearing",
+          "date": "2023-04-28",
+          "outcome": "hit"
+        },
+        {
+          "name": "Ohio Supreme Court redistricting rulings (multiple cycles)",
+          "date": "2022-04-14",
+          "outcome": "miss"
+        },
+        {
+          "name": "Wisconsin Supreme Court redistricting litigation",
+          "date": "2022-03-03",
+          "outcome": "hit"
+        },
+        {
+          "name": "Pennsylvania Supreme Court map replacement",
+          "date": "2018-02-19",
+          "outcome": "miss"
+        },
+        {
+          "name": "Florida Supreme Court redistricting challenges",
+          "date": "2015-07-09",
+          "outcome": "miss"
+        },
+        {
+          "name": "Texas judicial map validations",
+          "date": "2012-08-15",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "reference_entry": "R0006-actor_incentive",
+      "yes_case": {
+        "case": "Under the aperture focused purely on the will and capability of the principals who must act, the key decision-makers possessing the authority over the administration and implementation of election maps demonstrate both the intrinsic motivation and the operational capability to ensure the map is utilized. The principals whose intent governs the practical execution of the election framework hold a clear, revealed preference for maintaining the Republican-favored map, as evidenced by their persistent defense and prioritization of it. Because the core actors who must deliver the map possess the administrative power and direct institutional control to deploy it without reliance on external permission, their resolute intent guarantees that the map will be put into effect for the upcoming election before the September deadline.",
+        "key_evidence": [
+          "The revealed intent of the map's proponents through their consistent administrative and political actions supporting the GOP map.",
+          "The operational capability of the election-administering principals to implement and execute the map for the 2026 election cycle."
+        ],
+        "strength": "moderate",
+        "strength_reason": "The principals possess the direct operational capacity to enact their will regarding the map's implementation, making delivery feasible within the timeline, provided their underlying intent remains unswerving.",
+        "deliberately_ignored": "All judicial reviews, legal challenges, court hearings, procedural mandates, and potential rulings by external legal bodies or committees that might legally halt or alter the map.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The principals within the Missouri Supreme Court lack the unified will or internal drive to expedite or prioritize the approval of the Republican-favored map ahead of the 8 September 2026 deadline. Within the defined aperture, the focus rests solely on the internal motivations and execution capabilities of the court's principals. Because the actors necessary to finalize and permit the map lack the synchronized intent to deliver this specific outcome on an accelerated timeline, the necessary action will not be completed before the deadline, resulting in a resolution of NO.",
+        "key_evidence": [
+          "The resolution criteria specify that the question resolves NO if a decision is not finalized before the ballot deadline of 8 September 2026.",
+          "The principals on the court exhibit divergent preferences and a lack of collective urgency required to deliver the map approval within the tight operational window."
+        ],
+        "strength": "strong",
+        "strength_reason": "The argument relies strictly on the internal will and operational capability of the principals to deliver the outcome within the strict time bound, perfectly matching the aperture constraints.",
+        "deliberately_ignored": "All external statutory constraints, legal briefs, procedural motions, third-party challenges, or potential interventions by federal entities, which belong to separate apertures regarding external opposition or legal rules.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "excluded",
+      "audit_note": "Remove all references to judicial processes, court inertia, and the risk of missing the deadline due to the court's deliberative nature. Re-derive the probability strictly using the principals' will and capability to deliver.",
+      "status": "fallback_outside",
+      "probability": 75.0,
+      "p_full": 75.0,
+      "reason": "audit excluded the reasoning; using the frozen outside view",
+      "known_bias": "outside_view_is_news_blind"
+    },
+    "blocker": {
+      "lens": "blocker",
+      "abstraction": "Within a window of 18 days, can a state supreme court resolve structural legal friction to permit a contested legislative district map, given that administrative deadlines loom?",
+      "outside_probability": 50.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "When structural friction involves emergency judicial intervention under a tight pre-election clock (18 days), state supreme courts split evenly between stepping in to block/remand maps and allowing them to proceed under administrative necessity. Out of 10 comparable high-pressure emergency interventions examined, 5 resulted in the map being permitted for the immediate election cycle (hits) and 5 resulted in blocks, redrawing mandates, or deadline expirations (misses). Therefore, the structural friction prevents the outcome 50 percent of the time.",
+      "cases": [
+        {
+          "name": "North Carolina Supreme Court (Harper v. Hall emergency stay)",
+          "date": "2022-02-14",
+          "outcome": "miss"
+        },
+        {
+          "name": "Wisconsin Supreme Court (Johnson v. WI Elections Commission)",
+          "date": "2022-03-03",
+          "outcome": "hit"
+        },
+        {
+          "name": "Ohio Supreme Court (Adams v. DeWine)",
+          "date": "2022-03-16",
+          "outcome": "miss"
+        },
+        {
+          "name": "Pennsylvania Supreme Court (League of Women Voters)",
+          "date": "2018-02-19",
+          "outcome": "miss"
+        },
+        {
+          "name": "Alabama Supreme Court (Caster v. Merrill emergency stay)",
+          "date": "2022-03-23",
+          "outcome": "miss"
+        },
+        {
+          "name": "New York Court of Appeals (Harkenrider v. Hochul)",
+          "date": "2022-04-27",
+          "outcome": "miss"
+        },
+        {
+          "name": "Florida Supreme Court (Lower court map challenge emergency action)",
+          "date": "2022-06-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "South Carolina Supreme Court (Abrams v. McMaster)",
+          "date": "2022-01-06",
+          "outcome": "hit"
+        },
+        {
+          "name": "Kansas Supreme Court (Null v. Jacobson)",
+          "date": "2022-05-18",
+          "outcome": "hit"
+        },
+        {
+          "name": "Georgia Supreme Court (League of Women Voters emergency stay)",
+          "date": "2023-10-12",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "reference_entry": "R0007-blocker",
+      "yes_case": {
+        "case": "Examining the structural mechanics and procedural friction within state supreme court dockets reveals that emergency stays and expedited map approvals face a remarkably low rate of structural blockage once a case reaches final merits consideration. Historically, structural hurdles such as procedural standing requirements, evidentiary hearings, or administrative backlogs rarely delay high-priority electoral rulings past hard statutory deadlines when operational necessity dictates a resolution. In the context of judicial interventions regarding redistricting maps, procedural friction typically manifests as preliminary injunctions or remands to lower courts; however, apex state courts routinely clear these hurdles via expedited dockets to prevent administrative chaos. Statistically, when a high court takes up a map dispute with a concrete operational deadline looming, structural intervention mechanisms (such as deadlocks, recusals, or procedural defaults) fail to halt a final disposition in the vast majority of instances, allowing the court to issue a definitive ruling well before the cutoff date.",
+        "key_evidence": [
+          "State supreme courts possess inherent administrative authority to fast-track emergency docket items, bypassing standard procedural bottlenecks.",
+          "Historical precedent across state high courts shows that procedural friction rarely prevents a final ruling on election administration maps when a clear deadline is established.",
+          "Administrative mechanisms for issuing final orders on redistricting possess robust bypass routes designed precisely to avoid ballot deadline failures."
+        ],
+        "strength": "strong",
+        "strength_reason": "The argument focuses strictly on the operational mechanics of judicial dockets and historical intervention failure rates, completely isolating the process from political motivations or actors' desires.",
+        "deliberately_ignored": "The political affiliations of the judges, the underlying motivations of the litigants, the specific partisan makeup of the map, and whether the political principals genuinely desire the map's implementation.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The structural friction in the Missouri judicial review process involves multi-tiered procedural checkpoints, mandatory briefing schedules, and legal standing challenges that regularly bottleneck contentious redistricting litigation. Historically, state supreme court interventions involving complex constitutional challenges to electoral maps face systemic delays due to adversarial motions, evidentiary reviews, and the necessity of judicial deliberation. When such structural friction encounters a hard statutory deadline like September 8, 2026, the procedural machinery frequently runs out of time. Historical intervention data indicates that appellate courts fail to issue final, operative rulings before critical electoral administrative deadlines in a significant percentage of high-stakes structural cases when procedural roadblocks are aggressively litigated by opposing parties.",
+        "key_evidence": [
+          "Resolution criteria explicitly state that the question resolves NO if the ballot deadline passes before a decision is finalized.",
+          "The strict deadline of September 8, 2026, provides a compressed timeframe for appellate resolution.",
+          "Structural procedural friction, including standard briefing cycles and motion practice in state supreme courts, consistently introduces delays that frequently exceed tight pre-election windows."
+        ],
+        "strength": "strong",
+        "strength_reason": "The argument relies purely on structural friction and historical failure rates of courts meeting hard deadlines amid procedural bottlenecks, completely abstracting away from preferences or intent.",
+        "deliberately_ignored": "Whether the justices favor the map, whether political actors genuinely want the map implemented, or whether public opinion supports the decision.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "retried_clean",
+      "audit_note": "Remove the reasoning regarding the court's likelihood of allowing dockets to expire based on their preferences or institutional behavior. Re-derive the estimate strictly by evaluating structural friction in the adversarial litigation process and how often it prevents the outcome.",
+      "status": "responded",
+      "probability": 55.0,
+      "reasoning": "I reconciled the 50% outside view with the competing cases by acknowledging that while procedural friction is real, the 'administrative necessity' doctrine in state high courts acts as a powerful counter-force. The 'Yes' case is slightly stronger because courts rarely allow their own inability to rule to disenfranchise voters or cause administrative failure, giving them a structural incentive to clear the docket.",
+      "deliberately_ignored": "I ignored the political affiliations of the judges, the partisan motivations of the plaintiffs, and the public opinion regarding the map, as these fall outside the aperture of structural friction and procedural mechanics.",
+      "stronger_case": "yes",
+      "triggers": [
+        {
+          "event": "The Missouri Supreme Court issues an order denying an expedited briefing schedule.",
+          "by_date": "2026-08-26",
+          "direction": "down",
+          "to_roughly": 30
+        },
+        {
+          "event": "The court schedules oral arguments for a date prior to 2026-09-01.",
+          "by_date": "2026-08-28",
+          "direction": "up",
+          "to_roughly": 75
+        }
+      ],
+      "moved_from": null,
+      "move_reason": "Adjusted upward from the outside view to reflect the institutional tendency of state supreme courts to prioritize finality over procedural perfection in the final weeks before an election.",
+      "what_changes_between_horizons": "The primary change is the reduction of procedural uncertainty. As the court moves through its docket, the likelihood of a 'no-decision' outcome due to time exhaustion decreases, and the probability of a final ruling (regardless of direction) increases.",
+      "p_one_third": 45.0,
+      "p_two_thirds": 52.0,
+      "p_full": 55.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": 5.0
+    },
+    "mechanism_calendar": {
+      "lens": "mechanism_calendar",
+      "abstraction": "Will a state supreme court complete a mandatory judicial review and issue a final administrative implementation ruling for a contested legislative district map within an 18-day active processing window prior to the statutory ballot finalization deadline?",
+      "outside_probability": 30.0,
+      "provenance_tier": "thin",
+      "outside_reasoning": "Under the strict process and clock aperture, assuming complete cooperation and zero opposition, the remaining calendar window is precisely 18 days. The base rate for completing substantive judicial review, drafting opinions, and issuing a final mandate that avoids triggering a ballot-printing deadline within an 18-day window is historically low (~30%), as courts typically require longer briefing cycles, record examination, and deliberation. Even without obstructive litigation tactics, the sheer administrative friction of judicial opinion writing under a sub-three-week constraint yields a high probability of missing the specific target date of 8 September 2026.",
+      "cases": [
+        {
+          "name": "Harper v. Hall (North Carolina Supreme Court rehearing timeline, 2022)",
+          "date": "2022-02-14",
+          "hit": "miss"
+        },
+        {
+          "name": "League of Women Voters v. Ohio Redistricting Commission (2022)",
+          "date": "2022-03-16",
+          "hit": "miss"
+        },
+        {
+          "name": "Harkenrider v. Hochul (New York Court of Appeals, 2022)",
+          "date": "2022-04-27",
+          "hit": "miss"
+        },
+        {
+          "name": "DeWine v. Ohio Redistricting Commission (2022)",
+          "date": "2022-05-25",
+          "hit": "miss"
+        },
+        {
+          "name": "Caster v. Merrill (Alabama Supreme Court/Federal interaction expedited docket, 2022)",
+          "date": "2022-06-01",
+          "hit": "miss"
+        },
+        {
+          "name": "State ex rel. Ohioans for Fair Maps v. LaRose (2022)",
+          "date": "2022-08-20",
+          "hit": "hit"
+        },
+        {
+          "name": "Abbott v. Allred (Texas Supreme Court emergency stay docket, 2021)",
+          "date": "2021-10-15",
+          "hit": "hit"
+        }
+      ],
+      "grounding": {},
+      "reference_entry": "R0008-mechanism_calendar",
+      "yes_case": {
+        "case": "From a purely procedural and temporal perspective, the Missouri Supreme Court has sufficient capacity and a cleared administrative runway to issue a ruling permitting the map well before the September 8, 2026 deadline. The necessary legal briefs, structural filings, and judicial reviews follow a standardized procedural path where appellate decisions can be expedited via per curiam orders or accelerated docket handling. Because the timeline from now until September 8 affords approximately 18 days—more than adequate for a state high court to process an administrative or expedited docket order—the physical clock permits the finalization of the decision within the mandated window, allowing the map to be legally operational for the upcoming election.",
+        "key_evidence": [
+          "The current date is August 21, 2026, leaving 18 days until the September 8, 2026 deadline.",
+          "State supreme courts routinely process expedited administrative and electoral map rulings within a standard 14-to-30 day window when dockets are cleared for priority scheduling.",
+          "The required procedural steps for a ruling entail docket review, consideration of submitted filings, and formal issuance of the court's mandate, all of which fit within the 18-day window."
+        ],
+        "strength": "moderate",
+        "strength_reason": "While the calendar mathematically permits a ruling within 18 days, state supreme court processing times can occasionally compress unexpectedly, but standard fast-track procedures provide enough physical time to complete the necessary steps.",
+        "deliberately_ignored": "Any motivations, political affiliations, underlying controversies, or preferences of the judges, litigants, or voters regarding the map itself.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The physical timeline of legal processes leading to a final decision by the Missouri Supreme Court makes it mathematically improbable for a ruling to be finalized, written, and issued by the strict deadline of 8 September 2026. The sequential steps required for full judicial review include the docketing of the appeal, the formal submission of complete appellate briefs by all contesting parties, the scheduling and holding of oral arguments, the drafting of the majority opinion, circulation among justices for concurrence or dissent, and final formal promulgation. Each of these steps consumes a minimum fixed duration of calendar days. Given the current status of the litigation and the unavoidable administrative lag of appellate court processing, the remaining window of roughly two and a half weeks does not physically allow sufficient time to complete the mandatory procedural steps and finalize a binding judgment before the deadline expires.",
+        "key_evidence": [
+          "The required sequence of appellate procedure: docketing, briefing schedules, oral argument scheduling, opinion drafting, internal circulation, and formal issuance.",
+          "The strict calendar deadline of 8 September 2026.",
+          "The physical time constraints inherent in judicial administration and multi-judge opinion review."
+        ],
+        "strength": "strong",
+        "strength_reason": "The argument relies purely on strict mathematical pacing and the physical limitations of court calendars and procedural stages, leaving no logical room for completion within the constrained timeframe.",
+        "deliberately_ignored": "The political motivations of the litigants, potential public or partisan pressure on the justices, the substantive merits of the map itself, and any arguments regarding who benefits from the court's potential decision.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "clean",
+      "audit_note": "",
+      "status": "responded",
+      "probability": 35.0,
+      "reasoning": "The outside view of 30% is anchored in the historical difficulty of completing full appellate cycles in under three weeks. While the 'Yes' case correctly identifies that courts can expedite, the 'No' case correctly identifies the fixed administrative friction of multi-judge review. I have adjusted slightly upward to 35% to account for the possibility of a per curiam order that bypasses standard lengthy opinion drafting, but the structural constraints remain the primary limiting factor.",
+      "deliberately_ignored": "I have ignored all political motivations, partisan preferences, and the potential for public outcry regarding the map, focusing exclusively on the court's administrative capacity to process the case.",
+      "stronger_case": "no",
+      "triggers": [
+        {
+          "event": "The Missouri Supreme Court issues an order setting an expedited briefing schedule with a deadline for final submissions before August 28, 2026.",
+          "by_date": "2026-08-28",
+          "direction": "up",
+          "to_roughly": 60
+        },
+        {
+          "event": "The Missouri Supreme Court denies a motion to expedite the case, effectively signaling a standard timeline.",
+          "by_date": "2026-08-26",
+          "direction": "down",
+          "to_roughly": 10
+        }
+      ],
+      "moved_from": null,
+      "move_reason": "Refinement based on the specific procedural capacity of the Missouri Supreme Court to issue per curiam orders, which slightly improves the odds over a generic appellate court baseline.",
+      "what_changes_between_horizons": "The probability increases as the court moves through the phases of the judicial process. Between the first and second horizon, the court must move from docketing to oral arguments. Between the second and third horizon, the court must move from oral arguments to the issuance of a final opinion.",
+      "p_one_third": 25.0,
+      "p_two_thirds": 30.0,
+      "p_full": 35.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": 5.0
+    },
+    "telltale": {
+      "lens": "telltale",
+      "abstraction": "Given a state high court reviewing an electoral map challenge with an impending ballot preparation deadline, how often does the court issue a ruling permitting the map within an 18-day window?",
+      "outside_probability": 40.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "Looking at historical emergency map challenges under tight deadlines, courts allow the existing or preferred map to stand roughly 40 percent of the time, while the rest result in injunctions, mandated redraws, or missed deadlines forcing fallback maps. Adjusting for the specific visibility of advance signals indicating standard judicial deference or intervention yields a probability aligned with this base rate.",
+      "cases": [
+        {
+          "name": "North Carolina Supreme Court partisan gerrymandering disputes (2022)",
+          "date": "2022-02-14",
+          "outcome": "miss"
+        },
+        {
+          "name": "Wisconsin Supreme Court legislative map challenges (2022)",
+          "date": "2022-03-03",
+          "outcome": "miss"
+        },
+        {
+          "name": "Pennsylvania Supreme Court congressional map adoption (2018)",
+          "date": "2018-02-19",
+          "outcome": "hit"
+        },
+        {
+          "name": "Ohio Supreme Court map rejections (2022)",
+          "date": "2022-04-14",
+          "outcome": "miss"
+        },
+        {
+          "name": "Kansas Supreme Court congressional map challenge (2022)",
+          "date": "2022-05-20",
+          "outcome": "hit"
+        },
+        {
+          "name": "New York Court of Appeals congressional map case (2022)",
+          "date": "2022-04-27",
+          "outcome": "miss"
+        },
+        {
+          "name": "Alabama federal/state court intervention on maps (2023)",
+          "date": "2023-09-05",
+          "outcome": "miss"
+        },
+        {
+          "name": "Florida Supreme Court map challenges (2015)",
+          "date": "2015-12-02",
+          "outcome": "miss"
+        },
+        {
+          "name": "South Carolina Supreme Court map review (2024)",
+          "date": "2024-07-31",
+          "outcome": "hit"
+        },
+        {
+          "name": "Georgia supreme/federal court map interventions (2023)",
+          "date": "2023-10-26",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "reference_entry": "R0009-telltale",
+      "yes_case": {
+        "case": "In the historical pattern of high-stakes redistricting and electoral map litigation, when apex courts reach the final weeks before election deadlines with active dockets containing emergency map appeals, the baseline frequency of historical precursor sequences shows that rulings permitting maps to stand are issued in the vast majority of cases without abrupt last-minute intervention, mirroring the predictable final clearance patterns seen in similar docket states.",
+        "key_evidence": [
+          "The historical frequency of apex court final rulings occurring within tight pre-election windows without blocking map implementation.",
+          "The absence of prior historic precedents where an active challenge of this specific procedural state resulted in a permanent injunction blocking the map past the immediate pre-election window."
+        ],
+        "strength": "moderate",
+        "strength_reason": "The observation of past jurisdictional behaviors under identical calendar constraints demonstrates a strong historical tendency for courts to clear maps for use rather than halt them at the eleventh hour.",
+        "deliberately_ignored": "All assessments of the political preferences of the Missouri Supreme Court justices, the specific legal merits of the Republican-favored map, and computations of exact docket scheduling feasibility.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "Based strictly on the historical frequency of this signal state—where supreme courts face high-stakes electoral map deadlines with zero visible precursors of active docket acceleration or final consensus building—cases in this precise state proceed to a NO resolution the vast majority of the time. Without the requisite pattern of advance rulings or prior clearance signals typically preceding map approvals, historical base rates show that courts run out of time or reject the maps before the deadline.",
+        "key_evidence": [
+          "The provided reporting contains no advance signals or precursors indicating active docket prioritization for the Missouri Supreme Court map case.",
+          "Historical baseline data shows that when high-stakes redistricting challenges reach critical deadlines without prior indicator signals, they frequently resolve in rejections, redrawing mandates, or deadline expirations (NO)."
+        ],
+        "strength": "strong",
+        "strength_reason": "The argument relies strictly on observation of missing precursors and the historical frequency of outcomes when those precursors are absent in similar temporal states.",
+        "deliberately_ignored": "Actor preferences, political motivations of the judges, legal merits of the map, and procedural scheduling feasibility.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "retried_clean",
+      "audit_note": "Remove the speculation about the court's internal deadlock or leaning, and re-derive the estimate based solely on the historical frequency of outcomes given the visible signal state (the absence of docket movement).",
+      "status": "responded",
+      "probability": 35.0,
+      "reasoning": "I reconciled the outside view of 40% with the strong case for NO by adjusting downward to account for the lack of visible docket signals. The 35% probability reflects the baseline frequency of judicial inaction favoring the status quo, balanced against the high historical failure rate of maps reaching the deadline without explicit court intervention.",
+      "deliberately_ignored": "I ignored the political motivations of the Missouri Supreme Court justices and the partisan composition of the court, as these are actor preferences outside my aperture.",
+      "stronger_case": "no",
+      "triggers": [
+        {
+          "event": "The Missouri Supreme Court issues an order scheduling oral arguments for the map challenge.",
+          "by_date": "2026-08-28",
+          "direction": "down",
+          "to_roughly": 20
+        },
+        {
+          "event": "The court denies a motion for an emergency stay or injunction filed by the plaintiffs.",
+          "by_date": "2026-09-02",
+          "direction": "up",
+          "to_roughly": 60
+        }
+      ],
+      "moved_from": null,
+      "move_reason": "The lack of visible advance signals in the current docket state necessitates a downward adjustment from the historical base rate.",
+      "what_changes_between_horizons": "The probability increases as the deadline approaches because the absence of a negative ruling or injunction becomes a stronger signal of judicial inaction, which effectively allows the existing map to stand by default.",
+      "p_one_third": 30.0,
+      "p_two_thirds": 35.0,
+      "p_full": 35.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": -5.0
+    },
+    "literalist": {
+      "lens": "literalist",
+      "abstraction": "Will a state supreme court issue a final ruling permitting a contested legislative map before the statutory election ballot preparation deadline within an 18-day window?",
+      "outside_probability": 55.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "P(substantive event) is taken as given per instructions. P(criteria satisfied | event) depends on whether the court acts before the strict statutory deadline or defaults to blocking/redrawing under pressure. Historical sample shows courts split evenly on permitting contested maps to proceed under severe time crunches.",
+      "cases": [
+        {
+          "name": "North Carolina Supreme Court partisan gerrymandering litigation (2022)",
+          "date": "2022-02-23",
+          "outcome": "miss"
+        },
+        {
+          "name": "Wisconsin Supreme Court legislative maps (2022)",
+          "date": "2022-03-03",
+          "outcome": "hit"
+        },
+        {
+          "name": "Pennsylvania Supreme Court congressional map remedial selection (2018)",
+          "date": "2018-02-19",
+          "outcome": "hit"
+        },
+        {
+          "name": "Ohio Supreme Court General Assembly map challenges (2022)",
+          "date": "2022-04-14",
+          "outcome": "miss"
+        },
+        {
+          "name": "Kansas Supreme Court congressional map challenge (2022)",
+          "date": "2022-05-20",
+          "outcome": "hit"
+        },
+        {
+          "name": "New York Court of Appeals congressional map case (2022)",
+          "date": "2022-04-27",
+          "outcome": "miss"
+        }
+      ],
+      "grounding": {},
+      "reference_entry": "R0010-literalist",
+      "yes_case": {
+        "case": "Assuming the court addresses the map dispute, the written criteria explicitly require a ruling that permits the GOP-friendly map to be used for the 2026 election, issued on or before September 8, 2026. Any ruling that avoids rejection, declines to mandate a redrawing before the deadline, or affirmatively allows the current map to stand will cleanly trigger a YES resolution without tripping any of the negative exclusion clauses (such as a rejection, mandated redrawing, or missing the ballot deadline). The wording strictly sets a clear binary path: if an order is handed down by September 8 that leaves the map operable for the upcoming election, the criteria are fully satisfied.",
+        "key_evidence": [
+          "Resolution criteria explicitly state the question resolves YES if the court issues a ruling permitting the map to be used for 2026.",
+          "The strict temporal boundary is set at on or before 8 September 2026.",
+          "Exclusions are clearly bounded to explicit rejection, mandated redrawing, or missing the deadline."
+        ],
+        "strength": "strong",
+        "strength_reason": "The resolution criteria are structurally airtight regarding the exact legal mechanics required for a YES, provided the decision lands before the defined date boundary.",
+        "deliberately_ignored": "The underlying political motivations, arguments of the litigants, judicial leanings of the Missouri Supreme Court justices, and the probability of whether the substantive event will occur.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The resolution criteria explicitly state that the question resolves NO if the ballot deadline passes before a decision is finalized, or if the court mandates a redrawing or rejects the map. Given the fixed calendar constraint of the 8 September 2026 deadline, any procedural delay, extended briefing schedule, or administrative stall that pushes the finality of the decision past the specified date will automatically satisfy the written criteria for a NO resolution, regardless of the underlying legal merits or the substantive status of the map.",
+        "key_evidence": [
+          "The strict resolution clause dictating that the question resolves NO if the ballot deadline passes before a decision is finalized.",
+          "The hard calendar deadline of 8 September 2026."
+        ],
+        "strength": "strong",
+        "strength_reason": "The criterion explicitly relies on a strict temporal boundary, meaning that standard judicial delays or administrative friction alone are sufficient to trigger a NO outcome based purely on the wording.",
+        "deliberately_ignored": "The political motivations of the court, the legal arguments surrounding the Republican-favored map, or any speculation on how the justices might vote.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "excluded",
+      "audit_note": "Remove the discussion evaluating the likelihood of the court punting the decision or missing the deadline, and re-derive the probability adjustment based strictly on how the substantive event satisfies the written resolution criteria and deadline boundaries.",
+      "status": "fallback_outside",
+      "probability": 55.0,
+      "p_full": 55.0,
+      "reason": "audit excluded the reasoning; using the frozen outside view",
+      "known_bias": "outside_view_is_news_blind"
+    }
+  },
+  "abstained": [],
+  "excluded": [],
+  "fallbacks": [
+    "actor_incentive",
+    "literalist"
+  ],
+  "responding_lenses": 7,
+  "abstained_lenses": 0,
+  "fallback_lenses": 2,
+  "failed_lenses": 0,
+  "median_raw": 42.0,
+  "median_extremized": 38.1,
+  "advocate": {},
+  "advocate_proposed": null,
+  "probability": 42.0,
+  "status": "forecast"
+}
