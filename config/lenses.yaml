@@ -1,0 +1,384 @@
+# The seven lenses.
+#
+# Written for YOU, not just the machine. If you change something here, you are
+# changing the forecasting method -- that is a "method change" under the monthly
+# change budget (§5), so stamp it and log what problem it was meant to fix.
+#
+# The idea in one paragraph: N copies of one model asked the same question give
+# N correlated answers, not a crowd. Real disagreement has to come from
+# restricting what each forecaster can SEE, not from telling it to be different.
+# Stage one proved that -- four differently-prompted agents converged on the
+# front page anyway. So each lens below gets a narrow aperture and an explicit
+# forbidden list, and the disagreement between them is manufactured by structure.
+#
+# Every lens produces a probability for the WHOLE question, not a component.
+# The blocker lens does not output "35% chance of injunction". It outputs "this
+# question resolves YES with probability 12%, and here is what my aperture sees".
+# Otherwise the median is averaging incommensurable things.
+#
+# That is also the main risk. A lens forced to answer the whole question drifts
+# toward general reasoning -- ask the blocker lens for a full probability and it
+# starts thinking about whether the administration wants this, because that
+# obviously bears on the answer. The `forbidden` field is the defence, and the
+# audit stage is the check that the defence held.
+
+version: 2
+stamped: 2026-08-22
+
+# WHAT CHANGED IN VERSION 2 (a METHOD CHANGE -- see the monthly change budget)
+# ---------------------------------------------------------------------------
+# Live run 4 excluded 8 of 21 lens runs on contamination, and 7 of the 8 were
+# CORRECT catches -- the auditor was working and the lenses really were
+# leaking. But the leaks had one dominant direction, and it exposed a
+# contradiction in the design rather than misbehaviour by the models:
+#
+#   blocker         -> "the remaining 132 days as a limiting factor"
+#   literalist      -> "the court punting or missing the deadline"
+#   literalist      -> "bureaucratic delays and procedural friction"
+#   actor_incentive -> "judicial processes, court inertia, deadline risk"
+#   mechanism       -> "procedural friction"
+#
+# Almost every leak was TIME or FRICTION reasoning. And we force that: every
+# window lens is required to give three horizon probabilities AND to state what
+# changes between them. That instruction IS time reasoning. Then the audit
+# excluded them for it. Two requirements fighting, with the audit winning.
+#
+# ROOT CAUSE: the forbidden lists claimed TOPICS rather than MOVES. "Time" and
+# "friction" cannot be owned -- the deadline is written in the question text
+# that every lens sees, and we explicitly ask them to reason about it. What CAN
+# be owned is the specific move: enumerating procedural steps and their
+# durations (mechanism), and identifying who can intervene and how often
+# intervention succeeds (blocker).
+#
+# So every forbidden list below is now phrased as "you do not do THIS MOVE",
+# with a shared clause making ordinary deadline-awareness legitimate for all.
+
+# ---------------------------------------------------------------------------
+# Global stage machinery -- applies to every lens.
+# ---------------------------------------------------------------------------
+
+stages:
+  # 1. ABSTRACT + OUTSIDE (one call)
+  #    The lens writes its own generalised form of the question, then builds a
+  #    population and counts.
+  #
+  #    Why the lens abstracts rather than a central step doing it: a single
+  #    shared abstraction is a single point of failure that feeds correlated
+  #    blindness into all seven. Each lens abstracts through its own aperture,
+  #    and divergent abstractions are themselves diagnostic.
+  #
+  #    Two rules on the abstraction:
+  #      - it MUST preserve the time window and the structural shape
+  #      - it MAY drop proper nouns and particulars
+  #    Lose the window and scope sensitivity dies.
+  #
+  #    This stage is BLIND TO THE NEWS and BLIND TO THE PRIOR FORECAST.
+  #
+  # 2. INSIDE-YES (one call)   strongest case the question resolves YES
+  # 3. INSIDE-NO  (one call)   strongest case it resolves NO
+  #    These two cannot see each other. Both see the news. Neither sees the
+  #    prior forecast -- if they did, both would build cases around defending
+  #    last week's number and the dual stance would lose its independence.
+  #
+  # 4. RECONCILE (one call)
+  #    Produces the lens's number. Sees: its own outside number, both cases,
+  #    and NOW the prior forecast. Must state which case it found stronger and
+  #    why, and what it deliberately ignored.
+  #
+  # 5. AUDIT (one cheap call, different model)
+  #    Sees ONLY the lens's written reasoning and its forbidden list.
+  #    Not the question. Not the number. An auditor that sees 12% will
+  #    rationalise the reasoning that produced it.
+
+firewall:
+  # The single hardest rule in the design.
+  outside_is_frozen: true
+  # Once the outside number is produced it cannot be revised for that run. The
+  # inside phase may disagree with it; it may never send work back. If it could,
+  # the outside number becomes news-contaminated and the §2 division collapses.
+
+retries:
+  decomposition:
+    max: 2               # outside phase: population not found
+    on_exhaustion: abstain
+  contamination:
+    max: 2               # inside phase: audit flagged a leak
+    on_exhaustion: exclude_from_median_and_flag
+    second_retry_must_name_different_defect: true
+    # If the auditor flags the same leak twice, that is not a lens needing
+    # another chance -- it is a lens whose forbidden list is drawn wrong.
+  abstention_is_never_retried: true
+    # Re-prompting until a lens produces a number manufactures compliance and
+    # calls it judgement. Exactly the Goodhart pressure §5 warns about.
+  retries_do_not_compound: true
+    # A lens cannot fail decomposition twice AND fail audit twice.
+
+# Every lens may do this; none of them owns it.
+shared_ground: >
+  Being aware of the deadline is legitimate for every lens. You may note that
+  time is short or ample, and you must do so when giving horizon probabilities
+  -- that is required of you. What you may NOT do is build your estimate out of
+  another lens's characteristic move: laying out the sequence of required steps
+  and how long each takes (that is the mechanism lens), or identifying who could
+  intervene and how often intervention succeeds (that is the blocker lens).
+
+audit:
+  auditor_sees: [reasoning, aperture, forbidden_list, shared_ground]
+  auditor_blind_to: [question, probability, other_lenses]
+  must_name_specific_leak: true
+    # "You violated your forbidden list" invites reformulation.
+    # "Your reasoning about the administration's appetite is actor-incentive
+    #  territory; remove it and re-derive" gives the lens something to act on.
+
+output_contract:
+  # Every responding lens must return all of this.
+  probability: single number, 0-100
+  horizons:
+    window_questions: [one_third, two_thirds, full]   # must be non-decreasing
+    point_questions: [full]                            # skipped -- see §3.2
+  triggers:
+    count: 1-2
+    must_be_observable: true
+    at_least_one_toward_less_likely_outcome: true
+      # A lens at 10% must name something that would push it UP, not only
+      # things confirming the low number.
+  deliberately_ignored: required
+  provenance:
+    tier: [structured, reasoned]   # no bare recalled aggregates, at any N
+    structure_stored: true
+
+soft_bounds:
+  floor: 2
+  ceiling: 98
+  # A speed bump, not a clamp. A lens may cross by explicitly arguing past it.
+
+# ---------------------------------------------------------------------------
+# The seven.
+# ---------------------------------------------------------------------------
+
+lenses:
+
+  # =========================================================================
+  - id: reference_class
+    active: true
+    aperture: >
+      Among cases of this general kind, how often does the outcome occur within
+      a comparable window?
+
+    forbidden: >
+      You do not reason about the specific actors in this question, their
+      current intentions, or anything reported in the news. You do not consider
+      what makes this case unusual or special. Another process handles the
+      specifics. Treating this case as ordinary is your entire contribution --
+      the moment you start explaining why it is different, you have stopped
+      doing your job.
+
+    outside_shape: >
+      Define a population with an explicit membership rule. Enumerate its cases,
+      or an enumerable skeleton times a multiplier. Count hits. State coverage
+      honestly ("12 named; believed roughly 15 in total").
+
+    inside_shape: none
+    # NOTE: this lens has NO inside view and takes NO yes/no stances. It is the
+    # pure prior, which is what makes it the §0 ablation baseline. There is no
+    # YES-flavoured way to count how many of 24 nominees were confirmed.
+
+    triggers_are_time_based: true
+    # It does not respond to news, so its triggers are horizon triggers -- which
+    # is exactly the decay curve. "If no action by X, this falls to Y."
+
+    abstain_when: >
+      No population can be defined whose membership rule clearly contains this
+      case, after two attempts at different decompositions.
+
+  # =========================================================================
+  - id: analogy
+    active: true
+    aperture: >
+      What are the two or three closest past episodes, and how does this one
+      differ from them?
+
+    forbidden: >
+      You do not compute rates over large populations -- that is another
+      process's work. You do not reason about procedural steps or schedules.
+      Your contribution is depth on a handful of specific cases, and above all
+      the DIFFERENCES. An analogy with no stated differences is not an analogy,
+      it is an assumption.
+
+    outside_shape: >
+      Name the closest episodes with dates and outcomes. For each, state what is
+      similar and what is materially different now.
+
+    inside_shape: >
+      What in the current reporting makes this case more or less like those
+      episodes than it first appeared?
+
+    abstain_when: >
+      Fewer than two episodes can be named with specific dates and outcomes.
+
+  # =========================================================================
+  - id: actor_incentive
+    active: true
+    aperture: >
+      Do the principals who must act want this, and can they deliver it?
+
+    forbidden: >
+      You do not identify who could stop them, or estimate how often such
+      opposition succeeds -- courts, committees, procedural requirements and
+      third-party opposition belong to another lens. You do not lay out the
+      sequence of steps required, or how long each one takes. Assume that if
+      the principals want it and can do it, it happens. Noticing that the
+      deadline is near or far is fine; building your number out of court
+      timetables or institutional inertia is not. Your question is only about
+      will and capability.
+
+    outside_shape: >
+      How often do actors of this type, with this stated intent, follow through
+      within a comparable window? Track record, enumerated.
+
+    inside_shape: >
+      What has been said or done recently that reveals intent or capability?
+      Distinguish stated intent from revealed intent.
+
+    abstain_when: >
+      The principals cannot be identified, or the outcome does not depend on any
+      identifiable actor's volition.
+
+  # =========================================================================
+  - id: blocker
+    active: true
+    aperture: >
+      What structural friction stands in the way, and how often does friction of
+      this kind actually prevent the outcome?
+
+    forbidden: >
+      You do not reason about whether the principals want this -- preferences,
+      intent and track record belong to another lens. Assume they want it and
+      are trying. You do not build your estimate from a schedule: do not
+      enumerate the steps required or compute whether the remaining days are
+      enough. You may note in passing that the window is short, but the number
+      you produce must come from WHO CAN INTERVENE and HOW OFTEN INTERVENTION
+      SUCCEEDS, not from the calendar.
+
+    outside_shape: >
+      Enumerate the blocking points. For the relevant class, how often does a
+      block of this kind succeed?
+
+    inside_shape: >
+      Is any blocking process already in motion, and at what stage?
+
+    abstain_when: >
+      No identifiable third party, court, procedural requirement or veto point
+      bears on this outcome.
+
+  # =========================================================================
+  - id: mechanism_calendar
+    active: true
+    aperture: >
+      What concrete steps are required, and does the remaining time physically
+      allow them?
+
+    forbidden: >
+      You do not reason about whether anyone wants this. You do not name parties
+      who might oppose it, or estimate how often opposition succeeds -- assume
+      full cooperation and no adversary. "Friction" in the sense of someone
+      pushing back belongs to the blocker lens; friction in the sense of a step
+      simply taking six weeks is yours. Your question is purely process and
+      clock: what must happen, in what order, how long each step takes, and
+      whether the calendar permits it.
+
+    outside_shape: >
+      Enumerate the required steps. For each, how long does it typically take?
+      Multiply through -- this is a Fermi chain, and it is where the three
+      horizon numbers come from most naturally.
+
+    inside_shape: >
+      Which steps have already been completed, and when?
+
+    abstain_when: >
+      The outcome requires no identifiable multi-step process, or is a single
+      scheduled decision with no preparatory chain.
+
+  # =========================================================================
+  - id: telltale
+    active: true
+    aperture: >
+      Given which advance signals are and are not visible today, how often do
+      cases in this signal state proceed?
+
+    forbidden: >
+      You do not enumerate procedural steps or compute schedule feasibility.
+      You do not assess what the actors WANT -- that belongs to another lens.
+      Note the distinction carefully: "officials have signalled X" is an
+      observable precursor and is yours; "officials would prefer X" is a
+      judgement about preference and is not. You reason from OBSERVATION: what
+      precedes events of this kind, whether those precursors are visible now,
+      and critically, how often this happens with no warning at all.
+
+    outside_shape: >
+      What precursors normally precede this outcome? Enumerate past cases and
+      mark, for each, whether precursors were visible beforehand. How many
+      happened cold?
+
+    inside_shape: >
+      Which precursors are present in the reporting, and which are conspicuously
+      absent?
+
+    abstain_when: >
+      No characteristic precursor pattern can be identified for this class of
+      event.
+
+    # This lens exists because of the fat-tails note [25]: our reasoning is
+    # worst precisely on rare-but-real events.
+
+  # =========================================================================
+  - id: literalist
+    active: true
+    aperture: >
+      Assuming the substantive event happens roughly as expected, how likely is
+      it to satisfy the written resolution criteria -- and how likely is a
+      technical YES with no substantive event?
+
+    # OPTION C -- see the version 2 note at the top of this file.
+    #
+    # This lens was excluded on EVERY question of live run 4, because its task
+    # was impossible as written: it must output one number for the whole
+    # question, which requires some estimate of whether the event happens, and
+    # any such estimate looked to the auditor like arguing the substantive case.
+    #
+    # The fix moves that estimate to the OUTSIDE stage, which the auditor never
+    # reads (that is also why reference_class is never audited). By the time the
+    # reconcile stage runs, the substantive number is FROZEN -- exactly the
+    # one-way firewall used everywhere else in the design, applied inside a
+    # single lens. That gives the auditor a hard, checkable rule instead of an
+    # argument about how many sentences are too many, and it does not break
+    # isolation: no lens sees any other lens's work.
+    substantive_estimate_is_frozen: true
+
+    forbidden: >
+      Your substantive estimate -- the chance the event happens at all -- was
+      fixed at the outside stage and is FROZEN. You may use it as a given. You
+      may NOT revisit it, argue it up or down, or introduce evidence about
+      whether the event will occur. You do not reason about delays, procedural
+      friction, or who might block it. Your entire work here is the WORDING:
+      every clause, every exclusion, every date boundary, and the ways a real
+      event could satisfy or miss them.
+
+    outside_shape: >
+      Two terms, stated separately and multiplied:
+        P(substantive event)          -- coarse, unelaborated, one line
+        P(criteria satisfied | event) -- this is your actual work
+      For the second term: how often do events of this kind satisfy criteria
+      written this way? Enumerate the clauses and mark the failure routes.
+
+    inside_shape: >
+      Does current reporting suggest the event, if it occurs, will take a form
+      that misses a clause?
+
+    abstain_when: >
+      The resolution criteria contain no clause, exclusion or boundary that
+      could plausibly separate substance from resolution.
+
+    # FLAGGED ASYMMETRY: this is the least clean fit for the "full probability
+    # through a narrow aperture" rule, and the two-term decomposition is how it
+    # is made honest rather than papered over. See discussion.

@@ -1,0 +1,153 @@
+# ---------------------------------------------------------------------------
+# SYSTEMS AND AGENTS
+# ---------------------------------------------------------------------------
+# Four systems, one per domain. Each system contains agents.
+#
+# THE KEY DESIGN RULE: agents are defined by the SHAPE of question they hunt,
+# never by subject matter. An agent told to "look for RBI stories" fires eight
+# times a year. An agent told to "look for a scheduled decision by a known body
+# on a known date, where the outcome is contested" fires most days -- and no
+# other agent can produce the same question, because no other agent is looking
+# for that shape.
+#
+# Same newspaper, different hunt. That is what makes the diversity real rather
+# than cosmetic.
+#
+# To retire an agent that never wins, set `active: false`. Check proposals.csv
+# after a few weeks to see which ones earn their keep.
+# ---------------------------------------------------------------------------
+
+shapes:
+
+  scheduled_decision:
+    name: "Scheduled Decision"
+    active: true
+    hunt: |
+      You are hunting for ONE shape of question only: a KNOWN BODY will make a
+      DECISION on a KNOWN OR STRONGLY EXPECTED DATE, and the outcome is
+      genuinely contested.
+
+      Examples of the shape: a central bank rate decision, a court ruling with a
+      listed hearing date, a scheduled parliamentary vote, a regulatory approval
+      with a stated deadline, a board meeting that must decide something.
+
+      NOT this shape: a trend, a market price, a vague expectation that
+      something will happen "soon", or anything without an identifiable
+      decision-maker.
+
+      This is the cleanest shape you can find, because the date is given to you
+      and the resolution is unambiguous. Prefer it when it is available.
+
+  deadline_under_strain:
+    name: "Deadline Under Strain"
+    active: true
+    hunt: |
+      You are hunting for ONE shape of question only: something is DUE by a
+      certain time, and the article shows VISIBLE DOUBT that it will hold.
+
+      Examples of the shape: a trade negotiation with an expiry date, a
+      ceasefire with a stated term, a scheme closing early, a listing or
+      transaction with a stated timeline, a deadline someone has threatened to
+      miss.
+
+      The tension is the point. If nobody doubts it will happen, there is no
+      question here.
+
+      Be careful with resolution: "did the specific thing happen by the date" is
+      answerable. "Did relations improve" is not. Write the question around the
+      concrete event, never around a mood or a trend.
+
+  threshold_crossing:
+    name: "Threshold Crossing"
+    active: true
+    hunt: |
+      You are hunting for ONE shape of question only: an OFFICIAL STATISTICAL
+      RELEASE on a PUBLISHED SCHEDULE will report a number, and it is genuinely
+      uncertain which side of a meaningful line it will fall.
+
+      Permitted subjects: CPI, WPI, GDP, IIP, trade and current account data,
+      unemployment, fiscal deficit, official reserves, and equivalent
+      government statistical releases.
+
+      STRICTLY FORBIDDEN: market prices of any kind. No oil price, no exchange
+      rate, no index level, no share price, no bond yield, no commodity price.
+      These look forecastable because there is endless commentary about them,
+      and they are not. They are the single biggest trap in this whole system.
+
+      CRITICAL -- write the question around the RELEASE, not the calendar. Data
+      for a month is published weeks later. So never write "will inflation be
+      below 4% by 10 September". Write "will India's CPI inflation for August,
+      when it is released in September, be below 4%". The resolution moment must
+      be a real publishing event, not an arbitrary date.
+
+      Set the threshold where it is genuinely uncertain. A threshold everyone
+      knows will be cleared is worthless.
+
+  announced_intention:
+    name: "Announced Intention"
+    active: true
+    hunt: |
+      You are hunting for ONE shape of question only: someone with authority has
+      SAID they will do something, and whether they actually follow through is
+      uncertain.
+
+      Examples of the shape: a government target, a stated policy plan, a
+      company's announced investment or expansion, a promised piece of
+      legislation, a declared intention to act by a certain time.
+
+      This is often the most rewarding shape, because the gap between saying and
+      doing is exactly where careful reasoning pays off. Someone who thinks hard
+      about incentives, capacity and track record can genuinely beat a naive
+      guess here.
+
+      Watch out for the reporting trap: newspapers reliably report LAUNCHES and
+      unreliably report RESULTS. Before proposing, ask concretely what story
+      will run when this resolves, and in which paper.
+
+systems:
+
+  india_macro:
+    name: "India Macro & Policy"
+    active: true
+    brief: |
+      Indian economic policy, the RBI, inflation, the budget, taxation, GST,
+      trade policy, agriculture and the monsoon, infrastructure, banking and
+      financial regulation, state and central government economic decisions.
+    # All four shapes. This is the richest domain: your Indian papers give you
+    # genuinely differentiated information here, and scheduled events are
+    # everywhere.
+    agents: [scheduled_decision, deadline_under_strain, threshold_crossing, announced_intention]
+
+  global_macro:
+    name: "US / Global Macro & Markets"
+    active: true
+    brief: |
+      The US Federal Reserve, US fiscal policy and the debt, global trade and
+      tariffs, major economies outside India, energy and commodity POLICY (not
+      prices), and the macroeconomic condition of large economies.
+    # No "deadline under strain" -- that shape overlaps heavily with
+    # geopolitics for global stories, and we would rather it live there.
+    agents: [scheduled_decision, threshold_crossing, announced_intention]
+
+  us_politics:
+    name: "US Politics & Governance"
+    active: true
+    brief: |
+      US elections and primaries, Congress and legislation, the courts, federal
+      agencies and appointments, executive orders, state-level politics with
+      national significance, and institutional conflicts.
+    # No thresholds: US statistical releases belong to global_macro, and
+    # political "numbers" are mostly polls, which are noise.
+    agents: [scheduled_decision, deadline_under_strain, announced_intention]
+
+  geopolitics:
+    name: "Geopolitics & Conflict"
+    active: true
+    brief: |
+      Wars and armed conflict, ceasefires and peace negotiations, sanctions,
+      treaties and alliances, territorial and maritime disputes, and relations
+      between states.
+    # Only two shapes. Scheduled decisions barely exist here, and statistical
+    # thresholds do not exist at all. Forcing those agents in would produce
+    # junk, so they are deliberately absent.
+    agents: [deadline_under_strain, announced_intention]
