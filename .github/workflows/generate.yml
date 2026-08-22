@@ -1,0 +1,103 @@
+name: Superforecaster
+
+# Manual trigger only. You drop PDFs into /inbox, then run this from the
+# Actions tab. Nothing happens on a schedule.
+on:
+  workflow_dispatch:
+    inputs:
+      stages:
+        description: "Which stages to run"
+        type: choice
+        default: "all"
+        options:
+          - all
+          - generation
+          - resolution,generation
+          - forecasting,reports
+          - resolution,forecasting,reports
+      dry_run:
+        description: "Dry run (read and reason, but write nothing)"
+        type: boolean
+        default: false
+      as_of_date:
+        description: "Treat this as today's date, YYYY-MM-DD (leave blank for real today). Use this when feeding older papers, or every deadline will be wrong."
+        type: string
+        default: ""
+
+permissions:
+  contents: write
+
+# Two runs writing to data/ at once would race on the CSVs and on
+# data/quota.json. Queue them instead.
+concurrency:
+  group: superforecaster-run
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install poppler
+        # pdftotext handles multi-column newspaper layouts far better than the
+        # pure-Python fallback. Worth the extra ten seconds.
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq poppler-utils
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Verify model names
+        env:
+          SUPERFORECASTER_API: ${{ secrets.SUPERFORECASTER_API }}
+          SUPERFORECASTER_API2: ${{ secrets.SUPERFORECASTER_API2 }}
+        run: python verify_models.py
+        continue-on-error: true
+
+      - name: Run the pipeline
+        env:
+          SUPERFORECASTER_API: ${{ secrets.SUPERFORECASTER_API }}
+          SUPERFORECASTER_API2: ${{ secrets.SUPERFORECASTER_API2 }}
+        run: |
+          ARGS="--stages ${{ inputs.stages }}"
+          if [ -n "${{ inputs.as_of_date }}" ]; then
+            ARGS="$ARGS --date ${{ inputs.as_of_date }}"
+          fi
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+          python run.py $ARGS
+
+      - name: Commit results
+        # `always()` so that a crashed run still commits the quota counts and
+        # the partial log. Losing the quota file after a failed run would let a
+        # retry burn a second full day's allowance.
+        if: ${{ always() && inputs.dry_run != true }}
+        run: |
+          git config user.name  "superforecaster-bot"
+          git config user.email "actions@github.com"
+          git add data/ logs/ config/lexicon.csv config/overrides.csv config/resolutions.csv
+          if git diff --staged --quiet; then
+            echo "Nothing changed."
+          else
+            git commit -m "Run $(date -u +%Y-%m-%d) [skip ci]"
+            git pull --rebase --autostash || true
+            git push
+          fi
+
+      - name: Upload log as artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: run-log
+          path: logs/
+          if-no-files-found: warn
