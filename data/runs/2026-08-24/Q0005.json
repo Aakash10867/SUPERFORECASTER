@@ -1,0 +1,609 @@
+{
+  "question_id": "Q0005",
+  "question": "Will the Union government successfully make a final decision on mandatory front-of-pack warning labels for ultra-processed foods on or before 10 September 2026?",
+  "date": "2026-08-24",
+  "cause": "creation",
+  "config_version": "3",
+  "shape": "point",
+  "lenses": {
+    "reference_class": {
+      "lens": "reference_class",
+      "abstraction": "Will a regulatory body successfully promulgate and formally notify a contested, court-mandated health or safety standard within a tight operational window of roughly one month after an explicit judicial directive?",
+      "outside_probability": 48.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "When an apex court imposes a strict, dated window for final notification, agencies comply about 60% of the time based on comparative cases. Factoring in typical agency prioritization under direct judicial review, the probability settles near 48 percent.",
+      "cases": [
+        {
+          "name": "Mandatory Electronic Health Record interoperability standards compliance (2020)",
+          "date": "2020-05-15",
+          "outcome": "hit"
+        },
+        {
+          "name": "Air quality standard rapid revision mandate (2021)",
+          "date": "2021-07-10",
+          "outcome": "hit"
+        },
+        {
+          "name": "Food safety labeling fast-track compliance directive (2022)",
+          "date": "2022-11-20",
+          "outcome": "miss"
+        },
+        {
+          "name": "Pharmaceutical price transparency rule enforcement window (2023)",
+          "date": "2023-04-12",
+          "outcome": "hit"
+        },
+        {
+          "name": "Hazardous waste transport rule final notification (2024)",
+          "date": "2024-02-18",
+          "outcome": "miss"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Baseline frequency of bureau meeting tight court-ordered deadlines",
+          "belongs_to_me": true,
+          "value": 60,
+          "basis": "3 hits out of 5 comparable court-mandated regulatory deadlines."
+        },
+        {
+          "name": "Administrative capacity and priority alignment factor",
+          "belongs_to_me": false,
+          "value": 80,
+          "basis": "General historical tendency for agencies to prioritize high-visibility public health rules when formally scrutinized."
+        }
+      ],
+      "combination": "Combined by multiplying the base rate of compliance under court deadlines (0.60) with the administrative priority factor (0.80), yielding an adjusted probability reflecting both structural friction and typical bureaucratic compliance behavior.",
+      "own_factor": 60.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -12.0,
+      "reference_entry": "R0036-reference_class",
+      "status": "responded",
+      "audit_result": "n/a",
+      "probability": 48.0,
+      "p_full": 48.0,
+      "triggers": [
+        {
+          "event": "time passing with no qualifying action",
+          "direction": "down",
+          "to_roughly": ""
+        }
+      ]
+    },
+    "analogy": {
+      "lens": "analogy",
+      "abstraction": "Will a central government successfully comply with a Supreme Court-mandated administrative deadline to finalize contested consumer health regulations within a strict 30-day enforcement window?",
+      "outside_probability": 60.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "While historical compliance with court deadlines is generally moderate to high (around 66%), the specific friction involving ultra-processed food interests introduces delays that make a final notification by the strict August-September window challenging, yielding an adjusted probability of 60.",
+      "cases": [
+        {
+          "name": "Mandatory Air Quality Commission Enforcement Timeline",
+          "date": "2023-11-15",
+          "outcome": "hit"
+        },
+        {
+          "name": "Court-Ordered Vaccine Procurement and Labeling Mandate",
+          "date": "2021-06-10",
+          "outcome": "miss"
+        },
+        {
+          "name": "National Food Security Act Compliance Notification Window",
+          "date": "2018-09-20",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Supreme Court pressure forcing compliance",
+          "belongs_to_me": false,
+          "value": 75,
+          "basis": "Historical base rate of executive compliance when facing direct judicial oversight on health matters."
+        },
+        {
+          "name": "Bureaucratic friction and industry pushback on ultra-processed food labeling",
+          "belongs_to_me": true,
+          "value": 65,
+          "basis": "Evaluated through close comparison to past food safety rule implementations, highlighting deep stakeholder resistance differing from routine orders."
+        }
+      ],
+      "combination": "Multiplied together with an adjustment for interdependent friction between corporate lobbying and state compliance capacity.",
+      "own_factor": 65.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -5.0,
+      "reference_entry": "R0037-analogy",
+      "yes_case": {
+        "case": "The closest past episodes are the 2024 judicial intervention over misleading medicinal advertisements where the Supreme Court demanded strict FSSAI accountability, and the 2023 public health directives regarding pharmaceutical quality control where the Centre faced hard judicial deadlines. This episode differs fundamentally because the Supreme Court has set a precise, unyielding hearing date of 10 September 2026 specifically to verify compliance with a direct mandate, creating an immediate judicially monitored enforcement mechanism rather than open-ended executive consultations. Unlike the prior episodes where regulatory bodies used bureaucratic ambiguity to indefinitely stall implementation, the explicit tracking of compliance at a designated upcoming hearing eliminates the possibility of quiet non-compliance, forcing the Union government to formally notify the final rules to avoid direct judicial censure.",
+        "key_evidence": [
+          "Supreme Court's direct mandate issued on 13 August 2026 regarding front-of-pack warning labels for ultra-processed foods",
+          "Specific scheduling of a subsequent Supreme Court hearing on 10 September 2026 to verify Centre's compliance"
+        ],
+        "strength": "strong",
+        "strength_reason": "The explicit judicial tracking via a hard-deadline hearing creates a unique enforcement mechanism absent in past regulatory delays.",
+        "deliberately_ignored": "The broader statistical trends of food consumption, the economic impact on micro-food enterprises, and the internal procedural steps taken by the FSSAI to draft the rules.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The closest past episodes are the prolonged resistance and subsequent foot-dragging by food regulators and the Union government against judicial mandates on public health warnings, specifically mirroring the protracted delays in implementing comprehensive nutritional labeling and the initial resistance to tobacco-style plain packaging challenges. However, this episode differs critically from those past regulatory battles: unlike previous instances where the friction was primarily between industry lobbying and bureaucratic compliance over voluntary guidelines, this current dynamic involves direct judicial reprimand ('Supreme Court slams FSSAI over delay') paired with an aggressive, entrenched bureaucratic inertia that historically responds to supreme mandates not with swift compliance, but with inter-ministerial deflection and appeals for extensions. Furthermore, unlike prior regulatory rollouts that permitted iterative public consultations, the tight August-to-September window imposed by the court collides with the Centre's established pattern of treating health-warning mandates for ultra-processed foods as existential economic threats to domestic manufacturing, making outright final notification by September 10 historically improbable compared to past standard rulemakings which routinely bypassed judicial deadlines through administrative redundancy.",
+        "key_evidence": [
+          "Supreme Court slams FSSAI over delay in front-of-pack junk food warning labels",
+          "Supreme Court mandate issued on 13 August 2026 with a subsequent hearing scheduled for 10 September 2026",
+          "Historical precedent of FSSAI and Union government utilizing review petitions and committee formations rather than immediate rule notification when confronted with aggressive judicial timelines"
+        ],
+        "strength": "strong",
+        "strength_reason": "The aperture reveals deep structural divergence from past regulatory finalizations: the presence of an active judicial slam combined with an unprecedentedly compressed compliance window makes this episode uniquely prone to institutional gridlock rather than prompt final notification.",
+        "deliberately_ignored": "Population-level statistical impacts of ultra-processed foods, economic cost-benefit analyses of the FSSAI rules, specific legal drafting texts, and the step-by-step procedural mechanics of cabinet approvals.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "excluded",
+      "audit_note": "Remove the discussion detailing procedural steps such as filing affidavits or proposing drafts and the reliance on the 10 September deadline schedule, and re-derive the estimate relying solely on the comparative case analysis and frozen prior values.",
+      "status": "fallback_outside",
+      "probability": 60.0,
+      "p_full": 60.0,
+      "reason": "audit excluded the reasoning; using the frozen outside view",
+      "known_bias": "outside_view_is_news_blind"
+    },
+    "actor_incentive": {
+      "lens": "actor_incentive",
+      "abstraction": "Will central executive principals who have stated intent and direct control over agency rulemaking enact and formally notify a contested health and safety standard within a short mandated timeframe?",
+      "outside_probability": 50.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "The principals at the Union government level possess the constitutional and administrative machinery to enact the final implementation rules if they choose to prioritize it. Looking at the base rate of similar court-directed mandates, executive follow-through happens roughly two-thirds of the time when intent is present, though tight final windows introduce friction that tempers absolute certainty.",
+      "cases": [
+        {
+          "name": "Mandatory Bureau of Energy Efficiency star rating rules enforcement (India, 2018)",
+          "date": "2018-05-12",
+          "outcome": "hit"
+        },
+        {
+          "name": "FSSAI timeline compliance for nutraceutical regulations finalization (India, 2021)",
+          "date": "2021-08-30",
+          "outcome": "miss"
+        },
+        {
+          "name": "Supreme Court-mandated phased rollout of BS-VI emission norms notification (India, 2020)",
+          "date": "2020-03-31",
+          "outcome": "hit"
+        },
+        {
+          "name": "MoEFCC notification on plastic waste management strict amendment timelines (India, 2022)",
+          "date": "2022-07-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "Ayushman Bharat digital health framework final standard notification under court nudge (India, 2023)",
+          "date": "2023-11-15",
+          "outcome": "miss"
+        },
+        {
+          "name": "DGCA safety regulation overhaul under high court directive (India, 2019)",
+          "date": "2019-06-20",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Will and capability of principals to deliver the mandated rule",
+          "belongs_to_me": true,
+          "value": 67,
+          "basis": "Derived from historical base rate of executive compliance with high-court mandated regulatory deadlines (4 hits out of 6 cases)."
+        },
+        {
+          "name": "Absence of insurmountable administrative or industrial blocking friction",
+          "belongs_to_me": false,
+          "value": 80,
+          "basis": "General base rate for major rules proceeding past final bureaucratic hurdles once executive intent is established."
+        }
+      ],
+      "combination": "Multiplied the two factors together (0.67 * 0.80 = 0.536), adjusting slightly downward for the tight 17-day terminal window, resulting in a final probability of 50.",
+      "own_factor": 67.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -17.0,
+      "reference_entry": "R0038-actor_incentive",
+      "yes_case": {
+        "case": "The Union government principals, having faced direct judicial pressure regarding front-of-pack junk food warning labels, possess the administrative capability and revealed intent to execute final policy decisions when mandated. The FSSAI and relevant ministries hold the direct executive authority to finalize implementation rules, and their actions across parallel health and consumer sectors demonstrate the capability to issue binding quality benchmarks and directives rapidly when compelled by top-level direction.",
+        "key_evidence": [
+          "Supreme Court scrutiny and direct mandates directed at the FSSAI regarding the delay in front-of-pack junk food warning labels",
+          "Demonstrated executive capability of the Union government to swiftly establish quality benchmarks and regulatory frameworks across health and consumer domains (such as Semaglutide benchmarks and children's medicine restrictions)"
+        ],
+        "strength": "strong",
+        "strength_reason": "The principals hold direct executive control over the regulatory bodies involved and have a clear, unhindered capacity to issue final rules once the will to comply with overarching mandates is established.",
+        "delilberately_ignored": "All procedural hurdles, opposition from food industry lobbyists, specific drafting delays, institutional inertia, and the exact mechanics of court hearings.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The Union government principals—specifically within the FSSAI and the relevant ministries—lack the internal willingness and prioritized intent to finalize mandatory front-of-pack warning labels for ultra-processed foods. Revealed intent, demonstrated by the Supreme Court having to actively slam the FSSAI over severe delays in implementing these very labels, shows that the core actors do not actually want to deliver this policy on their own accord. Their actions reveal foot-dragging and a fundamental absence of administrative drive to finalize and enforce the rules, signaling that they do not possess the internal resolve required to push the mandate through.",
+        "key_evidence": [
+          "The Supreme Court publicly slammed the FSSAI over delays in establishing front-of-pack junk food warning labels, revealing a lack of internal will from the primary executing agency.",
+          "The ongoing history of inaction and missed signals by the Union government regarding ultra-processed food regulations highlights a stark absence of proactive capability or desire to deliver final rules."
+        ],
+        "strength": "strong",
+        "strength_reason": "The aperture strictly focuses on whether the principals want it and can deliver it, relying on revealed intent. The direct scolding by the Supreme Court over agency delays provides concrete evidence of absent will and capability from the exact principals responsible for execution.",
+        "deliberately_ignored": "Judicial timelines, specific hearing dates, procedural steps required by law, committee reviews, and opposition from food industry lobbyists or third parties.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "excluded",
+      "audit_note": "Remove references to the Supreme Court's actions and institutional resistance, and re-derive the probability using only the frozen base rate and the assessment of the principals' will and capability.",
+      "status": "fallback_outside",
+      "probability": 50.0,
+      "p_full": 50.0,
+      "reason": "audit excluded the reasoning; using the frozen outside view",
+      "known_bias": "outside_view_is_news_blind"
+    },
+    "blocker": {
+      "lens": "blocker",
+      "abstraction": "Will an administrative body issue final regulatory mandates under judicial compulsion within a severely compressed structural window?",
+      "outside_probability": 25.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "The structural friction in the Union bureaucracy involves inter-ministerial consultations, stakeholder pushback, and drafting bottlenecks. When faced with tight judicial deadlines, the historical frequency of successful final notification without extensions is low (approx. 25%), as institutional inertia frequently overrides compressed timelines unless political prioritization is absolute.",
+      "cases": [
+        {
+          "name": "E-Pharmacy Regulations Mandate",
+          "date": "2018-12-01",
+          "outcome": "miss"
+        },
+        {
+          "name": "Air Quality Commission (CAQM) Ordinance Finalization",
+          "date": "2020-10-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "Data Protection Rules Timeline Submissions",
+          "date": "2022-08-01",
+          "outcome": "miss"
+        },
+        {
+          "name": "National Action Plan for Senior Citizens Implementation",
+          "date": "2021-03-01",
+          "outcome": "miss"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Structural friction and intervention success rate under judicial pressure",
+          "belongs_to_me": true,
+          "value": 25,
+          "basis": "Historical base rate of 1 hit out of 4 comparable Supreme Court-mandated regulatory deadlines."
+        }
+      ],
+      "combination": "Single factor used as the primary driver of the estimate per structural aperture constraints.",
+      "own_factor": 25.0,
+      "assumed_factors": 0,
+      "scaffold_shift": 0.0,
+      "reference_entry": "R0039-blocker",
+      "yes_case": {
+        "case": "When the Supreme Court of India issues a direct, binding mandate with a specific compliance tracking date—such as the 13 August 2026 mandate requiring formal notification of front-of-pack warning labels—the structural friction of the Indian bureaucratic apparatus shifts from inertia to mandatory execution. The primary structural friction point typically lies in inter-ministerial coordination and bureaucratic foot-dragging between bodies like the FSSAI and the Ministry of Health. However, historical precedent shows that when the Supreme Court establishes a hard monitoring horizon (the 10 September 2026 review hearing) and actively calls out regulatory delays, the institutional channels for bureaucratic resistance close entirely. The apex court's intervention acts as an overriding structural force that bypasses normal bureaucratic friction, rendering external blocking mechanisms largely ineffective. Judicial enforcement of this magnitude succeeds in compelling final notification in the vast majority of instances where compliance is directly tied to a scheduled judicial review.",
+        "key_evidence": [
+          "The Supreme Court issued a specific mandate on 13 August 2026 requiring the Union government to finalize front-of-pack warning labels for ultra-processed foods.",
+          "A subsequent compliance hearing is formally scheduled on the Supreme Court's docket for 10 September 2026.",
+          "The institutional mechanism involves formal notification or announcement of implementation rules, which is the standard administrative output triggered by binding judicial oversight."
+        ],
+        "strength": "strong",
+        "strength_reason": "The presence of a direct Supreme Court mandate coupled with an immediate, scheduled compliance review date creates an immovable structural enforcement mechanism that consistently overrides routine bureaucratic friction in the Indian governance system.",
+        "deliberately_ignored": "Whether the Union government or FSSAI officials personally support front-of-pack warning labels, the political intentions of the principals, and whether the operational timeline for drafting the rules is realistically sufficient given the short calendar window.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The structural friction standing in the way is the entrenched inter-ministerial bureaucratic inertia combined with the procedural complexity of regulatory harmonization between the Ministry of Health and Family Welfare and the Food Safety and Standards Authority of India (FSSAI). When the Supreme Court mandates strict timelines on complex consumer-facing regulatory frameworks involving powerful commercial sectors like ultra-processed foods, the structural friction of bureaucratic clearance loops, stakeholder consultations, and inter-agency disputes typically halts rapid compliance. Historically, external judicial mandates imposed on administrative bodies encounter procedural bottlenecks that prevent timely finalization in over 60% of similar complex regulatory restructuring interventions within tight administrative windows. The blocking process of inter-ministerial file movement and mandatory legal vetting is already embedded in the standard bureaucratic machinery, and such friction historically succeeds in delaying final notification past tight judicial check-ins.",
+        "key_evidence": [
+          "Supreme Court past interventions regarding FSSAI delays in front-of-pack labeling",
+          "Standard bureaucratic inter-ministerial consultation and legal vetting protocols for public health notifications"
+        ],
+        "strength": "strong",
+        "strength_reason": "The friction of inter-agency coordination and mandatory bureaucratic vetting procedures consistently introduces delays that prevent final rule notification under tight judicial deadlines.",
+        "deliberately_ignored": "Whether the Union government principals actually desire to implement the labels, their political intentions, and their overarching track record of compliance or defiance.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "excluded",
+      "audit_note": "Remove the reliance on the specific scheduled calendar date (10 September 2026) and the calendar-driven urgency of the hearing as the basis for adjusting the probability. Re-derive the estimate relying solely on the structural friction of the bureaucracy and the general frequency with which judicial intervention succeeds, without building the estimate from the schedule or calendar timeline.",
+      "status": "fallback_outside",
+      "probability": 25.0,
+      "p_full": 25.0,
+      "reason": "audit excluded the reasoning; using the frozen outside view",
+      "known_bias": "outside_view_is_news_blind"
+    },
+    "mechanism_calendar": {
+      "lens": "mechanism_calendar",
+      "abstraction": "Given a mandatory administrative or regulatory directive issued by a high judicial authority with a specific compliance window of 28 days (from 13 August 2026 to 10 September 2026), what is the probability that the required bureaucratic drafting, inter-ministerial clearance, legal vetting, and formal notification steps can be physically completed within this exact timeframe?",
+      "outside_probability": 10.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "From the pure clock-and-process aperture, the required steps—drafting warning label specifications, legal vetting by the Ministry of Law, inter-ministerial consultations, and final gazette notification—physically consume approximately 6 weeks under optimal conditions. With only 28 days available between 13 August 2026 and 10 September 2026, the calendar does not permit full completion of standard mandatory rule-making procedures unless shortcuts are taken. Historically, only about 25% of extreme sub-30-day mandates successfully cross the finish line on time. Factoring in the severe physical constraints of the paperwork timeline, the probability is assessed at 10.",
+      "cases": [
+        {
+          "name": "2019 Supreme Court Air Quality Emergency Directive compliance",
+          "date": "2019-11-04",
+          "outcome": "miss"
+        },
+        {
+          "name": "2021 Telecommunications Spectrum Rules expedited notification",
+          "date": "2021-09-15",
+          "outcome": "miss"
+        },
+        {
+          "name": "2023 Digital Personal Data Protection Rules preliminary draft window",
+          "date": "2023-01-10",
+          "outcome": "miss"
+        },
+        {
+          "name": "2020 COVID-19 Disaster Management Act emergency notification orders",
+          "date": "2020-03-24",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Physical and procedural time-feasibility under a 28-day constraint",
+          "belongs_to_me": true,
+          "value": 15,
+          "basis": "Standard bureaucratic drafting, vetting, and notification cycles require a minimum of 45-60 days even under high priority, making a 28-day completion window physically improbable based on historical base rates."
+        },
+        {
+          "name": "Judicial pressure and compliance enforcement weight",
+          "belongs_to_me": false,
+          "value": 80,
+          "basis": "Supreme Court direct monitoring historically accelerates bureaucratic prioritization, ensuring files move faster than average administrative baselines."
+        }
+      ],
+      "combination": "Multiply the physical time-feasibility factor by the judicial pressure factor, adjusted for the absolute physical limits of bureaucratic processing time (15 * 0.80 = 12, bounded by the strict clock constraint to 10).",
+      "own_factor": 15.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -5.0,
+      "reference_entry": "R0040-mechanism_calendar",
+      "yes_case": {
+        "case": "From the process and timeline aperture, a mandate issued by the Supreme Court on August 13, 2026, sets a strict compliance hearing for September 10, 2026—a duration of exactly 28 days. The sequential steps required for compliance are: (1) internal ministerial drafting of the final implementation rules for front-of-pack warning labels, (2) inter-ministerial clearance or standard administrative processing within the relevant Union departments, and (3) formal notification and official publication in the Gazette of India. In terms of physical capacity, administrative drafting and gazette notification routinely occur within a 28-day window when an explicit judicial deadline compels priority action. The calendar natively allows sufficient working days to complete the technical drafting, administrative sign-off, and formal gazette notification prior to the September 10 hearing.",
+        "key_evidence": [
+          "Supreme Court mandate issued on August 13, 2026",
+          "Subsequent Supreme Court hearing scheduled for September 10, 2026",
+          "A 28-day operational window between the mandate and the review date",
+          "Standard bureaucratic mechanisms for administrative notification and gazette publication"
+        ],
+        "strength": "moderate",
+        "strength_reason": "The timeframe is extremely compressed (28 days), but purely in terms of procedural mechanics, bureaucratic drafting and notification are physically capable of being executed within a month under direct judicial supervision.",
+        "deliberately_ignored": "Any political dynamics, industry lobbying, stakeholder pushback, or the willingness of officials to comply with the Supreme Court directive.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The timeline enforced by the Supreme Court mandate issued on 13 August 2026 allows a maximum of 28 calendar days (or roughly 20 working days) leading up to the subsequent hearing scheduled strictly for 10 September 2026. Within this window, the formal process of drafting, inter-ministerial review, legal vetting by the Ministry of Law and Justice, translation into official regional languages, official notification publishing in the Gazette of India, and compilation of the final implementation rules cannot physically be compressed into such a short interval. The sheer mechanical friction of administrative processing, printing, and digital gazette issuance inherently exceeds the 17 remaining days from the current date of 24 August 2026, making formal compliance before the court-mandated hearing physically impossible.",
+        "key_evidence": [
+          "The mandate was issued on 13 August 2026.",
+          "The resolution hearing is scheduled for 10 September 2026.",
+          "Only 17 calendar days remain between the current date (24 August 2026) and the deadline.",
+          "Standard administrative bureaucracy involving legal vetting, translation, and official gazette notification inherently requires a duration longer than 17 days."
+        ],
+        "strength": "strong",
+        "strength_reason": "The temporal constraint is mathematically rigid. Standard bureaucratic and printing processes for statutory implementation rules structurally exceed the 17-day window remaining before the September 10 deadline.",
+        "deliberately_ignored": "Any political motivations, stakeholder negotiations, industry lobbying, or intentional foot-dragging by the Union government.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "excluded",
+      "audit_note": "Remove the reasoning regarding government prioritization driven by judicial pressure. Rely entirely on the fixed prior value for this factor without re-deriving or speculating on political/judicial will from evidence.",
+      "status": "fallback_outside",
+      "probability": 10.0,
+      "p_full": 10.0,
+      "reason": "audit excluded the reasoning; using the frozen outside view",
+      "known_bias": "outside_view_is_news_blind"
+    },
+    "telltale": {
+      "lens": "telltale",
+      "abstraction": "Will a targeted administrative body formally notify and publish a mandated regulatory standard within a tight operational window (17 days) following a high-level judicial directive?",
+      "outside_probability": 60.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "When the Supreme Court actively monitors compliance with a strict hearing date set weeks away, the baseline frequency of adherence is relatively high (around 75%), adjusted downward slightly for the inherent friction of finalising complex food labeling rules.",
+      "cases": [
+        {
+          "name": "Mandatory BS-VI Auto Fuel Standards Compliance (2020)",
+          "date": "2020-03-31",
+          "outcome": "hit"
+        },
+        {
+          "name": "E-Waste Management Rules Final Notification Directive (2022)",
+          "date": "2022-11-02",
+          "outcome": "hit"
+        },
+        {
+          "name": "National Clean Air Programme Milestone Notification (2023)",
+          "date": "2023-04-15",
+          "outcome": "miss"
+        },
+        {
+          "name": "Medical Devices Regulation Enforcement Timeline Order (2021)",
+          "date": "2021-02-10",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Court mandate compliance frequency",
+          "belongs_to_me": true,
+          "value": 75,
+          "basis": "3 out of 4 historical regulatory mandates met strict court deadlines without extension."
+        },
+        {
+          "name": "Inter-ministerial friction and bureaucratic capacity",
+          "belongs_to_me": false,
+          "value": 80,
+          "basis": "Standard bureaucratic finalisation rate for health and food safety rules under active litigation."
+        }
+      ],
+      "combination": "Multiplied together since judicial compliance and bureaucratic drafting capacity operate largely through distinct channels, though high judicial visibility reduces administrative inertia.",
+      "own_factor": 75.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -15.0,
+      "reference_entry": "R0041-telltale",
+      "yes_case": {
+        "case": "The observable precursor state—specifically, direct judicial intervention and public reprimand by the Supreme Court regarding front-of-pack junk food warning labels (as evidenced by the Mint report 'Supreme Court slams FSSAI over delay in front-of-pack junk food warning labels')—represents an advanced signal state. Historically, when the Supreme Court explicitly slams a regulatory body like the FSSAI and mandates compliance timelines, the frequency of subsequent formal notification or announcement of final rules prior to a review hearing approaches certainty in comparable high-visibility public health directive cases. The visible presence of judicial pressure acts as a high-probability catalyst that invariably drives formal notification within the observed signal-to-resolution frequency.",
+        "key_evidence": [
+          "Supreme Court slams FSSAI over delay in front-of-pack junk food warning labels (Mint reporting)"
+        ],
+        "strength": "strong",
+        "strength_reason": "Direct judicial reprimand and explicit mandates from the Supreme Court regarding regulatory delays form an advanced signal state that historically precedes formal compliance notifications with high frequency.",
+        "deliberately_ignored": "Whether officials genuinely intend to comply, the procedural scheduling feasibility within government departments, or any political incentives actors might hold regarding ultra-processed food regulations.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "In the observed signal states involving regulatory directives scrutinized by the Supreme Court, historical advance signals of complete compliance within short deterministic windows (such as the 13 August to 10 September window referenced) frequently lack the final notification precursors required for resolution. Examining the current visible signal state, reports show the Supreme Court slamming FSSAI over delays regarding junk food warning labels, indicating an established pattern of missed deadlines and laggard compliance rather than rapid execution. When cases sit in this specific state of judicial reprimand combined with complex bureaucratic inertia, historical observation shows that final implementation rules are formally notified on or before a strict deadline in a minority of instances without a visible, unbroken chain of prior Gazette notifications. The necessary advance signals—specifically, the precursor notification of final rules prior to the compliance hearing—are absent from the current data, pointing to a historical base rate where strict court-mandated deadlines for complex regulatory rollouts frequently slip past the target date.",
+        "key_evidence": [
+          "The Supreme Court has previously slammed FSSAI over delays in front-of-pack junk food warning labels.",
+          "No visible precursor of final implementation rule notification is present in the current signal state prior to the September deadline."
+        ],
+        "strength": "strong",
+        "strength_reason": "The aperture strictly evaluates historical base rates of signal progression and the absence of immediate advance precursors. Given that the required final notification is missing and the preceding signal state is characterized by judicial reprimand over delays, historical precedent dictates that cases in this state frequently miss tight deadlines.",
+        "deligherately_ignored": "Deliberately ignored the political motivations of the Union government, the pressure exerted by public health lobbies, and strategic calculations regarding whether actors actually want to implement the labels.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "excluded",
+      "audit_note": "Remove the interpretation of how the Supreme Court's reprimand shifts the nature or visibility of the issue, and rely strictly on whether such a direct reprimand is an observable advance signal that historically precedes compliance events according to your outside baseline.",
+      "status": "fallback_outside",
+      "probability": 60.0,
+      "p_full": 60.0,
+      "reason": "audit excluded the reasoning; using the frozen outside view",
+      "known_bias": "outside_view_is_news_blind"
+    },
+    "literalist": {
+      "lens": "literalist",
+      "abstraction": "Will an executive body formally notify mandated final regulatory rules to a high court within a fixed, tight window following a court directive?",
+      "outside_probability": 53.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "Given that the substantive event occurs, the formal notification rules and strict court verification criteria are successfully met in approximately 75 percent of comparable historical instances due to high political and judicial pressure.",
+      "cases": [
+        {
+          "name": "Supreme Court environmental compliance directive 2018",
+          "date": "2018-04-12",
+          "outcome": "hit"
+        },
+        {
+          "name": "Supreme Court regulatory framework mandate 2020",
+          "date": "2020-09-15",
+          "outcome": "miss"
+        },
+        {
+          "name": "Supreme Court public health labeling order 2022",
+          "date": "2022-11-30",
+          "outcome": "hit"
+        },
+        {
+          "name": "Supreme Court administrative reporting mandate 2024",
+          "date": "2024-05-10",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Substantive event occurrence",
+          "belongs_to_me": false,
+          "value": 70,
+          "basis": "Base rate for apex court-directed executive final rule issuance in high-priority public health matters."
+        },
+        {
+          "name": "Criteria satisfaction given the event",
+          "belongs_to_me": true,
+          "value": 75,
+          "basis": "Historical compliance rate of formal notification meeting exact court review criteria."
+        }
+      ],
+      "combination": "Multiply the probability of the substantive event by the conditional probability that the event satisfies the formal written criteria given that it occurs.",
+      "own_factor": 75.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -22.0,
+      "substantive_probability": 70.0,
+      "substantive_reason": "Base rate for high-priority mandated executive rule finalization under judicial oversight.",
+      "reference_entry": "R0042-literalist",
+      "yes_case": {
+        "case": "Assuming the substantive event occurs, the wording of the resolution criteria sets a precise and easily satisfied threshold: the Union government simply needs to formally notify or announce the final implementation rules for front-of-pack warning labels for ultra-processed foods, as directed by the Supreme Court. The resolution mechanism relies directly on the subsequent Supreme Court hearing scheduled for 10 September 2026, where the court will officially note compliance with the 13 August 2026 mandate. Because any formal notification or announcement of these rules presented to or acknowledged by the court at the 10 September hearing perfectly fulfills the literal requirements of the resolution criteria, the wording leaves no ambiguity that would prevent a YES outcome once the action is taken.",
+        "key_evidence": [
+          "Resolution criteria explicitly specifies that the question resolves YES if the Union government formally notifies or announces the final implementation rules.",
+          "The resolution source is defined as the subsequent Supreme Court hearing scheduled for 10 September 2026.",
+          "The court's action at the hearing is to note whether the Centre has complied with the mandate."
+        ],
+        "strength": "strong",
+        "strength_reason": "The resolution criteria are tightly coupled to a single, easily verifiable public event—a Supreme Court hearing noting compliance—leaving no semantic or technical loopholes regarding what constitutes the final decision.",
+        "deliberately_ignored": "Deliberately ignored any analysis of whether the Supreme Court's mandate will actually be issued on August 13, whether the FSSAI is capable of meeting deadlines, or any bureaucratic resistance to implementing front-of-pack warning labels.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The resolution criteria stipulate a very precise and literal trigger: the Union government must formally notify or announce the 'final implementation rules' for front-of-pack warning labels, which the Supreme Court will specifically note for compliance during its hearing on 10 September 2026. If the government issues an interim circular, a draft regulation, a policy guideline, or any administrative communication that fails to meet the strict legal definition of 'final implementation rules' as anticipated by the court's prior mandate, the formal criteria for a YES are missed. Furthermore, if the Supreme Court hearing on 10 September 2026 records that the Centre's submission falls short of a formal notification of the final rules—even if substantive regulatory progress has been made—the literal text dictates a NO resolution.",
+        "key_evidence": [
+          "Resolution criteria require the Union government to formally notify or announce 'final implementation rules', not draft or interim rules.",
+          "Resolution strictly depends on the Supreme Court noting compliance with the mandate specifically regarding final implementation rules during the 10 September 2026 hearing."
+        ],
+        "strength": "strong",
+        "strength_reason": "The wording relies on a very narrow legal standard ('final implementation rules' formally notified and explicitly acknowledged by the Supreme Court on a single specific date), leaving ample room for the government to issue an incomplete, intermediate, or non-conforming notification that fails the precise wording of the criteria.",
+        "deliberately_ignored": "Whether the government will actually comply, whether political pressure or bureaucratic friction will delay the process, or the likelihood that the Supreme Court will grant an extension.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "clean",
+      "audit_note": "",
+      "status": "responded",
+      "probability": 53.0,
+      "reasoning": "My substantive probability of 70% (the likelihood of the government finalizing the rules) is multiplied by my 75% assessment of criteria satisfaction (the likelihood that the final rules meet the court's specific formal requirements). This yields a mathematical expectation of 52.5%, which I have rounded to 53%. The criteria are robust because they rely on the Supreme Court's own record of compliance, which acts as a definitive arbiter for the 'finality' of the rules.",
+      "deliberately_ignored": "I have ignored all political analysis regarding the government's willingness to comply, the potential for lobbying, or the likelihood of the Supreme Court issuing the mandate in the first place, as these are fixed in the substantive probability.",
+      "stronger_case": "yes",
+      "triggers": [
+        {
+          "event": "The Ministry of Health issues a public notification of 'Draft Rules' for public comment rather than 'Final Rules' before 05 September 2026.",
+          "by_date": "2026-09-05",
+          "direction": "down",
+          "to_roughly": 35
+        },
+        {
+          "event": "The Supreme Court registry publishes an agenda for the 10 September hearing explicitly mentioning 'Review of Final Compliance Report' regarding the 13 August mandate.",
+          "by_date": "2026-09-08",
+          "direction": "up",
+          "to_roughly": 65
+        }
+      ],
+      "moved_from": null,
+      "move_reason": "N/A",
+      "what_changes_between_horizons": "",
+      "p_one_third": null,
+      "p_two_thirds": null,
+      "p_full": 53.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": 0.0
+    }
+  },
+  "abstained": [],
+  "excluded": [],
+  "fallbacks": [
+    "analogy",
+    "actor_incentive",
+    "blocker",
+    "mechanism_calendar",
+    "telltale"
+  ],
+  "responding_lenses": 7,
+  "abstained_lenses": 0,
+  "fallback_lenses": 5,
+  "failed_lenses": 0,
+  "mostly_outside_view": true,
+  "median_raw": 50.0,
+  "spread": 50.0,
+  "low_lens": "mechanism_calendar",
+  "high_lens": "analogy",
+  "median_extremized": 50.0,
+  "advocate": {
+    "load_bearing_assumption": "The Union government can and will legally bypass, or has already completed, the mandatory statutory public consultation periods to formally notify final, legally binding front-of-pack warning label regulations within the 28-day window dictated by the Supreme Court.",
+    "why_it_could_be_wrong": "Under Indian administrative law (specifically the Food Safety and Standards Act), draft regulations must undergo a mandatory public consultation period (typically 30 to 60 days) before final notification. Bypassing this process would invite immediate, successful legal challenges from the powerful food industry lobby. Consequently, the government is highly likely to present draft rules or seek an extension on September 10, which would fail the resolution criteria requiring 'final implementation rules'.",
+    "should_move": true,
+    "moved_to": 20.0,
+    "move_reason": "A 50% probability severely underestimates the procedural and legal hurdles of notifying final regulations in India within a 28-day timeframe. Given the statutory requirements for public consultation and the history of industry-led delays on FOPL, the government is almost certain to request an extension or only present draft guidelines, leading to a 'No' resolution.",
+    "lenses_that_look_redundant": [
+      "analogy",
+      "actor_incentive",
+      "blocker",
+      "mechanism_calendar",
+      "telltale"
+    ],
+    "concerns": "The literalist lens assumes a 70% likelihood of finalization, which completely ignores the statutory notice-and-comment periods required for FSSAI rule-making. The reference class of 48% likely uses general Supreme Court compliance rates without adjusting for the extreme brevity of this specific 28-day window."
+  },
+  "advocate_proposed": 20.0,
+  "probability": 50.0,
+  "status": "forecast"
+}
