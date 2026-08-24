@@ -77,6 +77,14 @@ jobs:
           fi
           python run.py $ARGS
 
+      - name: Build the open-questions view
+        # A derived file: rebuilt from scratch each run, read by nobody else.
+        # `always()` so it still refreshes after a partial or failed run, and
+        # continue-on-error so a view can never fail a pipeline that worked.
+        if: ${{ always() && inputs.dry_run != true }}
+        run: python make_dashboard.py
+        continue-on-error: true
+
       - name: Commit results
         # `always()` so that a crashed run still commits the quota counts and
         # the partial log. Losing the quota file after a failed run would let a
