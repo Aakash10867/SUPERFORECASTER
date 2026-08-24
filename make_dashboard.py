@@ -1,8 +1,15 @@
 #!/usr/bin/env python3
 """
-Build data/open_questions.csv -- one row per open question, everything you
-need to see at a glance, so you never have to cross-reference questions.csv
-against forecasts.csv by hand.
+Build data/open_questions.csv -- two columns, question and probability, for
+every question still open. Nothing else.
+
+Everything else about a question is already in questions.csv, forecasts.csv,
+lens_outputs.csv and the run records. This file answers one question -- "what
+does the system currently think?" -- without opening any of them.
+
+The run log still prints the fuller picture (movement, days left, how far the
+lenses disagreed), so the detail is there when you want it and out of the way
+when you do not.
 
     python make_dashboard.py
 
@@ -32,29 +39,11 @@ QUESTIONS = DATA / "questions.csv"
 FORECASTS = DATA / "forecasts.csv"
 OUT = DATA / "open_questions.csv"
 
-FIELDS = [
-    "id",
-    "days_left",           # negative means the deadline has passed
-    "deadline",
-    "probability",         # the live number
-    "change",              # movement since the previous forecast, "+3.0" / "-5.0"
-    "previous",
-    "trend",               # up | down | flat | new
-    "question",
-    "shape",               # window | point
-    "spread",              # gap between the highest and lowest lens
-    "disagreement",        # wide | moderate | tight -- see below
-    "low_lens",
-    "high_lens",
-    "responding_lenses",
-    "last_updated",
-    "days_since_update",
-    "cause",               # creation | refresh | trigger
-    "forecast_count",      # how many times it has been forecast
-    "domain",
-    "primary_tag",
-    "resolution_criteria",
-]
+# Deliberately just two columns. Everything else about a question is already
+# in questions.csv, forecasts.csv, lens_outputs.csv and the run records; this
+# file exists to answer one question -- "what does the system currently think?"
+# -- without opening any of them.
+FIELDS = ["question", "probability"]
 
 
 def read(path):
@@ -144,36 +133,28 @@ def build():
         spread = as_float(latest.get("spread"))
 
         out_rows.append({
-            "id": q.get("id", ""),
-            "days_left": days_left,
-            "deadline": q.get("deadline", ""),
-            "probability": prob if prob is not None else "",
-            "change": change,
-            "previous": prev if prev is not None else "",
-            "trend": trend,
             "question": q.get("question", ""),
-            "shape": q.get("shape", ""),
-            "spread": spread if spread is not None else "",
-            "disagreement": describe_spread(spread),
-            "low_lens": latest.get("low_lens", ""),
-            "high_lens": latest.get("high_lens", ""),
-            "responding_lenses": latest.get("responding_lenses", ""),
-            "last_updated": latest.get("date", ""),
-            "days_since_update": days_since,
-            "cause": latest.get("cause", ""),
-            "forecast_count": len(history),
-            "domain": q.get("domain", ""),
-            "primary_tag": q.get("primary_tag", ""),
-            "resolution_criteria": q.get("resolution_criteria", ""),
+            "probability": prob if prob is not None else "",
+            # Not written to the file -- used for sorting and for the log
+            # summary below, then discarded.
+            "_days_left": days_left,
+            "_id": q.get("id", ""),
+            "_change": change,
+            "_trend": trend,
+            "_spread": spread,
+            "_disagreement": describe_spread(spread),
+            "_low_lens": latest.get("low_lens", ""),
+            "_high_lens": latest.get("high_lens", ""),
+            "_cause": latest.get("cause", ""),
         })
 
     # Closest deadline first: that is the one most likely to need attention.
-    out_rows.sort(key=lambda r: (r["days_left"] if isinstance(r["days_left"], int)
+    out_rows.sort(key=lambda r: (r["_days_left"] if isinstance(r["_days_left"], int)
                                  else 99999))
 
     DATA.mkdir(parents=True, exist_ok=True)
     with open(OUT, "w", newline="", encoding="utf-8") as fh:
-        writer = csv.DictWriter(fh, fieldnames=FIELDS)
+        writer = csv.DictWriter(fh, fieldnames=FIELDS, extrasaction="ignore")
         writer.writeheader()
         for row in out_rows:
             writer.writerow(row)
@@ -193,14 +174,14 @@ def _print_summary(rows):
     print("-" * 78)
     for r in rows:
         prob = f"{r['probability']}%" if r["probability"] != "" else "not forecast"
-        arrow = {"up": "^", "down": "v", "flat": "=", "new": "*"}.get(r["trend"], " ")
-        change = f" {arrow} {r['change']}" if r["change"] else f" {arrow}"
-        print(f"{r['id']}  {prob:>13}{change:<8}  {r['days_left']:>4}d left  "
-              f"{r['disagreement']:<8}")
+        arrow = {"up": "^", "down": "v", "flat": "=", "new": "*"}.get(r["_trend"], " ")
+        change = f" {arrow} {r['_change']}" if r["_change"] else f" {arrow}"
+        print(f"{r['_id']}  {prob:>13}{change:<8}  {r['_days_left']:>4}d left  "
+              f"{r['_disagreement']:<8}")
         print(f"       {r['question'][:70]}")
-        if r["disagreement"] == "wide":
-            print(f"       ^ lenses disagreed by {r['spread']} points "
-                  f"({r['low_lens']} lowest, {r['high_lens']} highest) -- "
+        if r["_disagreement"] == "wide":
+            print(f"       ^ lenses disagreed by {r['_spread']} points "
+                  f"({r['_low_lens']} lowest, {r['_high_lens']} highest) -- "
                   "the median summarises an argument, not a consensus")
     print("-" * 78)
 
