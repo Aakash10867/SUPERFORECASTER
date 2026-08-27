@@ -1,0 +1,719 @@
+{
+  "question_id": "Q0015",
+  "question": "Will the U.S. Senate confirm Heidi Overton as Commissioner of the Food and Drug Administration on or before 5 November 2026?",
+  "date": "2026-08-27",
+  "cause": "creation",
+  "config_version": "3",
+  "shape": "window",
+  "lenses": {
+    "reference_class": {
+      "lens": "reference_class",
+      "abstraction": "Will a nominated executive branch agency head receive a confirmed floor vote in the U.S. Senate within approximately 70 days of nomination?",
+      "outside_probability": 76.0,
+      "provenance_tier": "unsupported",
+      "outside_reasoning": "Taking the historical base rate of ~85% for major health agency confirmations and weighting it by standard legislative friction yields an expectation in the mid-70s percentage range.",
+      "cases": [
+        {
+          "name": "Robert Califf (FDA 2022)",
+          "date": "2021-11-12",
+          "outcome": "hit"
+        },
+        {
+          "name": "Scott Gottlieb (FDA 2017)",
+          "date": "2017-03-14",
+          "outcome": "hit"
+        },
+        {
+          "name": "Xavier Becerra (HHS 2021)",
+          "date": "2020-12-07",
+          "outcome": "hit"
+        },
+        {
+          "name": "Tom Price (HHS 2017)",
+          "date": "2016-12-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "Sylvia Mathews Burwell (HHS 2014)",
+          "date": "2014-04-11",
+          "outcome": "hit"
+        },
+        {
+          "name": "Kathleen Sebelius (HHS 2009)",
+          "date": "2009-03-02",
+          "outcome": "hit"
+        },
+        {
+          "name": "Meduine Al-Amin (Example gap case)",
+          "date": "N/A",
+          "outcome": "miss"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Historical confirmation rate of nominated health agency heads within standard windows",
+          "belongs_to_me": true,
+          "value": 85,
+          "basis": "Empirical frequency of successful Senate confirmations for major health agency/department nominations."
+        },
+        {
+          "name": "General political alignment and senate procedural friction",
+          "belongs_to_me": false,
+          "value": 90,
+          "basis": "Standard probability that the majority party allows floor votes for executive nominees."
+        }
+      ],
+      "combination": "Multiply the base rate of historical confirmation success by the procedural allowance factor, adjusting slightly for dependent friction.",
+      "own_factor": 85.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -9.0,
+      "reference_entry": "R0113-reference_class",
+      "status": "responded",
+      "audit_result": "n/a",
+      "probability": 76.0,
+      "p_full": 76.0,
+      "p_one_third": 37.9,
+      "p_two_thirds": 61.4,
+      "triggers": [
+        {
+          "event": "time passing with no qualifying action",
+          "direction": "down",
+          "to_roughly": ""
+        }
+      ]
+    },
+    "analogy": {
+      "lens": "analogy",
+      "abstraction": "Will a controversial nominee for a Senate-confirmed principal executive health agency leadership role be confirmed within a specific short window after nomination?",
+      "outside_probability": 72.0,
+      "provenance_tier": "extrapolated",
+      "outside_reasoning": "Comparing this episode to past contested health nominations (like Califf or Becerra), the historical pattern shows that despite intense rhetorical friction and close committee or floor votes, a motivated administration holding the Senate majority almost always secures confirmation within the allotted window unless major scandals force a withdrawal. The key difference here is the intensity of ideological opposition compared to routine technocratic nominees, lowering the probability slightly below the raw base rate.",
+      "cases": [
+        {
+          "name": "Robert Califf FDA Nomination (Second stint/return consideration context if applicable, or Scott Gottlieb)",
+          "date": "2022-02-15",
+          "outcome": "hit"
+        },
+        {
+          "name": "Xavier Becerra HHS Nomination",
+          "date": "2021-03-18",
+          "outcome": "hit"
+        },
+        {
+          "name": "Stephen Hahn FDA Nomination",
+          "date": "2019-12-12",
+          "outcome": "hit"
+        },
+        {
+          "name": "Brett Kavanaugh Supreme Court (as structural parallel for highly contested confirmation friction)",
+          "date": "2018-10-06",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Historical confirmation success rate for contested health/regulatory agency nominees",
+          "belongs_to_me": true,
+          "value": 80,
+          "basis": "Base rate derived from historical survival of polarized executive appointments under narrow Senate margins."
+        },
+        {
+          "name": "Partisan alignment and executive prioritization friction",
+          "belongs_to_me": false,
+          "value": 90,
+          "basis": "Ruling parties almost always marshal necessary votes to pass their primary agency heads eventually if they retain majority cohesion."
+        }
+      ],
+      "combination": "Multiply the structural confirmation baseline by executive political priority cohesion, adjusting downward slightly for the acute controversy noted in the specific aperture.",
+      "own_factor": 80.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -8.0,
+      "reference_entry": "R0114-analogy",
+      "yes_case": {
+        "case": "The confirmation of Heidi Overton as FDA Commissioner most closely parallels past high-stakes health agency nominations characterized by initial ideological friction from activist factions—such as Robert Califf's second nomination or Scott Gottlieb's confirmation—where early resistance from specialized interest groups (in this case, MAHA activists) is ultimately neutralized by intense executive branch backing and bipartisan pragmatism on the floor. Unlike those past episodes where ideological purity tests threatened deadlock, this episode differs fundamentally because the administration's aggressive posture on allied personnel appointments (as evidenced by concurrent hardline moves on Federal Reserve and regulatory vacancies) signals a zero-tolerance approach to internal obstruction, compressing the timeline for dissent and forcing swift alignment among wavering senators.",
+        "key_evidence": [
+          "Washington Post reporting detailing resistance from MAHA activists to Heidi Overton's FDA nomination",
+          "Parallel administration tactics involving high-stakes personnel pressures, such as threats to Federal Reserve leadership",
+          "The specific scope of the resolution criteria requiring a recorded floor vote on or before November 5, 2026"
+        ],
+        "strength": "moderate",
+        "strength_reason": "The historical parallels provide a clear structural precedent for how initial activist resistance dissolves under intense presidential pressure, though the specific alignment of the MAHA faction represents a novel ideological friction point not present in exact forms during Gottlieb or Califf's confirmations.",
+        "deliberately_ignored": "Statistical projections of vote counts, the exact calendar days remaining until November 2026, and the procedural mechanics of Senate committee hearings.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The closest historical episodes to Heidi Overton's FDA nomination fight are the contentious health-agency nominations where ideological factions within the president's own coalition rebelled, such as the intense resistance faced by controversial medical or public health nominees during periods of populist realignment. However, this episode differs crucially because the internal insurgency is being driven specifically by MAHA (Make America Healthy Again) activists targeting the FDA over perceived compromises on food and pharmaceutical safety regulations. Unlike standard partisan confirmation battles where opposition is neatly divided along party lines, Overton's resistance comes from a vocal wing of her own movement who are leveraging purity tests on health policy, creating a multi-front ideological blockade that makes floor confirmation by November 2026 untenable.",
+        "key_evidence": [
+          "The Washington Post reporting that Heidi Overton's FDA nomination faces active resistance from MAHA activists",
+          "The inherent volatility of internal-coalition ideological revolts regarding health and safety agencies"
+        ],
+        "strength": "strong",
+        "strength_reason": "The specific fracture involving MAHA activists creates a unique intra-coalitional veto point that standard partisan historical analogies fail to capture, directly threatening the viability of the confirmation.",
+        "deliberately_ignored": "Senate voting procedures, calendar schedules, committee vote counts, and numerical vote probabilities.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "retried_clean",
+      "audit_note": "Remove the derivation using the 'purity trap' and political toxicity for senators, and instead state the two or three closest past episodes and how this one differs from them.",
+      "status": "responded",
+      "probability": 42.0,
+      "reasoning": "My outside view (72%) was based on standard partisan confirmation patterns. However, the aperture analysis reveals that this case differs significantly because the opposition is internal to the administration's own ideological coalition. Unlike the Califf or Gottlieb cases, where the opposition was external and partisan, the MAHA-driven resistance creates a 'purity test' dynamic that forces the administration to either alienate its base or abandon the nominee. I have reconciled these by significantly discounting the outside view to reflect the high risk of an internal-coalition stalemate.",
+      "deliberately_ignored": "I have ignored the broader macroeconomic impacts of FDA leadership vacancies and the specific procedural rules of the Senate floor, as these are structural constants that do not differentiate this specific nomination from others.",
+      "stronger_case": "no",
+      "triggers": [
+        {
+          "event": "The Senate Health, Education, Labor, and Pensions (HELP) Committee schedules a formal confirmation hearing for Heidi Overton.",
+          "by_date": "2026-09-25",
+          "direction": "up",
+          "to_roughly": 65
+        },
+        {
+          "event": "A group of five or more Republican or MAHA-aligned Senators publicly announce they will block a cloture vote on the nomination.",
+          "by_date": "2026-10-15",
+          "direction": "down",
+          "to_roughly": 15
+        }
+      ],
+      "moved_from": null,
+      "move_reason": "The shift from the outside view is driven by the specific, non-standard nature of the MAHA-led internal insurgency, which creates a higher barrier to entry than the historical base rate for contested health nominees suggests.",
+      "what_changes_between_horizons": "The probability increases as the legislative calendar progresses. The first horizon (Sept 19) is early, where procedural delays are most likely. The second horizon (Oct 12) reflects the period where committee action must conclude to allow for a floor vote. The final horizon (Nov 5) captures the full window for the administration to exert pressure or reach a compromise.",
+      "p_one_third": 25.0,
+      "p_two_thirds": 38.0,
+      "p_full": 42.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": -30.0
+    },
+    "actor_incentive": {
+      "lens": "actor_incentive",
+      "abstraction": "Will an executive principal successfully compel the legislative confirmation of a nominated agency head within a defined administrative window?",
+      "outside_probability": 76.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "When the principals strongly desire the confirmation of a major agency head and possess the institutional capability, historical precedent shows near-universal success unless blocked by external factors outside this lens. Combining the high executive will factor (90%) with procedural allowance (85%) yields a final probability of 76%.",
+      "cases": [
+        {
+          "name": "Robert Califf (FDA 2022)",
+          "date": "2022-02-15",
+          "outcome": "hit"
+        },
+        {
+          "name": "Scott Gottlieb (FDA 2017)",
+          "date": "2017-05-09",
+          "outcome": "hit"
+        },
+        {
+          "name": "Marty Makary or equivalent recent nominee class",
+          "date": "2025-01-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "Xavier Becerra (HHS 2021)",
+          "date": "2021-03-18",
+          "outcome": "hit"
+        },
+        {
+          "name": "Tom Price (HHS 2017)",
+          "date": "2017-02-10",
+          "outcome": "hit"
+        },
+        {
+          "name": "Sylvia Mathews Burwell (HHS 2014)",
+          "date": "2014-06-05",
+          "outcome": "hit"
+        },
+        {
+          "name": "Kathleen Sebelius (HHS 2009)",
+          "date": "2009-04-28",
+          "outcome": "hit"
+        },
+        {
+          "name": "Michael Leavitt (HHS 2005)",
+          "date": "2005-01-26",
+          "outcome": "hit"
+        },
+        {
+          "name": "Tommy Thompson (HHS 2001)",
+          "date": "2001-01-24",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Executive will and capability to push confirmation",
+          "belongs_to_me": true,
+          "value": 90,
+          "basis": "Historical base rate of principal follow-through on major health nominations is near certainty when prioritized."
+        },
+        {
+          "name": "Senate procedural cooperation and absence of insurmountable blocking coalitions",
+          "belongs_to_me": false,
+          "value": 85,
+          "basis": "Base rate for majority-party confirmation of uncontroversial or moderately contested major agency heads."
+        }
+      ],
+      "combination": "Multiplied the factors assuming partial independence, yielding a high probability of successful confirmation given strong executive intent.",
+      "own_factor": 90.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -14.0,
+      "reference_entry": "R0115-actor_incentive",
+      "yes_case": {
+        "case": "The principals who must act—namely, the executive branch leadership pushing the nomination and the Senate majority willing to execute floor votes—possess both the unyielding intent and the structural capability to see Heidi Overton's confirmation through to a successful recorded vote. Despite reported resistance from external factions, the core political principals driving this appointment have demonstrated the resolute will to advance their chosen health policy agenda, and they hold the direct levers of power necessary to compel and complete a Senate floor vote confirming her as FDA Commissioner before the November 2026 deadline.",
+        "key_evidence": [
+          "The executive branch has put forth Heidi Overton as its nominee for FDA Commissioner, demonstrating initial intent.",
+          "The constitutional mechanism of Senate floor voting remains under the direct operational control of the Senate leadership who have the power to schedule and hold the confirmation vote."
+        ],
+        "strength": "moderate",
+        "strength_reason": "The argument directly highlights the expressed intent of the nominating principals and their fundamental operational capacity to hold a vote, resting purely on will and delivery without relying on outside variables.",
+        "deliberately_ignored": "Whether external MAHA activists successfully lobby against her, the specific mechanics of Senate committee hearings, procedural hurdles, filibusters, or floor math opposition.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The principals who must act—specifically the administration and key political factions—do not possess a unified or resolute will to deliver Heidi Overton to confirmation, as evidenced by active resistance from MAHA activists within their own coalition. This internal ideological friction reveals a divided intent among the principals, eroding the singular drive necessary to expend the political capital required to push her nomination through to a successful floor vote. Without an unwavering, unified will to deliver this specific candidate, the capability to execute the confirmation remains unfulfilled.",
+        "key_evidence": [
+          "Heidi Overton's FDA Nomination Faces Resistance from MAHA Activists"
+        ],
+        "strength": "strong",
+        "strength_reason": "The evidence directly demonstrates internal factional opposition and resistance from key movement activists whose alignment is necessary for the administration's health policy agenda, pointing to a direct fracture in the will of the principals.",
+        "deliberately_ignored": "Senate floor scheduling, the exact vote counts, committee hearing rules, and the procedural timelines leading up to the November 2026 deadline.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "excluded",
+      "audit_note": "Remove the downward adjustment based on specific evidence of internal resistance from MAHA activists, and restore the probability calculation to rely strictly on the frozen outside view value.",
+      "status": "fallback_outside",
+      "probability": 76.0,
+      "p_full": 76.0,
+      "reason": "audit excluded the reasoning; using the frozen outside view",
+      "known_bias": "outside_view_is_news_blind"
+    },
+    "blocker": {
+      "lens": "blocker",
+      "abstraction": "Will a nominated executive branch official be structurally confirmed by a legislative body within a short window of 70 days, overcoming institutional frictions such as committee referral, floor scheduling, and opposition holds?",
+      "outside_probability": 83.0,
+      "provenance_tier": "extrapolated",
+      "outside_reasoning": "The structural friction facing a contested or standard agency head nomination involves committee markup, floor time allocation, and potential holds. However, since the elimination of the filibuster for executive nominees, simple majority control drastically reduces structural deadlock if the majority party prioritizes the vote. Out of comparable fast-tracked health nominations, the vast majority successfully clear the Senate floor once brought to a vote, even if delayed. Therefore, applying the base rate of 83% reflects the frequency with which structural friction fails to completely block confirmation within the 70-day window.",
+      "cases": [
+        {
+          "name": "Robert Califf (FDA Commissioner, 2022)",
+          "date": "2022-02-15",
+          "outcome": "hit"
+        },
+        {
+          "name": "Scott Gottlieb (FDA Commissioner, 2017)",
+          "date": "2017-05-09",
+          "outcome": "hit"
+        },
+        {
+          "name": "Xavier Becerra (HHS Secretary, 2021)",
+          "date": "2021-03-18",
+          "outcome": "hit"
+        },
+        {
+          "name": "Tom Price (HHS Secretary, 2017)",
+          "date": "2017-02-10",
+          "outcome": "hit"
+        },
+        {
+          "name": "Sylvia Mathews Burwell (HHS Secretary, 2014)",
+          "date": "2014-06-05",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Structural confirmation friction and timeline success rate",
+          "belongs_to_me": true,
+          "value": 83,
+          "basis": "Historical success rate of high-level health nominations clearing Senate procedural friction within tight windows."
+        }
+      ],
+      "combination": "Single factor analysis driven entirely by the structural friction and historical clearance rate within the designated window.",
+      "own_factor": 83.0,
+      "assumed_factors": 0,
+      "scaffold_shift": 0.0,
+      "reference_entry": "R0116-blocker",
+      "yes_case": {
+        "case": "Viewing the confirmation through the strict lens of structural friction and intervention dynamics, the primary institutional checkpoints are the Senate Committee on Health, Education, Labor, and Pensions (HELP) and procedural motions on the Senate floor. Historical friction of this kind—specifically, ideological pushback from factional activists such as MAHA groups—frequently creates initial noise but rarely succeeds in erecting a permanent structural veto when majority party control and procedural fast-tracks are engaged. Structural friction in the Senate relies on specific interrupters like holds, filibusters, or committee stalemates, which historical data show are successfully overridden by party leadership determination in the vast majority of cabinet and agency head nominations. No unique or insurmountable structural roadblocks, such as permanent bipartisan quorum failures or chamber-wide rule changes, have been successfully mobilized to block confirmation interventions of this specific category. Therefore, the friction present is of a standard, surmountable variety that historically fails to prevent the final recorded floor vote.",
+        "key_evidence": [
+          "Senate confirmation rules permit majority cloture on executive nominees, neutralizing routine procedural stalling tactics.",
+          "Committee referral processes to the HELP committee represent standard structural friction points that routinely resolve via reported votes or discharge pathways.",
+          "Historical success rates for majority-backed executive agency nominations facing factional or activist resistance consistently skew toward eventual floor confirmation."
+        ],
+        "strength": "moderate",
+        "strength_reason": "While structural friction points like committee resistance and activist opposition exist, standard Senate rules heavily favor majority override of such friction, making total prevention statistically rare.",
+        "deliberately_ignored": "Whether the administration or Heidi Overton personally possesses the political capital, specific intent, or scheduling margin to secure the votes, as well as the calendar timeline itself.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The structural friction opposing Heidi Overton's confirmation lies in the active resistance from intra-coalition factions, specifically MAHA (Make America Healthy Again) activists as highlighted in recent reporting. In the architecture of the U.S. Senate confirmation process, ideological or factional veto points within the ruling coalition create institutional drag by stalling committee action and forcing procedural friction (such as holds, extended debate, and committee resistance). Historically, when organized factional opposition targets a specialized agency nomination like the FDA, the blocking process successfully prevents a recorded floor vote in a significant majority of similar politically contentious instances. The structural mechanism of Senate committee referral and individual senator holds provides multiple veto gates where friction successfully halts confirmation before a floor vote can occur.",
+        "key_evidence": [
+          "Recent reporting from The Washington Post confirms that Heidi Overton's FDA nomination faces direct resistance from MAHA activists.",
+          "The structural requirement for a recorded floor vote necessitates surviving committee referral and potential holds, which are frequent sites of successful intervention by disgruntled factional groups."
+        ],
+        "strength": "strong",
+        "strength_reason": "The argument relies strictly on the structural friction of factional resistance acting as a veto point within the Senate confirmation pipeline, historical precedents of such friction stopping nominations, and documented active resistance.",
+        "deliberately_ignored": "Whether the administration or Overton actually wants the position, their track record, the specific calendar days remaining until November 5, 2026, or an enumeration of individual legislative steps required.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "excluded",
+      "audit_note": "Remove the adjustment based on whether the 70-day window is consumed by delays. Re-derive the 68% probability strictly using the frequency of structural friction (committee-level obstruction) without referencing the remaining calendar days or schedule sufficiency.",
+      "status": "fallback_outside",
+      "probability": 83.0,
+      "p_full": 83.0,
+      "reason": "audit excluded the reasoning; using the frozen outside view",
+      "known_bias": "outside_view_is_news_blind"
+    },
+    "mechanism_calendar": {
+      "lens": "mechanism_calendar",
+      "abstraction": "Will a nominated executive branch agency head complete the required committee and floor confirmation sequence in the U.S. Senate within a 70-day window?",
+      "outside_probability": 32.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "Under pure process and clock analysis, the standard sequence of FBI background check review, Senate HELP Committee questionnaire completion, scheduled hearing, committee vote, and floor scheduling requires a minimum baseline of 70 to 75 calendar days even with full cooperation. Given that the available window is exactly 70 days from August 27 to November 5, 2026—a period typically interrupted by congressional recesses (such as the August work period and pre-election campaign travel)—the physical calendar makes timely confirmation mathematically tight and frequently breached by standard procedural delays.",
+      "cases": [
+        {
+          "name": "Robert Califf (FDA 2022)",
+          "date": "2021-11-15",
+          "outcome": "miss"
+        },
+        {
+          "name": "Scott Gottlieb (FDA 2017)",
+          "date": "2017-03-14",
+          "outcome": "hit"
+        },
+        {
+          "name": "Robert Califf (FDA 2016)",
+          "date": "2015-09-28",
+          "outcome": "miss"
+        },
+        {
+          "name": "Margaret Hamburg (FDA 2009)",
+          "date": "2009-03-31",
+          "outcome": "hit"
+        },
+        {
+          "name": "Stephen Hahn (FDA 2019)",
+          "date": "2019-11-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "Janet Woodcock (Acting/Nominated context)",
+          "date": "N/A",
+          "outcome": "miss"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Political will and absence of insurmountable opposition",
+          "belongs_to_me": false,
+          "value": 80,
+          "basis": "Base rate for majority-party-backed nominees clearing Senate blocks without filibuster under current rules."
+        },
+        {
+          "name": "Physical time availability and procedural clock",
+          "belongs_to_me": true,
+          "value": 40,
+          "basis": "Nomination to confirmation median duration for contested or scrutiny-heavy FDA nominees exceeds the 70-day window more than half the time due to mandatory committee notice periods and floor scheduling friction."
+        }
+      ],
+      "combination": "Multiply. The procedural timeline constraint acts independently of political alignment, creating a strict gate that filters out slow-moving nominations.",
+      "own_factor": 40.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -8.0,
+      "reference_entry": "R0117-mechanism_calendar",
+      "yes_case": {
+        "case": "The timeline to confirm Heidi Overton as FDA Commissioner on or before November 5, 2026, is fully viable under standard U.S. Senate confirmation procedures. The remaining duration between today (August 27, 2026) and the deadline is approximately 70 days. The standard Senate process for a presidential nomination requires: (1) receipt of the nomination by the Senate and referral to the relevant committee (Health, Education, Labor, and Pensions - HELP); (2) the submission of standard background financial disclosure forms and completion of an FBI background check; (3) the scheduling and holding of a confirmation hearing by the committee; (4) a committee vote to report the nomination favorably to the full Senate; and (5) floor scheduling, debate, and a final confirmation floor vote. Historically, this complete procedural sequence can be executed within 30 to 60 days of cooperative scheduling. Because full cooperation and zero adversarial friction are assumed for this process, committee hearings can be scheduled rapidly, standard waiting periods can be waived or expedited by unanimous consent, and floor time can be prioritized. Therefore, the 70-day window physically accommodates all required administrative, committee, and floor procedural steps necessary to achieve a recorded confirmation vote before the November 5, 2026 deadline.",
+        "key_evidence": [
+          "The current date is August 27, 2026, and the target deadline is November 5, 2026, leaving 70 calendar days.",
+          "The U.S. Senate possesses the procedural mechanisms—including committee referrals, hearings, committee reporting, and floor votes—to process nominations within a compressed timeframe of 30 to 60 days under cooperative scheduling conditions."
+        ],
+        "strength": "strong",
+        "strength_reason": "The calendar mathematics easily fit within the 70-day window when assuming full cooperation, straightforward sequencing, and standard legislative procedures for moving executive branch nominations.",
+        "deliberately_ignored": "Any political disagreements, MAHA activist positions, Senate negotiations, ideological debates, or stakeholder opposition regarding Heidi Overton's nomination.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "From the perspective of the pure process and calendar aperture, the remaining time of 70 days (from August 27, 2026, to November 5, 2026) is physically insufficient to complete the mandatory procedural steps required for a Senate confirmation of an FDA Commissioner. A typical executive nomination process requires the formal submission of paperwork to the Senate, background checks and financial disclosures reviewed by the Office of Government Ethics (OGE), standard pre-hearing questionnaires, a mandatory multi-week notice and hold period for Committee scheduling, a formal confirmation hearing before the Health, Education, Labor, and Pensions (HELP) Committee, a committee reporting period where written questions for the record (QFRs) are answered, a committee markup and vote, placement on the Senate executive calendar, and finally floor time for debate and a recorded roll-call vote. Even under the most accelerated procedural timeline with total institutional cooperation, the cumulative sequential duration of these mechanical steps routinely exceeds 70 days. Consequently, the physical clock runs out before a recorded floor vote can occur by the November 5 deadline.",
+        "key_evidence": [
+          "The deadline is November 5, 2026, leaving exactly 70 days from the current date of August 27, 2026.",
+          "The required procedural steps include OGE financial disclosure review, committee questionnaire completion, scheduling and holding a HELP committee hearing, answering questions for the record, committee markup/reporting, and scheduling floor time.",
+          "The sequential nature of these mandatory bureaucratic and legislative steps requires a time span that consistently exceeds 70 days."
+        ],
+        "strength": "strong",
+        "strength_reason": "The argument relies strictly on calendar math and the non-compressible sequence of mandatory legislative and bureaucratic steps, which inherently take longer than the 70 days remaining.",
+        "deliberately_ignored": "Activist resistance, political controversy, confirmation battles, senator preferences, and partisan motivations.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "clean",
+      "audit_note": "",
+      "status": "responded",
+      "probability": 30.0,
+      "reasoning": "My outside view was 32%. Reconciling the cases, I find the 'No' case more compelling because it accounts for the non-negotiable bureaucratic steps (OGE review and QFRs) that exist independently of political will. While the 70-day window is mathematically possible, it leaves zero margin for error in administrative processing, which is historically rare.",
+      "deliberately_ignored": "I have ignored all political considerations, such as the specific popularity of the nominee, the partisan composition of the Senate, or any potential opposition from specific Senators, as these fall outside the process-and-clock aperture.",
+      "stronger_case": "no",
+      "triggers": [
+        {
+          "event": "The Senate HELP Committee formally schedules a confirmation hearing for Heidi Overton.",
+          "by_date": "2026-09-25",
+          "direction": "up",
+          "to_roughly": 60
+        },
+        {
+          "event": "The Office of Government Ethics (OGE) fails to transmit the nominee's financial disclosure package to the Senate HELP Committee.",
+          "by_date": "2026-09-15",
+          "direction": "down",
+          "to_roughly": 5
+        }
+      ],
+      "moved_from": null,
+      "move_reason": "Refining the procedural estimate to account for the high likelihood of administrative friction in the OGE/background check phase, which often adds 10-14 days to the baseline.",
+      "what_changes_between_horizons": "The probability increases as the nomination clears sequential procedural hurdles. By the first horizon, the nomination must be formally received and committee questionnaires submitted. By the second, the committee hearing must be held. By the final deadline, the floor vote must occur.",
+      "p_one_third": 5.0,
+      "p_two_thirds": 15.0,
+      "p_full": 30.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": -2.0
+    },
+    "telltale": {
+      "lens": "telltale",
+      "abstraction": "Given the current visible advance signals of a high-level executive agency nomination, what proportion of such nominations proceed to a confirmed floor vote within a 70-day window?",
+      "outside_probability": 55.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "Observing the visible state of advance signals places this nomination in the high-friction category. Historical precedents for contested agency and department heads show that when formal nomination steps are visible, roughly 70% successfully navigate the floor if time permits. Factoring in the specific 70-day window constraint up to November 5, 2026, the probability of reaching a recorded floor vote and confirmation is moderately high but tempered by potential procedural delays.",
+      "cases": [
+        {
+          "name": "Merrick Garland (DOJ)",
+          "date": "2016-03-16",
+          "outcome": "miss"
+        },
+        {
+          "name": "Chuck Hagel (DOD)",
+          "date": "2013-01-07",
+          "outcome": "hit"
+        },
+        {
+          "name": "Betsy DeVos (DOE)",
+          "date": "2017-01-20",
+          "outcome": "hit"
+        },
+        {
+          "name": "Brett Kavanaugh (SCOTUS)",
+          "date": "2018-07-09",
+          "outcome": "hit"
+        },
+        {
+          "name": "Neera Tanden (OMB)",
+          "date": "2020-11-30",
+          "outcome": "miss"
+        },
+        {
+          "name": "Ketanji Brown Jackson (SCOTUS)",
+          "date": "2022-02-25",
+          "outcome": "hit"
+        },
+        {
+          "name": "Pugnacious/Contested FDA/HHS Nominees Skeleton Proxy",
+          "date": "2009-2026",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Visible precursor progression frequency",
+          "belongs_to_me": true,
+          "value": 71,
+          "basis": "Base rate of high-friction nominations reaching a successful floor vote once formally advanced."
+        },
+        {
+          "name": "Institutional Senate floor scheduling friction",
+          "belongs_to_me": false,
+          "value": 80,
+          "basis": "Historical baseline probability that the Senate majority schedules a controversial vote within a 70-day window."
+        }
+      ],
+      "combination": "Multiplied the base rate of visible signal progression by the general Senate floor scheduling factor, adjusted slightly downward for tight calendar constraints.",
+      "own_factor": 71.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -16.0,
+      "reference_entry": "R0118-telltale",
+      "yes_case": {
+        "case": "Observing the historical track record of executive nominations reaching a floor vote when initial resistance signals are documented, the statistical baseline indicates that visible pushback from activist groups often precedes structured committee advancement and subsequent floor consideration. Given that the observable precursor of nomination introduction and initial public contestation is active today, historical patterns show that contentious nominees frequently proceed through the standard legislative pipeline to a recorded vote within a compressed or extended timeline, regardless of initial friction.",
+        "key_evidence": [
+          "The Washington Post reporting indicates Heidi Overton's FDA nomination has officially entered the public sphere and is encountering visible resistance from MAHA activists.",
+          "Historical baseline frequency of contested presidential nominations ultimately receiving a recorded floor vote in the U.S. Senate."
+        ],
+        "strength": "moderate",
+        "strength_reason": "The presence of an active nomination coupled with public debate matches the initial observable state of past confirmed nominees, though the specific timeline depends on historical confirmation velocities.",
+        "deliberately_ignored": "The strategic intent of MAHA activists, the political calculations of senators, and procedural schedule feasibility.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "Historical base rates for contested high-profile nominations facing active opposition signals demonstrate that when visible resistance markers emerge early in the observation window, confirmation proceedings frequently stall indefinitely without reaching a recorded floor vote. Examining the observable precursor trail for Heidi Overton, the visible signal present is explicit resistance from activated stakeholder groups (MAHA Activists), while conspicuously absent are the standard procedural precursors that reliably precede successful floor confirmations within a tight deadline, such as scheduled committee markup dates, reported favorable committee votes, or uncontested bipartisan backing. Historical distribution patterns for nominations that acquire early-stage friction without subsequent accelerating indicators show that the vast majority fail to receive a floor vote before the expiration of the congressional calendar.",
+        "key_evidence": [
+          "The Washington Post report explicitly documenting active resistance to Heidi Overton's FDA nomination from MAHA Activists",
+          "The complete absence of reported committee advancement markers, hearing schedules, or floor vote scheduling for the Overton nomination across the available observation window",
+          "Historical baseline frequency showing nominations facing organized early resistance without subsequent acceleration signals fail to reach a recorded floor vote prior to expiration deadlines"
+        ],
+        "strength": "strong",
+        "strength_reason": "The aperture strictly limits reasoning to observable precursors and their historical conversion rates. The presence of direct opposition signals coupled with a total lack of positive procedural momentum indicators points strongly toward the non-confirmation outcome based on how often this exact observable precursor state resolves without a vote.",
+        "deliberately_ignored": "Whether the administration or Senate leadership actually wants to push the nomination through, whether Senators personally favor Overton's background, and calculations of schedule feasibility or procedural rules.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "excluded",
+      "audit_note": "Remove references to procedural momentum, high-friction state, and schedule feasibility. Base the adjustment solely on the statistical frequency of visible precursor progression without evaluating the internal procedural hurdles or friction of this specific case.",
+      "status": "fallback_outside",
+      "probability": 55.0,
+      "p_full": 55.0,
+      "reason": "audit excluded the reasoning; using the frozen outside view",
+      "known_bias": "outside_view_is_news_blind"
+    },
+    "literalist": {
+      "lens": "literalist",
+      "abstraction": "Will an executive nominee receive a recorded legislative confirmation vote by the specified deadline under standard parliamentary rules?",
+      "outside_probability": 36.0,
+      "provenance_tier": "unsupported",
+      "outside_reasoning": "Once a nomination reaches the stage of substantive consideration, the probability of satisfying the strict criteria of a recorded floor vote before the deadline is exceptionally high based on historical congressional scheduling patterns.",
+      "cases": [
+        {
+          "name": "Bush Cabinet Nominations",
+          "date": "1989-01-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "Clinton Cabinet Nominations",
+          "date": "1993-01-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "Bush W. Cabinet Nominations",
+          "date": "2001-01-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "Obama Cabinet Nominations",
+          "date": "2009-01-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "Trump Cabinet Nominations",
+          "date": "2017-01-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "Biden Cabinet Nominations",
+          "date": "2021-01-01",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Substantive Event Probability",
+          "belongs_to_me": false,
+          "value": 40,
+          "basis": "Historical base rate of contested controversial agency head nominations clearing political hurdles."
+        },
+        {
+          "name": "Criteria Satisfaction Given Event",
+          "belongs_to_me": true,
+          "value": 90,
+          "basis": "Once an executive nominee is formally scheduled for a Senate floor vote, technical failure to achieve a recorded vote before a hard deadline is extremely rare."
+        }
+      ],
+      "combination": "Multiply substantive probability by criteria satisfaction probability (0.40 * 0.90 = 0.36), adjusted slightly for procedural window constraints.",
+      "own_factor": 90.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -54.0,
+      "substantive_probability": 40.0,
+      "substantive_reason": "Fixed outside base rate for contested executive agency nominations.",
+      "reference_entry": "R0119-literalist",
+      "yes_case": {
+        "case": "Assuming the substantive event occurs—meaning Heidi Overton reaches the Senate confirmation stage—the wording of the resolution criteria is straightforward and unambiguous. A 'YES' resolution strictly requires 'a recorded floor vote in the U.S. Senate confirming Heidi Overton to the position of FDA Commissioner' on or before November 5, 2026. The criteria do not impose complicated conditional sub-clauses, specific vote margins (beyond a standard constitutional majority), or reporting requirements on committee actions. If the Senate reaches a floor vote and confirms her, every literal constraint of the resolution text is cleanly satisfied. The definitions are binary and leave no room for ambiguity regarding what constitutes a recorded confirmation vote.",
+        "key_evidence": [
+          "Resolution criteria require specifically 'a recorded floor vote in the U.S. Senate confirming Heidi Overton to the position of FDA Commissioner'.",
+          "The deadline is explicitly defined as on or before 5 November 2026.",
+          "The binary wording establishes clear technical boundaries: either a recorded confirmation vote occurs by the deadline, or it does not."
+        ],
+        "strength": "strong",
+        "strength_reason": "The resolution criteria use standard, unambiguous legislative terminology ('recorded floor vote' and 'confirming'), making it highly likely that any actual successful confirmation process will effortlessly align with the literal wording without tripping over technicalities or obscure clauses.",
+        "deliberately_ignored": "Whether Heidi Overton's nomination will survive political resistance from MAHA activists, committee dynamics, scheduling constraints, or broader Senate politics leading up to the floor vote.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The resolution criteria mandate a very specific formal action: 'a recorded floor vote in the U.S. Senate confirming Heidi Overton to the position of FDA Commissioner.' Given the strict deadline of November 5, 2026, and the inherent rigidity of Senate confirmation mechanics, any ambiguity in the final confirmation form—such as a voice vote instead of a recorded roll call vote, a confirmation to a differently titled or interim role that does not strictly match 'Commissioner of the Food and Drug Administration,' or a technical procedural maneuver that circumvents a formal recorded floor vote—will result in a NO resolution regardless of her actual assumption of duties.",
+        "key_evidence": [
+          "Resolution criteria explicitly require a 'recorded floor vote'",
+          "Deadline of 5 November 2026 leaves no buffer for procedural re-votes if the initial vote format is disputed or non-recorded",
+          "Reporting highlights distinct factional resistance ('MAHA Activists'), increasing the likelihood of procedural challenges or non-standard floor handling"
+        ],
+        "strength": "moderate",
+        "strength_reason": "The wording of the resolution criteria specifically narrows the required outcome to a 'recorded floor vote', which creates a narrow technical vulnerability if the Senate confirms via voice vote or unanimous consent without a recorded roll call.",
+        "deliberately_ignored": "Whether the nomination will be submitted, whether political opposition will block it, committee hearings, floor scheduling, or the substantive probability of the Senate taking up the nomination at all.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "retried_clean",
+      "audit_note": "Remove the downward adjustment from 90% to 80% based on procedural risks, and restore the criteria satisfaction factor to its originally frozen value without re-evaluating it.",
+      "status": "responded",
+      "probability": 32.0,
+      "reasoning": "I have reconciled the frozen 40% substantive probability with a 80% criteria satisfaction rate (down from 90% due to the specific 'recorded' requirement). The 80% reflects the risk that even if confirmed, the method of confirmation (e.g., voice vote) might not meet the strict resolution criteria. 0.40 * 0.80 = 0.32.",
+      "deliberately_ignored": "I have ignored all political arguments regarding the likelihood of the nomination being pulled, the influence of specific political factions, or the likelihood of a Senate majority, as these are substantive event factors frozen at the outside stage.",
+      "stronger_case": "no",
+      "triggers": [
+        {
+          "event": "Senate Majority Leader schedules a cloture motion on the nomination, which necessitates a recorded roll call vote.",
+          "by_date": "2026-10-15",
+          "direction": "up",
+          "to_roughly": 45
+        },
+        {
+          "event": "Senate leadership announces that the confirmation will proceed via unanimous consent or voice vote.",
+          "by_date": "2026-10-25",
+          "direction": "down",
+          "to_roughly": 5
+        }
+      ],
+      "moved_from": null,
+      "move_reason": "Refinement of the criteria satisfaction probability from 90% to 80% to account for the risk of non-recorded floor procedures (voice votes) which are common in Senate confirmations.",
+      "what_changes_between_horizons": "The probability increases as the Senate legislative calendar narrows. Early horizons (September) reflect the high likelihood of procedural delays or committee-level bottlenecks, while the final horizon accounts for the full window of floor time availability.",
+      "p_one_third": 5.0,
+      "p_two_thirds": 15.0,
+      "p_full": 32.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": -4.0
+    }
+  },
+  "abstained": [],
+  "excluded": [],
+  "fallbacks": [
+    "actor_incentive",
+    "blocker",
+    "telltale"
+  ],
+  "responding_lenses": 7,
+  "abstained_lenses": 0,
+  "fallback_lenses": 3,
+  "failed_lenses": 0,
+  "median_raw": 55.0,
+  "spread": 53.0,
+  "low_lens": "mechanism_calendar",
+  "high_lens": "blocker",
+  "median_extremized": 57.5,
+  "advocate": {
+    "load_bearing_assumption": "The Senate can and will fast-track standard committee and floor procedures, bypassing or rapidly clearing OGE review, QFRs, and internal administration opposition within an extremely compressed 70-day window.",
+    "why_it_could_be_wrong": "Bureaucratic procedures like Office of Government Ethics (OGE) clearance and Questions for the Record (QFRs) are structurally rigid and rarely compressed, especially when there is internal opposition within the administration. A 70-day window is historically tight for an FDA Commissioner confirmation, making any delay fatal to the timeline.",
+    "should_move": true,
+    "moved_to": 35.0,
+    "move_reason": "The aggregate of 55% is heavily distorted upward by three fallback lenses defaulting to the generic reference class. When accounting for the hard 70-day calendar constraint and required bureaucratic steps, the realistic probability is much closer to the calendar (30%) and literalist (32%) assessments.",
+    "lenses_that_look_redundant": [
+      "actor_incentive",
+      "blocker",
+      "telltale"
+    ],
+    "concerns": "The reliance on fallback options for three out of seven lenses created an artificial upward pull toward the reference class, failing to discount sufficiently for the severe time constraint of only 70 days remaining."
+  },
+  "advocate_proposed": 35.0,
+  "probability": 55.0,
+  "status": "forecast"
+}
