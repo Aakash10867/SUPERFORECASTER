@@ -1,0 +1,666 @@
+{
+  "question_id": "Q0006",
+  "question": "Will the U.S. Senate pass the Safeguard American Voter Eligibility (SAVE America) Act on or before 24 August 2027?",
+  "date": "2026-09-15",
+  "cause": "refresh",
+  "config_version": "3",
+  "shape": "window",
+  "lenses": {
+    "reference_class": {
+      "lens": "reference_class",
+      "abstraction": "Within a 343-day window during a divided legislature, how often does a contentious electoral/voting integrity bill pass the upper chamber?",
+      "outside_probability": 10.0,
+      "provenance_tier": "thin",
+      "outside_reasoning": "Historical base rates for major partisan voting legislation passing the U.S. Senate under divided government are near zero due to the legislative filibuster and intense polarization. Translating this directly gives a low outside view probability.",
+      "cases": [
+        {
+          "name": "National Voter Registration Act Amendments (various)",
+          "date": "1995-2006",
+          "outcome": "miss"
+        },
+        {
+          "name": "Help America Vote Act amendments/related standalone bills",
+          "date": "2003-2006",
+          "outcome": "miss"
+        },
+        {
+          "name": "DISCLOSE Act / Democracy Is Strengthened by Casting Light On Spending in Elections",
+          "date": "2010",
+          "outcome": "miss"
+        },
+        {
+          "name": "DISCLOSE Act second iteration",
+          "date": "2012",
+          "outcome": "miss"
+        },
+        {
+          "name": "Freedom to Vote Act / For the People Act",
+          "date": "2021-2022",
+          "outcome": "miss"
+        },
+        {
+          "name": "Freedom to Vote Act re-introduction",
+          "date": "2023-2024",
+          "outcome": "miss"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Base rate of passage for major partisan electoral reform bills under divided Senate control",
+          "belongs_to_me": true,
+          "value": 5,
+          "basis": "Out of 6 major historical attempts at sweeping voting rule changes under divided control, none have successfully passed the Senate."
+        },
+        {
+          "name": "Probability of unified party control emerging or breaking the legislative gridlock threshold",
+          "belongs_to_me": false,
+          "value": 20,
+          "basis": "Historical frequency of sudden cloture-breaking consensus on polarizing rules is extremely low."
+        }
+      ],
+      "combination": "Added a small baseline allowance (5%) for unprecedented procedural breakthroughs or compromise amendments, recognizing that extreme procedural workarounds are occasionally attempted.",
+      "own_factor": 5.0,
+      "assumed_factors": 1,
+      "scaffold_shift": 5.0,
+      "reference_entry": "R0407-reference_class",
+      "status": "responded",
+      "audit_result": "n/a",
+      "probability": 10.0,
+      "p_full": 10.0,
+      "p_one_third": 3.5,
+      "p_two_thirds": 6.8,
+      "triggers": [
+        {
+          "event": "time passing with no qualifying action",
+          "direction": "down",
+          "to_roughly": ""
+        }
+      ]
+    },
+    "analogy": {
+      "lens": "analogy",
+      "abstraction": "Within a 343-day window, will a heavily contested, single-chamber-passed partisan electoral integrity bill requiring specific documentary proof for federal procedures pass the second legislative chamber and reach enactment?",
+      "outside_probability": 15.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "While HAVA demonstrated that sweeping election bills can pass, it required rare bipartisan compromise. The SAVE America Act is a highly polarized partisan measure lacking broad cross-party support. Given the 60-vote threshold in the Senate and fierce opposition from the majority party in the opposing chamber, the historical precedent points strongly toward failure, similar to H.R. 1 and the ACE Act.",
+      "cases": [
+        {
+          "name": "Help America Vote Act (HAVA)",
+          "date": "2002-10-29",
+          "outcome": "hit"
+        },
+        {
+          "name": "For the People Act (H.R. 1)",
+          "date": "2021-03-03",
+          "outcome": "miss"
+        },
+        {
+          "name": "Freedom to Vote: John R. Lewis Act",
+          "date": "2022-01-19",
+          "outcome": "miss"
+        },
+        {
+          "name": "American Confidence in Elections (ACE) Act",
+          "date": "2023-07-01",
+          "outcome": "miss"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Historical passage rate of single-chamber electoral reform bills in a polarized Senate",
+          "belongs_to_me": true,
+          "value": 25,
+          "basis": "Based on 1 success (HAVA, which was uniquely bipartisan) out of 4 major modern attempts."
+        },
+        {
+          "name": "Senate filibuster hurdle and partisan polarization factor",
+          "belongs_to_me": false,
+          "value": 20,
+          "basis": "Base rate for controversial legislation requiring 60 votes to overcome a filibuster in a closely divided Senate."
+        }
+      ],
+      "combination": "Combined by taking the intersection of historical passage rates for major election bills and the restrictive procedural filter of the Senate filibuster, yielding a low probability due to the lack of bipartisan consensus.",
+      "own_factor": 25.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -10.0,
+      "reference_entry": "R0408-analogy",
+      "yes_case": {
+        "case": "The closest past episodes are the 2024 legislative push for the Safeguard American Voter Eligibility Act under Speaker Johnson and the 2019 National Voter Registration Act amendment attempts. This episode differs fundamentally because of the current dynamic surrounding presidential incentives and midterm leverage—specifically, the administration's active linking of high-stakes voter integrity measures to broader legislative packages and electoral outcomes, combined with a post-2026 midterm political environment where Senate alignments are acutely sensitive to base mobilization on election security. Unlike previous standalone bills that stalled in partisan committees without floor pressure, the current environment incorporates direct executive prioritization (mirroring coordinated pushes seen in recent crypto and energy policy adjustments) and heightened electoral roll scrutiny that forces vulnerable senators to take recorded votes rather than allowing leadership to quietly bury the legislation.",
+        "key_evidence": [
+          "The ongoing public focus on electoral integrity and voter roll scrutiny exemplified by massive roll deletions and federal debate.",
+          "Executive-level proposals explicitly tied to upcoming midterms and legislative leverage, creating a distinct top-down party discipline dynamic.",
+          "Historical precedents of the SAVE Act text serving as a focal point for legislative showdowns."
+        ],
+        "strength": "moderate",
+        "strength_reason": "The structural pressure from executive incentives provides a viable pathway to floor action that past stagnant bills lacked, though Senate procedural hurdles remain a significant barrier.",
+        "deliberately_ignored": "I did not compute exact vote counts, procedural timelines, or committee calendar schedules.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The closest past episodes to the SAVE America Act push are the 2019 SAFE Act (H.R. 1) legislative battles and the 2024 SAVE Act push in the House. This episode differs from the 2019 episode because the current political alignment features a narrower Senate margin with higher polarization around election administration, completely removing any bipartisan crossover potential that occasionally surfaced in past minor voting integrity debates. Furthermore, unlike the 2024 House-passed iteration which served primarily as a messaging vehicle ahead of the presidential election, the current timeline extends past the 2026 midterms where voter sentiment and shifting caucus dynamics—highlighted by historical returns of senior leadership like Senator McConnell and shifting mid-term electoral pressures—introduce legislative paralysis rather than consolidation. The presence of concurrent high-stakes battles over public benefits, immigration rules, and executive branch clashes consumes the legislative bandwidth that previously allowed standalone election security bills to capture floor time, making Senate passage fundamentally distinct and unachievable compared to prior messaging bills.",
+        "key_evidence": [
+          "The 2024 SAVE Act passed the House primarily as a partisan messaging vehicle without securing Senate floor action.",
+          "The 2019 H.R. 1 (For the People Act) stalled in the Senate due to intense procedural and ideological polarization.",
+          "Current reporting highlights intense congressional focus on alternative administration priorities like public land energy leasing, judicial and executive branch rule challenges, and mid-term political repositioning."
+        ],
+        "strength": "strong",
+        "strength_reason": "The historical pattern of federal voter registration and proof-of-citizenship bills demonstrates that partisan polarization in the Senate consistently prevents passage of sweeping electoral mandates, and current legislative friction points differ by lacking any viable bipartisan coalition bridge.",
+        "deliberately_ignored": "Calculations of exact vote counts, procedural mechanics of filibuster overrides, or calendar schedules for committee markups.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "excluded",
+      "audit_note": "Remove the adjustment based on the procedural mechanism of attaching the bill to an omnibus spending package and re-derive the probability relying solely on the analogical comparison of past episodes and the base-rate reconciliation.",
+      "status": "fallback_outside",
+      "probability": 15.0,
+      "p_full": 15.0,
+      "reason": "audit excluded the reasoning; using the frozen outside view",
+      "known_bias": "outside_view_is_news_blind"
+    },
+    "actor_incentive": {
+      "lens": "actor_incentive",
+      "abstraction": "Within a specified multi-year legislative term, will a cohesive political principal with unified majority control enact a strict eligibility verification statute requiring documentary proof of status for a foundational franchise registry, given high internal motivation?",
+      "outside_probability": 55.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "The principals exhibit strong intent to advance the SAVE America Act, and capability is tied to majority dynamics. However, historical precedent shows that even motivated majorities face internal threshold challenges with rigid documentary mandates. Evaluating will and capability alongside historical clearance yields a moderate probability.",
+      "cases": [
+        {
+          "name": "PROMPT Act / federalized voting standards pushes",
+          "date": "2021",
+          "outcome": "miss"
+        },
+        {
+          "name": "H.R. 1 / For the People Act (Democratic unified control push)",
+          "date": "2021",
+          "outcome": "miss"
+        },
+        {
+          "name": "REAL ID Act implementation enhancements",
+          "date": "2005",
+          "outcome": "hit"
+        },
+        {
+          "name": "Bipartisan Campaign Reform Act (McCain-Feingold)",
+          "date": "2002",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Principal Will and Delivery Capability (My Aperture)",
+          "belongs_to_me": true,
+          "value": 60,
+          "basis": "Principals possess high ideological will, but legislative caucus cohesion introduces friction."
+        },
+        {
+          "name": "Base Rate of Partisan Priority Passage in Senate",
+          "belongs_to_me": false,
+          "value": 50,
+          "basis": "Historical base rate for major partisan electoral integrity initiatives under narrow or unified control."
+        }
+      ],
+      "combination": "Combined by weighing the specific will-and-capability score against the historical base rate of partisan priority passage, adjusting slightly downward from parity due to internal Senate caucus divergence on specific administrative mandates.",
+      "own_factor": 60.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -5.0,
+      "reference_entry": "R0409-actor_incentive",
+      "yes_case": {
+        "case": "The principals who must act—namely, the Senate leadership and voting majorities aligned with the executive branch's electoral integrity initiatives—possess the unambiguous, revealed intent and structural capability to advance and pass the SAVE America Act. Stated intent is demonstrated by continuous executive alignment and legislative prioritization of election security measures, such as documentary proof of citizenship for federal voter registration. Because capability to pass legislation in the Senate relies purely on the internal will and voting cohesion of the governing principals, their demonstrated drive to enact core electoral integrity mandates ensures they possess both the desire and the mechanical power to deliver this specific legislative outcome before August 2027.",
+        "key_evidence": [
+          "The executive branch and allied congressional principals consistently prioritize election security and voting integrity as central platform requirements.",
+          "Senate leadership maintains the capacity to schedule and whip votes on priority legislation reflecting executive agenda items."
+        ],
+        "strength": "strong",
+        "strength_reason": "The principals' stated and revealed intent to secure federal elections aligns directly with the core requirements of the SAVE America Act, and their internal legislative capability to command votes is sufficient when will is present.",
+        "deliberately_ignored": "Filibuster rules, cloture thresholds, committee assignments, potential vetoes or challenges from opposition parties, procedural delays, court rulings, and the exact calendar scheduling of Senate floor time.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "Examining the revealed intent and capability of the principals required to pass the SAVE America Act reveals a lack of unified internal resolve and the absence of an active, forceful push from key Senate leaders necessary to prioritize and deliver this specific legislation by August 2027. While stated intent exists among certain factions, the actual prioritization and allocation of legislative muscle by the necessary principals show that they do not possess the singular, overriding will to execute this specific delivery over competing priorities.",
+        "key_evidence": [
+          "The return of key leadership figures like Sen. Mitch McConnell to the Senate, whose strategic focus and historical management of chamber priorities do not align with an aggressive push for this exact mandate.",
+          "The divergence in stated legislative agendas versus actual floor capability demonstrated by leadership focus on other economic and administrative measures."
+        ],
+        "strength": "moderate",
+        "strength_reason": "The argument relies strictly on evaluating the revealed intent and capability of the principals within the chamber to drive this specific act to completion, bypassing any external procedural hurdles.",
+        "deliberately_ignored": "Filibuster rules, committee blockages, parliamentary timelines, court interventions, and partisan numbers in the Senate.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "excluded",
+      "audit_note": "Remove references to the Senate's institutional preference for consensus-based or must-pass legislation and re-derive the probability based solely on the principals' will and capability without invoking procedural roadblocks.",
+      "status": "fallback_outside",
+      "probability": 55.0,
+      "p_full": 55.0,
+      "reason": "audit excluded the reasoning; using the frozen outside view",
+      "known_bias": "outside_view_is_news_blind"
+    },
+    "blocker": {
+      "lens": "blocker",
+      "abstraction": "Within a fixed legislative window, will a structured institutional veto point successfully block a controversial electoral integrity mandate in the upper house?",
+      "outside_probability": 35.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "The structural friction of the U.S. Senate (specifically the 60-vote threshold for controversial measures) historically stops half of major election reform bills. Combining this baseline with the strict time window and requirement for documentary proof of citizenship yields an outside probability of 35 percent.",
+      "cases": [
+        {
+          "name": "National Voter Registration Act (Motor Voter)",
+          "date": "1993-05-11",
+          "outcome": "hit"
+        },
+        {
+          "name": "Help America Vote Act (HAVA)",
+          "date": "2002-10-10",
+          "outcome": "hit"
+        },
+        {
+          "name": "Freedom to Vote Act (S. 2747)",
+          "date": "2022-01-19",
+          "outcome": "miss"
+        },
+        {
+          "name": "John Lewis Voting Rights Advancement Act",
+          "date": "2022-11-03",
+          "outcome": "miss"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Structural friction success rate (my factor)",
+          "belongs_to_me": true,
+          "value": 50,
+          "basis": "50% historical passage rate for major federal election bills under senate procedural rules."
+        },
+        {
+          "name": "Principal intent and momentum assumption",
+          "belongs_to_me": false,
+          "value": 70,
+          "basis": "Assumption that proponents maintain high effort to bring the bill to the floor."
+        }
+      ],
+      "combination": "Multiply the base structural friction success rate by the principal momentum factor, adjusted for the stringent Senate 60-vote threshold.",
+      "own_factor": 50.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -15.0,
+      "reference_entry": "R0410-blocker",
+      "yes_case": {
+        "case": "From the perspective of institutional friction, the primary structural mechanisms capable of halting legislative passage in the U.S. Senate are the filibuster and procedural roadblocks controlled by the chamber's leadership and committee structures. Historically, when external political alignment and institutional pressure converge to push a high-priority electoral integrity measure forward, Senate procedural rules rarely present an insurmountable barrier if the majority party utilizes reconciliation, rules changes, or unified caucus discipline. Interventions by institutional gatekeepers—such as committee chairs or minority filibusters—succeed in permanently blocking priority legislation in less than half of such instances when high-salience mandates are actively pursued. The structural friction of the Senate can delay proceedings, but it fundamentally lacks an absolute veto when a determined majority exerts procedural pressure, meaning structural friction of this kind fails to prevent passage in the majority of comparable historical high-stakes legislative pushes.",
+        "key_evidence": [
+          "Senate procedural rules permit cloture motions and potential rule adjustments to overcome legislative filibusters.",
+          "Historical legislative tracking shows that structural gatekeeping mechanisms fail to permanently block high-priority partisan mandates when caucus discipline is maintained.",
+          "Committee jurisdiction and floor scheduling protocols represent the primary structural friction points in the Senate."
+        ],
+        "strength": "moderate",
+        "strength_reason": "While structural friction like the filibuster exists, historical precedent demonstrates that institutional roadblocks are routinely bypassed or overcome for high-salience federal legislation when systemic pressure is applied.",
+        "deliberately_ignored": "Whether the senators actually want to pass the SAVE America Act, their underlying political intent, electoral calculations, and any granular calendar counting of days remaining until the August 2027 deadline.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The structural friction standing in the way of passing the SAVE America Act in the U.S. Senate is the entrenched supermajority threshold of the filibuster, combined with the structural requirement for bipartisan consensus in a tightly divided legislative body. The Senate's institutional rules inherently empower minority opposition to erect procedural blockades that require 60 votes to overcome. Historical and institutional friction of this procedural magnitude succeeds in halting controversial, partisan electoral reform bills the vast majority of the time—historically defeating contentious voting legislation in the Senate in well over 80% to 90% of instances where broad bipartisan consensus is absent. The structural requirement to peel off cross-party votes against party polarization is a friction point that overwhelmingly prevents passage.",
+        "key_evidence": [
+          "The U.S. Senate filibuster rule requiring 60 votes to advance contentious legislation",
+          "Historical failure rates of partisan electoral and voting rights bills in overcoming Senate cloture votes"
+        ],
+        "strength": "strong",
+        "strength_reason": "The 60-vote cloture requirement represents one of the most reliable and insurmountable structural friction points in modern American governance, routinely blocking ideologically divisive legislation regardless of majority control.",
+        "deliberately_ignored": "Whether the Senate majority leadership actually wants to prioritize this bill, vote tracking, political preferences, scheduling constraints, and the specific motivations or vote counts of individual senators.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "retried_clean",
+      "audit_note": "Remove the adjustment based on post-midterm shifts in Senate dynamics, and re-derive the probability using only the frozen base rate, structural friction analysis, and allowed prior work.",
+      "status": "responded",
+      "probability": 12.0,
+      "reasoning": "I reconciled my 35% outside view with the 'No' case by acknowledging that while the outside view considers general legislative success, the specific nature of the SAVE Act—a highly contentious partisan electoral mandate—triggers the most restrictive form of Senate structural friction. The 60-vote cloture requirement acts as a near-absolute veto for this specific type of legislation in the current environment, forcing me to lower my estimate from the outside view to reflect the high historical failure rate of such bills.",
+      "deliberately_ignored": "I have ignored the political intent of the Senate leadership and the specific electoral motivations of the parties, as these are outside my aperture and are assumed to be constant.",
+      "stronger_case": "no",
+      "triggers": [
+        {
+          "event": "The Senate Majority Leader schedules a cloture vote on the SAVE America Act.",
+          "by_date": "2027-05-01",
+          "direction": "up",
+          "to_roughly": 25
+        },
+        {
+          "event": "The Senate adopts a rule change specifically exempting federal election integrity bills from the 60-vote cloture requirement.",
+          "by_date": "2027-08-24",
+          "direction": "up",
+          "to_roughly": 60
+        }
+      ],
+      "moved_from": 8.0,
+      "move_reason": "The move from 8 to 12 reflects a recalibration of the 'structural friction success rate' factor, acknowledging that while the filibuster is a massive hurdle, the possibility of attaching the bill to must-pass appropriations or omnibus legislation provides a non-zero path that was previously undervalued.",
+      "what_changes_between_horizons": "The probability increases slightly over time as the legislative calendar progresses, reflecting the cumulative opportunity for leadership to attempt a floor vote or attach the measure to must-pass legislation, though the structural friction of the 60-vote threshold remains constant.",
+      "p_one_third": 8.0,
+      "p_two_thirds": 10.0,
+      "p_full": 12.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": -23.0
+    },
+    "mechanism_calendar": {
+      "lens": "mechanism_calendar",
+      "abstraction": "Will a legislature pass a specific federal integrity and documentation statute within a 343-day window, given the sequential legislative steps required?",
+      "outside_probability": 10.0,
+      "provenance_tier": "thin",
+      "outside_reasoning": "Even assuming full cooperation and no adversarial friction, the physical sequence of committee referral, mandatory waiting periods, debate hours under Senate standing rules, and competing legislative calendar items make passing a standalone controversial bill within 343 days extremely tight. Historically, 0 out of 4 major standalone electoral integrity bills cleared this procedural hurdle within the timeframe, capping the likelihood at a low single digit.",
+      "cases": [
+        {
+          "name": "Voter Access to Information Act",
+          "date": "2019-06-14",
+          "outcome": "miss"
+        },
+        {
+          "name": "Help America Vote Act Amendments",
+          "date": "2018-03-11",
+          "outcome": "miss"
+        },
+        {
+          "name": "FREEDOM to Vote Act (Initial Senate introduction)",
+          "date": "2021-09-14",
+          "outcome": "miss"
+        },
+        {
+          "name": "American Confidence in Elections (ACE) Act Senate analogs",
+          "date": "2023-07-10",
+          "outcome": "miss"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Process and clock feasibility (pure calendar and procedural steps)",
+          "belongs_to_me": true,
+          "value": 15,
+          "basis": "Physical and procedural time for committee referral, markup, floor scheduling, debate, and roll call votes under Senate rules."
+        },
+        {
+          "name": "Standalone bill vehicle prioritization factor",
+          "belongs_to_me": false,
+          "value": 20,
+          "basis": "Historical base rate of standalone electoral integrity bills successfully passing the Senate rather than being attached to must-pass vehicles."
+        }
+      ],
+      "combination": "Combined via logical dependency: the process must allow it (my factor) AND the bill must be prioritized as a standalone vehicle, yielding a low combined probability due to severe Senate floor calendar congestion.",
+      "own_factor": 15.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -5.0,
+      "reference_entry": "R0411-mechanism_calendar",
+      "yes_case": {
+        "case": "From the perspective of process and clock alone, the U.S. Senate has ample time to pass the SAVE America Act (or an identical successor bill requiring documentary proof of citizenship for federal voter registration) prior to August 24, 2027. The Senate legislative process for a bill consists of referral to committee, potential committee hearings and markup, reporting to the full Senate, placement on the legislative calendar, floor debate, amendments, and final passage via a simple majority vote. Assuming full cooperation and no procedural obstruction, a bill can move from introduction to floor consideration within a few weeks to a couple of months. Given that the timeline between the current date (September 15, 2026) and the deadline (August 24, 2027) spans approximately 343 days—encompassing multiple active Senate session months—the physical duration required for drafting, committee processing, and floor voting is a fraction of the available window. Therefore, purely on the basis of chronological capacity and standard legislative steps, the physical time allows for passage well before the deadline.",
+        "key_evidence": [
+          "The remaining time between September 15, 2026, and August 24, 2027, is approximately 343 days.",
+          "Standard Senate legislative workflow (committee referral, reporting, floor debate, and simple majority vote) requires weeks to months, fitting comfortably within the 343-day window."
+        ],
+        "strength": "strong",
+        "strength_reason": "The calendar window of nearly a year provides far more time than the physical steps of the legislative process require.",
+        "deliberately_ignored": "Political motivations, partisan support or opposition, vote counting, senator preferences, and the likelihood of cooperation or friction from opposing parties.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "Passing the SAVE America Act through the U.S. Senate requires a specific sequence of procedural steps: introduction and referral to committee, committee consideration and potential hearings, reporting out of committee, placement on the Senate calendar, securing floor time via unanimous consent or cloture motions, debate, amendment processes, a roll call vote requiring a simple majority (or 60 votes if filibustered), and subsequent engrossment and message actions. Each of these steps consumes mandatory minimum periods for processing, printing, reporting, and scheduling under standard Senate rules and the physical limitations of the legislative calendar. Given the timeline remaining until August 24, 2027, and the concurrent demands on the Senate floor schedule for appropriations, mandatory authorizations, and other legislative business, the sequential accumulation of necessary procedural steps exceeds the physical time available to guarantee final passage within the prescribed window.",
+        "key_evidence": [
+          "The required legislative process for any Senate bill mandates committee referral, markup, calendar placement, and floor debate.",
+          "Standard Senate floor procedures, including cloture invocation processes under Rule XXII, inherently consume multiple days of parliamentary time even under conditions of full cooperation.",
+          "The target resolution date is August 24, 2027, limiting the cumulative duration available for sequential legislative steps."
+        ],
+        "strength": "moderate",
+        "strength_reason": "The procedural steps are fixed by Senate rules and consume a measurable amount of calendar time, creating a physical constraint if legislative congestion prevents timely floor scheduling.",
+        "deliberately_ignored": "Any political motivations, partisan alignments, willingness of senators to vote for or against the bill, or opposition from specific political parties.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "excluded",
+      "audit_note": "Remove any consideration of the Senate prioritizing or wanting the bill, and re-derive the estimate based solely on the mechanical sequence of required steps, their durations, and the available calendar time.",
+      "status": "fallback_outside",
+      "probability": 10.0,
+      "p_full": 10.0,
+      "reason": "audit excluded the reasoning; using the frozen outside view",
+      "known_bias": "outside_view_is_news_blind"
+    },
+    "telltale": {
+      "lens": "telltale",
+      "abstraction": "Will a legislature pass a controversial, partisan voter-eligibility or election integrity bill within a 343-day window when advance signaling is present?",
+      "outside_probability": 23.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "Looking across past attempts to alter federal voting eligibility rules through partisan legislative vehicles, bills frequently stall in the Senate due to intense polarization and supermajority requirements. Although advance signals are visible today (the bill has been introduced and debated), the base rate of passage for such contentious measures within a 343-day window is historically constrained by Senate rules and partisan division, anchoring the probability near the lower third.",
+      "cases": [
+        {
+          "name": "Help America Vote Act (HAVA) 2002",
+          "date": "2002-10-16",
+          "outcome": "hit"
+        },
+        {
+          "name": "Bipartisan Campaign Reform Act (BCRA) 2002",
+          "date": "2002-03-20",
+          "outcome": "hit"
+        },
+        {
+          "name": "For the People Act (H.R. 1) 2021",
+          "date": "2021-06-22",
+          "outcome": "miss"
+        },
+        {
+          "name": "Freedom to Vote Act 2022",
+          "date": "2022-01-19",
+          "outcome": "miss"
+        },
+        {
+          "name": "American Confidence in Elections (ACE) Act 2023",
+          "date": "2023-07-01",
+          "outcome": "miss"
+        },
+        {
+          "name": "SAVE Act House passage / Senate pending 2024",
+          "date": "2024-07-10",
+          "outcome": "miss"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Advance signal presence and procedural viability",
+          "belongs_to_me": false,
+          "value": 70,
+          "basis": "Historical base rate for bills receiving floor attention in at least one chamber reaching a vote phase."
+        },
+        {
+          "name": "Observed transition frequency of partisan election bills passing the Senate",
+          "belongs_to_me": true,
+          "value": 33,
+          "basis": "2 hits out of 6 comparable partisan election integrity/reform pushes under similar polarization."
+        }
+      ],
+      "combination": "Combined by assessing that while advance signals and procedural introduction are common (70%), the historical conversion rate for highly polarized, partisan voter eligibility bills overcoming Senate procedural hurdles (like the filibuster) is low (33%). Multiplying these gives approximately 23%.",
+      "own_factor": 33.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -10.0,
+      "reference_entry": "R0412-telltale",
+      "yes_case": {
+        "case": "Observing historical patterns of legislative tracking, bills that gain high-profile alignment and feature in intense public electoral roll and voter administration debates—such as those seen surrounding election administration warnings and voter sentiment shifts ahead of the 2026 midterms—frequently proceed to floor votes and subsequent passage when aligned with broader administration push factors. The presence of concurrent national focus on voter registration rules, combined with active legislative sequencing signals in related policy domains, mirrors the exact observational precursor state that historically precedes Senate passage of major electoral integrity legislation within a multi-year window.",
+        "key_evidence": [
+          "Election officials bracing for potential federal interference ahead of midterms",
+          "Voter sentiment ahead of 2026 midterm elections showing intense focus on electoral processes",
+          "Broad administrative emphasis on federal voter eligibility signals matching historical antecedent patterns for similar bills"
+        ],
+        "strength": "moderate",
+        "strength_reason": "The observable precursors of heightened election administration focus and national debate are present, aligning with the typical frequency of signal progression for high-visibility federal election bills.",
+        "deliberately_ignored": "Whether actors genuinely desire the bill to pass, strategic calculations of senators, or procedural scheduling mechanics.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "Observing the historical record of similar legislative proposals regarding documentary proof of citizenship for federal voter registration, successful progression through the U.S. Senate requires a specific, observable set of precursor signals such as sustained bipartisan committee coordination, floor scheduling announcements, and unified leadership prioritization. Reviewing the available reporting and the current signal state, none of the necessary observable advance signals indicating impending Senate floor action on the SAVE America Act are present today. Historically, when these precursor signals are entirely absent from the observable information environment, legislative items of this nature fail to proceed or achieve a Senate vote. Without the empirical markers that reliably precede successful floor consideration, the historical base rate for un-signaled bills dictates that the measure will fail to pass the Senate by the 24 August 2027 deadline.",
+        "key_evidence": [
+          "Absence of any reporting or visible precursor signals indicating Senate floor action, committee coordination, or scheduling for the SAVE America Act",
+          "Historical baseline frequency showing that major federal legislation without visible advance signals or precursor momentum overwhelmingly fails to reach a successful floor vote"
+        ],
+        "strength": "strong",
+        "strength_reason": "The argument relies strictly on the total absence of required observable precursors in the signal state, matching historical patterns where unannounced or un-signaled legislation fails to advance within the given timeframe.",
+        "deliberately_ignored": "Strategic assessments of what lawmakers or political actors want, procedural mechanics of the Senate, and the specific political preferences or motivations behind the legislation.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "retried_clean",
+      "audit_note": "Remove the reference to 'necessary procedural precursors' being absent, and instead base the adjustment strictly on the observable presence or absence of advance signals and historical base rates without delving into procedural mechanics.",
+      "status": "responded",
+      "probability": 10.0,
+      "reasoning": "I reconciled the outside view (23%) with the current absence of legislative momentum by adjusting downward. While the outside view accounts for the general frequency of partisan election bills, the current lack of any visible procedural movement in the Senate suggests the bill is currently stalled, making the 10% estimate more reflective of the current observable state than the historical base rate.",
+      "deliberately_ignored": "I ignored assessments regarding whether Senators 'want' to pass the bill or their underlying political motivations, focusing strictly on the observable presence of legislative precursors.",
+      "stronger_case": "no",
+      "triggers": [
+        {
+          "event": "Senate Majority Leader schedules a cloture vote on the SAVE America Act or an identical successor.",
+          "by_date": "2027-05-01",
+          "direction": "up",
+          "to_roughly": 65
+        },
+        {
+          "event": "Senate Committee on Rules and Administration issues a report recommending the bill for floor action.",
+          "by_date": "2027-01-07",
+          "direction": "up",
+          "to_roughly": 40
+        }
+      ],
+      "moved_from": 12.0,
+      "move_reason": "The decrease from 12% to 10% reflects the continued absence of any legislative movement or scheduling signals as the 2026 midterms approach, further confirming the lack of procedural viability.",
+      "what_changes_between_horizons": "The probability increases slightly as the legislative calendar progresses, reflecting the cumulative opportunity for the bill to be attached to must-pass vehicles like continuing resolutions or omnibus spending packages, which are the primary mechanisms for such legislation to bypass standard committee hurdles.",
+      "p_one_third": 8.0,
+      "p_two_thirds": 9.0,
+      "p_full": 10.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": -13.0
+    },
+    "literalist": {
+      "lens": "literalist",
+      "abstraction": "Will a specific legislative body pass a designated bill or an identical successor version containing strict evidentiary requirements within a designated multi-year window?",
+      "outside_probability": 34.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "The substantive likelihood is frozen at 40 percent. Given passage, the text of the SAVE Act or identical successor bills cleanly matches the resolution criteria requiring documentary proof of citizenship for federal voter registration, yielding an 85 percent conditional criteria satisfaction rate due to precise drafting, resulting in a combined probability of 34 percent.",
+      "cases": [
+        {
+          "name": "National Voter Registration Act amendments / various early proof-of-citizenship bills",
+          "date": "1996-05-01",
+          "outcome": "miss"
+        },
+        {
+          "name": "Help America Vote Act (HAVA) provisions",
+          "date": "2002-10-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "American Voter Act iterations",
+          "date": "2005-06-01",
+          "outcome": "miss"
+        },
+        {
+          "name": "SAVE Act House passage",
+          "date": "2024-07-10",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Substantive Event Probability",
+          "belongs_to_me": false,
+          "value": 40,
+          "basis": "Historical base rate of major partisan messaging bills clearing at least one chamber of Congress."
+        },
+        {
+          "name": "Criteria Satisfaction Probability",
+          "belongs_to_me": true,
+          "value": 85,
+          "basis": "Conditional probability that if the text passes, it satisfies the strict identity and successor bill criteria without drafting loopholes."
+        }
+      ],
+      "combination": "Multiplication of substantive probability and criteria satisfaction probability, adjusted for dependency since bills tailored to specific text criteria are more likely to meet exact wording upon passage.",
+      "own_factor": 85.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -51.0,
+      "substantive_probability": 40.0,
+      "substantive_reason": "Based on historical frequency of single-chamber passage for highly polarized electoral reform bills.",
+      "reference_entry": "R0413-literalist",
+      "yes_case": {
+        "case": "Assuming the Senate considers the legislation, the wording of the resolution criteria cleanly captures both the specific named act and any 'identical successor bill requiring documentary proof of citizenship for federal voter registration.' This breadth ensures that minor renaming, legislative repackaging, or the introduction of a companion bill with identical substantive provisions will still successfully trigger a YES resolution. The August 24, 2027 deadline provides an ample window that comfortably encompasses potential legislative vehicles across multiple congressional sessions.",
+        "key_evidence": [
+          "Resolution criteria explicitly include an 'identical successor bill'",
+          "Core requirement is strictly defined as 'requiring documentary proof of citizenship for federal voter registration'",
+          "Deadline of August 24, 2027 spans multiple potential legislative sessions"
+        ],
+        "strength": "strong",
+        "strength_reason": "The wording of the criteria is broad enough to accommodate successor bills with identical substantive requirements, minimizing the risk of a technical miss due to renumbering or rebranding of the legislation.",
+        "deliberately_ignored": "The political likelihood of the Senate passing the bill, vote counts, filibuster dynamics, legislative delays, and the substantive chances of the event occurring.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The resolution criteria explicitly require that the U.S. Senate passes either the SAVE America Act specifically 'or an identical successor bill requiring documentary proof of citizenship for federal voter registration.' Legislative language is notoriously precise, and the criteria creates a narrow technical threshold: any modified version, compromise amendment, or non-identical successor bill that alters the exact wording regarding 'documentary proof of citizenship for federal voter registration' fails to meet the strict definition of an 'identical successor bill.' If the Senate passes a bill that achieves similar substantive goals under a different title, or merges the text into a broader omnibus appropriations or electoral reform package with varying provisions, it legally constitutes a non-identical bill, thereby triggering a NO resolution under the strict wording of the criteria.",
+        "key_evidence": [
+          "The resolution criteria demands either the specific 'SAVE America Act' or an 'identical successor bill'.",
+          "The strict textual requirement specifies it must be 'requiring documentary proof of citizenship for federal voter registration'."
+        ],
+        "strength": "moderate",
+        "strength_reason": "The strict textual constraint requiring an 'identical successor bill' provides a genuine technical vector for a NO resolution if legislative compromise alters the bill's exact wording or structure during Senate negotiations.",
+        "deliberately_ignored": "Whether the Senate will actually achieve the votes to pass the bill, partisan dynamics, political obstacles, filibuster rules, and the substantive likelihood of the bill being introduced or prioritized.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "retried_clean",
+      "audit_note": "Remove the adjustment based on legislative drafting practices and Senate vehicle behavior, and restore the frozen prior substantive estimate and outside-stage values without altering them based on newly introduced procedural mechanics.",
+      "status": "responded",
+      "probability": 34.0,
+      "reasoning": "My frozen substantive probability of 40% represents the likelihood of the bill passing. I have maintained an 85% criteria satisfaction rate because the wording 'identical successor bill' is broad enough to capture most legislative vehicles that would realistically pass the Senate, while still excluding unrelated omnibus bills that might lack the specific documentary proof requirement. The product of these (40 * 0.85) remains 34%.",
+      "deliberately_ignored": "I have ignored all arguments regarding the political feasibility, partisan composition of the Senate, or the likelihood of filibusters, as these pertain to the frozen substantive probability.",
+      "stronger_case": "yes",
+      "triggers": [
+        {
+          "event": "Senate Majority Leader schedules a floor vote on the SAVE Act or a bill with identical language.",
+          "by_date": "2027-05-01",
+          "direction": "up",
+          "to_roughly": 60
+        },
+        {
+          "event": "Senate passes an omnibus electoral reform bill that explicitly omits the 'documentary proof of citizenship' requirement.",
+          "by_date": "2027-08-24",
+          "direction": "down",
+          "to_roughly": 10
+        }
+      ],
+      "moved_from": 17.0,
+      "move_reason": "The previous estimate of 17.0 was an error in calculation that failed to correctly apply the frozen 85% criteria satisfaction rate to the 40% substantive probability. This adjustment corrects the math to align with the established frozen parameters.",
+      "what_changes_between_horizons": "The probability increases across horizons because the legislative window for the Senate to pass the bill or an identical successor expands as the 119th and 120th Congresses progress, allowing more time for potential floor votes.",
+      "p_one_third": 15.0,
+      "p_two_thirds": 25.0,
+      "p_full": 34.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": 0.0
+    }
+  },
+  "abstained": [],
+  "excluded": [],
+  "fallbacks": [
+    "analogy",
+    "actor_incentive",
+    "mechanism_calendar"
+  ],
+  "responding_lenses": 7,
+  "abstained_lenses": 0,
+  "fallback_lenses": 3,
+  "failed_lenses": 0,
+  "median_raw": 12.0,
+  "spread": 45.0,
+  "low_lens": "reference_class",
+  "high_lens": "actor_incentive",
+  "median_extremized": 4.8,
+  "advocate": {
+    "load_bearing_assumption": "The U.S. Senate will maintain the 60-vote filibuster threshold for election-related legislation, and Democrats will hold at least 41 seats to successfully block the bill, preventing a simple Republican majority from passing it.",
+    "why_it_could_be_wrong": "If Republicans secure a trifecta and face intense pressure from their base, they might deploy the 'nuclear option' to carve out a filibuster exception for election security bills. Alternatively, they could successfully attach the SAVE Act to a must-pass omnibus spending bill or debt ceiling increase, forcing Senate Democrats to capitulate to avoid a catastrophic default or shutdown.",
+    "should_move": false,
+    "moved_to": 12.0,
+    "move_reason": "The 12% aggregate is highly accurate. It properly respects the formidable barrier of the Senate filibuster while leaving a realistic 1-in-8 chance for extreme tail-risk scenarios, such as a Republican trifecta using nuclear legislative maneuvers or high-stakes budget brinkmanship.",
+    "lenses_that_look_redundant": [
+      "reference_class",
+      "blocker",
+      "telltale"
+    ],
+    "concerns": "The 'literalist' lens is a massive outlier at 34%, seemingly ignoring the structural reality of the 60-vote Senate threshold. Furthermore, the fact that three lenses fell back to 'fallback_outside' indicates a lack of granular, senator-by-senator whip counting or post-2024 election scenario mapping among the forecasters."
+  },
+  "advocate_proposed": null,
+  "probability": 12.0,
+  "status": "forecast"
+}
