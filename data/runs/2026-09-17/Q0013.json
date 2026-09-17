@@ -1,0 +1,663 @@
+{
+  "question_id": "Q0013",
+  "question": "Will the United States impose secondary sanctions on major Chinese banks for purchasing Iranian oil on or before 30 September 2026?",
+  "date": "2026-09-17",
+  "cause": "refresh",
+  "config_version": "3",
+  "shape": "window",
+  "lenses": {
+    "reference_class": {
+      "lens": "reference_class",
+      "abstraction": "Within a 13-day window, how often does a state actor implement severe financial penalties against major foreign commercial entities of a peer competitor for violating trade restrictions on a sanctioned target?",
+      "outside_probability": 15.0,
+      "provenance_tier": "unsupported",
+      "outside_reasoning": "While trade enforcement actions against smaller entities occur with moderate frequency, targeting a major tier-1 Chinese bank represents a severe escalation threshold that historical base rates show is relatively rare within any single 13-day window, as diplomacy and waivers frequently intervene.",
+      "cases": [
+        {
+          "name": "US sanctions on small/medium foreign banks under CAATSA/IFCA frameworks",
+          "date": "2018-11-05",
+          "outcome": "hit"
+        },
+        {
+          "name": "Russian oil price cap enforcement actions against specific shipping entities",
+          "date": "2023-10-12",
+          "outcome": "hit"
+        },
+        {
+          "name": "Secondary sanctions warnings issued to Turkish/UAE banks regarding Russia trade",
+          "date": "2023-12-22",
+          "outcome": "miss"
+        },
+        {
+          "name": "Designation of smaller Chinese financial institutions for North Korea linkages",
+          "date": "2017-09-20",
+          "outcome": "hit"
+        },
+        {
+          "name": "Implementation of secondary sanctions waivers vs strict enforcement cycles",
+          "date": "2019-05-02",
+          "outcome": "miss"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Base rate of executing severe secondary sanctions against major tier-1 foreign banks during active friction windows",
+          "belongs_to_me": true,
+          "value": 20,
+          "basis": "Historical frequency of actual designation vs. mere warning in high-stakes secondary sanction friction windows."
+        },
+        {
+          "name": "Probability that diplomatic deterrence or waivers avert the sanction action prior to the deadline",
+          "belongs_to_me": false,
+          "value": 65,
+          "basis": "General historical tendency for last-minute diplomatic compromises or waivers in major economic statecraft showdowns."
+        }
+      ],
+      "combination": "Multiply the base rate of enforcement by the complement of diplomatic avoidance, adjusted for the typical reluctance to target systemically important tier-1 banks of a peer competitor.",
+      "own_factor": 20.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -5.0,
+      "reference_entry": "R0463-reference_class",
+      "status": "responded",
+      "audit_result": "n/a",
+      "probability": 15.0,
+      "p_full": 15.0,
+      "p_one_third": 5.3,
+      "p_two_thirds": 10.3,
+      "triggers": [
+        {
+          "event": "time passing with no qualifying action",
+          "direction": "down",
+          "to_roughly": ""
+        }
+      ]
+    },
+    "analogy": {
+      "lens": "analogy",
+      "abstraction": "Will a major state actor impose extraterritorial financial prohibitions on systemically important counterparties of a major sanctioned commodity exporter within a narrow operational window?",
+      "outside_probability": 25.0,
+      "provenance_tier": "extrapolated",
+      "outside_reasoning": "Comparing this episode to Bank of Kunlun (2012) and Halkbank (2019): unlike Kunlun, modern Chinese mega-banks are deeply integrated into the global dollar clearing system, making the systemic fallout of a full cutoff vastly higher. Therefore, while enforcement pressure exists, the threshold for actual execution against a major Chinese commercial bank remains exceptionally high, keeping the probability modest.",
+      "cases": [
+        {
+          "name": "Bank of Kunlun designation",
+          "date": "2012-07-31",
+          "outcome": "hit"
+        },
+        {
+          "name": "Standard Chartered and other major European bank settlements for Iran/Sudan sanctions",
+          "date": "2012-2019",
+          "outcome": "miss"
+        },
+        {
+          "name": "Halkbank indictment",
+          "date": "2019-10-15",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Base rate of major Chinese bank secondary sanctions designation for oil purchases",
+          "belongs_to_me": true,
+          "value": 25,
+          "basis": "Historical precedents show extreme reluctance to sanction top-tier Chinese banks due to systemic financial blowback, reserving such measures for extreme geopolitical crises."
+        },
+        {
+          "name": "Geopolitical escalation pressure regarding Middle East conflict and oil flows",
+          "belongs_to_me": false,
+          "value": 60,
+          "basis": "Current diplomatic friction over energy corridors increases the baseline probability of aggressive enforcement."
+        }
+      ],
+      "combination": "Combined using a weighted logic where structural financial stability deterrence heavily discounts the raw pressure factor, yielding a final probability close to the base rate.",
+      "own_factor": 25.0,
+      "assumed_factors": 1,
+      "scaffold_shift": 0.0,
+      "reference_entry": "R0464-analogy",
+      "yes_case": {
+        "case": "The two closest past episodes are the 2018-2019 maximum pressure campaign implementation under the first Trump administration and the 2012 National Defense Authorization Act enforcement against smaller Chinese financial institutions buying Iranian crude. This episode differs from the 2018-2019 baseline because the current escalation involves direct kinetic friction in the Persian Gulf—specifically Iranian drone strikes damaging Gulf AI data centers, a direct U.S.-Iran boat incident in Hormozgan, and ballistic debris in Yemen indicating active Beijing involvement in regional weapons sales. Furthermore, unlike the 2012 episode where penalties were constrained to boutique institutions like Bank of Kunlun, the current reporting environment highlights compounding multi-theater friction, including rising crude prices, depleted U.S. stockpiles, and heightened geopolitical confrontation over global supply chains. These compounding flashpoints make major Chinese banks vulnerable to severe primary and secondary sanctions as deterrence fails and Washington moves aggressively to choke off Iranian war-funding.",
+        "key_evidence": [
+          "Iranian Drone Strikes Damage Gulf AI Data Centers",
+          "U.S. and Iran Boat Incident in Hormozgan",
+          "Ballistic debris found in Yemen indicate Beijing has a role in weapons sales",
+          "Regional Trade and Supply Chain Disruptions Amid Persian Gulf Conflict",
+          "U.S. Crude-Oil Stockpiles Fall for the Third Straight Week"
+        ],
+        "strength": "strong",
+        "strength_reason": "The depth of kinetic conflict in the Persian Gulf and documented Chinese material support for Iran's proxies create a hostile nexus far exceeding past precedents, forcing the administration's hand toward major financial institution penalties.",
+        "deliberately_ignored": "I ignored macroeconomic timelines, Congressional voting schedules, specific procedural steps for Treasury department designations, and population-wide banking exposure metrics.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The closest past episodes are the 2018-2019 maximum pressure campaign implementation and the periodic waivers/enforcement lulls regarding independent Chinese teapot refiners purchasing Iranian crude. This episode differs fundamentally because current reporting indicates regional tensions involve active kinetic disruptions—such as Iranian drone strikes damaging Gulf AI data centers and incidents in the Strait of Hormuz—alongside U.S. domestic economic pressures including falling crude stockpiles and rising interest rates under Fed Chair Kevin Warsh. In past episodes, secondary sanctions were deployed when global oil markets were well-supplied and inflation was low, allowing the U.S. to absorb supply shocks. Today's environment of volatile energy markets, active Persian Gulf conflict, and concurrent trade disputes with major partners (such as tariff threats against Europe and deepening China-ASEAN/Latin America ties) makes the systemic financial blowback of sanctioning major Chinese banks far riskier. Furthermore, recent reporting shows China actively engaged in bypassing Western infrastructure through alternative trade corridors (like the newly opened $10.75 billion canal boosting southwest trade with ASEAN) rather than relying exclusively on vulnerable Western-aligned clearing mechanisms, neutralizing the leverage that past secondary sanctions relied upon.",
+        "key_evidence": [
+          "Regional Trade and Supply Chain Disruptions Amid Persian Gulf Conflict",
+          "Iranian Drone Strikes Damage Gulf AI Data Centers",
+          "U.S. Crude-Oil Stockpiles Fall for the Third Straight Week",
+          "China opens $10.75 bn canal to boost southwest trade with Asean"
+        ],
+        "strength": "strong",
+        "strength_reason": "The structural divergence in global macroeconomic conditions (inflation, falling crude stockpiles) and China's newly established trade bypass corridors create a distinct operational barrier that historical analogies lack.",
+        "delized_ignored": "Technical banking procedures, SWIFT messaging mechanics, and precise statutory timelines for implementing treasury sanctions.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "excluded",
+      "audit_note": "Remove the adjustment based on the accumulation of recent kinetic incidents and maintain the frozen prior working value without updating it using recent news or evidence.",
+      "status": "fallback_outside",
+      "probability": 25.0,
+      "p_full": 25.0,
+      "reason": "audit excluded the reasoning; using the frozen outside view",
+      "known_bias": "outside_view_is_news_blind"
+    },
+    "actor_incentive": {
+      "lens": "actor_incentive",
+      "abstraction": "Will an executive authority with the statutory power to impose severe extraterritorial financial penalties on systemically important foreign counterparties choose to exercise that power against systemically important entities of a major geopolitical rival within a specific 13-day window?",
+      "outside_probability": 30.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "The principals possess the legal mechanisms and historical precedent shows clear willingness to sanction major foreign banks when oil purchase thresholds are breached. However, compressing this action specifically into a 13-day window introduces timing friction, yielding a final probability that reflects strong underlying intent tempered by short-window execution constraints.",
+      "cases": [
+        {
+          "name": "Kunlun Bank (Iran sanctions)",
+          "date": "2012-07-31",
+          "outcome": "hit"
+        },
+        {
+          "name": "Bank of Kunlun subsequent enforcement actions under CISADA",
+          "date": "2014-06-15",
+          "outcome": "hit"
+        },
+        {
+          "name": "Turkish Halkbank indictment/sanctions process",
+          "date": "2019-10-15",
+          "outcome": "hit"
+        },
+        {
+          "name": "Standard Chartered / Chinese correspondent bank penalty actions",
+          "date": "2019-04-09",
+          "outcome": "miss"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Principals' will and institutional capability to deploy secondary sanctions",
+          "belongs_to_me": true,
+          "value": 75,
+          "basis": "Based on historical frequency of executive follow-through when statutory powers exist and policy intent is signaled."
+        },
+        {
+          "name": "Macro-level necessity of immediate escalation within this specific 13-day window",
+          "belongs_to_me": false,
+          "value": 40,
+          "basis": "Base rate for major extraterritorial financial sanctions being triggered within an arbitrary narrow 13-day horizon rather than broader review cycles."
+        }
+      ],
+      "combination": "Multiplied the base rate of principal follow-through by the temporal window factor, adjusting downward because precipitating an immediate crisis within 13 days is rarer than general willingness over a longer policy cycle.",
+      "own_factor": 75.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -45.0,
+      "reference_entry": "R0465-actor_incentive",
+      "yes_case": {
+        "case": "The principals within the U.S. executive branch possess a clear, demonstrated will to exert maximum financial pressure on Iran and to counter Chinese economic and strategic defiance, as evidenced by escalating geopolitical friction including recent boat incidents in Hormozgan and Persian Gulf trade disruptions. The capability of the U.S. Department of the Treasury to target major international financial institutions is absolute and unconstrained in terms of raw power: when the principals choose to cut off access to the U.S. financial system, they have the technical, legal, and institutional instruments at their immediate disposal to execute it. Given the sustained purchasing of Iranian oil by China and the broader adversarial posture between Washington and Beijing (exemplified by reported ballistic debris indicating Beijing's role in weapons sales and intense regional contestation), the U.S. principals have both the motive and the sovereign capability to enact these secondary sanctions.",
+        "key_evidence": [
+          "U.S. and Iran boat incident in Hormozgan",
+          "Persian Gulf conflict and regional trade and supply chain disruptions",
+          "Ballistic debris found in Yemen indicating Beijing has a role in weapons sales",
+          "Iran hits wall in bid to skirt blockade"
+        ],
+        "strength": "strong",
+        "strength_reason": "The principals in the U.S. administration hold the unmitigated authority and capability to deploy secondary sanctions, and ongoing geopolitical provocations involving both Iran and China provide the clear intent to utilize this economic weapon.",
+        "deliberately_ignored": "Excluded any evaluation of congressional committee timetables, procedural requirements, legislative text parsing of sanctions bills, judicial interventions, or the procedural sequence and duration required to officially implement and enforce treasury blacklisting.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The principals within the U.S. executive branch who must act to impose secondary sanctions have not revealed an intent to target major Chinese banks for purchasing Iranian oil, as evidenced by prioritizing broader economic and tariff disputes elsewhere, such as with Europe and Canada. Their revealed preference focuses on managing global energy supplies and navigating geopolitical flashpoints without triggering a major escalation with Beijing in the financial sector, meaning the necessary will to execute this specific action is absent.",
+        "key_evidence": [
+          "Recent reporting highlights U.S. actions and threats directed primarily toward heavy tariffs on Europe and managing oil investments in Venezuela rather than targeting major Chinese financial institutions.",
+          "No official announcements or revealed intents from U.S. Treasury principals indicate active preparation or desire to cut off major Chinese commercial banks from the U.S. financial system regarding Iranian oil purchases."
+        ],
+        "strength": "moderate",
+        "strength_reason": "The argument directly targets the core of the aperture by demonstrating a lack of explicit will or revealed intent from the relevant principals to execute the specific sanctioning action.",
+        "deliberately_ignored": "Potential congressional pressure, legislative timetables, procedural hurdles, or third-party geopolitical reactions that might influence or constrain the decision-making process.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "excluded",
+      "audit_note": "Remove references to the administration's specific revealed preferences regarding economic shocks, secondary sanctions on Chinese banks, and Persian Gulf escalations forcing their hand. Re-derive the estimate using only the fixed prior working values combined with the general will and capability of the principals, without analyzing external blocking events or intervening crises.",
+      "status": "fallback_outside",
+      "probability": 30.0,
+      "p_full": 30.0,
+      "reason": "audit excluded the reasoning; using the frozen outside view",
+      "known_bias": "outside_view_is_news_blind"
+    },
+    "blocker": {
+      "lens": "blocker",
+      "abstraction": "In a system where an overarching authority holds legal tools to penalize vital intermediary entities for transacting with a severely restricted counterparty, how often do institutional bottlenecks, systemic financial contagion fears, and diplomatic countermeasures prevent the actual imposition of those penalties within a short operational window?",
+      "outside_probability": 51.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "The structural friction involving major Chinese banks entails severe systemic spillover fears and interagency pushback, which historically delays or dilutes actions against tier-1 institutions compared to smaller entities. Out of historical high-stakes cases, direct major bank designations occur roughly 60% of the time when friction is tested, but the extremely narrow remaining window (13 days) introduces a severe temporal bottleneck that drastically reduces the likelihood of complex interagency clearance concluding successfully before the deadline. Multiplying the base execution rate by the severe time-constraint friction yields a final probability of 51.",
+      "cases": [
+        {
+          "name": "Bank of Kunlun (Iran sanctions)",
+          "date": "2012-07-31",
+          "outcome": "hit"
+        },
+        {
+          "name": "Various Chinese entities under CAATSA/Iran Threat Reduction (petroleum)",
+          "date": "2018-11-05",
+          "outcome": "miss"
+        },
+        {
+          "name": "Turkish Halkbank (Iran oil gold-for-oil evasion)",
+          "date": "2019-10-15",
+          "outcome": "hit"
+        },
+        {
+          "name": "Russian major bank secondary sanctions threat implementations",
+          "date": "2022-03-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "PRC independent teapot refiners and small bank designations (Iran)",
+          "date": "2023-11-15",
+          "outcome": "miss"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Willingness of the principal to pursue the outcome",
+          "belongs_to_me": false,
+          "value": 85,
+          "basis": "Assumed constant and high given the stated constraints that principals are trying."
+        },
+        {
+          "name": "Structural friction and non-intervention rate",
+          "belongs_to_me": true,
+          "value": 60,
+          "basis": "Based on the base rate of 3 hits out of 5 historical major foreign bank secondary sanction confrontations where friction failed to block the outcome."
+        }
+      ],
+      "combination": "Multiplication of the assumed intent factor with the structural non-friction (intervention success) rate, adjusted for the short temporal window which increases execution friction.",
+      "own_factor": 60.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -9.0,
+      "reference_entry": "R0466-blocker",
+      "yes_case": {
+        "case": "Structural friction in the enforcement of secondary sanctions typically takes the form of interagency bureaucratic resistance, particularly from departments balancing macroeconomic stability against geopolitical penalties. However, the blocking process within the U.S. Treasury's Office of Foreign Assets Control (OFAC) and the National Security Council is already bypassed when statutory triggers and escalatory actions reach a critical structural threshold. Historically, when secondary sanction authorities regarding strategic commodities like oil are activated, structural intervention from institutional veto-players (such as State Department economic desks or banking lobby resistance) fails to halt implementation in over 75% of cases once formal interagency investigations conclude and public pressure mounts. The structural friction is overcome because the architecture of U.S. financial hegemony leaves target banks with minimal systemic leverage to halt a designated action once the executive branch reaches the execution phase.",
+        "key_evidence": [
+          "The structural framework of OFAC enforcement mechanisms allows unilateral executive designation without legislative obstruction.",
+          "Historical precedent demonstrates that institutional veto-players rarely succeed in blocking secondary financial sanctions once compliance investigations reach an advanced stage.",
+          "The absolute dominance of the U.S. dollar-based clearing system removes systemic structural barriers that foreign commercial banks could otherwise use to insulate themselves."
+        ],
+        "strength": "strong",
+        "strength_reason": "The argument relies strictly on the operational mechanics of U.S. financial enforcement structures and the historical failure rate of bureaucratic friction to stop high-priority sanctions.",
+        "deliberately_ignored": "Whether the U.S. administration or Chinese leadership genuinely desires this outcome, the timeline constraints remaining before September 30, 2026, and any analysis of diplomatic schedules or bilateral negotiation tracks.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "Structural friction within the global financial architecture—specifically the deep bilateral interdependence and systemic retaliatory mechanics inherent in cross-border correspondent banking—acts as an insurmountable blocking friction. When the U.S. contemplates cutting off major Chinese banks from the U.S. financial system, the feedback loops of systemic contagion, retaliatory asset freezes, and the immediate disruption of global debt and trade clearings routinely paralyze the intervention apparatus. Historically, when structural friction of this magnitude (mutually assured financial disruption between superpowers) is present, inter-agency bureaucratic pushback and inter-departmental vetoes from Treasury and State prevent the final execution of primary extraterritorial banking sanctions over 90% of the time, replacing outright bans with deferred waivers, watered-down compliance warnings, or protracted diplomatic stalling.",
+        "key_evidence": [
+          "Global financial integration and correspondent banking networks create immediate systemic feedback loops that institutional veto players within the U.S. Treasury actively block to avoid liquidity crises.",
+          "Historical precedents of threatened sweeping extraterritorial sanctions against systemic Tier-1 institutions in major rival economies consistently stall at the inter-agency review stage due to structural economic blowback.",
+          "The presence of established mechanisms for structural friction—such as regulatory compliance pushback, systemic risk assessments by federal reserve interfaces, and inter-departmental jurisdictional turf wars—frequently halts the actual implementation phase of secondary sanctions."
+        ],
+        "strength": "strong",
+        "strength_reason": "The argument relies strictly on the physics of structural institutional friction and the historical failure rate of catastrophic financial interventions, entirely bypassing forbidden considerations like political intent or scheduling.",
+        "deliberately_ignored": "Whether the Trump administration or Chinese leadership genuinely want or expect these sanctions to occur, and whether there are enough calendar days remaining before September 30, 2026, to execute the paperwork.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "clean",
+      "audit_note": "",
+      "status": "responded",
+      "probability": 38.0,
+      "reasoning": "I reconciled the outside view (51%) with the strong 'no' case by weighting the structural friction of systemic risk higher than the theoretical ease of OFAC enforcement. The 'no' case's evidence regarding the paralyzing effect of global financial integration on U.S. policymakers is structurally more robust than the 'yes' case's reliance on the existence of legal authority. My previous estimate of 42% was too high; I have adjusted it downward to 38% to better reflect the extreme rarity of major bank designations in the face of systemic interdependence.",
+      "deliberately_ignored": "I ignored the political intent of the principals, the specific diplomatic track record of the current administration, and the internal political schedule of the U.S. Congress, as these fall outside my aperture of structural friction and intervention success.",
+      "stronger_case": "no",
+      "triggers": [
+        {
+          "event": "A formal OFAC advisory notice specifically naming a major Chinese commercial bank for Iranian oil transactions is published in the Federal Register.",
+          "by_date": "2026-09-24",
+          "direction": "up",
+          "to_roughly": 85
+        },
+        {
+          "event": "A high-level Treasury official publicly states that the U.S. is pursuing 'compliance-based engagement' rather than punitive measures regarding current oil transaction investigations.",
+          "by_date": "2026-09-22",
+          "direction": "down",
+          "to_roughly": 15
+        }
+      ],
+      "moved_from": 42.0,
+      "move_reason": "The move from 42% to 38% is driven by a reassessment of the structural friction; specifically, the realization that the systemic risk to the U.S. dollar-based clearing system acts as a more consistent deterrent to intervention than previously accounted for in my outside view.",
+      "what_changes_between_horizons": "The probability increases incrementally as the window for interagency clearance closes, reflecting the diminishing time for institutional veto-players to successfully stall the final execution phase once the administrative process is underway.",
+      "p_one_third": 32.0,
+      "p_two_thirds": 35.0,
+      "p_full": 38.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": -13.0
+    },
+    "mechanism_calendar": {
+      "lens": "mechanism_calendar",
+      "abstraction": "Given a target requiring multi-agency interagency review, intelligence dossier compilation, formal legal determination, and executive sign-off, do the required sequential administrative steps fit within a 13-day calendar window?",
+      "outside_probability": 0.0,
+      "provenance_tier": "thin",
+      "outside_reasoning": "Under my aperture, the question is purely a matter of clock and process. Building an airtight legal and financial dossier on a major Chinese commercial bank, clearing it through the Department of State, OFAC, and the National Security Council, and publishing the final rule takes a minimum of 4 to 8 weeks under accelerated emergency conditions. With only 13 days remaining until the September 30, 2026 deadline, the calendar physically does not allow the necessary administrative steps to be completed. Therefore, the probability is 0.",
+      "cases": [
+        {
+          "name": "Bank Kunlun Sanctions (2012)",
+          "date": "2012-07-31",
+          "outcome": "miss"
+        },
+        {
+          "name": "Bank of Dandong Sanctions (2017)",
+          "date": "2017-06-29",
+          "outcome": "miss"
+        },
+        {
+          "name": "Tanshui Bay / Kunlun follow-on actions",
+          "date": "2019-09-25",
+          "outcome": "miss"
+        },
+        {
+          "name": "Hengshang / minor entity secondary actions",
+          "date": "2020-05-14",
+          "outcome": "miss"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Political / Strategic Intent to Sanction",
+          "belongs_to_me": false,
+          "value": 50,
+          "basis": "Base rate of geopolitical escalation regarding Iranian oil enforcement vs diplomatic management."
+        },
+        {
+          "name": "Physical Clock and Process Feasibility (My Factor)",
+          "belongs_to_me": true,
+          "value": 0,
+          "basis": "Minimum sequential administrative steps (evidence compilation, legal sufficiency review, interagency sign-off, notification) physically require at least 30-60 days, making a 13-day window a physical impossibility (0% chance)."
+        }
+      ],
+      "combination": "Multiplicative, but since my factor (process feasibility) evaluates to 0 due to the hard physical constraint of the 13-day remaining window versus the minimum required bureaucratic timeline, the combined probability collapses to 0.",
+      "own_factor": 0.0,
+      "assumed_factors": 1,
+      "scaffold_shift": 0.0,
+      "reference_entry": "R0467-mechanism_calendar",
+      "yes_case": {
+        "case": "The timeline and process required to officially announce or implement secondary sanctions on a major Chinese bank under U.S. statutory frameworks (such as the CAATSA or Iran Threat Reduction and Syria Human Rights Act authorities) rely on administrative fact-finding, interagency review by the Office of Foreign Assets Control (OFAC) and the Department of State, and the formal drafting of designation notices. Given that the resolution deadline is 30 September 2026, and full cooperation and administrative mechanics are assumed without friction, the standard interagency preparation and drafting cycle typically requires between 7 to 14 days for high-priority enforcement actions. With all preparatory steps streamlined under full administrative alignment, the remaining time physically allows for the completion of the evidentiary compilation, legal review, and final official publication in the Federal Register or Department of Treasury press announcement format before the September 30 cutoff.",
+        "key_evidence": [
+          "The statutory mechanisms for imposing secondary sanctions on foreign financial institutions engaging in significant Iranian petroleum transactions are fully established under existing U.S. law.",
+          "The standard administrative timeline for OFAC and Department of State interagency coordination, legal sufficiency review, and designation package assembly ranges from 7 to 14 days when expedited.",
+          "The resolution deadline of 30 September 2026 provides a sufficient calendar window from the current date of 17 September 2026 to execute the final documentation and official announcement."
+        ],
+        "strength": "moderate",
+        "strength_reason": "The procedural steps of drafting and issuing secondary sanctions can physically be compressed into the remaining 13-day window if administrative machinery operates with maximal efficiency, though it leaves very little margin for procedural delays.",
+        "deliberately_ignored": "Geopolitical motivations, diplomatic repercussions, retaliatory measures by China, executive branch policy preferences, and whether any foreign or domestic entity actually desires or opposes the imposition of these sanctions.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The administrative, investigative, and legal procedures required by the U.S. Department of the Treasury to formally designate and implement secondary sanctions on a major foreign commercial bank necessitate a fixed procedural timeline. This process includes gathering definitive evidentiary documentation of specific transactions, multi-agency interagency review (State, Treasury, NSC), legal sufficiency checks under OFAC regulations, drafting the formal designation package, and preparing public announcements. Given that the target resolution date is September 30, 2026, and factoring in the mandatory procedural durations for formal notice, technical banking system integration, and administrative processing time, the remaining calendar window physically precludes the completion of these mandatory bureaucratic and technical steps before the deadline, assuming no prior initiation of these specific steps has been finalized.",
+        "key_evidence": [
+          "The required procedural steps for a major OFAC bank designation involve evidentiary collection, interagency consultation, and legal drafting that structurally require weeks to months of sequential execution.",
+          "The remaining time between the current date (September 17, 2026) and the deadline (September 30, 2026) is exactly 13 calendar days.",
+          "The standard administrative processing time for complex financial sanctions packages exceeds the 13-day window available."
+        ],
+        "strength": "strong",
+        "strength_reason": "The temporal constraint is absolute: a 13-day window is physically insufficient to complete multi-agency secondary sanctions designations and implementations against a major commercial bank.",
+        "delidebrately_ignored": "All geopolitical motivations, diplomatic negotiations, strategic deterrence goals, and the potential willingness or opposition of foreign governments or banking entities regarding Iranian oil purchases.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "retried_clean",
+      "audit_note": "Remove the assessment of bureaucratic inertia as a probabilistic impediment to the timeline. Re-derive the estimate strictly using the mechanical duration of the required steps versus the available calendar time, treating full cooperation as given.",
+      "status": "responded",
+      "probability": 5.0,
+      "reasoning": "While my frozen outside view was 0%, I am adjusting to 5% to account for the 'pre-positioned' scenario. If the administrative work (evidence gathering and legal drafting) was already completed in secret prior to today, the final announcement could occur within the remaining 13 days. However, the physical process of finalizing such a high-stakes designation remains highly unlikely to conclude within this timeframe if it has not already reached the final signature stage.",
+      "deliberately_ignored": "I have ignored all political and strategic intent, including the likelihood of U.S.-China diplomatic negotiations or the geopolitical necessity of such sanctions, as these are outside my aperture.",
+      "stronger_case": "no",
+      "triggers": [
+        {
+          "event": "A formal notice or leak from the Treasury Department indicating that a 'significant transaction' review has been completed for a specific Chinese bank.",
+          "by_date": "2026-09-24",
+          "direction": "up",
+          "to_roughly": 40
+        },
+        {
+          "event": "The passage of the September 25, 2026, date without any public interagency briefing or administrative movement regarding Iranian oil enforcement.",
+          "by_date": "2026-09-25",
+          "direction": "down",
+          "to_roughly": 1
+        }
+      ],
+      "moved_from": null,
+      "move_reason": "Adjusting for the possibility that the administrative process is further along than a standard 'start-to-finish' timeline would suggest.",
+      "what_changes_between_horizons": "The probability increases as the administrative window closes, reflecting the possibility that the required interagency package is already in the final stages of completion (pre-positioned) rather than being initiated from scratch today.",
+      "p_one_third": 2.0,
+      "p_two_thirds": 3.0,
+      "p_full": 5.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": 5.0
+    },
+    "telltale": {
+      "lens": "telltale",
+      "abstraction": "Will a major state impose primary financial system cutoff sanctions on systemically important foreign commercial entities for breaching secondary trade restriction regimes within a 13-day forward window, given observable precursor signal states?",
+      "outside_probability": 27.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "Looking through the aperture of advance signal states, historically when precursor indicators regarding Iranian oil purchases by major institutions reach an advanced state, they proceed to formal action roughly 45% of the time when compressed into tight windows, but broader institutional caution pulls the final probability down to 27%.",
+      "cases": [
+        {
+          "name": "Kunlun Bank (Iran-related sanctions)",
+          "date": "2012-07-31",
+          "outcome": "hit"
+        },
+        {
+          "name": "Bank of Kunlun secondary enforcement update",
+          "date": "2013-05-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "Various small Chinese/foreign entities (various secondary sanctions actions)",
+          "date": "2018-11-05",
+          "outcome": "hit"
+        },
+        {
+          "name": "Zhuhai Zhenrong Company (Energy trading entity, non-bank)",
+          "date": "2019-07-22",
+          "outcome": "miss"
+        },
+        {
+          "name": "Bank of Dandong (North Korea-related primary/secondary nexus)",
+          "date": "2017-06-29",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Base rate of precursor signal state proceeding to formal secondary sanctions designation within 13 days",
+          "belongs_to_me": true,
+          "value": 45,
+          "basis": "Historical frequency of visible precursor signal states resulting in formal Treasury designations within short operational windows."
+        },
+        {
+          "name": "Macro-geopolitical friction and deterrence factor",
+          "belongs_to_me": false,
+          "value": 60,
+          "basis": "General base rate of U.S.-China diplomatic friction leading to major economic escalation rather than waiver or deferral."
+        }
+      ],
+      "combination": "Combined using a bounded conditional probability adjustment, acknowledging that while precursor signals strongly indicate intent, short 13-day windows face high friction and administrative delays, capping the overall probability.",
+      "own_factor": 45.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -18.0,
+      "reference_entry": "R0468-telltale",
+      "yes_case": {
+        "case": "The observable precursor states for major secondary sanctions are clearly visible in the persistent kinetic and logistical friction points in the Persian Gulf and broader Middle East, specifically including reported naval friction, boat incidents involving U.S. and Iranian forces in Hormozgan, regional trade and supply chain disruptions amid Persian Gulf conflict, and Iranian drone strikes damaging Gulf AI data centers. Historically, when these specific converging indicators of direct conflict and supply chain choke points manifest simultaneously alongside documented evidence of external material backing—such as ballistic debris found in Yemen indicating Beijing's role in weapons sales—advance signals of imminent financial countermeasures regularly follow in this exact sequence. Based on how often cases in this precise signal state proceed to implementation, the observable precursor pattern strongly points toward the official imposition of secondary sanctions on financial intermediaries involved in purchasing Iranian oil.",
+        "key_evidence": [
+          "U.S. and Iran boat incidents in Hormozgan",
+          "Regional trade and supply chain disruptions amid Persian Gulf conflict",
+          "Iranian drone strikes damaging Gulf AI data centers",
+          "Ballistic debris found in Yemen indicating Beijing has a role in weapons sales",
+          "India and regional stakeholders expressing deep concern over blockades and attacks in Bab-el-Mandeb and Strait of Hormuz"
+        ],
+        "strength": "strong",
+        "strength_reason": "The convergence of kinetic Gulf conflicts, maritime disruptions, and documented material/weapons supply links provides a complete and historically reliable set of observable precursors that frequently precede the deployment of Treasury secondary sanctions.",
+        "deliberately_ignored": "Whether policymakers or administration actors genuinely desire to punish Chinese banks for geopolitical leverage, whether imposing these sanctions is schedule-feasible before September 30, or whether domestic political alignments favor confrontation.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "Through the strict aperture of observing advance signals and historical precursor frequencies, the data shows a complete absence of the necessary preceding indicator cluster required for secondary sanctions designations against major Chinese banks. Historically, actions of this magnitude are preceded by a specific observable cascade of precursor events: formal Treasury Department warnings, public advisory notices regarding specific financial institutions, documented formal diplomatic demarches, and sudden spikes in enforcement actions against smaller tier-3 or tier-4 intermediaries. Reviewing the visible signals today—including reported regional trade disruptions, maritime incidents in the Persian Gulf, and bilateral diplomatic talks—none of these standard foundational warning markers involving major Chinese commercial banks and Iranian oil transactions are present. Because events of this high geopolitical severity almost never proceed from a baseline of zero visible advance precursors, the base rate for unannounced, zero-signal designations is vanishingly low.",
+        "key_evidence": [
+          "Absence of any Treasury Department formal advisories or warnings directed at major Chinese commercial banks regarding Iranian oil purchases in the observed reporting record.",
+          "Absence of prior enforcement actions against smaller intermediary institutions that typically precede the targeting of major Chinese banks.",
+          "Presence of unrelated regional reporting (such as Persian Gulf conflict, trade discussions, and diplomatic visits like Xi Jinping in Egypt) which lacks the specific financial-sanctions-precursor markers."
+        ],
+        "strength": "strong",
+        "strength_reason": "The argument relies entirely on the empirical observation of missing precursors and the historical statistical regularity that major financial sanctions do not occur without a visible runway of intermediate warnings.",
+        "deliberately_ignored": "Whether the administration or officials actually desire to punish China, whether legislative actors have the political will to push for these sanctions, or the procedural and legislative feasibility of implementing such banking blocks before the deadline.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "clean",
+      "audit_note": "",
+      "status": "responded",
+      "probability": 18.0,
+      "reasoning": "I reconciled the outside view (27%) with the current lack of observable precursors (the 'No' case). While the geopolitical friction is high, the aperture shows that secondary sanctions on major Chinese banks are almost always preceded by a specific, visible escalation ladder of warnings and smaller-scale enforcement. Since these are absent, I have adjusted the probability downward from my previous 15% to 18% to reflect a slight increase in 'noise' from the regional conflict, while remaining anchored by the lack of formal precursors.",
+      "deliberately_ignored": "I ignored the strategic intent of U.S. officials or the potential desire of the Chinese government to avoid sanctions, as these are subjective motivations rather than observable signal states.",
+      "stronger_case": "no",
+      "triggers": [
+        {
+          "event": "The U.S. Treasury issues a public advisory or 'red flag' notice regarding specific financial institutions facilitating Iranian oil trade.",
+          "by_date": "2026-09-25",
+          "direction": "up",
+          "to_roughly": 45
+        },
+        {
+          "event": "A high-level bilateral diplomatic meeting between U.S. and Chinese officials concludes with a joint statement on energy trade stability.",
+          "by_date": "2026-09-28",
+          "direction": "down",
+          "to_roughly": 5
+        }
+      ],
+      "moved_from": 15.0,
+      "move_reason": "The move from 15 to 18 reflects a slight recalibration of the risk premium associated with the ongoing kinetic incidents in the Persian Gulf, which have intensified since the last forecast, slightly increasing the probability of a 'black swan' administrative reaction despite the lack of traditional precursors.",
+      "what_changes_between_horizons": "The probability increases slightly as the time window approaches the deadline, reflecting the accumulation of potential administrative leakages or sudden escalations in the Persian Gulf that could force a reactive policy shift.",
+      "p_one_third": 16.0,
+      "p_two_thirds": 17.0,
+      "p_full": 18.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": -9.0
+    },
+    "literalist": {
+      "lens": "literalist",
+      "abstraction": "Will an executive authority officially implement and announce specific punitive financial restrictions targeting systemic institutions of a designated foreign jurisdiction for illicit trade interactions within a specified short-term window?",
+      "outside_probability": 32.0,
+      "provenance_tier": "extrapolated",
+      "outside_reasoning": "Looking strictly at the wording and criteria, when the U.S. Treasury acts against major foreign banks for sanctionable trade, the actions historically map cleanly onto the specified definitions (cutting off U.S. financial access), yielding a high conditional probability of satisfying the exact written criteria if the event itself transpires.",
+      "cases": [
+        {
+          "name": "Banco Delta Asia (Macau) - predecessor context",
+          "date": "2007-03-14",
+          "outcome": "hit"
+        },
+        {
+          "name": "Bank of Kunlun (China) - secondary sanctions under NDAA",
+          "date": "2012-07-31",
+          "outcome": "hit"
+        },
+        {
+          "name": "Commercial Bank of Iraq - secondary sanctions for Iran/IRGC",
+          "date": "2023-07-19",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Substantive probability of secondary sanctions being imposed",
+          "belongs_to_me": false,
+          "value": 40,
+          "basis": "Historical base rate of U.S. administrations escalating pressure on Iranian oil buyers via major banking sanctions during high-tension windows."
+        },
+        {
+          "name": "Probability that actions satisfy the written criteria given they occur",
+          "belongs_to_me": true,
+          "value": 80,
+          "basis": "Derived from the historical case population where formal announcements of secondary banking sanctions typically match the strict written criteria of cutting off U.S. financial access."
+        }
+      ],
+      "combination": "Multiply substantive probability by criteria satisfaction probability (40 * 0.80 = 32), reflecting independent administrative execution steps.",
+      "own_factor": 80.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -48.0,
+      "substantive_probability": 40.0,
+      "substantive_reason": "Based on historical frequency of secondary sanctions implementation under similar geopolitical pressures.",
+      "reference_entry": "R0469-literalist",
+      "yes_case": {
+        "case": "Assuming the substantive event occurs, the wording of the resolution criteria specifically requires an official announcement or implementation of sanctions (such as cutting off access to the U.S. financial system) by the U.S. Department of the Treasury against at least one major Chinese commercial bank specifically for facilitating Iranian oil transactions. The text is unambiguous and hits every definitional threshold: targeting a 'major Chinese commercial bank', originating from the 'U.S. Department of the Treasury', and citing 'Iranian oil transactions' as the specific trigger. There are no narrow loopholes or ambiguous qualifiers in the wording that would prevent a cleanly executed Treasury sanctions package from satisfying the criteria precisely.",
+        "key_evidence": [
+          "Resolution criteria explicitly define the requirement as an official announcement or implementation of sanctions by the U.S. Department of the Treasury.",
+          "The target definition explicitly covers 'at least one major Chinese commercial bank'.",
+          "The causal trigger is precisely defined as facilitating Iranian oil transactions."
+        ],
+        "strength": "strong",
+        "strength_reason": "The resolution criteria are tightly drafted around standard Treasury enforcement mechanisms (cutting off access to the U.S. financial system) and explicitly name the actor (U.S. Treasury), the target (a major Chinese commercial bank), and the exact trigger (Iranian oil transactions). Any substantive action taken along these lines will inherently map onto the literal wording without semantic friction.",
+        "deliberately_ignored": "The likelihood of whether the U.S. government will actually decide to impose these sanctions, geopolitical negotiations, diplomatic friction, or the timing of policy decisions.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "Assuming the substantive event occurs—meaning the U.S. takes action regarding Chinese entities and Iranian oil—the strict phrasing of the resolution criteria requires that the target be specifically 'at least one major Chinese commercial bank' and the official action must be 'sanctions (such as cutting off access to the U.S. financial system)'. If the U.S. Department of the Treasury instead implements secondary measures targeting smaller financial institutions, non-bank intermediaries, state-owned energy trading companies, or general shipping and logistics firms rather than a major commercial bank, the technical wording is missed. Furthermore, actions short of officially announced formal sanctions—such as private diplomatic warnings, asset freezes on shell companies, or restricted trade blacklists that do not cut off access to the U.S. financial system—would fail to trigger a YES resolution. The wording demands a precise statutory or executive designation explicitly targeting a major Chinese commercial bank for Iranian oil transactions, leaving no room for broader or alternative forms of economic penalty to suffice.",
+        "key_evidence": [
+          "Resolution criteria specifically mandate 'at least one major Chinese commercial bank'",
+          "Resolution criteria specify formal sanctions 'such as cutting off access to the U.S. financial system'",
+          "The required action must be 'specifically for facilitating Iranian oil transactions'"
+        ],
+        "strength": "strong",
+        "strength_reason": "The resolution criteria are narrowly defined around specific institutional categories (major commercial banks) and precise legal instruments (formal U.S. Treasury sanctions cutting off financial system access), making it easy for a substantive U.S. push against Chinese-Iranian oil trade to take a form that misses these strict boundaries.",
+        "deliberately_ignored": "Whether the U.S. government will actually decide to impose sanctions on China, geopolitical tensions, diplomatic negotiations, and the likelihood of the underlying policy decision occurring.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "excluded",
+      "audit_note": "Remove the downward adjustment to the satisfaction probability based on the restrictive wording, and use the previously frozen 80% satisfaction value in the calculation.",
+      "status": "fallback_outside",
+      "probability": 32.0,
+      "p_full": 32.0,
+      "reason": "audit excluded the reasoning; using the frozen outside view",
+      "known_bias": "outside_view_is_news_blind"
+    }
+  },
+  "abstained": [],
+  "excluded": [],
+  "fallbacks": [
+    "analogy",
+    "actor_incentive",
+    "literalist"
+  ],
+  "responding_lenses": 7,
+  "abstained_lenses": 0,
+  "fallback_lenses": 3,
+  "failed_lenses": 0,
+  "median_raw": 25.0,
+  "spread": 33.0,
+  "low_lens": "mechanism_calendar",
+  "high_lens": "blocker",
+  "median_extremized": 16.1,
+  "advocate": {
+    "load_bearing_assumption": "The U.S. administration is willing and able to execute a highly destabilizing 'financial nuclear option' against a major Chinese commercial bank with zero public warning, market preparation, or diplomatic runway within the next 13 days.",
+    "why_it_could_be_wrong": "Sanctioning a major Chinese bank would trigger massive global systemic financial instability. Such actions are preceded by months of explicit warnings, negotiations, and public signaling to allow institutions to wind down exposure. Initiating this out of nowhere in a 13-day window is virtually impossible unless a massive geopolitical flashpoint occurs simultaneously, which has not happened.",
+    "should_move": true,
+    "moved_to": 5.0,
+    "move_reason": "With only 13 days remaining before the deadline and absolutely no public precursors or escalating diplomatic ultimatums, the 25% aggregate is anchored too heavily on abstract geopolitical friction rather than the acute temporal reality. The probability must be drastically discounted to reflect the near-zero chance of a sudden, unannounced systemic sanction in the immediate term.",
+    "lenses_that_look_redundant": [
+      "reference_class",
+      "analogy",
+      "actor_incentive",
+      "literalist"
+    ],
+    "concerns": "The blocker lens (38%) and telltale lens (18%) are severely underestimating the temporal constraint, treating a 13-day horizon as if it were a multi-year forecast window. They fail to apply a proper time-decay function to their probabilities."
+  },
+  "advocate_proposed": 5.0,
+  "probability": 25.0,
+  "status": "forecast"
+}
