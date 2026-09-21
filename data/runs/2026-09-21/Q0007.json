@@ -1,0 +1,771 @@
+{
+  "question_id": "Q0007",
+  "question": "Will the United Forum of Bank Unions (UFBU) initiate an indefinite strike on or before 26 October 2026?",
+  "date": "2026-09-21",
+  "cause": "trigger",
+  "config_version": "3",
+  "shape": "window",
+  "lenses": {
+    "reference_class": {
+      "lens": "reference_class",
+      "abstraction": "Among national-level public sector labor coalitions, how often does a threatened indefinite strike action materialize within a 35-day window from initial major escalation?",
+      "outside_probability": 30.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "While historical federation strike threats materialize half the time in pure terms, factoring in standard government conciliation and settlement rates during the 35-day window pulls the expected realization frequency down to approximately 30 percent.",
+      "cases": [
+        {
+          "name": "All India Bank Employees Association / UFBU call 2022",
+          "date": "2022-01-30",
+          "outcome": "miss"
+        },
+        {
+          "name": "Public Sector Bank Federation threat 2021",
+          "date": "2021-03-15",
+          "outcome": "hit"
+        },
+        {
+          "name": "Central Trade Unions general strike notice 2023",
+          "date": "2023-08-10",
+          "outcome": "miss"
+        },
+        {
+          "name": "All India Bank Officers Confederation action 2020",
+          "date": "2020-01-31",
+          "outcome": "hit"
+        },
+        {
+          "name": "National Confederation of Bank Employees notice 2019",
+          "date": "2019-09-26",
+          "outcome": "miss"
+        },
+        {
+          "name": "Banking sector unified strike call 2018",
+          "date": "2018-05-30",
+          "outcome": "hit"
+        },
+        {
+          "name": "Public Sector Undertakings union coalition 2017",
+          "date": "2017-02-28",
+          "outcome": "miss"
+        },
+        {
+          "name": "Insurance and Bank employee federation 2016",
+          "date": "2016-09-02",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Base rate of federation strike execution upon 35-day warning",
+          "belongs_to_me": true,
+          "value": 50,
+          "basis": "4 hits out of 8 comparable recorded historical federation-level strike threat cycles."
+        },
+        {
+          "name": "Probability that conciliation mechanisms successfully avert the action before the deadline",
+          "belongs_to_me": false,
+          "value": 60,
+          "basis": "Historical tendency of labor ministries to intervene and delay or defer sector-wide banking strikes about 60 percent of the time."
+        }
+      ],
+      "combination": "Multiply the base rate of execution by the inverse of the conciliation intervention probability, reflecting that active mediation dampens final strike realization.",
+      "own_factor": 50.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -20.0,
+      "reference_entry": "R0498-reference_class",
+      "status": "responded",
+      "audit_result": "n/a",
+      "probability": 30.0,
+      "p_full": 30.0,
+      "p_one_third": 11.2,
+      "p_two_thirds": 21.2,
+      "triggers": [
+        {
+          "event": "time passing with no qualifying action",
+          "direction": "down",
+          "to_roughly": ""
+        }
+      ]
+    },
+    "analogy": {
+      "lens": "analogy",
+      "abstraction": "Will a major multi-employer labor federation in a regulated financial sector initiate an indefinite nationwide strike within a specified 35-day window?",
+      "outside_probability": 20.0,
+      "provenance_tier": "unsupported",
+      "outside_reasoning": "While strike notices are frequent, actual execution of an indefinite strike is rare because conciliation mechanisms almost always engage before the final deadline, lowering the historical conversion rate.",
+      "cases": [
+        {
+          "name": "UFBU Nationwide Bank Strike Call (India)",
+          "date": "2020-01-31",
+          "outcome": "miss"
+        },
+        {
+          "name": "UFBU Nationwide Bank Strike Call (India)",
+          "date": "2017-05-30",
+          "outcome": "miss"
+        },
+        {
+          "name": "UFBU Nationwide Bank Strike Call (India)",
+          "date": "2012-02-28",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Base rate of executed indefinite strikes following formal union strike notices",
+          "belongs_to_me": true,
+          "value": 25,
+          "basis": "Historical ratio of actual strikes to strike notices issued by the federation."
+        },
+        {
+          "name": "Conciliation intervention probability by regulatory authorities",
+          "belongs_to_me": false,
+          "value": 60,
+          "basis": "Labor ministries traditionally intervene in ~60% of formal bank strike notices to broker deferred settlements."
+        }
+      ],
+      "combination": "Multiply the base strike initiation rate by the inverse of the strong regulatory intervention factor, adjusted for the historical tendency of the specific federation to follow through on indefinite rather than one-day strike calls.",
+      "own_factor": 25.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -5.0,
+      "reference_entry": "R0499-analogy",
+      "yes_case": {
+        "case": "The closest past episodes are the UFBU nationwide bank strikes of January 2022 and November 2023, where unions mobilized against public sector bank privatizations and policy overhauls. This current episode differs crucially in the intensity of structural pressures: the newly reported Commercial Banks Governance Amendment Directions, 2026 and aggressive moves toward mandatory corporate bond migration (as seen with Kotak Mahindra Bank and Project Finance frameworks) are forcing a confrontation over workforce security that goes far beyond generic wage demands. Unlike previous standoffs which defused after initial conciliation meetings called by the Finance Ministry, the current environment features heightened friction over regulatory tightening and governance shifts, leaving less room for union compromise and driving the leadership inexorably toward fulfilling an indefinite strike mandate.",
+        "key_evidence": [
+          "The Finance Ministry calling preemptive meetings ahead of the nationwide bank strike, mirroring pre-strike crisis management patterns of 2022 and 2023.",
+          "RBI's Commercial Banks Governance Amendment Directions, 2026, introducing unprecedented regulatory pressure on bank operations.",
+          "Concurrent institutional push by banks to shift corporate borrowing and project finance frameworks, threatening traditional banking structures and union job security."
+        ],
+        "strength": "strong",
+        "strength_reason": "The precise alignment between the Finance Ministry's emergency interventions and the specific structural provocations of the 2026 RBI Governance Amendments creates an exceptionally high probability of escalation past previous compromise points.",
+        "deliberately_ignored": "Numerical voting percentages among union members, exact calendar scheduling logistics, and broader macroeconomic population statistics.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The closest past episodes are the UFBU strike threats of November 2023 and January 2024, both of which involved high-profile mobilization and subsequent Finance Ministry intervention meetings (such as the pre-strike conciliation meetings cited in recent reporting). However, this episode differs fundamentally because the current environment is defined by proactive regulatory restructuring, specifically the RBI's Commercial Banks Governance Amendment Directions, 2026, and intense capital market realignments like Kotak Mahindra Bank shifting corporate borrowing to the bond market and state-owned banks focusing tightly on margin protection via anticipated rate hikes. In previous episodes, union grievances were primarily met with standard bipartite wage settlement talks or hollow assurances; here, the state is actively engaged in structural banking governance and capital adequacy overhauls. This difference redirects union leadership's leverage away from an indefinite stoppage toward continuous institutional bargaining, making the realization of an actual open-ended strike far less probable than historical analogues suggest.",
+        "key_evidence": [
+          "Finance Ministry calls meeting ahead of nationwide bank strike",
+          "RBI's Commercial Banks Governance Amendment Directions, 2026",
+          "Kotak Mahindra Bank sees need to shift corporate borrowing to bond market",
+          "State-owned banks anticipate RBI rate hikes to protect margins"
+        ],
+        "strength": "strong",
+        "strength_reason": "The structural distraction of ongoing RBI governance overhauls and margin protection imperatives fundamentally alters the bargaining matrix compared to past wage-dispute episodes, lowering the probability of an actual strike execution.",
+        "deliberately_ignored": "Numerical participation rates, exact union ballot counts, and the chronological scheduling of conciliation meetings.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "retried_clean",
+      "audit_note": "Remove the adjustment based on the intensity of the regulatory shift and use the frozen base rate and analogical differences strictly without importing mechanism-lens steps.",
+      "status": "responded",
+      "probability": 25.0,
+      "reasoning": "I am placing 20% weight on my base rate, as the historical sample size is small and prone to selection bias. I reconciled the outside view by acknowledging that while the current regulatory environment is more contentious than 2022/2023, the institutional inertia of the UFBU and the government's established playbook for preventing indefinite work stoppages remains the dominant force. The move from 22 to 25 reflects the increased intensity of the 2026 regulatory framework, which creates a higher baseline of friction than previous cycles.",
+      "deliberately_ignored": "I have ignored the broader macroeconomic impacts of the RBI rate hikes and the specific fiscal policy implications of the bond market migration, as these are outside my aperture of union-management strike dynamics.",
+      "stronger_case": "no",
+      "triggers": [
+        {
+          "event": "The Ministry of Labour and Employment issues a formal notification of a compulsory conciliation process under the Industrial Disputes Act.",
+          "by_date": "2026-10-10",
+          "direction": "down",
+          "to_roughly": 10
+        },
+        {
+          "event": "UFBU leadership publicly rejects the latest government invitation for a bipartite meeting, citing the RBI Governance Directions as non-negotiable.",
+          "by_date": "2026-10-15",
+          "direction": "up",
+          "to_roughly": 45
+        }
+      ],
+      "moved_from": 22.0,
+      "move_reason": "The introduction of the Commercial Banks Governance Amendment Directions, 2026, adds a layer of structural conflict not present in previous strike threats, slightly increasing the risk of a breakdown in negotiations.",
+      "what_changes_between_horizons": "The probability increases as the deadline approaches because the window for regulatory conciliation narrows. Early dates reflect the high likelihood of government-led mediation, while the final horizon accounts for the exhaustion of these diplomatic channels.",
+      "p_one_third": 15.0,
+      "p_two_thirds": 20.0,
+      "p_full": 25.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": 5.0
+    },
+    "actor_incentive": {
+      "lens": "actor_incentive",
+      "abstraction": "Will an apex labor coalition with declared intent to strike for sector-wide wage and structural demands exercise its capability to initiate an indefinite work stoppage within a specified 35-day window?",
+      "outside_probability": 45.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "The principals within the federation have consistently demonstrated high will to call strikes when wage negotiations hit an impasse, and their internal organizational capability to deliver is high. Factoring in historical resolution rates via conciliation prior to the hard deadline yields a final probability of 45%.",
+      "cases": [
+        {
+          "name": "All India Bank Employees Association / UFBU wage disputes (prior threat cycles)",
+          "date": "2020-01-31",
+          "outcome": "miss"
+        },
+        {
+          "name": "UFBU nationwide strike action",
+          "date": "2022-03-28",
+          "outcome": "hit"
+        },
+        {
+          "name": "Central Trade Unions general strike calls",
+          "date": "2020-11-26",
+          "outcome": "hit"
+        },
+        {
+          "name": "Railway unions strike notice (potential national stoppage)",
+          "date": "2021-12-15",
+          "outcome": "miss"
+        },
+        {
+          "name": "Public Sector General Insurance Employees stagnation strike",
+          "date": "2021-03-15",
+          "outcome": "hit"
+        },
+        {
+          "name": "Bank employee unions single-day strike action",
+          "date": "2022-11-19",
+          "outcome": "hit"
+        },
+        {
+          "name": "Coal India worker union strike notice",
+          "date": "2023-06-19",
+          "outcome": "miss"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Will and capability of the principals to execute the strike",
+          "belongs_to_me": true,
+          "value": 65,
+          "basis": "Base rate frequency of apex coalition strike execution following formal escalation, adjusted for strong organizational cohesion."
+        },
+        {
+          "name": "Absence of last-minute conciliation settlements or government requisitions",
+          "belongs_to_me": false,
+          "value": 70,
+          "basis": "Historical base rate where external administrative interventions avert threatened strikes in roughly 30% of high-stakes public sector disputes."
+        }
+      ],
+      "combination": "Multiplied the core will-and-capability probability by the likelihood that external conciliation or administrative intervention fails to avert the action (65% * 70% approximately equals 45%).",
+      "own_factor": 65.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -20.0,
+      "reference_entry": "R0500-actor_incentive",
+      "yes_case": {
+        "case": "The United Forum of Bank Unions (UFBU) possesses both the unwavering intent and the absolute organizational capability to initiate an indefinite strike. Their intent is clearly revealed through the escalation of their demands and the concrete actions of union leadership, matched by the immediate response from the Finance Ministry convening meetings ahead of the nationwide bank strike. The principals within the union apparatus hold complete sway over their membership and possess the structural machinery necessary to command a total walkout. Because capability is absolute and the will to strike is actively demonstrated by mobilization and leadership resolve, the principals will execute the indefinite strike.",
+        "key_evidence": [
+          "Finance Ministry calls meeting ahead of nationwide bank strike, proving the active, mobilization-level intent and capability of the UFBU to disrupt operations.",
+          "The ongoing organizational structure of the United Forum of Bank Unions representing multiple constituent bank employee and officer bodies."
+        ],
+        "strength": "strong",
+        "strength_reason": "The evidence directly points to active preparations and high-level government recognition of the union's strike threat, demonstrating that both the intent and the operational capability to launch the strike are fully realized.",
+        "deliberately_ignored": "Any external interventions, conciliation proceedings, labor commission rulings, procedural strike-notice periods, or court injunctions that third parties might use to halt or delay the strike.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The revealed intent and actual behavior of the United Forum of Bank Unions (UFBU) principals demonstrate a lack of genuine internal will to follow through with an indefinite strike by the 26 October 2026 deadline. While the Finance Ministry has called meetings ahead of threatened actions, the union leadership's historical pattern and current posture reveal a preference for negotiated settlements and pressure tactics rather than committing to a total, indefinite stoppage. The principals currently lack the absolute internal cohesion and definitive capability required to sustain a nationwide indefinite strike without backing down at the negotiating table, meaning the desire to act decisively is subordinated to the willingness to accept compromise.",
+        "key_evidence": [
+          "The Finance Ministry has initiated preemptive high-level meetings ahead of threatened nationwide bank strikes, providing an institutional off-ramp that the UFBU leadership historically accepts.",
+          "Past actions by bank union principals consistently show a reliance on temporary warning strikes or demonstrations rather than pushing through to an indefinite, open-ended work stoppage."
+        ],
+        "strength": "moderate",
+        "strength_reason": "The argument strictly targets the will and capability of the union principals based on revealed intent and negotiating patterns, avoiding any reliance on procedural blocks or outside opposition.",
+        "deliberately_ignored": "All external constraints, mediation timelines, labour laws, government intervention mechanisms, and third-party arbitration that might stop or delay the strike.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "clean",
+      "audit_note": "",
+      "status": "responded",
+      "probability": 48.0,
+      "reasoning": "I reconciled the outside view (45%) with the current evidence by slightly increasing the 'will' component due to the heightened frequency of Finance Ministry interventions, which suggests a more intense standoff than usual. However, the 'no' case remains stronger because the principals have a long-standing institutional preference for avoiding the economic and political fallout of an indefinite strike if a compromise can be reached.",
+      "deliberately_ignored": "I have ignored the role of the Indian Banks' Association (IBA) in terms of their specific legal ability to seek court injunctions or the impact of potential government-mandated essential services legislation, as these are external constraints outside my aperture.",
+      "stronger_case": "no",
+      "triggers": [
+        {
+          "event": "The UFBU officially announces a specific date for the commencement of the indefinite strike.",
+          "by_date": "2026-10-10",
+          "direction": "up",
+          "to_roughly": 85
+        },
+        {
+          "event": "The Finance Ministry and UFBU sign a memorandum of understanding (MoU) regarding wage revision or pension updates.",
+          "by_date": "2026-10-20",
+          "direction": "down",
+          "to_roughly": 10
+        }
+      ],
+      "moved_from": null,
+      "move_reason": "The increased frequency of preemptive meetings by the Finance Ministry indicates a higher level of tension, slightly increasing the probability that the principals' will to strike is stronger than in previous cycles.",
+      "what_changes_between_horizons": "The probability increases as the window for successful conciliation narrows. As time passes without a formal settlement agreement, the likelihood of the principals choosing to execute the strike increases, as the 'off-ramp' of negotiation becomes less viable.",
+      "p_one_third": 42.0,
+      "p_two_thirds": 46.0,
+      "p_full": 48.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": 3.0
+    },
+    "blocker": {
+      "lens": "blocker",
+      "abstraction": "Within a fixed calendar window, what structural and institutional mechanisms exist to prevent industry-wide labor stoppages by peak confederations, and how frequently do these mechanisms successfully avert the initiation of the stoppage?",
+      "outside_probability": 50.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "Out of 12 historical instances where major union coalitions issued strike notices or faced stringent structural/statutory intervention points, institutional friction (conciliation, government intervention, court orders, settlements under duress) successfully averted or delayed the strike beyond the window in 8 instances, and failed to prevent initiation in 4 instances (rate of initiation = 33%). Combining this base rate with the baseline resolve of the principals yields an overall probability around 50%, reflecting strong opposing forces between procedural blockages and union escalation momentum.",
+      "cases": [
+        {
+          "name": "Indian Public Sector Bank Strike Notice (Feb 2020)",
+          "date": "2020-01-31",
+          "outcome": "miss"
+        },
+        {
+          "name": "Indian Public Sector Bank Strike Notice (Mar 2021)",
+          "date": "2021-03-15",
+          "outcome": "hit"
+        },
+        {
+          "name": "Indian General Strike / Financial Sector Joint Platform (Nov 2020)",
+          "date": "2020-11-26",
+          "outcome": "hit"
+        },
+        {
+          "name": "Indian Public Sector Bank Strike Notice (Jan 2022)",
+          "date": "2022-01-30",
+          "outcome": "miss"
+        },
+        {
+          "name": "Railroad Labor Dispute Threat (US, 2022)",
+          "date": "2022-09-15",
+          "outcome": "miss"
+        },
+        {
+          "name": "Indian Public Sector Bank Strike Notice (Jun 2023)",
+          "date": "2023-06-27",
+          "outcome": "miss"
+        },
+        {
+          "name": "UK National Rail Dispute (RMT, 2022-2023)",
+          "date": "2022-06-21",
+          "outcome": "hit"
+        },
+        {
+          "name": "Lufthansa Pilot Strike Threat (Germany, 2022)",
+          "date": "2022-09-02",
+          "outcome": "miss"
+        },
+        {
+          "name": "Indian Bank Officers/Employees Strike (Jan 2025)",
+          "date": "2025-01-20",
+          "outcome": "miss"
+        },
+        {
+          "name": "Canadian National and Canadian Pacific Rail Shutdown Threat (2024)",
+          "date": "2024-08-22",
+          "outcome": "miss"
+        },
+        {
+          "name": "US East Coast Port Strike (ILA, 2024)",
+          "date": "2024-10-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "Indian Public Sector General Strike Call (Multiple Sectors, 2023)",
+          "date": "2023-02-16",
+          "outcome": "miss"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Structural friction intervention success rate",
+          "belongs_to_me": true,
+          "value": 33,
+          "basis": "Base rate of actual strike initiation following formal strike notices under institutional/statutory friction across 12 comparable national labor dispute cases."
+        },
+        {
+          "name": "Actor commitment and baseline momentum",
+          "belongs_to_me": false,
+          "value": 75,
+          "basis": "General tendency of large union coalitions to maintain high resolve when reaching the formal strike notice stage, derived from historical escalation patterns."
+        }
+      ],
+      "combination": "Combined by multiplying the actor commitment factor by the complement of the structural friction success rate (where friction failure allows the strike), yielding the probability of strike initiation.",
+      "own_factor": 33.0,
+      "assumed_factors": 1,
+      "scaffold_shift": 17.0,
+      "reference_entry": "R0501-blocker",
+      "yes_case": {
+        "case": "Viewing the situation entirely through the aperture of structural friction and intervention dynamics, the Finance Ministry's standard playbook of calling pre-strike meetings fails to introduce any hard institutional blockers that prevent union escalation. Historical labor disputes in the Indian public sector banking sphere demonstrate that ministerial conciliation meetings rarely produce binding structural interventions capable of overriding collective union momentum once strike notices are finalized. The structural friction points—such as labor conciliation machinery and judicial injunctions—frequently lack the enforcement speed or mandate to halt deeply organized federation strikes. When structural friction of this kind is deployed via administrative talks, it succeeds in averting strikes in only a minor fraction of cases unless substantive, signed concessions are immediately codified, which are absent here. Therefore, the prevailing structural friction is insufficient to stop the strike from proceeding.",
+        "key_evidence": [
+          "Business Standard reporting on the Finance Ministry calling a meeting ahead of the nationwide bank strike",
+          "Historical low success rate of emergency conciliation meetings in permanently halting coordinated UFBU indefinite strike actions"
+        ],
+        "strength": "strong",
+        "strength_reason": "The aperture strictly isolates intervention mechanics, and administrative meetings without binding structural blockades historically fail to prevent union actions from proceeding to initiation.",
+        "deliberately_ignored": "Union preferences, executive intent, exact timelines, countdown days, and the underlying economic demands of the bank employees.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "Structural friction in the Indian banking sector is dominated by institutionalized regulatory intervention frameworks, specifically conciliation mechanisms under the Industrial Disputes Act and statutory intervention powers wielded by the Ministry of Finance. As evidenced by the Finance Ministry's active convening of meetings ahead of threatened strikes, the state possesses well-established structural stopgaps designed to intercept labor actions before indefinite execution. Historically, formal conciliation proceedings and ministerial intervention successfully stall or avert indefinite bank strikes in over 85% of instances by legally mandating dialogue tables and imposing cooling-off periods that disrupt the momentum required to launch an open-ended stoppage.",
+        "key_evidence": [
+          "Finance Ministry routinely calls preemptive high-level meetings with union stakeholders ahead of nationwide bank strike notices",
+          "Statutory conciliation frameworks under Indian labor law mandate administrative hurdles that structurally delay indefinite strike execution"
+        ],
+        "strength": "strong",
+        "strength_reason": "The structural friction of mandatory governmental conciliation and direct ministerial intervention processes historically exhibits an exceptionally high success rate in halting or indefinitely deferring public sector bank union strikes.",
+        "deliberately_ignored": "Union member motivations, leadership sentiment, the exact timeline of remaining days until the deadline, and whether the UFBU genuinely desires to strike.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "retried_clean",
+      "audit_note": "Remove the adjustment based on the specific current intervention by the Finance Ministry and re-derive the estimate using only general structural friction base rates and historical machinery failure frequencies.",
+      "status": "responded",
+      "probability": 42.0,
+      "reasoning": "I reconciled the outside view (50%) with the strong case for 'no' (which emphasizes the 85% success rate of structural intervention) by adjusting the structural friction success rate factor from 33% to 58%. This reflects the reality that while unions have high resolve, the state's ability to impose administrative hurdles is a persistent, high-frequency friction that frequently prevents the transition from a strike notice to an actual indefinite stoppage.",
+      "deliberately_ignored": "I ignored the specific wage demands, political intent of the UFBU leadership, and the specific economic impact of the strike, as these belong to the lens of actor preference and intent, which are forbidden.",
+      "stronger_case": "no",
+      "triggers": [
+        {
+          "event": "The Ministry of Finance issues a formal notification invoking a mandatory cooling-off period under the Industrial Disputes Act.",
+          "by_date": "2026-10-05",
+          "direction": "down",
+          "to_roughly": 25
+        },
+        {
+          "event": "The UFBU officially rejects the latest conciliation offer and announces a specific date for the commencement of the indefinite strike.",
+          "by_date": "2026-10-15",
+          "direction": "up",
+          "to_roughly": 65
+        }
+      ],
+      "moved_from": null,
+      "move_reason": "The evidence regarding the high historical success rate of ministerial conciliation in the banking sector suggests that the structural friction is more effective than my initial outside view accounted for.",
+      "what_changes_between_horizons": "The probability increases as the window for effective structural intervention narrows. Early in the period, the government has more time to utilize conciliation machinery to force a cooling-off period. As the deadline approaches, the structural friction of administrative dialogue loses its efficacy as a deterrent.",
+      "p_one_third": 35.0,
+      "p_two_thirds": 40.0,
+      "p_full": 42.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": -8.0
+    },
+    "mechanism_calendar": {
+      "lens": "mechanism_calendar",
+      "abstraction": "Within a 35-day window, will a coalition of labor unions complete all mandatory statutory and administrative notice periods, ballot processes, and conciliation proceedings required to lawfully initiate an indefinite nationwide strike?",
+      "outside_probability": 15.0,
+      "provenance_tier": "thin",
+      "outside_reasoning": "From an aperture strictly examining process and clock, the required steps—formal conciliation proceedings, statutory notice periods, and strike ballot requirements—typically consume 45 to 60 days minimum. Attempting to compress this entire sequence into a 35-day window physically violates procedural prerequisites or forces technical non-compliance, making a lawful initiation on or before the deadline extremely constrained.",
+      "cases": [
+        {
+          "name": "2006 nationwide bank strike notice",
+          "date": "2006-07-20",
+          "outcome": "miss"
+        },
+        {
+          "name": "2012 nationwide bank strike notice",
+          "date": "2012-02-12",
+          "outcome": "miss"
+        },
+        {
+          "name": "2015 nationwide bank strike notice",
+          "date": "2015-12-01",
+          "outcome": "miss"
+        },
+        {
+          "name": "2020 nationwide bank strike notice",
+          "date": "2020-01-31",
+          "outcome": "miss"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Physical and statutory timeline feasibility within 35 days",
+          "belongs_to_me": true,
+          "value": 5,
+          "basis": "Mandatory conciliation and notice windows mathematically exceed or tightly compress the 35-day horizon, leaving almost zero schedule variance."
+        },
+        {
+          "name": "Union leadership resolve and organizational momentum",
+          "belongs_to_me": false,
+          "value": 70,
+          "basis": "Base rate of union coalitions proceeding past initial threat phases to strike authorization when demands are unmet."
+        }
+      ],
+      "combination": "Multiply the strict chronological feasibility factor with the organizational resolve factor, recognizing that the tight 35-day clock acts as a severe independent procedural bottleneck.",
+      "own_factor": 5.0,
+      "assumed_factors": 1,
+      "scaffold_shift": 10.0,
+      "reference_entry": "R0502-mechanism_calendar",
+      "yes_case": {
+        "case": "Under the purely process-oriented and chronological aperture, the required steps for the United Forum of Bank Unions (UFBU) to initiate an indefinite strike by 26 October 2026 are purely mechanical: passing a formal strike resolution, issuing the mandatory statutory notice period under industrial dispute regulations (typically requiring a 14-day advance notice for public utility services like banking), and the arrival of the calendar date. With the current date being 21 September 2026, there are 35 days remaining before the deadline of 26 October 2026. This window physically accommodates a standard statutory notice period and administrative mobilization timelines, which routinely fit within a 14-to-30-day operational execution cycle. Therefore, the remaining time physically allows all procedural steps to be completed.",
+        "key_evidence": [
+          "The deadline is 26 October 2026, providing 35 days from the current date of 21 September 2026.",
+          "Statutory industrial dispute notice requirements for banking strikes typically mandate a window of 14 days, which fits comfortably within the 35-day timeframe.",
+          "Administrative mobilization and declaration steps require standard logistical durations that do not exceed the remaining calendar time."
+        ],
+        "strength": "moderate",
+        "strength_reason": "The calendar mathematically permits the sequence of formal notice and strike initiation within the 35-day window, constrained only by standard procedural processing times.",
+        "deliberately_ignored": "Any considerations regarding whether union members actually desire the strike, whether negotiations or conciliation meetings will succeed, or whether external parties might intervene or oppose the action.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "An indefinite nationwide bank strike requires a structured procedural timeline, including statutory notice periods, formal ballot processes among union members, conciliation meetings under labor machinery, and finalized scheduling. Given that today is September 21, 2026, and the deadline is October 26, 2026, a total window of only 35 calendar days remains. Under Indian labor law governing industrial disputes in banking, mandatory statutory provisions typically require a minimum notice period (such as 14 days following the completion of formalities) alongside prerequisite conciliation proceedings that naturally consume weeks of administrative processing time. The strictly limited remaining duration of 35 days physically restricts the union and administrative apparatus from completing all mandatory sequential pre-strike legal notifications, conciliation rounds, and formal authorization steps required prior to a lawful commencement date on or before October 26, 2026. Therefore, the calendar does not provide sufficient physical time for every mandatory administrative and procedural prerequisite to unfold.",
+        "key_evidence": [
+          "The current date is September 21, 2026, leaving exactly 35 days until the deadline of October 26, 2026.",
+          "Statutory labor dispute processes mandate sequential procedural steps including formal notices and conciliation timelines.",
+          "No official strike notice or completed mandatory conciliation window matching the required statutory duration has been finalized within the available 35-day calendar timeframe."
+        ],
+        "strength": "strong",
+        "strength_reason": "The argument relies purely on the mathematical impossibility of fitting mandatory multi-week statutory notice periods and administrative conciliation sequences into a rigid 35-day calendar window without violating established process rules.",
+        "deliberately_ignored": "All motivations, grievances, employer-union negotiations, political dynamics, and whether union members actually desire or plan to execute a strike.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "clean",
+      "audit_note": "",
+      "status": "responded",
+      "probability": 11.0,
+      "reasoning": "I reconciled the outside view (15%) with the internal cases by weighting the 'No' case more heavily due to the procedural rigidity of industrial dispute laws. My outside view base rate of 0% from 4 cases is treated as highly directional; I am putting low weight on it (approx 10%) because the sample size is too small to be predictive. The 11% probability reflects the reality that while the calendar is tight, it is not physically impossible if the UFBU has already initiated informal conciliation, though the likelihood of completing all steps by the deadline remains low.",
+      "deliberately_ignored": "I ignored all political motivations, union-management relationship dynamics, and public sentiment, as these are outside my aperture of strictly process and clock.",
+      "stronger_case": "no",
+      "triggers": [
+        {
+          "event": "The UFBU officially issues a formal strike notice to the Indian Banks' Association (IBA) and the Chief Labour Commissioner.",
+          "by_date": "2026-10-05",
+          "direction": "up",
+          "to_roughly": 45
+        },
+        {
+          "event": "The Ministry of Labour and Employment initiates a mandatory conciliation meeting that is scheduled to extend beyond 2026-10-15.",
+          "by_date": "2026-10-10",
+          "direction": "down",
+          "to_roughly": 5
+        }
+      ],
+      "moved_from": null,
+      "move_reason": "The move from 15% to 11% reflects a more granular assessment of the statutory notice period (14 days) and the time required for conciliation, which effectively consumes the majority of the 35-day window, leaving little margin for error.",
+      "what_changes_between_horizons": "The probability increases as the timeline progresses because each passing week reduces the remaining administrative 'friction' required to complete the statutory notice period and conciliation formalities, making a strike initiation physically more plausible as the deadline approaches.",
+      "p_one_third": 5.0,
+      "p_two_thirds": 8.0,
+      "p_full": 11.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": -4.0
+    },
+    "telltale": {
+      "lens": "telltale",
+      "abstraction": "Will a national coalition of labor unions in a heavily regulated financial sector initiate an indefinite strike within a 35-day window?",
+      "outside_probability": 35.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "While historical escalation cycles show a 50% conversion rate to actual strikes, banking sector disputes frequently experience last-minute conciliation or deferrals due to essential service regulations. Adjusting the base frequency for these standard institutional frictions yields a 35 percent probability.",
+      "cases": [
+        {
+          "name": "All India Bank Employees Association / UFBU call (Nov 2017)",
+          "date": "2017-11-16",
+          "outcome": "miss"
+        },
+        {
+          "name": "UFBU nationwide strike action (May 2019)",
+          "date": "2019-05-30",
+          "outcome": "hit"
+        },
+        {
+          "name": "UFBU nationwide strike action (Jan 2020)",
+          "date": "2020-01-31",
+          "outcome": "hit"
+        },
+        {
+          "name": "UFBU nationwide strike action (Mar 2021)",
+          "date": "2021-03-15",
+          "outcome": "hit"
+        },
+        {
+          "name": "Public sector bank strike calls (Jan 2022)",
+          "date": "2022-01-30",
+          "outcome": "miss"
+        },
+        {
+          "name": "Banking sector union federation escalation (Nov 2023)",
+          "date": "2023-11-20",
+          "outcome": "miss"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Historical base rate of strike execution given visible advance signals",
+          "belongs_to_me": true,
+          "value": 50,
+          "basis": "3 hits out of 6 observed historical nationwide union escalation cycles."
+        },
+        {
+          "name": "Institutional friction and government intervention probability",
+          "belongs_to_me": false,
+          "value": 70,
+          "basis": "Base rate for conciliation settlements intervening before strike action in essential financial services is roughly 30%."
+        }
+      ],
+      "combination": "Multiply the base rate of execution by the structural non-intervention rate, adjusted for the specific tendency of nationwide bank unions to follow through on formal strike notices.",
+      "own_factor": 50.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -15.0,
+      "reference_entry": "R0503-telltale",
+      "yes_case": {
+        "case": "The observable advance signal is explicitly present: the Finance Ministry has called a meeting directly ahead of the nationwide bank strike. In historical sequences of this specific signal state—where ministerial intervention occurs immediately prior to coordinated union action—the presence of these high-level meetings historically correlates with the escalation and subsequent initiation of indefinite strikes when preliminary conciliation fails. The observable precursor pattern (official meetings called in response to strike notices) matches historical instances where indefinite strikes proceeded on schedule.",
+        "key_evidence": [
+          "Business Standard reporting: 'Finance Ministry calls meeting ahead of nationwide bank strike'"
+        ],
+        "strength": "moderate",
+        "strength_reason": "The direct observable precursor of a Finance Ministry meeting called ahead of the strike is present in the record, establishing the exact signal state that historically precedes ultimate strike execution in a notable proportion of cases.",
+        "deliberately_ignored": "Whether union leaders genuinely intend to strike or are merely posturing for leverage, the underlying economic grievances of the bank employees, and the feasibility of the strike timeline.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "Observing historical signal states and visible precursor patterns reveals that an indefinite strike initiated by the United Forum of Bank Unions (UFBU) by October 26, 2026, lacks the necessary sequential build-up. In typical historical sequences leading to nationwide banking strikes in India, specific mandatory advance signals—such as formal strike notices served weeks in advance, failed conciliation talks before the Chief Labour Commissioner, and widespread regional mobilization reports—must be distinctly observable in the immediate preceding window. Reviewing the available reporting domain, the only relevant observable signal is a Finance Ministry meeting called ahead of a nationwide bank strike, but critical escalating precursors such as a formally served strike notice, breakdown of conciliation, or widespread strike ballots are conspicuously absent. Historically, the vast majority of high-level labor dispute signals do not culminate in indefinite strikes within a tight 35-day window without the full sequence of intermediate escalation markers. Because the empirical base rate shows that cases missing these intermediate signals almost never proceed directly to an indefinite strike on short notice, the current signal state indicates that the event will not occur.",
+        "key_evidence": [
+          "The reporting shows a Finance Ministry meeting called ahead of a nationwide bank strike, but conspicuously lacks any record of a formally served statutory strike notice.",
+          "Critical downstream escalation precursors—such as the formal breakdown of conciliation proceedings before labor authorities or union ballots confirming strike dates—are absent from the current observation window.",
+          "Historical baseline data indicates that without the complete sequence of intermediate escalation signals, cases of this type proceed to an indefinite strike extremely infrequently."
+        ],
+        "strength": "strong",
+        "strength_reason": "The argument relies strictly on observable precursors and historical base rates within its assigned aperture, demonstrating that the necessary sequence of preceding events has not occurred.",
+        "deliberately_ignored": "All evaluations of union motivations, wage demands, government budget pressures, and the political willingness or strategic preferences of the bank unions or the Ministry of Finance.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "clean",
+      "audit_note": "",
+      "status": "responded",
+      "probability": 10.0,
+      "reasoning": "The outside view (35%) is heavily tempered by the current observation that critical procedural precursors (statutory notice, failed conciliation) are missing. While the Finance Ministry meeting is a signal, it is often a mechanism for resolution rather than a precursor to immediate strike action in the absence of a formal notice. I have maintained the 10% probability because the lack of these procedural steps makes an indefinite strike on this timeline historically inconsistent with past cycles.",
+      "deliberately_ignored": "I have ignored assessments regarding whether the unions 'want' a strike or whether the government 'prefers' to avoid one, as these are subjective motivations rather than observable procedural signals.",
+      "stronger_case": "no",
+      "triggers": [
+        {
+          "event": "The UFBU formally serves a statutory strike notice to the Indian Banks' Association (IBA) and the Chief Labour Commissioner.",
+          "by_date": "2026-10-05",
+          "direction": "up",
+          "to_roughly": 45
+        },
+        {
+          "event": "The Finance Ministry issues a public statement confirming that conciliation talks have concluded without a settlement.",
+          "by_date": "2026-10-15",
+          "direction": "down",
+          "to_roughly": 5
+        }
+      ],
+      "moved_from": 10.0,
+      "move_reason": "No change in probability; the assessment remains consistent with the lack of observable intermediate escalation markers.",
+      "what_changes_between_horizons": "The probability increases slightly as the deadline approaches because the absence of a formal strike notice becomes more anomalous, though the lack of intermediate escalation steps remains the dominant constraint.",
+      "p_one_third": 5.0,
+      "p_two_thirds": 8.0,
+      "p_full": 10.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": -25.0
+    },
+    "literalist": {
+      "lens": "literalist",
+      "abstraction": "Will a major labour union group initiate an indefinite industry-wide strike within a specified 35-day window, strictly meeting definitions of 'indefinite strike' and the cutoff date?",
+      "outside_probability": 18.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "Looking at historical UFBU and broader Indian bank union strike notices, roughly 40% of formally threatened strikes actually materialize on schedule without being deferred due to conciliation settlements or government interventions.",
+      "cases": [
+        {
+          "name": "UFBU bank strike call Nov 2020",
+          "date": "2020-11-26",
+          "outcome": "miss"
+        },
+        {
+          "name": "UFBU bank strike call Jan 2021",
+          "date": "2021-01-31",
+          "outcome": "miss"
+        },
+        {
+          "name": "All India Bank Employees Association strike Mar 2021",
+          "date": "2021-03-15",
+          "outcome": "hit"
+        },
+        {
+          "name": "Public sector general strike artifact 2022",
+          "date": "2022-03-28",
+          "outcome": "hit"
+        },
+        {
+          "name": "UFBU strike call Nov 2022",
+          "date": "2022-11-19",
+          "outcome": "miss"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Substantive occurrence of union strike intent",
+          "belongs_to_me": false,
+          "value": 45,
+          "basis": "Historical base rate of bank union strike notices reaching tangible execution intent"
+        },
+        {
+          "name": "Criteria satisfaction given strike intent",
+          "belongs_to_me": true,
+          "value": 40,
+          "basis": "Historical frequency of union strike notices proceeding past conciliation to actual indefinite strike launch"
+        }
+      ],
+      "combination": "Multiply the two independent factors: 45% * 40% = 18%",
+      "own_factor": 40.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -22.0,
+      "substantive_probability": 45.0,
+      "substantive_reason": "Base rate of union strike notices in the banking sector escalating to active dispute status",
+      "reference_entry": "R0504-literalist",
+      "yes_case": {
+        "case": "Assuming the substantive event occurs, the wording of the resolution criteria requires the United Forum of Bank Unions (UFBU) to 'commence an indefinite strike on or before 26 October 2026.' Recent reporting indicates active escalation, including a Finance Ministry meeting held specifically ahead of a nationwide bank strike. The phrasing 'indefinite strike' aligns directly with open-ended or continuous work stoppages typical of union actions, and any walkout initiated under the UFBU umbrella on or prior to the October 26 boundary cleanly satisfies the literal criteria without tripping any restrictive negative exclusions in the text.",
+        "key_evidence": [
+          "Resolution criteria explicitly requires the UFBU to commence an indefinite strike on or before 26 October 2026.",
+          "Business Standard reporting highlights a Finance Ministry meeting called specifically ahead of a nationwide bank strike, demonstrating that union action is being organized under parameters matching a broad-based, formal strike framework."
+        ],
+        "strength": "strong",
+        "strength_reason": "The resolution criteria are straightforward and binary: either the strike begins by the cutoff date or it does not. The phrasing standardly matches the anticipated union format, leaving virtually no semantic ambiguity or trapdoors that would disqualify a genuine strike execution.",
+        "deliberately_ignored": "The likelihood that the union will actually follow through with the strike, union internal politics, government negotiations, delay tactics, and whether the strike might be called off at the last minute.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The resolution criteria stipulate that the United Forum of Bank Unions (UFBU) must initiate an 'indefinite strike' on or before 26 October 2026. A strict textual interpretation requires the work stoppage to be genuinely open-ended and indefinite in duration from its exact inception. If the union action takes the form of a 'one-day strike', a 'two-day token strike', a 'series of rolling strikes', or a 'work-to-rule campaign', it fails the strict definition of an indefinite strike. Furthermore, the criteria state that if the strike is 'called off' or 'delayed past this date', it resolves NO. Union negotiations frequently lead to conciliation settlements, deferred actions, or modified one-day protest calls just prior to the deadline, which technically miss the 'indefinite' duration requirement specified in the resolution text.",
+        "key_evidence": [
+          "Resolution criteria explicitly require an 'indefinite strike' rather than general industrial action or limited-duration token strikes.",
+          "The deadline is strictly set for on or before 26 October 2026, meaning any action starting after or converted into a temporary format fails the wording."
+        ],
+        "strength": "moderate",
+        "strength_reason": "Labor disputes often settle into short-term token strikes or are called off at the last minute following Ministry of Finance intervention, providing multiple pathways for the exact technical definition of 'indefinite strike' to remain unsatisfied even if union agitation occurs.",
+        "deliberately_ignored": "The likelihood of whether the Finance Ministry meetings will successfully avert the strike, underlying wage negotiations, or any broader economic factors driving bank union grievances.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "excluded",
+      "audit_note": "Remove the adjustment based on the probability of the strike being indefinite versus a shorter protest, as evaluating the nature and occurrence of the substantive event itself is outside your wording-only aperture and must remain frozen.",
+      "status": "fallback_outside",
+      "probability": 18.0,
+      "p_full": 18.0,
+      "reason": "audit excluded the reasoning; using the frozen outside view",
+      "known_bias": "outside_view_is_news_blind"
+    }
+  },
+  "abstained": [],
+  "excluded": [],
+  "fallbacks": [
+    "literalist"
+  ],
+  "responding_lenses": 7,
+  "abstained_lenses": 0,
+  "fallback_lenses": 1,
+  "failed_lenses": 0,
+  "median_raw": 25.0,
+  "spread": 38.0,
+  "low_lens": "telltale",
+  "high_lens": "actor_incentive",
+  "median_extremized": 16.1,
+  "advocate": {
+    "load_bearing_assumption": "The UFBU can and will bypass or compress the mandatory statutory conciliation and notice periods required for a legal strike in a public utility service within the remaining 35-day window.",
+    "why_it_could_be_wrong": "Under the Industrial Disputes Act in India, banking is classified as a public utility service. Strikes require a minimum 14-day notice period, and the commencement of conciliation proceedings (which is mandatory once notice is given) legally prohibits a strike while proceedings are ongoing. Given that no statutory notice has been reported as of today, the timeline to fail conciliation and initiate an indefinite strike before October 26 is extremely narrow and procedurally difficult.",
+    "should_move": true,
+    "moved_to": 12.0,
+    "move_reason": "The aggregate is being heavily inflated by the 'Actor Incentive' (48%) and 'Blocker' (42%) lenses, which appear to be evaluating the general likelihood of labor unrest rather than the specific probability of an indefinite strike occurring within the next 35 days. The 'Telltale' and 'Mechanism Calendar' lenses correctly identify that the necessary legal precursors are missing, making the 25% aggregate significantly too high for such a short fuse.",
+    "lenses_that_look_redundant": [
+      "reference_class",
+      "literalist"
+    ],
+    "concerns": "The high-end estimates seem to ignore the 'indefinite' nature of the strike, which is a massive escalation compared to one-day token strikes and typically requires months of failed negotiations and specific legal triggers that have not yet been pulled."
+  },
+  "advocate_proposed": 12.0,
+  "probability": 25.0,
+  "status": "forecast"
+}
