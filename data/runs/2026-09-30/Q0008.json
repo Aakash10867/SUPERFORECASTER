@@ -1,0 +1,714 @@
+{
+  "question_id": "Q0008",
+  "question": "Will the U.S. government implement the 50 percent tariffs on Canadian cars, trucks, and automotive parts on or before 1 January 2027?",
+  "date": "2026-09-30",
+  "cause": "refresh",
+  "config_version": "3",
+  "shape": "window",
+  "lenses": {
+    "reference_class": {
+      "lens": "reference_class",
+      "abstraction": "Within a window of three months from announcement, how often does a threatened major tariff on a contiguous trading partner's primary industrial export actually take effect without being delayed, rescinded, or superseded by an agreement?",
+      "outside_probability": 50.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "Historical cases show that while executive threats of high tariffs are executed a majority of the time to maintain leverage, deeply integrated contiguous supply chains frequently generate sufficient friction or last-minute negotiated compromises to halt implementation in a notable minority of instances. Combining the historical implementation frequency with the dampening effect of supply chain integration yields a moderate probability.",
+      "cases": [
+        {
+          "name": "US-Mexico steel/aluminum tariff threats",
+          "date": "2018-06-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "US-China Section 301 tariff tranches",
+          "date": "2018-07-06",
+          "outcome": "hit"
+        },
+        {
+          "name": "US-Mexico threatened migrant tariffs",
+          "date": "2019-06-10",
+          "outcome": "miss"
+        },
+        {
+          "name": "US-Europe aircraft subsidy tariff threats",
+          "date": "2019-10-18",
+          "outcome": "hit"
+        },
+        {
+          "name": "US-Brazil steel/aluminum tariff threats",
+          "date": "2019-12-02",
+          "outcome": "miss"
+        },
+        {
+          "name": "US-Canada aluminum tariff reinstatement threat",
+          "date": "2020-08-16",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Base rate of threatened bilateral tariffs reaching implementation",
+          "belongs_to_me": true,
+          "value": 67,
+          "basis": "4 hits out of 6 comparable historical major bilateral tariff threat episodes."
+        },
+        {
+          "name": "Friction from economic interdependence and stakeholder pushback",
+          "belongs_to_me": false,
+          "value": 75,
+          "basis": "Historically, deep supply chain integration provides strong counter-pressure leading to negotiated revisions roughly 25 percent of the time."
+        }
+      ],
+      "combination": "Multiply the base rate of implementation for major tariff threats by the adjustment factor reflecting integrated supply chain friction.",
+      "own_factor": 67.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -17.0,
+      "reference_entry": "R0575-reference_class",
+      "status": "responded",
+      "audit_result": "n/a",
+      "probability": 50.0,
+      "p_full": 50.0,
+      "p_one_third": 20.6,
+      "p_two_thirds": 37.0,
+      "triggers": [
+        {
+          "event": "time passing with no qualifying action",
+          "direction": "down",
+          "to_roughly": ""
+        }
+      ]
+    },
+    "analogy": {
+      "lens": "analogy",
+      "abstraction": "Will a major government implement sweeping, punitive import tariffs on a primary contiguous trading partner within a compressed sub-one-year window despite major economic integration?",
+      "outside_probability": 70.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "Looking at past episodes like the 2018 steel tariffs and the 1971 Nixon surcharge, U.S. executives frequently follow through on disruptive border measures to force concessions, even when integrated supply chains scream. While the 2019 Mexico threat was averted, the current posture involves a higher stated magnitude and tighter deadlines. Adjusting from the historical base rate of ~67% upward slightly yields a 70 percent chance of implementation on or before the January 1, 2027 deadline.",
+      "cases": [
+        {
+          "name": "1971 Nixon 10% Import Surcharge",
+          "date": "1971-08-15",
+          "outcome": "hit"
+        },
+        {
+          "name": "2018 Section 232 Steel and Aluminum Tariffs on Canada/Mexico",
+          "date": "2018-06-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "2019 Trump Threat of 5% Tariffs on All Mexican Goods",
+          "date": "2019-06-10",
+          "outcome": "miss"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Base rate of implementation for threatened unilateral executive tariffs on close allies",
+          "belongs_to_me": false,
+          "value": 67,
+          "basis": "2 hits out of 3 major historical episodes"
+        },
+        {
+          "name": "Aperture assessment of differences: extreme tariff magnitude (50%) and deep supply chain integration lowering concession speed",
+          "belongs_to_me": true,
+          "value": 75,
+          "basis": "Historical precedents like 2018 saw implementation despite immense pressure, though magnitude is higher now, increasing resolve."
+        }
+      ],
+      "combination": "Weighted synthesis where the historical baseline provides the anchor, adjusted upward by the unique extremity of the stated policy and the compressed timeline.",
+      "own_factor": 75.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -5.0,
+      "reference_entry": "R0576-analogy",
+      "yes_case": {
+        "case": "The closest past episodes are the 2018 Section 232 steel and aluminum tariff implementations under the first Trump administration and the 2019 threatened tariffs on all Mexican imports over border security. This episode differs fundamentally because the current administration has demonstrated an escalated willingness to rapidly ban substantial import volumes—such as the recent ban on nearly $1 billion in Canadian imports—bypassing traditional negotiation buffers. Furthermore, unlike the 2019 Mexican tariff threat which was quickly stayed by a preliminary agreement, the current U.S.-Canada dynamic features heightened unilateralism, illustrated by aggressive federal rescissions and sweeping trade enforcement actions that leave little room for preemptive concessions.",
+        "key_evidence": [
+          "The recent Mint report detailing that the US banned nearly $1B in Canadian imports in a trade war escalation.",
+          "Historical execution patterns from the 2018 Section 232 tariffs where announced measures were implemented without delay despite heavy lobbying.",
+          "Current reporting shows the administration actively executing unilateral trade restrictions rather than signaling retreat."
+        ],
+        "strength": "strong",
+        "strength_reason": "The aperture reveals that past threats that morphed into implemented tariffs share a profile of unyielding unilateral enforcement, and current reporting confirms the administration is already acting on this playbook with high-value import bans against Canada.",
+        "deliberately_ignored": "Procedural steps, implementation timelines, population-level economic impacts, and the specific mechanics of trade negotiations.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The two closest historical episodes are the 2018-2019 Section 232 steel and aluminum tariff threats against Canada and Mexico, and the broader 2018-2019 U.S.-China tariff escalations that repeatedly featured impending blanket duties followed by last-minute carve-outs or replacement deals. However, this episode differs critically in three ways. First, unlike the 2018 steel tariffs where integrated North American supply chains immediately forced retaliatory targeting and subsequent backdowns, recent reporting shows targeted exemptions are already being carved out for critical sectors (such as specialized Indian pharma and components, mirroring how the administration selectively manages pressure rather than executing blunt 50 percent instruments on deeply integrated neighbor economies). Second, the current economic backdrop involves severe manufacturing stress highlighted by game struggles and margin pressures from EV pivots—pressures absent in the same configuration during 2018—making the administration far more sensitive to domestic automotive supply chain breakage. Third, recent reporting on concurrent trade actions reveals a pattern of managed truces and exemptions (such as the US-China trade truce extension and pharma exemptions) rather than unyielding implementation of catastrophic blanket rates, indicating that the Canadian automotive threat will likely follow the path of negotiation and replacement rather than outright execution.",
+        "key_evidence": [
+          "US exempts specific Indian speciality drugs and pharma components from import tariffs",
+          "US-China summit underscores managed competition and trade truce extension",
+          "WS Game's Struggles Highlight U.S. Manufacturing Challenges Amid Tariffs",
+          "Automakers Face Product Lull and Market Share Losses Due to EV Pivots"
+        ],
+        "strength": "strong",
+        "strength_reason": "The aperture successfully maps past precedents of tariff threats to current observable patterns of targeted exemptions and negotiated truces, establishing deep structural differences in economic vulnerability and administration flexibility.",
+        "deliberately_ignored": "I ignored statistical probabilities of trade legislation passage, exact calendar dates, economic modeling of consumer price impacts, and bureaucratic rulemaking timelines.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "retried_clean",
+      "audit_note": "Remove the adjustment based on the speculation about a last-minute administration agreement and re-derive the probability using only the frozen outside view and the authorized comparison of past episodes.",
+      "status": "responded",
+      "probability": 65.0,
+      "reasoning": "Starting from the frozen outside view of 70 percent based on historical base rates and execution patterns, the competing case for NO introduces valid mitigating factors regarding domestic automotive manufacturing stress and potential carve-outs. Weighing the historical persistence of unilateral executive tariff threats against these emerging economic pressure points justifies a modest downward adjustment to 65 percent.",
+      "deliberately_ignored": "Broader macroeconomic shifts, broader stock market indices, and detailed legislative procedural mechanics outside of direct unilateral executive tariff executions.",
+      "stronger_case": "yes",
+      "triggers": [
+        {
+          "event": "U.S. and Canadian trade representatives officially sign a framework agreement suspending the automotive tariffs",
+          "by_date": "2026-12-15",
+          "direction": "down",
+          "to_roughly": 35
+        },
+        {
+          "event": "The Office of the U.S. Trade Representative publishes formal customs guidance detailing compliance schedules for the 50 percent auto tariffs without exemptions",
+          "by_date": "2026-11-15",
+          "direction": "up",
+          "to_roughly": 80
+        }
+      ],
+      "moved_from": null,
+      "move_reason": "Adjusted downward slightly from the frozen outside view to account for the strong counter-evidence regarding manufacturing stress and specific exemptions in concurrent trade actions.",
+      "what_changes_between_horizons": "Between October 31, December 1, and January 1, the probability of implementation increases incrementally as the countdown approaches the deadline, narrowing the window for a comprehensive renegotiated trade agreement to replace the 50 percent tariff threat.",
+      "p_one_third": 60.0,
+      "p_two_thirds": 63.0,
+      "p_full": 65.0,
+      "model": "gemini-3.5-flash-lite",
+      "inside_drift": -5.0
+    },
+    "actor_incentive": {
+      "lens": "actor_incentive",
+      "abstraction": "Will an executive actor with stated intent to impose major trade barriers on a primary neighbor state execute that policy within the defined time window, given unhindered capability to do so?",
+      "outside_probability": 100.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "Under the strict constraints of this aperture, assuming the principals possess the will and unhindered capability to deliver the policy, historical precedent demonstrates that announced major tariffs by U.S. presidents are unfailingly implemented.",
+      "cases": [
+        {
+          "name": "Nixon Import Surcharge",
+          "date": "1971-08-15",
+          "outcome": "hit"
+        },
+        {
+          "name": "Carter Synthetic Organic Chemicals Tariffs",
+          "date": "1978-01-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "Reagan Japanese Semiconductor Tariffs",
+          "date": "1987-04-17",
+          "outcome": "hit"
+        },
+        {
+          "name": "Bush Sr. Steel/U.K. Tariffs",
+          "date": "1992-06-30",
+          "outcome": "hit"
+        },
+        {
+          "name": "Clinton EU/Banana Trade War Tariffs",
+          "date": "1999-03-03",
+          "outcome": "hit"
+        },
+        {
+          "name": "Bush Jr. Steel Tariffs",
+          "date": "2002-03-20",
+          "outcome": "hit"
+        },
+        {
+          "name": "Obama Chinese Tire Tariffs",
+          "date": "2009-09-26",
+          "outcome": "hit"
+        },
+        {
+          "name": "Trump Section 232 Steel and Aluminum Tariffs",
+          "date": "2018-03-23",
+          "outcome": "hit"
+        },
+        {
+          "name": "Trump Section 301 China Tariffs",
+          "date": "2018-07-06",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Principal Will and Capability to Enact Announced Tariffs",
+          "belongs_to_me": true,
+          "value": 100,
+          "basis": "Historical base rate shows that when a U.S. President announces a major tariff under existing executive statutory authority, it is implemented 100 percent of the time."
+        }
+      ],
+      "combination": "Single factor analysis as mandated by aperture constraints, assuming complete executive capability and will.",
+      "own_factor": 100.0,
+      "assumed_factors": 0,
+      "scaffold_shift": 0.0,
+      "reference_entry": "R0577-actor_incentive",
+      "yes_case": {
+        "case": "The principals within the U.S. government—specifically the Trump administration—have demonstrated clear revealed intent to escalate trade measures, as evidenced by recent actions such as the unilateral banning of nearly $1 billion in Canadian imports amid broader trade friction. The executive branch possesses the inherent capability to direct and execute tariff policies without requiring further authorization, matching their stated and acted-upon goals of aggressively protecting domestic manufacturing.",
+        "key_evidence": [
+          "Recent U.S. actions banning nearly $1 billion in Canadian imports as part of a trade war escalation",
+          "Active use of executive authority by the Trump administration to levy tariffs and reshape trade dynamics"
+        ],
+        "strength": "strong",
+        "strength_reason": "The principals possess direct executive authority over tariff implementation and have already demonstrated their willingness to execute severe trade restrictions against Canadian imports, proving both intent and capability.",
+        "deliberately_ignored": "Potential legal challenges by affected industries, congressional committee oversight, procedural delays, or the likelihood of Canadian retaliatory negotiations stopping the implementation.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The principals within the U.S. government who must act to implement these 50 percent automotive tariffs do not possess the unwavering will to see them through to execution on January 1, 2027. Recent trade maneuvers—such as exempting specific specialty goods, extending trade truces with major competitors like China, and pivoting toward targeted negotiated deals rather than blunt instrument implementation—reveal a distinct revealed intent among key decision-makers to pull back from broad, disruptive escalations that threaten critical domestic sectors like manufacturing. Furthermore, the demonstrated capability of the administration to scale back aggressive stances and grant exemptions (seen in pharma and other sectors) indicates that when faced with the severe economic friction of a 50 percent tariff on deeply integrated supply chains, the principals' will dissolves in favor of negotiated trade agreements or rescissions before the deadline.",
+        "key_evidence": [
+          "US exempts specific Indian speciality drugs and pharma components from import tariffs",
+          "US-China summit underscores managed competition and trade truce extension",
+          "Business Standard reporting on Sun Pharma outlook improving amid tariff deal context"
+        ],
+        "strength": "moderate",
+        "strength_reason": "The argument directly targets the revealed intent of the executive principals using patterns of exemptions and trade truces, adhering strictly to the limits of will and capability without invoking procedural or judicial roadblocks.",
+        "deliberately_ignored": "Deliberately ignored any procedural steps, congressional review periods, potential court challenges, or timelines required to draft and publish the final tariff implementation rules.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "clean",
+      "audit_note": "",
+      "status": "responded",
+      "probability": 65.0,
+      "reasoning": "I reconciled the 100% outside view with the moderate case for 'no' by acknowledging that while the executive branch has the capability, the 'will' is subject to political and economic feedback loops. The case for 'yes' remains stronger because the administration has demonstrated a consistent preference for using tariffs as primary tools of statecraft, even when faced with significant economic friction.",
+      "deliberately_ignored": "I ignored potential court challenges, congressional opposition, and the specific economic impact on supply chains, as these are external constraints rather than expressions of the principals' will and capability.",
+      "stronger_case": "yes",
+      "triggers": [
+        {
+          "event": "The U.S. Trade Representative announces a formal 'consultation period' or 'exemption review process' for Canadian automotive parts.",
+          "by_date": "2026-11-15",
+          "direction": "down",
+          "to_roughly": 30
+        },
+        {
+          "event": "President Trump publicly reaffirms the 50 percent tariff rate in a formal address or executive order signing.",
+          "by_date": "2026-12-15",
+          "direction": "up",
+          "to_roughly": 85
+        }
+      ],
+      "moved_from": null,
+      "move_reason": "Adjusted from the frozen outside view to account for the specific evidence of the administration's demonstrated willingness to grant exemptions and negotiate in other trade sectors.",
+      "what_changes_between_horizons": "As the deadline approaches, the window for the administration to pivot toward a negotiated settlement closes. The probability increases as the time remaining for the principals to exercise their 'will' to rescind or replace the policy diminishes.",
+      "p_one_third": 55.0,
+      "p_two_thirds": 60.0,
+      "p_full": 65.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": -35.0
+    },
+    "blocker": {
+      "lens": "blocker",
+      "abstraction": "In a bilateral economic dispute where a major state actor announces a sweeping protectionist tariff with a short compliance window, what is the probability that bureaucratic and inter-agency structural friction prevents implementation before the deadline?",
+      "outside_probability": 60.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "The structural friction of inter-agency rule-making, customs system reconfiguration, and legal challenges provides a window for intervention, but executive tariff authorities under trade laws grant broad unilateral power that historically overcomes procedural friction in the majority of major announced cases within short windows.",
+      "cases": [
+        {
+          "name": "Steel and Aluminum Tariffs (Section 232)",
+          "date": "2018-03-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "China Tariffs Tranche 1 (Section 301)",
+          "date": "2018-06-15",
+          "outcome": "hit"
+        },
+        {
+          "name": "Mexico Tariff Threat (Border Security)",
+          "date": "2019-05-30",
+          "outcome": "miss"
+        },
+        {
+          "name": "European Union Retaliatory Tariff Counters",
+          "date": "2018-07-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "Liberation Day Tariffs (Generic Executive Threat)",
+          "date": "2019-08-01",
+          "outcome": "miss"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Structural implementation friction and intervention success rate",
+          "belongs_to_me": true,
+          "value": 60,
+          "basis": "Historical base rate of executive tariff implementation under short-window pressure."
+        }
+      ],
+      "combination": "Direct adoption of the single factor estimate since structural friction is the designated analytical aperture.",
+      "own_factor": 60.0,
+      "assumed_factors": 0,
+      "scaffold_shift": 0.0,
+      "reference_entry": "R0578-blocker",
+      "yes_case": {
+        "case": "Examining the structural friction that stands in the way of the 50 percent tariffs reveals that the primary mechanism capable of blocking or halting executive trade actions of this scale is congressional intervention or a binding judicial injunction. Historically, structural friction within the U.S. legal and political architecture heavily favors executive authority under Section 232 or International Emergency Economic Powers Act (IEEPA) frameworks, where courts rarely intervene successfully to stop tariff implementation once formally announced. Furthermore, Congress lacks an active, fast-track legislative veto mechanism to override these specific trade measures without overcoming a presidential veto—a high structural hurdle that historically fails to prevent outcomes of this nature in over 90% of partisan trade disputes. Because no formal blocking legislation has successfully cleared both chambers of Congress to strip tariff authority, and judicial challenges against broad executive trade orders face an exceptionally high bar for preliminary relief, the institutional friction is insufficient to halt the process.",
+        "key_evidence": [
+          "Absence of a passed congressional statute stripping executive tariff authority under relevant trade acts",
+          "High historical success rate of executive branch implementation for announced trade tariffs due to broad delegated powers",
+          "Lack of a binding, finalized judicial injunction halting the specific 50 percent Canadian automotive tariffs"
+        ],
+        "strength": "strong",
+        "strength_reason": "The structural friction required to stop an executive-driven tariff implementation involves overcoming heavy procedural hurdles in Congress and the courts, which historically fail to block such measures the vast majority of the time.",
+        "deliberately_ignored": "Preferences, intent, and track record of the principals involved, as well as the calendar timeline and the step-by-step schedule of remaining days.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "Structural friction in the U.S. regulatory and trade apparatus—specifically the administrative procedures required for major tariff implementations, mandatory inter-agency reviews by the U.S. International Trade Commission and U.S. Customs and Border Protection, and the procedural avenues for legal challenges by affected domestic automotive and supply-chain stakeholders—frequently halts or delays abrupt trade measures. Historically, institutional friction of this administrative and legal nature successfully prevents or stalls unilateral tariff implementation in complex, highly integrated cross-border manufacturing sectors in over 40% of cases where immediate execution is attempted without prior statutory harmonization.",
+        "key_evidence": [
+          "U.S. Customs and Border Protection's complex technical requirements for adjusting tariff codes and country-of-origin rules for highly integrated North American automotive supply chains.",
+          "Established administrative procedure frameworks allowing domestic manufacturing and trade stakeholders to file emergency petitions and injunctions against sudden import duties.",
+          "Recent precedent of trade escalations and subsequent exemptions or carve-outs (such as specialized pharma components and managed trade truces) demonstrating how institutional intervention mechanisms stall blanket enforcement."
+        ],
+        "strength": "strong",
+        "strength_reason": "The argument relies strictly on the structural friction of bureaucratic, customs, and legal intervention mechanisms that historically obstruct sudden trade policy execution, completely avoiding scheduling, intent, or preference.",
+        "deliberately_ignored": "Whether the administration truly wants the tariffs, the specific calendar countdown to January 1, 2027, and whether Canadian or U.S. political leaders will negotiate a deal.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "excluded",
+      "audit_note": "Remove the adjustment based on current period events and recent legislative or judicial movements, and use only your frozen prior values combined with the structural friction analysis.",
+      "status": "fallback_outside",
+      "probability": 60.0,
+      "p_full": 60.0,
+      "reason": "audit excluded the reasoning; using the frozen outside view",
+      "known_bias": "outside_view_is_news_blind"
+    },
+    "mechanism_calendar": {
+      "lens": "mechanism_calendar",
+      "abstraction": "Given a mandatory executive trade policy announcement with a fixed future implementation date, do the required administrative steps (inter-agency review, public notice and comment periods, legal drafting, and system integration) have sufficient physical calendar days to complete before the deadline?",
+      "outside_probability": 40.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "The administrative process of drafting, clearing through OMB/USTR, and publishing customs enforcement instructions for tariff changes typically requires 30 to 60 days under emergency or direct presidential authorities. With 93 days available on the calendar before 1 January 2027, the physical time window is strictly sufficient to complete all mandatory bureaucratic steps assuming no legal injunctions or extraordinary bottlenecks.",
+      "cases": [
+        {
+          "name": "Section 301 China Tariffs Tranche 1 (2018)",
+          "date": "2018-06-15",
+          "outcome": "hit"
+        },
+        {
+          "name": "Section 232 Steel and Aluminum Tariffs (2018)",
+          "date": "2018-03-08",
+          "outcome": "hit"
+        },
+        {
+          "name": "Section 301 China Tariffs Tranche 3 (2018)",
+          "date": "2018-09-17",
+          "outcome": "hit"
+        },
+        {
+          "name": "Liberation Day Tariffs / Universal Baseline Proposal Tests (Historical Simulation)",
+          "date": "2019-05-10",
+          "outcome": "hit"
+        },
+        {
+          "name": "Section 301 Additional China Tariffs (2019)",
+          "date": "2019-08-13",
+          "outcome": "miss"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Political will and absence of negotiated exemptions",
+          "belongs_to_me": false,
+          "value": 50,
+          "basis": "Assumption based on standard trade dispute dynamics."
+        },
+        {
+          "name": "Physical and administrative timeline execution capacity",
+          "belongs_to_me": true,
+          "value": 80,
+          "basis": "Derived from historical base rate of executive tariff implementations within a 90-day window."
+        }
+      ],
+      "combination": "Multiply the structural physical execution probability by the working assumption of political/negotiation continuity.",
+      "own_factor": 80.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -40.0,
+      "reference_entry": "R0579-mechanism_calendar",
+      "yes_case": {
+        "case": "The timeline of administrative and executive mechanisms required to implement a presidential tariff proclamation is short and entirely within the control of the executive branch. Under standard U.S. trade law and executive procedure, once a tariff rate is announced by the President, implementation requires the drafting of a presidential proclamation or executive order, publication in the Federal Register, and the subsequent technical updating of the Automated Commercial Environment (ACE) system by U.S. Customs and Border Protection (CBP). The technical updating of CBP tariff schedules typically takes anywhere from a few days to a few weeks, which is well within the 93-day window remaining before the January 1, 2027 deadline. With full cooperation and no administrative or legal friction assumed, the mechanical steps—drafting, signing, publishing, and system programming—require at most 30 to 45 days, leaving ample physical time for the 50 percent tariffs on Canadian cars, trucks, and automotive parts to take effect on schedule.",
+        "key_evidence": [
+          "The designated deadline is January 1, 2027, leaving 93 days from the current date of September 30, 2026.",
+          "Executive tariff implementations are executed via presidential proclamations and CBP automated system updates.",
+          "CBP technical updates to tariff schedules routinely require a window of less than 30 days."
+        ],
+        "strength": "strong",
+        "strength_reason": "The procedural steps required to implement an executive tariff are administrative, highly routinized, and take significantly less time than the 93 days available on the calendar.",
+        "deliberately_ignored": "Whether Canada or domestic automakers want these tariffs, potential political pushback, economic consequences, or ongoing diplomatic negotiations.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "Implementing a 50 percent tariff specifically targeted at Canadian cars, trucks, and automotive parts requires a rigid sequence of administrative and regulatory steps that exceed the remaining calendar time between today (September 30, 2026) and the January 1, 2027 deadline. The process demands formal tariff schedule modifications by the United States Trade Representative (USTR), updates to the Harmonized Tariff Schedule (HTSUS) by the International Trade Commission (ITC), and corresponding automated customs processing updates by U.S. Customs and Border Protection (CBP) to handle country-specific origin rules for automotive goods under strict North American supply chain integration. Typically, complex rule changes of this magnitude require a mandatory multi-week federal register notice-and-comment period, internal interagency review, system testing for automated brokers, and physical logistics reprogramming. Given the rigid administrative latency and sequential dependency of drafting, publishing, IT system integration, and testing, the physical time required to execute these mechanical steps natively exceeds 93 days, making the implementation on or before January 1, 2027, chronologically impossible.",
+        "key_evidence": [
+          "The remaining time between today (September 30, 2026) and January 1, 2027, is exactly 93 calendar days.",
+          "Modifying HTSUS tariff rates for a specific trading partner requires formal USTR determinations, ITC updates, and CBP automated commercial environment (ACE) programming.",
+          "Complex federal regulatory updates and customs system integration cycles structurally require longer than 93 days from inception to full operational deployment."
+        ],
+        "strength": "strong",
+        "strength_reason": "The argument relies purely on standard federal administrative latency, mandatory regulatory update sequences, and IT systems integration timelines which strictly constrain what can be physically accomplished within a 93-day window.",
+        "deliberately_ignored": "All political motivations, trade negotiations, industry lobbying, economic impacts, geopolitical alignment, or potential opposition from Canadian officials or domestic automakers.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "excluded",
+      "audit_note": "Remove references to the executive branch's authority, intent, or willingness to issue a proclamation, and re-derive the estimate based solely on the mechanical steps, required sequence, and calendar time.",
+      "status": "fallback_outside",
+      "probability": 40.0,
+      "p_full": 40.0,
+      "reason": "audit excluded the reasoning; using the frozen outside view",
+      "known_bias": "outside_view_is_news_blind"
+    },
+    "telltale": {
+      "lens": "telltale",
+      "abstraction": "Will a major announced tariff on a primary trading partner's automotive goods take effect within a 90-day implementation window?",
+      "outside_probability": 67.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "Observing that the majority of major tariff threats by executive action proceed to implementation unless successfully averted by formal agreement, yielding a base probability around two-thirds.",
+      "cases": [
+        {
+          "name": "US-China Section 301 Tranche 1 (2018)",
+          "date": "2018-07-06",
+          "outcome": "hit"
+        },
+        {
+          "name": "US-China Section 301 Tranche 3 (2018)",
+          "date": "2018-09-24",
+          "outcome": "hit"
+        },
+        {
+          "name": "US-Mexico Border Tariff Threat (2019)",
+          "date": "2019-06-07",
+          "outcome": "miss"
+        },
+        {
+          "name": "US-Brazil/Argentina Steel/Aluminum Threat (2019)",
+          "date": "2019-12-02",
+          "outcome": "miss"
+        },
+        {
+          "name": "US-Europe Aircraft/Wine Tariffs (2019)",
+          "date": "2019-10-18",
+          "outcome": "hit"
+        },
+        {
+          "name": "US-Canada Steel/Aluminum Tariffs Re-imposition (2018)",
+          "date": "2018-06-01",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Historical implementation rate of announced executive tariff threats",
+          "belongs_to_me": true,
+          "value": 67,
+          "basis": "Base rate derived from historical execution of threatened trade measures."
+        }
+      ],
+      "combination": "Direct adoption of the single factor estimate as the outside view probability.",
+      "own_factor": 67.0,
+      "assumed_factors": 0,
+      "scaffold_shift": 0.0,
+      "reference_entry": "R0580-telltale",
+      "yes_case": {
+        "case": "Historical data on trade actions initiated via advance executive signaling shows that once broad import bans and escalatory trade measures are enacted—such as the recent ban on nearly $1 billion in Canadian imports—subsequent announced sector tariffs proceed to implementation without interruption in a high percentage of comparable signal states. The observable precursor of escalating trade restrictions is fully visible today, and instances exhibiting this precise sequence advance to execution frequently, with no historical pattern of last-minute reversals absent a formalized treaty, which is absent here.",
+        "key_evidence": [
+          "US bans nearly $1B in Canadian imports in trade war escalation",
+          "Historical baseline frequency of trade actions proceeding from escalation signals"
+        ],
+        "strength": "strong",
+        "strength_reason": "The observable precursor of active trade escalation and import bans strongly correlates historically with the execution of subsequent announced tariff milestones under similar administration playbooks.",
+        "deliberately_ignored": "Whether actors genuinely prefer compromise or the schedule feasibility of legislative or administrative adjustments.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "Historical observation of broad tariff announcements regarding major trading partners shows a high frequency of precursor patterns where initial aggressive signals are followed by exemptions, rollbacks, or negotiated carve-outs rather than full implementation on schedule. In comparable past trade disputes, specific exemptions (such as those observed for Indian speciality drugs) and ongoing bilateral adjustments heavily precede delays or replacements of blanket tariffs. The absence of strict, uninterrupted escalation signals in the immediate precursor state points toward a historical pattern where broad automotive tariffs are systematically modified or averted before the final deadline.",
+        "key_evidence": [
+          "Recent reporting demonstrates precedents of U.S. administrations carving out specific exemptions and deals mid-dispute, such as exempting specific Indian speciality drugs and pharma components from import tariffs.",
+          "Historical baseline data for major automotive tariff threats indicates that signals of trade escalation frequently proceed to negotiated truces or exemptions rather than strict, unyielding implementation (similar to the observed US-China trade truce extensions)."
+        ],
+        "strength": "moderate",
+        "strength_reason": "The argument relies strictly on observable precursor frequencies and historical patterns of trade dispute adjustments, aligning with the aperture constraints by focusing exclusively on signal states and their historical outcomes.",
+        "deliberately_ignored": "Deliberately ignored the political intent of actors, executive preferences, strategic goals in trade negotiations, and the internal procedural feasibility of executing the tariffs by the scheduled date.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "retried_clean",
+      "audit_note": "Remove the assessment of how aggressive the current state is relative to baseline cases where exemptions were granted, and derive the probability adjustment solely from the observable advance signal (the $1 billion import ban) and its historical base rate of proceeding.",
+      "status": "responded",
+      "probability": 62.0,
+      "reasoning": "I reconciled the 67% outside view with the competing cases by adjusting downward slightly to account for the historical frequency of last-minute carve-outs in automotive trade disputes. While the 'Yes' case is stronger due to the recent escalation, the 'No' case's observation of historical exemptions provides a necessary hedge against the possibility of a late-stage negotiated truce.",
+      "deliberately_ignored": "I ignored all assessments regarding the political motivations of the Trump administration or the Canadian government, as these are subjective judgments about preference rather than observable precursors.",
+      "stronger_case": "yes",
+      "triggers": [
+        {
+          "event": "The U.S. and Canada announce the commencement of formal high-level trade negotiations aimed at a new automotive agreement.",
+          "by_date": "2026-11-15",
+          "direction": "down",
+          "to_roughly": 40
+        },
+        {
+          "event": "The U.S. Trade Representative (USTR) publishes a formal list of specific automotive parts to be exempted from the 50% tariff.",
+          "by_date": "2026-12-15",
+          "direction": "down",
+          "to_roughly": 25
+        }
+      ],
+      "moved_from": null,
+      "move_reason": "Adjusted downward to account for the historical pattern of late-stage exemptions in automotive trade disputes, balancing the strong signal of the recent import ban.",
+      "what_changes_between_horizons": "The probability increases over time as the window for successful bilateral negotiations closes. As the deadline approaches without a formal trade agreement, the likelihood of implementation rises because the 'negotiation' signal state decays into an 'execution' state.",
+      "p_one_third": 55.0,
+      "p_two_thirds": 60.0,
+      "p_full": 62.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": -5.0
+    },
+    "literalist": {
+      "lens": "literalist",
+      "abstraction": "Will a major announced executive tariff action be implemented on schedule without being preempted by a negotiated trade agreement or delayed before the deadline?",
+      "outside_probability": 27.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "Out of 6 major historical tariff threats or actions examined, 4 were implemented on schedule while 2 were successfully averted or replaced by negotiated trade agreements prior to the deadline. Applying this 67 percent conditional rate to the frozen 40 percent substantive probability yields a final integrated probability.",
+      "cases": [
+        {
+          "name": "1995 US-Japan Auto Dispute Tariffs",
+          "date": "1995-06-28",
+          "outcome": "miss"
+        },
+        {
+          "name": "2002 Steel Tariffs (Section 201)",
+          "date": "2002-03-20",
+          "outcome": "hit"
+        },
+        {
+          "name": "2018 Section 301 China Tariffs (Tranche 1)",
+          "date": "2018-07-06",
+          "outcome": "hit"
+        },
+        {
+          "name": "2018 Section 232 Steel/Aluminum Tariffs (Canada/Mexico exemptions)",
+          "date": "2018-06-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "2019 Proposed Tariffs on All Mexican Goods",
+          "date": "2019-06-10",
+          "outcome": "miss"
+        },
+        {
+          "name": "2019 Section 301 China Tariffs (List 4A)",
+          "date": "2019-09-01",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Substantive probability of tariff implementation policy",
+          "belongs_to_me": false,
+          "value": 40,
+          "basis": "Base rate for executive branch following through on high-stakes protectionist threats without folding into negotiation."
+        },
+        {
+          "name": "Criteria satisfaction given the substantive event pathway",
+          "belongs_to_me": true,
+          "value": 67,
+          "basis": "Historical frequency that announced tariffs avoid being paused, rescinded, or traded away before the effective date."
+        }
+      ],
+      "combination": "Multiply the substantive probability by the criteria satisfaction probability, adjusting for interdependence where aggressive threat-making correlates with negotiation settlements.",
+      "own_factor": 67.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -40.0,
+      "substantive_probability": 40.0,
+      "substantive_reason": "Historical base rate for U.S. administrations executing major broad-scale tariff threats on close allies.",
+      "reference_entry": "R0581-literalist",
+      "yes_case": {
+        "case": "Assuming the substantive event occurs, the wording of the resolution criteria requires specifically that the '50 percent tariffs announced by President Trump on Canadian automotive goods take effect on the scheduled date' and specifies a NO resolution only if they are 'delayed, rescinded, or replaced by a negotiated trade agreement before the effective date.' Current reporting shows no carve-outs, exemptions, or narrowing clauses that would technically disqualify the implementation of these specific automotive goods tariffs. The definitions within the announcement cleanly target Canadian cars, trucks, and automotive parts at the flat 50 percent rate, meaning any execution of the policy directly matches the precise terminology of the resolution criteria without falling into ambiguous categorical traps.",
+        "key_evidence": [
+          "Resolution criteria explicitly define the target as '50 percent tariffs announced by President Trump on Canadian automotive goods'",
+          "Absence of reported legal redefinitions or narrow technical loopholes that would exclude cars, trucks, or automotive parts from the broad category",
+          "Clear date boundary set for on or before 1 January 2027"
+        ],
+        "strength": "strong",
+        "strength_reason": "The wording of the resolution criteria directly aligns with standard tariff implementation mechanics, and there are no technical exclusions in the current definitions that would cause a successful substantive implementation to technically miss the wording.",
+        "deliberately_ignored": "Whether political pressure, trade negotiations, executive delays, or broader macroeconomic factors will actually cause the administration to implement or withhold the tariffs.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The resolution criteria explicitly state that the question resolves NO if the tariffs are 'replaced by a negotiated trade agreement before the effective date' or if they are 'rescinded'. The recent reporting highlights multiple instances of tariff exemptions, carve-outs, and negotiated adjustments in similar trade contexts (such as exemptions for specific Indian specialty drugs and pharma components, and tariff deals tied to portfolio expansions). Furthermore, trade negotiations frequently culminate in revised frameworks, carve-outs for specific automotive parts, or transitional arrangements rather than the clean implementation of a flat 50 percent tariff across every single category of cars, trucks, and automotive parts on the exact scheduled date without modification. If any subset of automotive goods is carved out via a negotiated arrangement or if a broader framework agreement replaces the raw tariff threat prior to 1 January 2027, the literal terms of the resolution criteria requiring the exact implementation as announced are unsatisfied, triggering a NO resolution.",
+        "key_evidence": [
+          "Resolution criteria explicitly trigger a NO if tariffs are 'replaced by a negotiated trade agreement before the effective date' or 'rescinded'.",
+          "Precedents in current reporting show the administration frequently issuing specific exemptions and carving out components in trade actions (e.g., US exempts specific Indian speciality drugs and pharma components).",
+          "Complex automotive supply chains heavily incentivize negotiated trade agreements or structured phase-ins that technically substitute the initial broad announcement."
+        ],
+        "strength": "moderate",
+        "strength_reason": "The argument relies strictly on the explicit phrasing of the resolution criteria regarding negotiated trade agreements and modifications, which are common outcomes in high-stakes tariff disputes.",
+        "deliberately_ignored": "The underlying political likelihood of whether President Trump will actually stick to his policy stance, or whether bureaucratic and legal hurdles will delay the implementation.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "retried_clean",
+      "audit_note": "Remove the re-derivation and argument regarding the 40% substantive estimate term. Treat the substantive estimate strictly as a frozen given from prior work without redefining or recalculating it using historical frequency of threats.",
+      "status": "responded",
+      "probability": 27.0,
+      "reasoning": "I reconciled the frozen substantive probability (40%) with the criteria satisfaction probability (67%). The outside view suggested a 27% likelihood. I maintained this 27% as the anchor, reflecting that while the substantive event has a 40% chance of occurring, the specific technical requirements for a 'YES' resolution (no carve-outs, no negotiated replacements) act as a filter that reduces the likelihood of a technical success even if the policy is generally pursued.",
+      "deliberately_ignored": "I ignored all evidence regarding the likelihood of the U.S. government actually deciding to implement these tariffs, as that is the frozen substantive probability. I also ignored political commentary on the administration's motivations, focusing strictly on the mechanics of the resolution criteria.",
+      "stronger_case": "no",
+      "triggers": [
+        {
+          "event": "The U.S. Trade Representative (USTR) publishes a formal list of specific automotive component exemptions from the proposed tariff.",
+          "by_date": "2026-11-15",
+          "direction": "down",
+          "to_roughly": 15
+        },
+        {
+          "event": "The Canadian government formally rejects the U.S. proposal, ending active negotiations without a replacement agreement.",
+          "by_date": "2026-12-15",
+          "direction": "up",
+          "to_roughly": 35
+        }
+      ],
+      "moved_from": null,
+      "move_reason": "N/A",
+      "what_changes_between_horizons": "The probability increases as the deadline approaches because the window for successful negotiation or rescission narrows. Early in the timeline, there is more opportunity for a 'negotiated trade agreement' to replace the tariffs; as the date nears, the likelihood of a clean implementation (or failure to reach a deal) becomes more apparent.",
+      "p_one_third": 22.0,
+      "p_two_thirds": 25.0,
+      "p_full": 27.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": 0.0
+    }
+  },
+  "abstained": [],
+  "excluded": [],
+  "fallbacks": [
+    "blocker",
+    "mechanism_calendar"
+  ],
+  "responding_lenses": 7,
+  "abstained_lenses": 0,
+  "fallback_lenses": 2,
+  "failed_lenses": 0,
+  "median_raw": 60.0,
+  "spread": 38.0,
+  "low_lens": "literalist",
+  "high_lens": "analogy",
+  "median_extremized": 64.8,
+  "advocate": {
+    "load_bearing_assumption": "The assumption that the 50 percent tariff is an intended policy outcome to be executed rather than a maximum-pressure bargaining chip designed to be traded away during the 2026 USMCA review.",
+    "why_it_could_be_wrong": "Historically, the Trump administration used tariff threats (e.g., the 5% to 25% threat on all Mexican goods in 2019) to force concessions on non-trade issues or to renegotiate terms. Given the extreme integration of the North American automotive supply chain, a 50% tariff would cause immediate domestic economic disruption in the U.S. (price spikes, plant closures), creating massive political pressure from the UAW and the 'Big Three' to reach a 'win' through negotiation before the deadline.",
+    "should_move": true,
+    "moved_to": 45.0,
+    "move_reason": "The aggregate of 60.0 overweights the 'will' of the executive while underestimating the 'deal-making' pattern of the previous Trump term. A 50% tariff is a 'nuclear option' that historically serves as a prelude to a revised agreement. With the USMCA review occurring in 2026, the probability of a negotiated settlement or a delay to 'allow for further talks' is higher than the probability of implementation.",
+    "lenses_that_look_redundant": [
+      "analogy",
+      "telltale",
+      "blocker",
+      "mechanism_calendar"
+    ],
+    "concerns": "The 'Literalist' lens at 27.0 is a significant outlier that the median-based aggregate is effectively ignoring. If the Literalist's analysis of criteria satisfaction (the likelihood that the specific 50% figure and date are maintained) is accurate, the 60.0 aggregate is dangerously over-confident in a very specific, high-friction outcome."
+  },
+  "advocate_proposed": 45.0,
+  "probability": 60.0,
+  "status": "forecast"
+}
