@@ -29,6 +29,13 @@ LENS_CSV = DATA / "lens_outputs.csv"
 DIAGNOSTICS_CSV = DATA / "diagnostics.csv"
 SYSTEM_PROPOSALS_CSV = DATA / "system_proposals.csv"
 
+# -- web resolution (v16) ---------------------------------------------------
+WEB_CHECKS_CSV = DATA / "web_checks.csv"                    # append-only log
+PENDING_RESOLUTIONS_CSV = DATA / "pending_resolutions.csv"  # rebuilt each run
+
+# -- paper coverage (v17) ---------------------------------------------------
+COVERAGE_CSV = DATA / "coverage.csv"        # rebuilt each run from processed.csv
+
 RUNS = DATA / "runs"            # runs/YYYY-MM-DD/QXXXX.json -- full reasoning
 REFERENCE = DATA / "reference"  # the reference-class library
 REPORTS = DATA / "reports"      # calibration, divergence, redundancy
@@ -44,6 +51,7 @@ LENSES_YAML = CONFIG / "lenses.yaml"
 LEXICON_CSV = CONFIG / "lexicon.csv"
 OVERRIDES_CSV = CONFIG / "overrides.csv"
 RESOLUTIONS_CSV = CONFIG / "resolutions.csv"
+PAPERS_CSV = CONFIG / "papers.csv"          # filename pattern -> paper name (v17)
 
 # Two keys, from two DIFFERENT Google Cloud projects, so their free-tier
 # quotas are genuinely separate rather than shared. The router rotates between

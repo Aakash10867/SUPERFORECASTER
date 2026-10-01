@@ -122,3 +122,51 @@ reference:
   # question would walk straight through the firewall and pull in this week's
   # coverage, contaminating the very stage we isolated.
   verify_with_grounding: true
+
+# ---------------------------------------------------------------------------
+# WEB RESOLUTION (v16) -- see src/web_resolve.py
+# ---------------------------------------------------------------------------
+# One Google-Search call per open question per day asks: "has this actually
+# happened, and on what date?" Code then decides. YES only -- NO still comes
+# only from the deadline lapse above.
+web_resolution:
+  enabled: true
+
+  # Search-capable models allow ~80 calls a day across both keys (2.5 Flash Lite
+  # and 2.5 Flash, 20/day each per key). A portfolio of 15-25 plus the absence
+  # watch fits; this cap stops one run from spending the whole day.
+  max_checks_per_run: 30
+
+  # An automatic YES needs this many DIFFERENT sites in Google's search
+  # record -- or a single official one. Otherwise it goes to you, via
+  # data/pending_resolutions.csv.
+  min_independent_sources: 2
+
+  # What counts as "official": the site ends with one of these...
+  official_suffixes:
+    - .gov          # US federal and state (treasury.gov, federalreserve.gov, congress.gov ...)
+    - .mil
+    - .gov.in       # India (pib.gov.in, sebi.gov.in, mea.gov.in ...)
+    - .nic.in
+    - .gov.uk
+    - .gc.ca
+    - .europa.eu    # EU institutions, including the ECB
+    - .gov.bd
+    - .gov.ua
+    - .gouv.fr
+  # ...or is one of these (official bodies without a government suffix).
+  official_domains:
+    - rbi.org.in
+    - bankofengland.co.uk
+    - un.org
+
+# ---------------------------------------------------------------------------
+# PAPER COVERAGE (v17) -- see src/papers.py
+# ---------------------------------------------------------------------------
+# Paper names come from the FILENAME, via config/papers.csv. A paper is
+# "regular" if it arrived on at least `regular_share` of the days you uploaded
+# anything in the last `window_days`. Only missing regulars are flagged.
+coverage:
+  window_days: 30
+  regular_share: 0.5
+  min_upload_days: 5     # below this, too little history to call anything regular

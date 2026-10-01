@@ -38,7 +38,9 @@ ANY gate is eliminated, no matter how interesting it is.
   papers, when this resolves? {papers}. Newspapers reliably report launches and
   unreliably report results. Vague expectation of coverage is a failure. Also
   check the resolution criteria are precise enough that two people could not
-  later disagree about the answer.
+  later disagree about the answer. The criteria must also say which act
+  resolves it -- the announcement, the act being carried out, or it taking
+  effect -- and agree with the stated resolves_on. Fail it if they do not.
 
   GATE B -- NOT INHERENTLY RANDOM. Could careful thought actually beat a coin
   flip here? Short-horizon market prices, index levels and exchange rates
@@ -47,6 +49,19 @@ ANY gate is eliminated, no matter how interesting it is.
 
   GATE C -- NOT ALREADY ANSWERED. Does the source article effectively give away
   the answer? If so this is copying, not forecasting.
+
+  GATE H -- SOMETHING MUST STILL STAND IN THE WAY. Ask: who has to act, and
+  can anything realistically stop them before the deadline? If the one who
+  announced it can carry it out alone, on a date already fixed, with no
+  outside step needed -- no court, legislature, regulator, other government
+  or counterparty, no vote, no financing still to find -- then the outcome is
+  already decided and only the calendar remains. Eliminate it.
+
+  This does NOT eliminate every announced intention. "Will the 50% tariffs
+  take effect?" survives: courts, exemptions and delays are live. "Will
+  Treasury run the $4bn operations it scheduled for next week?" does not:
+  nothing stands in the way. Name the obstacle; if you cannot name a real
+  one, the question fails.
 
   GATE D -- DATE INSIDE THE QUESTION. The question text must contain its own
   deadline, so that the deadline passing with nothing happening resolves it NO.
@@ -127,6 +142,7 @@ def _format(proposals) -> str:
             f"question: {p.question}\n"
             f"deadline: {p.deadline} (bucket: {p.bucket})\n"
             f"resolution_criteria: {p.resolution_criteria}\n"
+            f"resolves_on: {p.resolves_on}\n"
             f"resolution_source: {p.resolution_source}\n"
             f"reasoning_value: {p.reasoning_value}\n"
             f"significance (what changes in the world): {p.significance}\n"

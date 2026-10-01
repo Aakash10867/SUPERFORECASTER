@@ -46,6 +46,10 @@ class Paper:
     paper_guess: str
     issue_date_guess: str
     date_note: str = ""
+    # v17: what the PAGE CONTENT suggested the paper was. Never used as the
+    # name -- it was wrong too often -- only shown as a hint when the filename
+    # matches nothing in config/papers.csv.
+    content_hint: str = ""
 
 
 # ---------------------------------------------------------------------------
@@ -376,7 +380,12 @@ def load_paper(path: Path, settings: dict) -> Paper | None:
     pages = extract_pages(path)
     if not pages:
         return None
-    name, date, date_note = identify_paper(pages, path.name)
+    content_name, date, date_note = identify_paper(pages, path.name)
+    # v17: the NAME comes from the filename via config/papers.csv, exactly as
+    # the date already did. Page content mislabelled roughly half of all files
+    # (Business Standard as the WSJ, the Boston Globe as the Washington Post).
+    from . import papers as paper_names
+    name = paper_names.name_for(path.name)
     return Paper(
         path=path,
         fingerprint=fingerprint(path),
@@ -384,4 +393,5 @@ def load_paper(path: Path, settings: dict) -> Paper | None:
         paper_guess=name,
         issue_date_guess=date,
         date_note=date_note,
+        content_hint=content_name if name == paper_names.UNKNOWN else "",
     )

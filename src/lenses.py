@@ -497,7 +497,17 @@ class LensRunner:
         # ungrounded on the retry: seven alarming warnings per question for no
         # actual loss. Decide once, at startup, rather than per call.
         wanted = bool(settings.get("reference", {}).get("verify_with_grounding", True))
-        reachable = bool(getattr(router, "grounding_models", set()))
+        # v16: grounding models now exist (2.5 family, for web resolution), so
+        # "is any grounding model configured?" is no longer the right test.
+        # What matters is whether THIS task's chain contains one. Without this,
+        # registering 2.5 for the resolver would silently switch lens grounding
+        # back on, every first lens_outside attempt would fail (its chain has
+        # no 2.5 model), and each failure would burn a decomposition retry.
+        # Turning lens grounding on is a method change, not plumbing.
+        reachable = bool(
+            set(getattr(router, "grounding_models", set()) or set())
+            & set((getattr(router, "chains", {}) or {}).get("lens_outside") or [])
+        )
         self.grounding_enabled = wanted and reachable
         if wanted and not reachable:
             log.info(

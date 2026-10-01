@@ -342,7 +342,12 @@ class ModelRouter:
                     sources = []
                     for chunk in (meta.get("groundingChunks") or []):
                         web = chunk.get("web") or {}
-                        title = web.get("title") or web.get("uri") or ""
+                        # Prefer the site's domain. The web resolver counts
+                        # DISTINCT SITES, and two articles from the same site
+                        # are one source, not two. `title` is normally the
+                        # domain already; `domain` exists on newer API versions.
+                        title = (web.get("domain") or web.get("title")
+                                 or web.get("uri") or "")
                         if title:
                             sources.append(title)
                     queries = meta.get("webSearchQueries") or []

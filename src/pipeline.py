@@ -5,7 +5,8 @@ The daily run, in order:
      slot before your override arrives) -- plus config/resolutions.csv
   1. Read new PDFs from inbox, structural filter, model triage, cross-paper
      deduplication
-  2. RESOLUTION: merged screen, confirmation, lapse, absence watch
+  2. RESOLUTION: web check (Google Search, YES only), merged screen,
+     confirmation, lapse, absence watch
   3. GENERATION: agents propose, contest, portfolio gate
   4. FORECASTING: seven lenses, aggregate, devil's advocate
   5. REPORTS: scoring recomputed from source, fast-clock diagnostics
@@ -40,6 +41,8 @@ import datetime as dt
 from pathlib import Path
 
 from . import config, forecast, lenses as lensmod, reports, resolve, store
+from . import papers as paper_names
+from . import web_resolve
 from .agents import Proposal, dedupe_proposals, relevant_articles, run_agent
 from .contest import run_contest
 from .dedupe import Similarity, cluster_articles
@@ -135,6 +138,15 @@ def run(today: dt.date | None = None, dry_run: bool = False,
             )
 
         news_text = _news_digest(articles)
+
+        # v17: which papers arrived, which regulars did not, and whether any
+        # day since the last run had no papers at all. Bookkeeping only.
+        try:
+            paper_names.report(today, settings, log, dry_run)
+        except SystemExit:
+            raise                       # a broken config/papers.csv is loud
+        except Exception as exc:                           # noqa: BLE001
+            log.warn(f"Paper coverage report failed: {type(exc).__name__}: {exc}")
 
         # ------------------------------------------------------------ 2
         if "resolution" in wanted:
@@ -323,6 +335,13 @@ def _read_inbox(router, settings, today, log, dry_run):
         # last run"; nothing checked that this was true.
         if paper.date_note:
             log.warn(f"{path.name}: {paper.date_note}")
+        if paper.paper_guess == "Unknown":
+            hint = (f" (page content suggests {paper.content_hint})"
+                    if paper.content_hint and paper.content_hint != "Unknown"
+                    else "")
+            log.warn(f"{path.name}: no pattern in config/papers.csv names this "
+                     f"paper{hint}. It is still read; add a pattern so the "
+                     "coverage log can track it.")
         if not paper.issue_date_guess:
             log.flag(
                 f"{path.name}: could not determine an issue date, from the "
@@ -411,6 +430,7 @@ def _apply_overrides(open_questions, today, log, dry_run) -> list[str]:
                 "reasoning_value": p["reasoning_value"],
                 "significance": p.get("significance", ""),
                 "resolution_criteria": p["resolution_criteria"],
+                "resolves_on": p.get("resolves_on", ""),
                 "resolution_source": p["resolution_source"],
                 "status": "open",
                 "admitted_by": "human",
@@ -447,6 +467,7 @@ def _to_question(p: Proposal, qid: str, today: dt.date) -> dict:
         "reasoning_value": p.reasoning_value,
         "significance": p.significance,
         "resolution_criteria": p.resolution_criteria,
+        "resolves_on": p.resolves_on,
         "resolution_source": p.resolution_source,
         "status": "open",
         "resolved_date": "",
@@ -631,9 +652,38 @@ def _run_resolution(router, settings, today, log, dry_run, news_text,
     articles = articles or []
     log.heading("Resolution")
     grace = int(settings["portfolio"]["resolution_grace_days"])
+
+    # Web check FIRST (v16). A question it resolves is then neither screened
+    # nor escalated for a pointless re-forecast, and its slot is free for
+    # generation later in this same run. Wrapped on its own: a web failure
+    # must never take the newspaper screen, lapses or the watch down with it.
+    try:
+        web_resolve.run(router, settings, today, log, dry_run)
+    except Exception as exc:                               # noqa: BLE001
+        log.warn(f"Web resolution failed and was skipped: "
+                 f"{type(exc).__name__}: {exc}")
+
+    # v17: one-time classification of what resolves each question --
+    # announced, carried out, or in effect. Only questions without it.
+    try:
+        resolve.classify_resolves_on(router, log, dry_run)
+    except Exception as exc:                               # noqa: BLE001
+        log.warn(f"resolves_on classification failed: {type(exc).__name__}: {exc}")
+
     open_qs = store.open_questions()
 
     escalated: list[str] = []
+
+    # v17: with no papers this run there is nothing for the screen to read.
+    # The scheduled nightly run often has no papers; screening every question
+    # against "(no new reporting)" would spend a call each to learn nothing.
+    # Resolution is still covered by the web check above, and lapses below.
+    if not articles:
+        log.info(
+            f"  no papers this run: newspaper screen skipped for "
+            f"{len(open_qs)} open question(s). Web check and lapses still ran."
+        )
+        open_qs = []
 
     for q in open_qs:
         qid = q.get("id", "")
@@ -687,7 +737,7 @@ def _run_resolution(router, settings, today, log, dry_run, news_text,
             resolve.lapse(q, today, settings, log)
 
     # -- the absence watch -------------------------------------------------
-    watched = store.watched_questions()
+    watched = store.watched_questions() if articles else []
     if watched:
         log.sub("Absence watch")
         log.info(
@@ -711,8 +761,10 @@ def _run_resolution(router, settings, today, log, dry_run, news_text,
                         f"resolved date have both changed, and every score has "
                         f"been recomputed from source."
                     )
-        if not dry_run:
-            resolve.expire_watches(today, log)
+    # Expiry runs every run, papers or not (v17: the screen above may be
+    # skipped on a paper-less night, but watches must still time out).
+    if not dry_run and store.watched_questions():
+        resolve.expire_watches(today, log)
 
     if escalated:
         log.info(f"  escalated for a full re-forecast: {', '.join(escalated)}")

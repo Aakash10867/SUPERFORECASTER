@@ -7,6 +7,10 @@ structure → build → test. No code until the philosophy is covered.
 Status: PHILOSOPHY COMPLETE (§0–§5). STRUCTURE COMPLETE (S1–S4). LIVE RUNS 1-8 DONE.
 v14's prior work validated at n=49. v15 fixes input quality -- the lenses had
 been reading a fraction of the news all along. All 25 notes accounted for.
+v16 (2 Oct 2026) adds web resolution: one Google-Search reader, YES only,
+judged by code. v17 (2 Oct 2026) fixes the structural causes of the Q0003 miss:
+paper coverage, gate H, `resolves_on`, nightly scheduled run. See the v16 and
+v17 sections at the end.
 
 ### Repo findings (v7, reviewed at close of §4)
 
@@ -1629,6 +1633,204 @@ filenames.
 - **The advocate split direction for the first time** (5 down, 1 up, mean −9.5),
   having been unanimously downward before. Consistent with it having previously
   reacted to its own influence on the median.
+
+---
+
+## v16 — Web resolution (2 October 2026)
+
+### What forced it
+
+**Q0003 sat open at 72% for three weeks after it had resolved.** Treasury
+announced on 19 Aug that long-end buyback operations would rise from $2B to
+"at least $4B" from 9 Sep; the first operation under the new rule bought a full
+$6B on 10 Sep. The question was created on 22 Aug.
+
+The record shows this was not only missing coverage. On **10 Sep the screen
+saw "a $6 billion debt buyback announcement" and escalated** — but did not
+nominate it for resolution. On every other day the story was not in the
+selected reporting. So two failures at once: the papers rarely carried it, and
+when they did, "does this bear on it?" was answered and "has it happened?" was
+not.
+
+**This overturns an accepted position in S1 → Resolution rules**: that because
+questions clear the macro gate, "it happened but nobody reported it" is not a
+realistic failure. It is realistic — and the absence watch could never have
+caught Q0003, because it only watches questions that have already lapsed.
+
+### Decisions
+
+- **Scope: resolution only.** Web evidence for the lenses' inside view is a
+  method change (it alters the information set and the apertures, and risks
+  every lens converging on the same top search results). Deferred to a
+  change-budget month, if ever.
+- **One reader, not two.** A second model reading the same excerpts was
+  proposed and dropped. Aakash's objection, accepted: same family, same
+  evidence, so it shares the first reader's blind spots — the "prompt variation
+  is not a crowd" principle applied to resolution. It would catch careless
+  slips, not systematic misreadings. The guard is code instead.
+- **The reader's question is sharp:** has the act *happened*, and on what
+  date? Announced-for-the-future is evidence that raises probability, never
+  resolution — unless the criteria themselves name the announcement as the act.
+  (Aakash's framing.)
+- **YES only.** NO stays deterministic: deadline + grace → lapse. "This can no
+  longer happen" is where a model overreaches.
+- **No domain allowlist as a gate.** Aakash's objection, accepted: news breaks
+  on Reuters before (or instead of) an official site, so an allowlist would push
+  most resolutions to the human. What the allowlist was crudely standing in for
+  is *evidence quality*, which is checked directly instead:
+  1. search actually fired — sources from `groundingMetadata`, never from links
+     the model writes;
+  2. reader says happened, with a parseable date;
+  3. created ≤ event date ≤ min(today, deadline);
+  4. two different sites, or one official (government-suffix) site.
+  Fails 3 or 4 after passing 2 → `data/pending_resolutions.csv` for the human.
+- **Event date before creation → human.** That is a born-resolved question: a
+  question defect for the defect-labelling loop, and a resolved date before
+  creation would break the day-weighted trail.
+- **Resolved on the event date**, so detection lag never distorts scoring.
+- **Human word is final.** Any `resolutions.csv` entry removes the question
+  from web checks for good — otherwise `reopen` after a wrong YES would loop.
+- **Backfill guard.** `--date` in the past → no web checks (the web shows that
+  date's future).
+
+### Budget and model roles
+
+From the AI Studio quota table (Oct 2026): Search grounding is 1,500/day for
+the Gemini 2 and 2.5 families and **0 for every Gemini 3.x**. Gemini 2 Flash
+has 0 requests/day. That leaves **2.5 Flash Lite and 2.5 Flash, 20 requests a
+day each per key → ~80/day**. The grounding allowance never binds; the
+per-model request count does.
+
+`models.yaml` now documents roles: web search (2.5), bulk (3.1/3.5 Flash Lite,
+500/day), judgement (3.x Flash, 20/day), tiny screens (Gemma). Grounding models
+are registered for the resolver only; the lens preflight now checks whether
+*its own* chain contains a grounding model, so lens reference-verification
+grounding stays off (switching it on would be a method change).
+
+### Not changed, noted for the change budget
+
+- **Lens chains still fall back across models** (3.5 → 3.1 Flash Lite). For
+  plumbing that is fine; for a lens it means a different model on a different
+  day for quota reasons, which is noise in the fast clock. Pinning each lens to
+  one model is a method change — candidate for a future month.
+- **The newspaper screen's resolution half is unchanged**, including the
+  two-confirmer bar. With the web check running first every day, it is now the
+  backup path. Its 10 Sep miss on Q0003 is worth watching: if the web check
+  keeps catching what the screen escalates-but-doesn't-nominate, the screen's
+  Job 2 can be simplified or dropped.
+
+### Correction (recorded in v17)
+
+The diagnosis above overstates the screen's failure. The 10 Sep papers
+(including that day's Washington Post) carried the 9 Sep *announcement* of an
+operation scheduled for 10 Sep. Under the announced-is-not-happened rule, not
+nominating it was correct. The papers that would have reported the completed
+purchase -- 11 and 12 Sep -- were never uploaded, and by 13 Sep the story had
+left the news. No newspaper the system read ever reported the resolving act.
+See v17.
+
+### What to watch from the first live runs
+
+- `data/web_checks.csv`: do the `action`/`why` columns look right? A `not_yet`
+  with "search did not fire" on most rows means grounding is not actually
+  working on these keys (see `verify_models.py` output in the Action log).
+- Every automatic YES is a `*** FLAGGED` line in the daily log. Read each one
+  for the first few weeks; a false YES found is a logged defect, and if they
+  form a pattern, a second guard is added then — on evidence, not in advance.
+- Q0003 should resolve YES dated 2026-09-10 on the first run (or land in
+  pending if the reader dates it to the 19 Aug announcement — which is the
+  born-resolved check doing its job).
+
+---
+
+## v17 — Structural fixes from the Q0003 miss (2 October 2026)
+
+Philosophy (Aakash): if a resolution is in the papers, it must resolve.
+Structure session established that on Q0003 it never was, and found four
+structural causes instead.
+
+### A. Generation admitted a question that was already decided — FIXED (gate H)
+
+Q0003 was created 22 Aug from coverage of the 19 Aug announcement: Treasury's
+own operation, a fixed start date, nobody else's consent needed. Only the
+calendar remained, and it sat at 72% for weeks.
+
+**Aakash's first proposal was "never admit a question about something
+announced as definitely happening".** Pushed back on: the Announced Intention
+agent exists for exactly that shape, and several of the best live questions
+are announced-but-genuinely-uncertain (Canadian auto tariffs, the H-1B fee
+rule, the e-bus scheme). What made Q0003 dumb was not the announcement but the
+absence of any obstacle. Agreed gate:
+
+> **GATE H — something must still stand in the way.** Who has to act, and can
+> anything realistically stop them before the deadline? If the announcer can
+> do it alone, on a date already fixed, with no outside step needed (court,
+> legislature, regulator, other government, counterparty, vote, financing),
+> eliminate it. Name the obstacle; no real one, no question.
+
+### `resolves_on` — every question says which act resolves it
+
+`announced` | `carried_out` | `in_effect`, stated in the criteria in words and
+as a field. Gate A fails criteria that do not say, and agents.py rejects a
+proposal with no valid value before the contest. Pre-v17 questions are
+classified once by a cheap call (`classify_resolution` chain); genuinely
+ambiguous criteria are stored as `ambiguous` and flagged — never guessed. The
+web resolver is told the field directly; blank or ambiguous gets the strict
+reading (`carried_out`), because a premature YES is the costly error.
+
+### B. Missing papers were invisible — FIXED (coverage)
+
+The design assumed a continuous stream of papers; when a day was not
+uploaded, nothing said so. The investigation also found that **paper names
+were guessed from page content and were wrong for roughly half of all
+files** (Business Standard as the WSJ, the Boston Globe as the Washington Post,
+ET as the Times of India) — which also fed Gate A's list of papers and the
+[paper] label on every article the screen and lenses read.
+
+- Names now come from the **filename** via `config/papers.csv`, edition
+  ignored (Aakash: Mint is Mint whether Mumbai or Bengaluru). Unrecognised
+  files are flagged, never guessed.
+- **Regular vs occasional** (agreed): regular = arrived on at least half the
+  upload days in the last 30. Only missing regulars are flagged. A pure
+  "every paper ever seen" roster was rejected because one-offs would nag
+  forever.
+- `data/coverage.csv` rebuilt each run; the log flags each gap once, on the
+  first run after it. Against the real history this flags 11–12 Sep as "no
+  papers" — the exact gap that lost Q0003's resolving report.
+
+### C. The screen forgets scheduled acts — covered by v16, no new state
+
+When the screen learns "X is scheduled for date D", it re-forecasts and keeps
+no memory. A recorded "awaiting date D" state was considered. Not built: the
+v16 web check asks every open question every day whether the act has
+happened, which is what that state would have triggered. Revisit only if web
+checks start missing scheduled acts.
+
+### D. Everything depended on a manual trigger — FIXED (nightly run)
+
+Nightly scheduled run at **00:05 IST** (18:35 UTC). Aakash chose midnight
+because he uploads and runs before then; the runner's UTC clock still records
+it under the IST day that just ended, so a late manual run and the nightly
+run share one date. With no papers the newspaper screen is skipped (nothing
+to read); web check, lapses, watch expiry, stale refreshes and reports run.
+Nothing doubles up: web checks are once per question per day, papers are
+fingerprinted, refreshes are staleness-driven.
+
+### Deferred
+
+- **Web news to replace missing papers for forecast updates** — a method
+  change (alters what the lenses see). Aakash: not now.
+- **Pinning each lens to one model** — still noted from v16 for a change month.
+
+### To watch
+
+- First run: the classifier will flag pre-v17 questions whose criteria do not
+  say what resolves them. Q0003 is the expected first. Each needs one cell
+  edited in `data/questions.csv`.
+- Gate H rejections appear in `proposals.csv` as `failed_gate` with "gate H"
+  in the reason. If it starts killing Announced Intention questions that have
+  a real obstacle, the wording is too strict.
+- Unknown files: `TT`, `THS`, `th21` are currently unrecognised.
 
 ---
 

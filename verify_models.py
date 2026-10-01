@@ -137,7 +137,10 @@ def main() -> int:
     # -- grounding ---------------------------------------------------------
     grounding_models = cfg.get("grounding_models") or []
     if grounding_models:
-        print("\nSearch grounding (used only to verify reference-class cases):")
+        # v16: grounding is used by WEB RESOLUTION. Each test call here comes
+        # out of a 20-a-day allowance and is not recorded in data/quota.json,
+        # so stop at the first model that works instead of testing them all.
+        print("\nSearch grounding (used by web resolution):")
         name, key = keys[0]
         any_worked = False
         for model in grounding_models:
@@ -146,13 +149,15 @@ def main() -> int:
                 continue
             ok, detail = _check_grounding(key, model)
             print(f"  {model}: {detail}")
-            any_worked = any_worked or ok
+            if ok:
+                any_worked = True
+                break
         if not any_worked:
             print(
-                "  No model grounded successfully. That is not fatal -- "
-                "reference entries will simply be stored as 'unverified' -- "
-                "but you can set reference.verify_with_grounding to false in\n"
-                "  config/settings.yaml to stop trying."
+                "  No model grounded successfully. Not fatal -- web resolution "
+                "will log that it has no search model and resolution falls "
+                "back to the papers alone -- but check the names in "
+                "config/models.yaml against the list above."
             )
 
     print("\nAll model names check out." if all_ok

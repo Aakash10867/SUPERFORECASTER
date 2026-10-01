@@ -29,6 +29,7 @@ class Proposal:
     proposed_secondary_tags: str = ""
     proposed_tertiary_tags: str = ""
     resolution_criteria: str = ""
+    resolves_on: str = ""          # announced | carried_out | in_effect (v17)
     resolution_source: str = ""
     reasoning_value: str = ""
     significance: str = ""
@@ -51,6 +52,7 @@ class Proposal:
             "proposed_secondary_tags": self.proposed_secondary_tags,
             "proposed_tertiary_tags": self.proposed_tertiary_tags,
             "resolution_criteria": self.resolution_criteria,
+            "resolves_on": self.resolves_on,
             "resolution_source": self.resolution_source,
             "reasoning_value": self.reasoning_value,
             "significance": self.significance,
@@ -154,7 +156,12 @@ For each question return:
 - "deadline": YYYY-MM-DD, the date in the question
 - "resolution_criteria": exactly what counts as YES, written now, before anyone
   knows the answer. Be precise enough that two people reading it later could
-  not disagree.
+  not disagree. The criteria MUST say in words which act resolves it: the
+  announcement, the act actually being carried out, or it taking effect.
+- "resolves_on": exactly one of "announced", "carried_out", "in_effect" --
+  the same choice the criteria state in words. "Treasury announces bigger
+  buybacks" and "Treasury actually buys $4bn in one operation" are different
+  questions; say which one this is.
 - "resolution_source": which paper and what kind of story will resolve this
 - "reasoning_value": what specifically a careful analyst would examine that
   would move their forecast away from a naive guess
@@ -296,6 +303,13 @@ def run_agent(router, system_key, system_cfg, shape_key, shape_cfg,
             log.info(f"  rejected (no named consequences): {q[:70]}...")
             continue
 
+        # v17: a question that does not say what resolves it gets a muddled
+        # record later (Q0003 never said whether announcing or buying counted).
+        resolves_on = str(item.get("resolves_on", "")).strip().lower()
+        if resolves_on not in ("announced", "carried_out", "in_effect"):
+            log.info(f"  rejected (does not say what resolves it): {q[:70]}...")
+            continue
+
         seq[0] += 1
         proposals.append(Proposal(
             proposal_id=f"P-{today.isoformat()}-{seq[0]:03d}",
@@ -311,6 +325,7 @@ def run_agent(router, system_key, system_cfg, shape_key, shape_cfg,
             proposed_tertiary_tags=_join(item.get("tertiary_tags"),
                                          settings["tags"]["max_tertiary"]),
             resolution_criteria=str(item.get("resolution_criteria", "")).strip(),
+            resolves_on=resolves_on,
             resolution_source=str(item.get("resolution_source", "")).strip(),
             reasoning_value=reasoning_value,
             significance=significance,

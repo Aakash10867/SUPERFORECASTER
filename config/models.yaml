@@ -20,6 +20,21 @@
 # NOTE: there must be exactly ONE `chains:` block in this file. YAML silently
 # keeps only the last of a duplicated key, so a second block would delete every
 # chain above it.
+#
+# HOW TO READ THIS FILE (v16)
+# The free tier is many small, SEPARATE allowances -- one per model, per key --
+# not one big pool. So the system thinks in ROLES (the chains below), and each
+# role draws from the models suited to it:
+#
+#   web search       2.5 Flash Lite, 2.5 Flash   20/day each per key -> 80/day
+#                    (the ONLY models with a search allowance on this account;
+#                     every Gemini 3.x shows a search grounding quota of 0)
+#   bulk work        3.1 / 3.5 Flash Lite        500/day each per key
+#   judgement        3.x Flash                   20/day each per key
+#   tiny screens     Gemma 4 31B                 huge daily count, 16K tok/min
+#
+# Fallbacks are fine for plumbing roles. For the LENSES a change of model is a
+# change of method -- see FORECASTING_LAYER.md, v16.
 # ---------------------------------------------------------------------------
 
 limits:
@@ -33,6 +48,12 @@ limits:
   gemini-3.6-flash:        {rpm: 5,  rpd: 20}
   gemini-3.5-flash:        {rpm: 5,  rpd: 20}
   gemini-3-flash-preview:  {rpm: 5,  rpd: 20}
+
+  # Search-capable models (v16). Same 20/day as the deep models, but these
+  # are the only ones that can use Google Search on the free tier. Reserved
+  # for web resolution -- see the web_resolve chain.
+  gemini-2.5-flash-lite:   {rpm: 10, rpd: 20}
+  gemini-2.5-flash:        {rpm: 5,  rpd: 20}
 
   # Embeddings, used for similarity checks. Very generous limits.
   gemini-embedding-001:    {rpm: 100, rpd: 1000}
@@ -71,23 +92,23 @@ forecast_tasks:
 
 # Only these can perform Google Search grounding on the free tier. Gemini 3
 # models show a grounding quota of ZERO, so asking them to search returns a
-# perfectly normal-looking UNGROUNDED answer -- which would give us a reference
-# entry marked "verified" that was never verified. The router refuses to use a
+# perfectly normal-looking UNGROUNDED answer. The router refuses to use a
 # non-grounding model for a grounded call, and every grounded response reports
 # whether grounding actually fired (see models._post).
-# EMPTY AFTER THE FIRST LIVE RUN. Both 2.5-family models returned HTTP 404 for
-# both keys -- they do not exist for this account at all, so the grounding
-# question was never actually tested. Because they were the ONLY grounding
-# models, every lens_outside call wasted its first attempt discovering there
-# was nothing to ground with, then succeeded ungrounded on the retry.
 #
-# The router now checks this list at startup and turns grounding off for the
-# whole run if it is empty or unreachable, instead of failing per call.
+# HISTORY. After the first live run (v8) this list was emptied: the 2.5 models
+# returned HTTP 404 under the names used then. As of October 2026 both keys
+# list `gemini-2.5-flash` and `gemini-2.5-flash-lite` exactly, with a Search
+# grounding allowance of 1,500/day for the 2.5 family. If they 404 again, the
+# router retires them for the run and web resolution logs that it has no
+# search model -- the papers-only resolution path carries on unaffected.
 #
-# If a grounding-capable model becomes available, add it here and set
-# reference.verify_with_grounding back to true in settings.yaml.
-grounding_models: []
-_grounding_models_disabled:
+# Registering models here does NOT switch on lens grounding: the lens preflight
+# (lenses.py) only enables it if the lens_outside chain itself contains a
+# grounding model, and it does not. That would be a method change.
+grounding_models:
+  - gemini-2.5-flash-lite
+  - gemini-2.5-flash
 
 chains:
   # ---- stage one: question generation ------------------------------------
@@ -135,6 +156,24 @@ chains:
 
   embed:
     - gemini-embedding-001
+
+  # ---- resolution on the web (v16) ----------------------------------------
+
+  # One Google-Search call per question per day: "has this actually happened,
+  # and on what date?" Code, not a model, decides whether to act on the answer
+  # (src/web_resolve.py). ONLY search-capable models may appear here -- a
+  # non-grounding model would answer from memory, and the router skips it.
+  # Flash Lite first: twice the per-minute allowance of Flash, same daily.
+  web_resolve:
+    - gemini-2.5-flash-lite
+    - gemini-2.5-flash
+
+  # One-time label per question: does the announcement, the act, or it taking
+  # effect resolve it? (v17) Cheap; fires once per pre-v17 question.
+  classify_resolution:
+    - gemini-3.5-flash-lite
+    - gemini-3.1-flash-lite
+    - gemini-flash-lite-latest
 
   # ---- stage two: forecasting --------------------------------------------
 

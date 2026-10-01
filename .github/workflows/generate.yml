@@ -1,8 +1,23 @@
 name: Superforecaster
 
-# Manual trigger only. You drop PDFs into /inbox, then run this from the
-# Actions tab. Nothing happens on a schedule.
+# Two ways to run (v17):
+#   1. Manual: drop PDFs into /inbox, then run this from the Actions tab.
+#   2. Nightly at 00:05 IST, whether or not you uploaded anything -- so the
+#      web check, deadline lapses, stale-forecast refreshes and reports never
+#      depend on you remembering.
+#
+# Why 00:05 IST: it is 18:35 UTC, and the runner's clock is UTC, so the run is
+# recorded under the IST day that just ended -- the same day as your evening
+# upload. A manual run any time before 05:30 IST lands on that same day too.
+# Off the round hour because GitHub delays round-hour schedules the most; a
+# 10-30 minute delay is still normal and harmless here.
+#
+# A nightly run after your own run that evening does not double up: the web
+# check is once per question per day, papers already read are skipped by
+# fingerprint, and forecasts refresh only when stale.
 on:
+  schedule:
+    - cron: "35 18 * * *"
   workflow_dispatch:
     inputs:
       stages:
@@ -68,7 +83,8 @@ jobs:
           SUPERFORECASTER_API: ${{ secrets.SUPERFORECASTER_API }}
           SUPERFORECASTER_API2: ${{ secrets.SUPERFORECASTER_API2 }}
         run: |
-          ARGS="--stages ${{ inputs.stages }}"
+          # A scheduled run has no inputs, so default to every stage.
+          ARGS="--stages ${{ inputs.stages || 'all' }}"
           if [ -n "${{ inputs.as_of_date }}" ]; then
             ARGS="$ARGS --date ${{ inputs.as_of_date }}"
           fi

@@ -218,13 +218,22 @@ class FakeRouter(models.ModelRouter):
                 "domains": "india_macro",
             }], "fake"
 
+        if task == "classify_resolution":
+            # Exercise both the normal path and the "ambiguous" flag.
+            return {"resolves_on": "ambiguous" if self._counter % 2 else "announced",
+                    "reason": "test"}, "fake"
+
         if task == "propose":
+            # v17: every third proposal omits resolves_on, which must be
+            # rejected before the contest ever sees it.
+            omit = self._counter % 3 == 0
             return [{
                 "question": ("Will the Reserve Bank of India cut the repo rate on or "
                              f"before 15 September 2026? (variant {self._counter})"),
                 "deadline": "2026-09-15",
                 "resolution_criteria": ("YES if the RBI announces a reduction in the "
                                         "repo rate on or before 15 September 2026."),
+                **({} if omit else {"resolves_on": "announced"}),
                 "resolution_source": "Mint front page on the day of the RBI decision",
                 "reasoning_value": ("Examining the balance between rising fuel-driven "
                                     "inflation and slowing growth forecasts, plus the "
@@ -377,6 +386,9 @@ def main() -> int:
     config.LENS_CSV = config.DATA / "lens_outputs.csv"
     config.DIAGNOSTICS_CSV = config.DATA / "diagnostics.csv"
     config.SYSTEM_PROPOSALS_CSV = config.DATA / "system_proposals.csv"
+    config.WEB_CHECKS_CSV = config.DATA / "web_checks.csv"
+    config.PENDING_RESOLUTIONS_CSV = config.DATA / "pending_resolutions.csv"
+    config.COVERAGE_CSV = config.DATA / "coverage.csv"
     config.RUNS = config.DATA / "runs"
     config.REFERENCE = config.DATA / "reference"
     config.REPORTS = config.DATA / "reports"
@@ -399,6 +411,9 @@ def main() -> int:
         config.DIAGNOSTICS_CSV: store.DIAGNOSTIC_FIELDS,
         config.SYSTEM_PROPOSALS_CSV: store.SYSTEM_PROPOSAL_FIELDS,
         config.REFERENCE_INDEX_CSV: store.REFERENCE_INDEX_FIELDS,
+        config.WEB_CHECKS_CSV: store.WEB_CHECK_FIELDS,
+        config.PENDING_RESOLUTIONS_CSV: store.PENDING_RESOLUTION_FIELDS,
+        config.COVERAGE_CSV: store.COVERAGE_FIELDS,
     }
 
     pipeline.ModelRouter = FakeRouter
@@ -559,6 +574,22 @@ def main() -> int:
                    all(abs(float(r["hits"]) / float(r["count"])
                            - float(r["rate"])) < 0.01
                        for r in ref_index if r["count"] and float(r["count"]))))
+    # ---- v17 -------------------------------------------------------------
+    checks.append(("papers named from the filename, not the page",
+                   {r["paper_guess"] for r in processed}
+                   <= {"Mint", "The Wall Street Journal", "The Washington Post"}
+                   and all(r["paper_guess"] != "Unknown" for r in processed)))
+    checks.append(("every admitted question says what resolves it",
+                   all(q.get("resolves_on") for q in questions)))
+    checks.append(("proposals without resolves_on never reach the contest",
+                   all(p.get("resolves_on") for p in proposals)))
+    checks.append(("coverage.csv written", config.COVERAGE_CSV.exists()))
+    checks.append(("empty-inbox run skipped the newspaper screen",
+                   not any(r["date"] == "2026-08-28" for r in screens)))
+
+    # v16: every run above uses a past --date, so the web must stay closed.
+    checks.append(("web resolution skipped on backfilled dates",
+                   len(store.read_rows(config.WEB_CHECKS_CSV)) == 0))
     checks.append(("window question got three horizons",
                    any(r["p_one_third"] and r["p_two_thirds"] and r["p_full"]
                        for r in lens_rows)))

@@ -38,6 +38,12 @@ why it was made.
 
 4. **Run it:** Actions tab → *Superforecaster* → Run workflow.
 
+   **It also runs by itself every night at 00:05 IST** (v17), papers or not.
+   With no papers it still does the web check, deadline lapses, stale-forecast
+   refreshes and reports, and skips the newspaper screen. Upload and run as
+   usual before midnight; the nightly run will not repeat anything you already
+   did that day.
+
    **On your first run after replacing the repository, set `stages` to
    `generation`.** That exercises the four stage-one fixes — persistent quota,
    crash-safe logging, the removed early return, and resolution — with none of
@@ -180,6 +186,18 @@ however interesting it is:
 - **Not inherently random** — careful thought could actually beat a coin flip
 - **It matters** — name at least two specific things, *outside the question's own
   subject*, that would be different depending on the answer
+- **Something must still stand in the way** (v17, gate H) — *who has to act, and
+  can anything realistically stop them before the deadline?* If the announcer
+  can do it alone, on a date already fixed, with no court, legislature,
+  regulator, counterparty or financing in the way, the question is already
+  decided and is rejected. Announced intentions with a real obstacle (tariffs
+  that may be delayed or challenged) still pass.
+
+Every question must also say **what resolves it** — `announced`,
+`carried_out`, or `in_effect` — in its criteria and in a `resolves_on` field.
+A proposal that does not is rejected before the contest. This came from
+Q0003, whose criteria never said whether Treasury *announcing* $4bn
+operations or actually *buying* $4bn counted.
 
 The third gate was added after the first live run produced a perfectly
 forecastable question about whether a single building's construction would be
@@ -275,7 +293,7 @@ questions are good; only real models and your judgement can do that.
 ```
 0. Human overrides + config/resolutions.csv
 1. Read papers, triage, deduplicate
-2. RESOLUTION   merged screen, confirmation, lapse, absence watch
+2. RESOLUTION   web check (v16), merged screen, confirmation, lapse, absence watch
 3. GENERATION   agents propose, contest, portfolio gate
 4. FORECASTING  seven lenses, aggregate, devil's advocate
 5. REPORTS      scoring recomputed from source, diagnostics
@@ -287,6 +305,41 @@ created today gets its first forecast today.
 
 Every stage is isolated: a failure logs loudly, with a traceback, into the
 markdown log, and the run continues.
+
+## Web resolution (v16)
+
+Every open question gets **one Google-Search call a day** asking a single
+thing: *has this actually happened, and on what date?* An announcement that
+something **will** happen does not count -- it is evidence, and should move the
+forecast, but it does not close the question. Since v17 each question's
+`resolves_on` field tells the check exactly which act counts.
+
+The model only reads. **Code decides**, and only YES is ever automatic:
+
+| check | if it fails |
+|---|---|
+| the search really fired (sources in Google's own record, not links the model wrote) | answer ignored |
+| reader says it happened, with a date | stays open / goes to you if undated |
+| date is on or before today, and on or before the deadline | stays open (announced, or too late) |
+| date is not before the question was created | goes to you: the question was born resolved |
+| two different sites, or one official (government) site | goes to you |
+
+A YES resolves on the **event date**, so late detection never distorts the
+score. Anything that goes to you lands in `data/pending_resolutions.csv` with a
+row ready to paste into `config/resolutions.csv`. NO still comes only from the
+deadline lapse.
+
+**Budget.** Only Gemini 2.5 Flash Lite and 2.5 Flash can search on this free
+tier (every Gemini 3.x has a search allowance of zero), at 20 calls a day each
+per key -- about 80 a day in total. Each question is checked at most once a
+day, closest deadline first, then questions on the absence watch. When the
+allowance runs out, the rest wait for tomorrow.
+
+**Wrong YES?** Add `Q00XX,reopen,,<why>` to `config/resolutions.csv`. Any
+question you have written about there is never web-checked again.
+
+**Backfill runs** (`--date` in the past) skip the web entirely: the web would
+show the future relative to that date.
 
 ## The seven lenses
 
@@ -401,9 +454,16 @@ never silently degrade question quality.
 
 - **Outcome accuracy will not be measurable for years.** That is arithmetic,
   not pessimism.
-- **Resolution depends on your three papers.** Without grounding, a macro event
-  the papers do not carry lapses as a false NO. The absence watch and
-  `resolutions.csv` are the mitigations.
+- **Resolution is YES-on-the-web, NO-by-lapse.** Since v16 a YES is found on
+  the web even when the papers miss it, and a lapsed NO is re-checked on the web
+  for 90 days. A false *web* YES is the new failure mode: it is reversible with
+  one line, and every one is listed in the log -- read them.
+- **The search allowance is small** (~80/day). Comfortable for 15-25 questions;
+  a much larger portfolio would need a paid key or a less frequent cadence.
+- **Paper names come from filenames** (v17), via `config/papers.csv`. A file
+  matching no pattern is read but called Unknown and flagged; add a pattern and
+  the whole history re-labels. Sundays and holidays will show regular papers as
+  missing — read the coverage flags with the calendar in mind.
 - **`shape` is not produced by stage one.** New questions default to `point`
   and are logged; set them to `window` by hand in `questions.csv`.
 - **Extremizing is stored but never used.** It sits as a shadow number for the

@@ -52,7 +52,8 @@ QUESTION_FIELDS = [
     # ---- stage two additions ---------------------------------------------
     "shape",               # window | point -- see below
     "calendar_hooks",      # known scheduled catalysts, "; " separated
-    "resolution_basis",    # confirmed_act | lapsed_absence
+    "resolution_basis",    # confirmed_act | lapsed_absence | web_confirmed
+    "resolves_on",         # announced | carried_out | in_effect | ambiguous (v17)
     "outcome_set_by",      # system | human
     "watch_until",         # absence-watch expiry; blank when not watching
     "last_refresh",        # date of last full seven-lens refresh
@@ -87,6 +88,7 @@ PROPOSAL_FIELDS = [
     "proposed_secondary_tags",
     "proposed_tertiary_tags",
     "resolution_criteria",
+    "resolves_on",         # announced | carried_out | in_effect (v17)
     "resolution_source",
     "reasoning_value",
     "significance",
@@ -230,6 +232,54 @@ REFERENCE_INDEX_FIELDS = [
     "used_by",            # "; " separated question ids -- the blast radius
 ]
 
+# -- web resolution (v16) ---------------------------------------------------
+# One row per web check, every run, whatever the answer. "Looked and found
+# nothing" must be distinguishable from "did not look", exactly as for screens.
+WEB_CHECK_FIELDS = [
+    "date",
+    "question_id",
+    "action",             # resolved_yes | pending | not_yet | failed | skipped
+    "why",                # which code check decided the action, in plain words
+    "happened",           # the reader's yes/no, before the code checks
+    "status",             # happened | announced_not_yet_happened | in_progress | no_relevant_news
+    "event",
+    "event_date",
+    "evidence",
+    "sources",            # "; " separated site names from Google's search record
+    "official_source",    # yes | no
+    "queries",            # what the model actually searched for
+    "model",
+]
+
+# The CURRENT list of questions waiting for your decision. Rebuilt from
+# web_checks.csv every run, so it never accumulates stale rows: once you add a
+# line to config/resolutions.csv, or a later check auto-resolves, the question
+# drops off by itself.
+PENDING_RESOLUTION_FIELDS = [
+    "question_id",
+    "question",
+    "first_flagged",
+    "last_checked",
+    "why",
+    "event",
+    "event_date",
+    "evidence",
+    "sources",
+    "paste_into_resolutions_csv",   # a ready-made row, if you agree
+]
+
+# -- paper coverage (v17) ---------------------------------------------------
+# One row per date in the recent window: which papers arrived, which REGULAR
+# papers did not. Derived from processed.csv + config/papers.csv every run, so
+# fixing a name in papers.csv corrects the whole history at once.
+COVERAGE_FIELDS = [
+    "date",
+    "status",             # full | partial | none
+    "papers",             # "; " separated paper names that arrived
+    "regulars_missing",   # "; " separated regular papers that did not
+    "unknown_files",      # files no pattern in config/papers.csv recognised
+]
+
 _SCHEMAS = {
     config.QUESTIONS_CSV: QUESTION_FIELDS,
     config.PROPOSALS_CSV: PROPOSAL_FIELDS,
@@ -242,6 +292,9 @@ _SCHEMAS = {
     config.DIAGNOSTICS_CSV: DIAGNOSTIC_FIELDS,
     config.SYSTEM_PROPOSALS_CSV: SYSTEM_PROPOSAL_FIELDS,
     config.REFERENCE_INDEX_CSV: REFERENCE_INDEX_FIELDS,
+    config.WEB_CHECKS_CSV: WEB_CHECK_FIELDS,
+    config.PENDING_RESOLUTIONS_CSV: PENDING_RESOLUTION_FIELDS,
+    config.COVERAGE_CSV: COVERAGE_FIELDS,
 }
 
 RESOLUTION_OVERRIDE_FIELDS = [
@@ -283,6 +336,9 @@ def ensure_files() -> None:
     # without losing data.
     _migrate(config.QUESTIONS_CSV, QUESTION_FIELDS)
     _migrate(config.FORECASTS_CSV, FORECAST_FIELDS)
+    # v17 added `resolves_on` to proposals. Without this, new rows would be
+    # written under the old header and every column after it would shift.
+    _migrate(config.PROPOSALS_CSV, PROPOSAL_FIELDS)
 
 
 def _migrate(path: Path, fields: list[str]) -> None:

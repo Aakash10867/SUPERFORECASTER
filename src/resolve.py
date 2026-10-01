@@ -286,7 +286,8 @@ def lapse(question, today, settings, log) -> None:
     )
 
 
-def resolve_now(question, outcome, event_date, today, log, basis="confirmed_act"):
+def resolve_now(question, outcome, event_date, today, log, basis="confirmed_act",
+                how="definitive reported act, two confirmations agreed"):
     qid = question.get("id", "")
     store.update_question(qid, {
         "status": "resolved",
@@ -298,8 +299,7 @@ def resolve_now(question, outcome, event_date, today, log, basis="confirmed_act"
     })
     log.flag(
         f"{qid} RESOLVED as {'YES' if str(outcome) == '1' else 'NO'} on "
-        f"{event_date or today.isoformat()} (definitive reported act, two "
-        f"confirmations agreed)."
+        f"{event_date or today.isoformat()} ({how})."
     )
 
 
@@ -316,3 +316,77 @@ def expire_watches(today, log) -> int:
             )
             n += 1
     return n
+
+
+# ---------------------------------------------------------------------------
+# What resolves a question: announced, carried out, or in effect (v17)
+# ---------------------------------------------------------------------------
+#
+# Q0003's criteria never said whether Treasury ANNOUNCING $4B operations or
+# actually BUYING $4B resolved it. Half of that question's mess traces to the
+# gap. From v17 every new question declares it at birth (agents.py, gate A).
+# Questions created before v17 are classified once, here, by a cheap call --
+# and a question whose criteria genuinely do not say is flagged to you, not
+# guessed.
+
+RESOLVES_ON = ("announced", "carried_out", "in_effect")
+
+CLASSIFY_PROMPT = """Read this forecasting question and its resolution \
+criteria. Decide WHAT KIND OF ACT resolves it YES. Do not judge whether it \
+will happen.
+
+QUESTION: {question}
+RESOLUTION CRITERIA: {criteria}
+
+  announced    -- the announcement or formal decision itself resolves it
+                  (e.g. "officially announces", "votes to approve")
+  carried_out  -- the act must actually be performed
+                  (e.g. "conducts", "signs", "purchases", "strikes")
+  in_effect    -- a rule, tariff or policy must actually take effect or be
+                  implemented, not merely be issued
+  ambiguous    -- the criteria genuinely do not say which, so two careful
+                  readers could disagree
+
+Return JSON only:
+{{"resolves_on": "announced|carried_out|in_effect|ambiguous", "reason": "one line"}}"""
+
+
+def classify_resolves_on(router, log, dry_run: bool = False) -> int:
+    """Fill `resolves_on` for open or watched questions that lack it."""
+    todo = [q for q in store.open_questions() + store.watched_questions()
+            if not (q.get("resolves_on") or "").strip()]
+    if not todo:
+        return 0
+    log.sub("Classifying what resolves each question (one-time)")
+    done = 0
+    for q in todo:
+        result, model = router.generate(
+            "classify_resolution",
+            CLASSIFY_PROMPT.format(question=q.get("question", ""),
+                                   criteria=q.get("resolution_criteria", "")),
+            temperature=0.1, max_output_tokens=512,
+        )
+        if not isinstance(result, dict):
+            log.info(f"  {q.get('id')}: classification failed; will retry next run")
+            continue
+        value = str(result.get("resolves_on", "")).strip().lower()
+        if value not in RESOLVES_ON + ("ambiguous",):
+            log.info(f"  {q.get('id')}: unusable answer {value!r}; retry next run")
+            continue
+        if not dry_run:
+            store.update_question(q["id"], {"resolves_on": value})
+        done += 1
+        if value == "ambiguous":
+            log.flag(
+                f"{q.get('id')}: the resolution criteria do not say whether the "
+                "announcement, the act itself, or it taking effect resolves "
+                f"this.\n    Question: {q.get('question','')}\n"
+                f"    Criteria: {q.get('resolution_criteria','')}\n"
+                f"    Why: {result.get('reason','')}\n"
+                "    Set `resolves_on` in data/questions.csv to announced, "
+                "carried_out or in_effect. Until then the web check is told "
+                "the act itself must have happened."
+            )
+        else:
+            log.info(f"  {q.get('id')}: {value} -- {result.get('reason','')}")
+    return done
