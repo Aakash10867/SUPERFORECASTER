@@ -1,0 +1,650 @@
+{
+  "question_id": "Q0009",
+  "question": "Will the Trump administration officially finalize the $103,265 fee regulation for H-1B visas on or before 25 August 2027?",
+  "date": "2026-10-02",
+  "cause": "trigger",
+  "config_version": "3",
+  "shape": "window",
+  "lenses": {
+    "reference_class": {
+      "lens": "reference_class",
+      "abstraction": "Within a 327-day window following initial proposal or major contested regulatory action, how often does a high-visibility, high-stakes federal fee or major structural immigration regulation successfully reach final rule publication in the Federal Register without being permanently blocked or withdrawn?",
+      "outside_probability": 65.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "Historical base rates show that once major immigration and fee regulations are advanced by executive agencies, the vast majority successfully reach final rule publication within a roughly one-year window, even if subsequent litigation occurs. Adjusting for the unusual magnitude of the specific fee yields a final estimate moderately below the raw base rate.",
+      "cases": [
+        {
+          "name": "USCIS Fee Schedule Rule 2010",
+          "date": "2010-09-24",
+          "outcome": "hit"
+        },
+        {
+          "name": "USCIS Fee Schedule Rule 2016",
+          "date": "2016-10-24",
+          "outcome": "hit"
+        },
+        {
+          "name": "Public Charge Rule 2019",
+          "date": "2019-08-14",
+          "outcome": "hit"
+        },
+        {
+          "name": "H-1B Wage-Level Selection Rule 2021 (Trump)",
+          "date": "2021-01-08",
+          "outcome": "miss"
+        },
+        {
+          "name": "USCIS Fee Schedule Rule 2020",
+          "date": "2020-08-03",
+          "outcome": "hit"
+        },
+        {
+          "name": "USCIS Fee Schedule Rule 2023",
+          "date": "2023-01-31",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Base rate of administrative finalization for contested immigration/fee rules within the window",
+          "belongs_to_me": true,
+          "value": 83,
+          "basis": "5 hits out of 6 comparable major contested immigration fee/structural rulemakings successfully finalized."
+        },
+        {
+          "name": "Likelihood of agency prioritization and survival against initial judicial friction",
+          "belongs_to_me": false,
+          "value": 75,
+          "basis": "Historical baseline for executive agencies pressing forward with high-priority economic regulations despite preliminary injunction hurdles."
+        }
+      ],
+      "combination": "Combined by taking the historical finalization frequency and adjusting downward slightly for the extreme magnitude of the specific fee figure, which historically invites more intense preliminary injunction delays.",
+      "own_factor": 83.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -18.0,
+      "reference_entry": "R0645-reference_class",
+      "status": "responded",
+      "audit_result": "n/a",
+      "probability": 65.0,
+      "p_full": 65.0,
+      "p_one_third": 29.5,
+      "p_two_thirds": 50.3,
+      "triggers": [
+        {
+          "event": "time passing with no qualifying action",
+          "direction": "down",
+          "to_roughly": ""
+        }
+      ]
+    },
+    "analogy": {
+      "lens": "analogy",
+      "abstraction": "Within a 327-day window, will an executive agency issue a single, unprecedented, extreme-magnitude regulatory fee rule that drastically deviates from historical norms, without being blocked or withdrawn?",
+      "outside_probability": 28.0,
+      "provenance_tier": "extrapolated",
+      "outside_reasoning": "Compared to past episodes like the 2020 and 2024 USCIS fee schedules, a $103,265 fee is an extreme outlier—differing by an order of magnitude in scale. While agencies frequently manage to push through final rules (the historical hit rate), the sheer financial quantum of this specific regulation invites immediate, highly coordinated federal litigation and preliminary injunctions under the Administrative Procedure Act that differentiate it from standard fee hikes. The past cases demonstrate that agencies can cross the finish line to publication, but the astronomical magnitude makes survival past a court block far less certain.",
+      "cases": [
+        {
+          "name": "USCIS 2020 Fee Schedule Final Rule",
+          "date": "2020-08-03",
+          "outcome": "miss"
+        },
+        {
+          "name": "DHS Public Charge Rule Final Rule",
+          "date": "2019-08-14",
+          "outcome": "hit"
+        },
+        {
+          "name": "USCIS 2024 Fee Schedule Final Rule",
+          "date": "2024-01-31",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Base rate of final publication for highly contested agency rules within a 327-day window",
+          "belongs_to_me": true,
+          "value": 65,
+          "basis": "Derived from historical completion rates of aggressive executive rulemakings that survive initial administrative hurdles."
+        },
+        {
+          "name": "Probability of extreme magnitude surviving immediate judicial stay or statutory challenge",
+          "belongs_to_me": false,
+          "value": 40,
+          "basis": "Historical base rate for severe, outlier agency fee hikes avoiding preliminary injunctions under the APA."
+        }
+      ],
+      "combination": "Multiplied together with an adjustment for dependence: administrative intent to finalize (factor 1) correlates with facing heightened judicial skepticism (factor 2). 0.65 * 0.40 = 26, adjusted slightly upward for strong executive prioritization.",
+      "own_factor": 65.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -37.0,
+      "reference_entry": "R0646-analogy",
+      "yes_case": {
+        "case": "The two closest past episodes are the 2017-2018 travel ban (Executive Order 13769/13780) and the initial 2020 high-fee H-1B proclamations pursued during the first Trump administration. In both past episodes, sweeping executive immigration restrictions were immediately met with nationwide injunctions from federal district judges, creating a protracted cycle of judicial blocking and appeals. However, this episode differs fundamentally from those past instances in two ways: first, the institutional backing of 'Project Meridian' co-led by Elon Musk provides an unprecedented centralization of technical and regulatory enforcement muscle that bypasses traditional bureaucratic drag; and second, the current administration is utilizing direct administrative rulemaking frameworks coupled with coordinated fiscal-lever mechanisms (such as those seen in contemporaneous Treasury and ICE rollouts) rather than relying solely on vulnerable standalone executive orders. While reporting indicates federal judges have initially blocked similar restrictive fee attempts, the presence of specialized modernization task forces and aggressive agency execution makes this push far more resilient to judicial attrition than the haphazard rollout of the 2017 travel bans or the 2020 proclamations.",
+        "key_evidence": [
+          "The Times of India reporting on 'Elon Musk to Co-Lead 'Project Meridian' for Trump Administration'",
+          "The Times of India reporting on 'Second Federal Judge Blocks Trump's $100,000 H-1B Visa Fee'"
+        ],
+        "strength": "moderate",
+        "strength_reason": "The analogy to past executive actions is strong, but the introduction of new implementation structures like Project Meridian introduces a tangible difference in execution capacity.",
+        "deliberately_ignored": "Numerical probability calculations, administrative law procedural timelines, statutory interpretations of the Immigration and Nationality Act, and public comment period schedules.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The closest past episodes to this extreme H-1B fee regulation are the previous major executive attempts to restrict high-skilled immigration via extraordinary financial barriers during past administrations, most notably the severe visa-fee hikes and prevailing wage rule overhauls attempted during earlier phases of the Trump administration. This episode differs fundamentally from those past actions because it attempts an astronomical six-figure levy ($103,265) explicitly targeted at individual petition filings rather than broad structural adjustments. Furthermore, as demonstrated by the immediate judicial intervention ('Second Federal Judge Blocks Trump's $100,000 H-1B Visa Fee'), this iteration faces an unprecedented level of synchronized, rapid judicial roadblocks that invalidate executive authority over extraordinary monetary gatekeeping far more aggressively than previous rulemakings encountered. The sheer magnitude of the fee creates a unique, easily justiciable constitutional and statutory overreach argument under the Major Questions Doctrine, ensuring prolonged injunctions that will outlast the 2027 deadline.",
+        "key_evidence": [
+          "The Times of India reporting on 'Second Federal Judge Blocks Trump's $100,000 H-1B Visa Fee'",
+          "The specific proposed fee threshold of $103,265 targeted by the regulation"
+        ],
+        "strength": "strong",
+        "strength_reason": "The existence of multiple federal judges actively blocking the specific fee tier demonstrates a level of judicial friction that historically halts rule finalization indefinitely.",
+        "deliberately_ignored": "The procedural schedules of the rulemaking process, administrative agency workflows, and population-level impacts on visa applicants.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "excluded",
+      "audit_note": "Remove the adjustment based on specific, documented judicial roadblocks occurring in the present evidence. Rely solely on the fixed outside view base rate and the analogical comparison of past episodes and their differences.",
+      "status": "fallback_outside",
+      "probability": 28.0,
+      "p_full": 28.0,
+      "reason": "audit excluded the reasoning; using the frozen outside view",
+      "known_bias": "outside_view_is_news_blind"
+    },
+    "actor_incentive": {
+      "lens": "actor_incentive",
+      "abstraction": "Within a 327-day window, will a designated executive authority successfully decree and execute a maximalist structural fee adjustment within their domain, given that they possess both the absolute legal-structural jurisdiction to do so and the stated political intent?",
+      "outside_probability": 85.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "When principals possess absolute statutory authority over fee structures within their agency and place high political will behind a specific revenue or restriction mechanism, the internal mechanics of drafting and publishing a final rule proceed successfully nearly every time within a 327-day window. Factoring in minor administrative slippage or shifting priorities yields an outside probability of 85%.",
+      "cases": [
+        {
+          "name": "Reagan Administration OSHA/EPA deregulatory and fee/standard adjustments (1981)",
+          "date": "1981-12-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "Clinton Administration Health Care Task Force fee/structural rules (1993)",
+          "date": "1994-01-01",
+          "outcome": "miss"
+        },
+        {
+          "name": "Bush Administration Homeland Security visa/fee restructuring (2002-2003)",
+          "date": "2003-06-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "Obama Administration USCIS fee schedule major adjustments (2010)",
+          "date": "2010-09-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "Trump Administration 1st Term Public Charge rule and fee increases (2018-2019)",
+          "date": "2019-08-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "Biden Administration student loan/income-driven repayment and fee rules (2022-2023)",
+          "date": "2023-07-01",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Executive Will and Capability (Aperture Factor)",
+          "belongs_to_me": true,
+          "value": 90,
+          "basis": "Base rate of 100% for high-priority executive fee/regulatory pushes reaching final publication when principals possess direct statutory authority, adjusted slightly for administrative bandwidth and prioritization trade-offs."
+        },
+        {
+          "name": "Absence of internal executive abandonment or substitution",
+          "belongs_to_me": false,
+          "value": 95,
+          "basis": "Historical base rate that administrations rarely abandon an explicitly announced, highly publicized flagship fee or regulatory vehicle once drafted."
+        }
+      ],
+      "combination": "Multiplied the two factors, as an executive decision to abandon a flagship policy is largely independent of the sheer capability and will to execute it, though both are necessary.",
+      "own_factor": 90.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -5.0,
+      "reference_entry": "R0647-actor_incentive",
+      "yes_case": {
+        "case": "The principals within the Trump administration strongly want this policy, as demonstrated by their aggressive pursuit of high-impact immigration restrictions and fee structures, notably exemplified by pushing the $100,000+ H-1B visa fee regulation despite initial pushback. Their revealed intent shows a consistent drive to reshape employment-based immigration through executive rulemaking. Furthermore, they possess the administrative capability to draft, push, and issue final regulatory actions through the Department of Homeland Security, backed by high-level coordination including figures like Elon Musk co-leading 'Project Meridian' to drive sweeping executive directives. Because the principals deeply desire this specific outcome and hold the direct administrative levers to promulgate the final rule, they can deliver it.",
+        "key_evidence": [
+          "The Trump administration's ongoing pursuit of the $100,000+ H-1B visa fee regulation",
+          "Elon Musk co-leading 'Project Meridian' for the Trump administration to drive executive policy implementation",
+          "Active use of DHS and executive agencies to enact sweeping regulatory changes on immigration"
+        ],
+        "strength": "strong",
+        "strength_reason": "The evidence points directly to unwavering executive will and direct agency-level capability to drive major fee regulations forward under leadership determined to restructure high-skilled immigration.",
+        "deliberately_ignored": "Federal court injunctions blocking the fee, judicial reviews, procedural requirements, administrative timelines, and any third-party or state-level legal challenges.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "From the perspective of will and capability, the Trump administration's revealed intent regarding the $103,265 H-1B fee regulation shows a lack of sustained executive follow-through and capacity to finalize this specific mega-fee rule. Despite initial headline-grabbing proposals, the administration's primary focus and capital have visibly shifted toward other domestic economic and political priorities—such as mass tax form changes, Trump Accounts, and high-profile tech and industrial projects—rather than driving the complex mechanics required to push a six-figure visa fee across the finish line. When principals must act to prioritize and force a monumental regulatory change through, competing distractions and a lack of singular, unwavering resolve from the top tier of decision-makers mean the internal will to deliver this exact statutory and regulatory behemoth by August 2027 is absent. Therefore, the principals do not possess the focused will to see it delivered.",
+        "key_evidence": [
+          "Reporting indicates federal judges have repeatedly blocked Trump's $100,000 H-1B Visa Fee initiatives, revealing a fractured executive approach.",
+          "The administration's active bandwidth is heavily consumed by other major initiatives such as draft tax form revisions, automatic Treasury child accounts, and massive infrastructure and tech partnerships.",
+          "There is a complete absence of recent revealed intent or direct executive action from agency principals prioritizing the finalization of the $103,265 fee regulation."
+        ],
+        "strength": "strong",
+        "strength_reason": "The argument strictly evaluates the presence of active, focused will and delivery capability among the principals, showing that their attention and administrative energy are directed elsewhere.",
+        "deliberately_ignored": "The legal mechanics of federal court injunctions, administrative procedures, statutory rulemaking timelines, and procedural opposition from external parties.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "excluded",
+      "audit_note": "Remove the adjustment based on competing priorities, momentum slowdowns, and public signaling. Re-derive the estimate using only the fixed prior values and the core assessment of will and capability without building the estimate out of institutional friction and competing legislative schedules.",
+      "status": "fallback_outside",
+      "probability": 85.0,
+      "p_full": 85.0,
+      "reason": "audit excluded the reasoning; using the frozen outside view",
+      "known_bias": "outside_view_is_news_blind"
+    },
+    "blocker": {
+      "lens": "blocker",
+      "abstraction": "Will a major regulatory agency finalize a highly contentious, economically disruptive administrative fee increase within a 327-day window despite statutory and procedural structural friction?",
+      "outside_probability": 80.0,
+      "provenance_tier": "thin",
+      "outside_reasoning": "Under the aperture of structural friction, administrative rules face procedural hurdles (APA notice-and-comment, OMB/OIRA review). However, when an administration is committed and pushing a priority rule, the friction rarely stops final publication itself—though it invites immediate post-publication litigation. Since the resolution criteria only requires publication of the final rule (and explicitly separates subsequent court blocks if within tolerance or until deadline), the structural friction of the rulemaking process itself is routinely overcome by determined agencies within a sub-year timeframe. Thus, a high probability is assigned.",
+      "cases": [
+        {
+          "name": "EPA Clean Power Plan Repeal / Affordable Clean Energy",
+          "date": "2019-07-08",
+          "outcome": "hit"
+        },
+        {
+          "name": "DHS Public Charge Rule",
+          "date": "2019-08-14",
+          "outcome": "hit"
+        },
+        {
+          "name": "DOL Independent Contractor Rule",
+          "date": "2021-01-07",
+          "outcome": "hit"
+        },
+        {
+          "name": "OSHA COVID-19 Vaccine Mandate ETS",
+          "date": "2021-11-05",
+          "outcome": "hit"
+        },
+        {
+          "name": "EPA Mercury and Air Toxics Standards Reconsideration",
+          "date": "2023-05-08",
+          "outcome": "hit"
+        },
+        {
+          "name": "Student Loan Forgiveness / Saving on a Valuable Education (SAVE) final rule",
+          "date": "2023-07-10",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Structural friction and agency finalization success rate",
+          "belongs_to_me": true,
+          "value": 85,
+          "basis": "Based on historical completion rates of high-priority agency rulemakings under pressure."
+        },
+        {
+          "name": "Administrative priority and intent assumption",
+          "belongs_to_me": false,
+          "value": 100,
+          "basis": "Given by prompt constraints: assume principals want it and are trying."
+        }
+      ],
+      "combination": "Multiplied administrative will (assumed 100 per prompt) by the baseline friction success rate of published rules, adjusted downward slightly for extreme fee magnitude novelty.",
+      "own_factor": 85.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -5.0,
+      "reference_entry": "R0648-blocker",
+      "yes_case": {
+        "case": "From the perspective of structural friction and intervention mechanics, the primary obstacles to finalizing a high-stakes federal regulation are administrative injunctions and judicial interventions, as evidenced by initial federal court blocks. However, historical and structural analysis of federal rulemaking shows that preliminary or even secondary injunctions rarely constitute a permanent barrier when an agency possesses statutory rulemaking authority. Structural friction in the U.S. regulatory process—such as APA notice-and-comment requirements, interagency reviews, and preliminary judicial challenges—frequently slows down implementation, but historically, determined administrative interventions successfully cure procedural defects, refile rules, or secure appellate relief in the vast majority of major economic policy rules. The structural mechanisms available to external interveners (such as federal district courts issuing preliminary blocks) successfully prevent finalization in only a small fraction of cases where the underlying statute is subsequently rewritten or abandoned, rather than when the administration systematically overrides or navigates around lower court rulings using appellate pathways or revised justifications.",
+        "key_evidence": [
+          "Federal judges have already issued preliminary blocks against the Trump administration's $100,000 H-1B visa fee, demonstrating the exact nature of the external judicial intervention friction point.",
+          "Federal administrative law provides structured mechanisms (such as remands, cures to procedural errors, and emergency stays) that allow agencies to overcome initial judicial roadblocks and successfully publish final rules in the Federal Register."
+        ],
+        "strength": "moderate",
+        "strength_reason": "While structural friction in the form of federal court blocks is demonstrably active and present, the historical baseline for administrative persistence against preliminary injunctions indicates that external interventions of this type fail to permanently prevent finalization in the majority of well-resourced federal regulatory pushes.",
+        "deliberately_ignored": "Preferences, intent, schedules, the specific number of days remaining until August 25, 2027, and whether the principals genuinely want or are capable of driving the policy through are entirely excluded from this analysis.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "Structural friction in the form of federal judicial intervention is already fully mobilized and actively halting this specific regulatory mechanism. As evidenced by multiple federal judges blocking the administration's $100,000 H-1B visa fee policy, the structural mechanism of the federal judiciary possesses both the mandate and the active posture to halt such rulemakings. Historically, preliminary injunctions and vacaturs in high-stakes immigration and economic regulations face a high rate of persistence through appellate review, effectively trapping major rulemakings in procedural and jurisdictional gridlock. When an intervention of this magnitude—judicial blockage—is already successfully deployed at the outset, the probability that the structural friction permanently prevents finalization before the deadline approaches certainty, as agencies are structurally barred from publishing a final rule while under active court orders.",
+        "key_evidence": [
+          "Federal courts have already stepped in, with reporting confirming that a second federal judge blocked Trump's $100,000 H-1B visa fee.",
+          "The resolution criteria explicitly states that if the regulation is blocked by a court or the deadline passes without a final rule, the resolution is NO."
+        ],
+        "strength": "strong",
+        "strength_reason": "The argument relies directly on active structural intervention (judicial injunctions) which are explicitly provisioned in the resolution criteria as a failure condition, and reporting confirms that this specific blocking process is already underway.",
+        "deliberately_ignored": "Whether the administration or agency heads fundamentally desire this fee, their internal scheduling pressures, or their track record of circumventing administrative procedures.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "excluded",
+      "audit_note": "Remove all references to current news and ongoing events involving federal judges blocking the fee. Re-derive the estimate using only the frozen base rate and the abstract analysis of structural friction.",
+      "status": "fallback_outside",
+      "probability": 80.0,
+      "p_full": 80.0,
+      "reason": "audit excluded the reasoning; using the frozen outside view",
+      "known_bias": "outside_view_is_news_blind"
+    },
+    "mechanism_calendar": {
+      "lens": "mechanism_calendar",
+      "abstraction": "Will a complex executive agency finalize a high-magnitude, economically significant regulatory fee schedule within a 327-day calendar window from initial proposal to publication of the final rule?",
+      "outside_probability": 55.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "The physical steps of drafting, publishing a notice of proposed rulemaking, allowing a 60-day comment period, processing thousands of public comments, drafting the final rule, undergoing mandatory OIRA interagency review, and publishing in the Federal Register typically consume between 250 and 400 days under accelerated conditions. While the calendar physically allows completion within 327 days, the compressed timeline leaves very little margin for procedural slip, yielding an aperture estimate of 55%.",
+      "cases": [
+        {
+          "name": "EPA Clean Power Plan Repeal",
+          "date": "2019-07-08",
+          "outcome": "miss"
+        },
+        {
+          "name": "DOL Overtime Rule 2016",
+          "date": "2016-05-23",
+          "outcome": "hit"
+        },
+        {
+          "name": "SEC Climate Disclosure Rule",
+          "date": "2024-03-06",
+          "outcome": "hit"
+        },
+        {
+          "name": "FTC Non-Compete Clause Ban",
+          "date": "2024-04-23",
+          "outcome": "miss"
+        },
+        {
+          "name": "OSHA COVID-19 Vaccine Mandate",
+          "date": "2021-11-05",
+          "outcome": "hit"
+        },
+        {
+          "name": "EPA Mercury and Air Toxics Reconsideration",
+          "date": "2023-04-24",
+          "outcome": "miss"
+        },
+        {
+          "name": "FDA Menthol Cigarette Ban Proposal",
+          "date": "2022-04-28",
+          "outcome": "miss"
+        },
+        {
+          "name": "DHS Public Charge Rule 2019",
+          "date": "2019-08-14",
+          "outcome": "hit"
+        },
+        {
+          "name": "DOE Appliance Standards (Refrigerators)",
+          "date": "2023-12-18",
+          "outcome": "hit"
+        },
+        {
+          "name": "FCC Net Neutrality Restoration 2015",
+          "date": "2015-03-12",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Clock and Process Feasibility (Process-level finalization rate within 327 days)",
+          "belongs_to_me": true,
+          "value": 60,
+          "basis": "Base rate of 60% of major economically significant rules completing notice-and-comment within a 327-day window."
+        },
+        {
+          "name": "Administrative Priority and Agency Drive",
+          "belongs_to_me": false,
+          "value": 90,
+          "basis": "Assumption of high administrative backing given the specific high-visibility nature of fee-based revenue mechanisms."
+        }
+      ],
+      "combination": "Multiply the structural process completion rate by the administrative priority factor, adjusting downward slightly for compounding procedural friction.",
+      "own_factor": 60.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -5.0,
+      "reference_entry": "R0649-mechanism_calendar",
+      "yes_case": {
+        "case": "The timeline to finalize a federal regulation—specifically, moving from a notice of proposed rulemaking to publishing a final rule in the Federal Register—typically requires standard administrative steps including drafting the rule, interagency review through the Office of Information and Regulatory Affairs (OIRA), a public comment period, and final review. With 327 days remaining until the 25 August 2027 deadline, the physical duration of these standard rulemaking stages generally spans 6 to 18 months. Because full cooperation and no procedural obstacles are assumed under the aperture rules, the calendar mathematically permits the completion of all sequential administrative milestones well within the 327-day window.",
+        "key_evidence": [
+          "327 days remain until the 25 August 2027 resolution deadline.",
+          "Standard administrative rulemaking phases (drafting, OIRA review, public comment, final rule publication) are physically capable of being completed within a 6 to 12-month sequential timeframe."
+        ],
+        "strength": "strong",
+        "strength_reason": "Under the strict assumption of full cooperation and zero adversarial friction or procedural delays, the standard clock-time required for federal rulemaking easily fits within the 327-day calendar runway.",
+        "deliberately_ignored": "All political motivations, stakeholder reactions, interest group responses, potential judicial challenges, injunctions, or executive intent regarding the H-1B fee amount.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "Under standard administrative rulemaking procedures governed by the Administrative Procedure Act (APA), finalizing a major economic regulation requires a multi-step sequence: drafting the Notice of Proposed Rulemaking (NPRM), interagency review by the Office of Information and Regulatory Affairs (OIRA), publication in the Federal Register, a mandatory public comment period (typically 60 to 90 days for complex fee structures), review of all submitted comments, drafting the final rule, a second round of OIRA review, and final publication of the rule with a delayed effective date. A complex, high-impact fee regulation of over $100,000 intrinsically generates massive datasets of public comments that require substantial processing time. Given that the standard regulatory lifecycle for major federal rules routinely spans 12 to 24 months from initial proposal to final publication, and multiple procedural constraints and mandatory waiting periods are legally mandated, the remaining time until August 25, 2027, does not physically accommodate the sequential processing time required should any stage experience standard administrative sequencing delays.",
+        "key_evidence": [
+          "The standard Administrative Procedure Act (APA) notice-and-comment rulemaking timeline requires an NPRM phase, public comment period, comment analysis, and final rule drafting.",
+          "Major federal economic regulations undergo mandatory interagency review by the Office of Information and Regulatory Affairs (OIRA) at both the proposed and final rule stages.",
+          "The total duration for completing all mandatory administrative steps for a complex federal fee rule typically exceeds 12 to 18 months under standard operational pacing."
+        ],
+        "strength": "strong",
+        "strength_reason": "The argument relies strictly on the compounding sequential time requirements mandated by federal administrative law, showing that the calendar window contains insufficient time to safely cycle through all required procedural stages if standard bureaucratic durations apply.",
+        "deliberately_ignored": "Whether the administration or technology companies desire the fee, potential legal challenges or injunctions from external parties, and any political motivations or friction from opposing groups.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "excluded",
+      "audit_note": "Remove the reference to public comments causing timeline extensions due to friction, and re-derive the estimate using solely the mechanical steps and calendar time required for processing without invoking external stakeholder resistance or agency reactions.",
+      "status": "fallback_outside",
+      "probability": 55.0,
+      "p_full": 55.0,
+      "reason": "audit excluded the reasoning; using the frozen outside view",
+      "known_bias": "outside_view_is_news_blind"
+    },
+    "telltale": {
+      "lens": "telltale",
+      "abstraction": "Will a major, highly unusual, outlier regulatory fee proposal of this specific magnitude proceed from initial agency notice to final rule publication within a 327-day window?",
+      "outside_probability": 51.0,
+      "provenance_tier": "thin",
+      "outside_reasoning": "Observing the historical track record of major agency rulemakings, once an administration advances a significant regulatory proposal, the institutional momentum and procedural machinery almost always drive it to an official final rule in the Federal Register (rate near 85%), even if subsequent judicial review creates hurdles. Factoring in the extreme magnitude of the fee which invites severe litigation friction, the adjusted probability lands near 51 percent.",
+      "cases": [
+        {
+          "name": "USCIS Asylum Fee and Premium Processing Rule (2020)",
+          "date": "2020-08-03",
+          "outcome": "hit"
+        },
+        {
+          "name": "DHS Public Charge Rule (2019)",
+          "date": "2019-08-14",
+          "outcome": "hit"
+        },
+        {
+          "name": "State Department Visa Fee Increases (2020)",
+          "date": "2020-03-26",
+          "outcome": "hit"
+        },
+        {
+          "name": "EPA Clean Power Plan Repeal and Replacement (2019)",
+          "date": "2019-07-08",
+          "outcome": "hit"
+        },
+        {
+          "name": "DOL Overtime Rule Revisions (2019)",
+          "date": "2019-09-27",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Probability that a formally proposed rule proceeds to final publication within the allotted timeframe given visible advance signals",
+          "belongs_to_me": true,
+          "value": 85,
+          "basis": "Historical base rate of formal agency rule finalization for major initiatives is very high once published in the unified agenda or proposed rulemaking stage."
+        },
+        {
+          "name": "Probability of severe judicial injunction blocking finalization entirely before the deadline",
+          "belongs_to_me": false,
+          "value": 40,
+          "basis": "Base rate for preliminary injunctions or stays on highly unusual outlier rules is substantial but rarely prevents eventual technical final publication of the rule itself."
+        }
+      ],
+      "combination": "Multiply the base finalization frequency by the inverse of the blocking probability to account for legal friction, yielding a net adjusted probability.",
+      "own_factor": 85.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -34.0,
+      "reference_entry": "R0650-telltale",
+      "yes_case": {
+        "case": "Observing the historical progression of aggressive federal regulatory and fee actions under this administration, the signal state involving high-profile executive initiatives facing initial judicial challenges—such as the reported federal court blocks on the H-1B visa fee—historically proceeds to formal final rule publication in a significant majority of similar historical sequences once initial administrative remediation occurs. The observable precursor of an active rule proposal coupled with active litigation represents a standard phase in the lifecycle of high-value federal regulatory outputs that frequently culminates in final publication within the standard multi-year window.",
+        "key_evidence": [
+          "Reporting indicates federal judges actively blocking and scrutinizing the administration's $100,000-range H-1B visa fee regulation.",
+          "Historical baseline frequency of contested federal rulemakings eventually reaching publication in the Federal Register within a 327-day observation window."
+        ],
+        "strength": "moderate",
+        "strength_reason": "While the signal state of initial judicial blockage is clearly visible, the precise historical conversion rate for fee regulations of this specific magnitude under active challenge provides a moderate basis for resolution within the strict timeframe.",
+        "deliberately_ignored": "Whether the administration or opposing actors politically desire the fee to succeed, and the legal merits or procedural feasibility of the court challenges.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "Observing the historical track record of signal states where a federal court blocks an administrative fee or major immigration regulation, the rate at which such initiatives proceed to full finalization without being permanently stalled or invalidated is exceptionally low. In the available reporting, the observable signal state is characterized by active judicial intervention ('Second Federal Judge Blocks Trump's $100,000 H-1B Visa Fee') rather than uninterrupted progression through the Federal Register. In comparable historical instances of multi-judge injunctions against high-value administrative rules, rules in this specific blocked state proceed to final implementation on or before a defined deadline in less than a fraction of cases. Without the observable precursor of an unhindered legal pathway or the dissolution of active judicial blocks, the historical frequency of transition from a blocked status to final promulgation within a fixed window is near zero.",
+        "key_evidence": [
+          "The Times of India reporting indicates a 'Second Federal Judge Blocks Trump's $100,000 H-1B Visa Fee'",
+          "Absence of any reporting indicating the lifting or vacating of the federal injunctions against the fee regulation"
+        ],
+        "strength": "strong",
+        "strength_reason": "The presence of multiple federal judicial blocks places the regulation in a historically low-conversion signal state, where administrative actions nearly never reach final publication without the prior removal of such legal barriers.",
+        "deliberately_ignored": "The underlying intentions, policy goals, or legal arguments of the administration or the plaintiffs, as well as the substantive merits of the fee regulation itself.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "excluded",
+      "audit_note": "Remove references to the administration's ability or success in navigating the legal challenge and re-derive the estimate based solely on observable signal states, base rates, and previously frozen prior values.",
+      "status": "fallback_outside",
+      "probability": 51.0,
+      "p_full": 51.0,
+      "reason": "audit excluded the reasoning; using the frozen outside view",
+      "known_bias": "outside_view_is_news_blind"
+    },
+    "literalist": {
+      "lens": "literalist",
+      "abstraction": "Will a regulatory agency officially finalize a specific high-value fee regulation within a fixed time window, meeting all precise statutory wording and threshold tolerances?",
+      "outside_probability": 30.0,
+      "provenance_tier": "extrapolated",
+      "outside_reasoning": "Given that the substantive rule advances, historical analysis of major agency fee rules indicates roughly a 75 percent chance that the final published rule satisfies the precise numerical thresholds and avoids fatal court blocks within the specified window, yielding a combined probability of 30 percent.",
+      "cases": [
+        {
+          "name": "SEC Consolidated Audit Trail Fee Rule",
+          "date": "2016-07-18",
+          "outcome": "hit"
+        },
+        {
+          "name": "USCIS Immigration Fee Schedule 2020",
+          "date": "2020-08-03",
+          "outcome": "miss"
+        },
+        {
+          "name": "USCIS Immigration Fee Schedule 2024",
+          "date": "2024-01-31",
+          "outcome": "hit"
+        },
+        {
+          "name": "DOS Consular Fee Adjustments 2022",
+          "date": "2023-03-28",
+          "outcome": "hit"
+        },
+        {
+          "name": "EPA Chemical Fee Rule under TSCA",
+          "date": "2018-10-17",
+          "outcome": "hit"
+        },
+        {
+          "name": "FDA User Fee Final Rules 2022",
+          "date": "2022-08-01",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Substantive Event Probability",
+          "belongs_to_me": false,
+          "value": 40,
+          "basis": "Base rate for high-profile administration immigration rule initiatives reaching final publication stage."
+        },
+        {
+          "name": "Criteria Satisfaction Probability",
+          "belongs_to_me": true,
+          "value": 75,
+          "basis": "Historical base rate of agency final rules satisfying precise threshold and timeline criteria without fatal court blocks."
+        }
+      ],
+      "combination": "multiply",
+      "own_factor": 75.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -45.0,
+      "substantive_probability": 40.0,
+      "substantive_reason": "Fixed outside base rate for administrative rule progression.",
+      "reference_entry": "R0651-literalist",
+      "yes_case": {
+        "case": "Assuming the substantive event occurs, the resolution criteria require the publication of a final rule in the Federal Register establishing an H-1B visa petition fee of $103,265, or a figure within 10% of that amount (which spans from $92,938.50 to $113,591.50). The recent reporting specifically highlights a federal judge referencing a '$100,000 H-1B Visa Fee', which sits directly within the acceptable 10% tolerance band ($100,000 is approximately -3.1% from $103,265). Therefore, any finalized rule reflecting the heavily publicized and litigated $100,000 figure easily satisfies the quantitative threshold specified in the wording. The exact numerical target matches standard regulatory rounding and colloquial naming conventions in legal challenges, ensuring that publication of the final rule will cleanly clear the definition of a technical and substantive YES.",
+        "key_evidence": [
+          "The resolution criteria accept any figure within 10% of $103,265, defining a valid range between $92,938.50 and $113,591.50.",
+          "Recent reporting confirms the administration's fee target is colloquially and legally tracked around the $100,000 mark (e.g., 'Trump's $100,000 H-1B Visa Fee'), which falls squarely within the 10% tolerance boundary."
+        ],
+        "strength": "strong",
+        "strength_reason": "The explicit 10% tolerance clause in the resolution criteria provides a generous numerical buffer, ensuring that minor variations in the final published figure (such as a round $100,000 fee) cleanly fulfill the strict wording requirements without risking a technical miss.",
+        "deliberately_ignored": "Whether the administration will successfully survive ongoing court challenges, injunctions, or procedural delays preventing the final rule from being published before August 25, 2027.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The resolution criteria explicitly require the final rule to establish a fee of $103,265 or a figure within 10% of that exact amount (ranging from approximately $92,938 to $113,591). Given that initial reporting references a '$100,000 H-1B Visa Fee' which was subsequently blocked by a federal judge, any subsequent redrafting or revised rule designed to survive judicial scrutiny could easily land outside the strict 10% numerical bracket specified in the resolution text. Furthermore, the criteria dictate that if the regulation is blocked by a court or withdrawn, the resolution is NO. The existing judicial vulnerability demonstrated by the federal judge's blocking of the initial iteration creates a severe risk that any final rule published prior to the August 25, 2027 deadline will either fail the strict +/- 10% pricing window or be formally enjoined and blocked by ongoing litigation before the deadline.",
+        "key_evidence": [
+          "Resolution criteria require the final fee to be $103,265 or within 10% of that amount.",
+          "Recent reporting confirms that a federal judge has already blocked Trump's $100,000 H-1B visa fee, establishing a clear precedent of judicial blockage.",
+          "Resolution criteria explicitly state that if the regulation is blocked by a court or the deadline passes without an eligible final rule, the resolution is NO."
+        ],
+        "strength": "strong",
+        "strength_reason": "The wording imposes a mathematically precise 10% boundary condition on the fee amount and explicitly triggers a NO resolution upon court blockage, both of which tightly constrain the exact form the final rule must take to satisfy the criteria.",
+        "deliberately_ignored": "The political will of the administration, procedural delays, whether the administration will choose to appeal the court rulings, and the likelihood of the substantive policy being pursued.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "excluded",
+      "audit_note": "Remove the adjustment based on judicial blockage and legal intervention risks, and restore the probability derived solely from your frozen substantive probability and criteria satisfaction factor without incorporating new evidence about blocking.",
+      "status": "fallback_outside",
+      "probability": 30.0,
+      "p_full": 30.0,
+      "reason": "audit excluded the reasoning; using the frozen outside view",
+      "known_bias": "outside_view_is_news_blind"
+    }
+  },
+  "abstained": [],
+  "excluded": [],
+  "fallbacks": [
+    "analogy",
+    "actor_incentive",
+    "blocker",
+    "mechanism_calendar",
+    "telltale",
+    "literalist"
+  ],
+  "responding_lenses": 7,
+  "abstained_lenses": 0,
+  "fallback_lenses": 6,
+  "failed_lenses": 0,
+  "mostly_outside_view": true,
+  "median_raw": 55.0,
+  "spread": 57.0,
+  "low_lens": "analogy",
+  "high_lens": "actor_incentive",
+  "median_extremized": 57.5,
+  "advocate": {
+    "load_bearing_assumption": "The assumption that a 22,000% fee increase to $103,265 can survive legal challenges and avoid being blocked by a federal court under the Administrative Procedure Act (APA) before August 2027.",
+    "why_it_could_be_wrong": "USCIS fees are statutorily required to be based on cost-recovery for adjudication services. Setting a fee of over $100,000 is a transparent attempt to bypass Congress and ban H-1B visas, which federal courts would immediately enjoin as arbitrary, capricious, and exceeding statutory authority, triggering a 'NO' resolution.",
+    "should_move": true,
+    "moved_to": 15.0,
+    "move_reason": "The 55% aggregate severely underestimates the certainty of judicial intervention. A fee of this magnitude is legally dead on arrival and would be blocked by a court almost immediately upon or even prior to finalization, which resolves the market to NO.",
+    "lenses_that_look_redundant": [
+      "reference_class"
+    ],
+    "concerns": "The reference class lens likely looked at general Trump-era immigration regulations without accounting for the unprecedented and legally indefensible dollar amount specified in this prompt."
+  },
+  "advocate_proposed": 15.0,
+  "probability": 55.0,
+  "status": "forecast"
+}
