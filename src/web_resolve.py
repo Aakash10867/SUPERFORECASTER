@@ -158,8 +158,8 @@ just the clearest one.
 - Use nothing but these articles. If they do not show it clearly, answer \
 "happened": false. Never conclude that the question resolves NO.
 - LEAD: if the articles show the resolving act was announced or scheduled for \
-a SPECIFIC date but do not show it took place, give that date and a short \
-description of the act. Otherwise leave both empty.
+a SPECIFIC date, give the EARLIEST such date and a short description of the \
+act -- whether or not it has happened since. Otherwise leave both empty.
 
 ARTICLES (number | published | publisher | headline -- snippet):
 {articles}
@@ -172,7 +172,7 @@ Return JSON only, no prose before or after:
   "event_date": "YYYY-MM-DD, the date it actually happened; empty if it has not",
   "supporting_articles": [numbers of the articles that report it as done],
   "evidence": "one or two sentences from those articles that establish it",
-  "lead_date": "YYYY-MM-DD the act was scheduled for, if announced but not shown done; else empty",
+  "lead_date": "YYYY-MM-DD, the EARLIEST date the act was scheduled for, if any; else empty",
   "lead_what": "short description of that scheduled act; else empty",
   "reason": "one line, always filled in"
 }}"""
@@ -180,6 +180,12 @@ Return JSON only, no prose before or after:
 LEAD_HINT = """THIS ACT WAS DUE ON {date}: {what}. Look specifically for \
 reports that it took place -- results, outcomes, reactions to it having \
 happened.
+"""
+
+VERIFY_HINT = """CHECK THIS CAREFULLY: the act was scheduled for {date} \
+({what}). Look for reports that it took place on or after that date. If it \
+has happened more than once, find the FIRST time and give that date. Cite \
+every article that reports it done.
 """
 
 # The only fixed vocabulary: one phrase per kind of resolving act. These words
@@ -510,8 +516,8 @@ def _article_block(articles: list[dict]) -> str:
     return "\n".join(lines)
 
 
-def _read(q, articles, today, router, lead=None):
-    hint = LEAD_HINT.format(date=lead[0].isoformat(), what=lead[1]) if lead else ""
+def _read(q, articles, today, router, hint=None):
+    hint = hint or ""
     return router.generate(
         TASK,
         WEB_PROMPT.format(
@@ -558,41 +564,88 @@ def check_one(q: dict, router, settings: dict, today: dt.date) -> dict:
     else:
         action, why, facts = judge(q, None, [], today, settings)
     r.update(action=action, why=why, facts=facts)
-    if action != "not_yet":
-        return r
 
+    # v21: ONE second look, for any of three reasons. Still one hop, once a
+    # day. Searching is recall, so it is allowed to look again; the decision
+    # stays with judge().
     lead = _lead(r["answer"], q)
-    if lead is None:
-        return r
     deadline = _date(q.get("deadline")) or dt.date.max
-    if lead[0] > today:
-        r["awaiting"] = lead
-        return r
-    if lead[0] > deadline:
-        return r                           # too late to be a YES; lapse handles it
+    event_date = _date(facts.get("event_date"))
+    window = hint = None
+    reason = ""
 
-    # The one follow-up.
-    fq = followup_queries(form, lead[1])
-    # v20: look right around the scheduled date (a day before, four after),
-    # so the reports of the act are not drowned by later news.
-    window = (lead[0] - dt.timedelta(days=1), lead[0] + dt.timedelta(days=4))
+    if action == "not_yet":
+        if lead is None or lead[0] > deadline:
+            return r
+        if lead[0] > today:
+            r["awaiting"] = lead
+            return r
+        # (1) DUE: scheduled for a date that has passed, no report it
+        #     happened. Look right around that date.
+        reason = "due"
+        window = (lead[0] - dt.timedelta(days=1), lead[0] + dt.timedelta(days=4))
+        hint = LEAD_HINT.format(date=lead[0].isoformat(), what=lead[1])
+    elif action == "pending" and _truthy(r["answer"].get("happened")) and (
+            "publisher" in why or "cited none" in why):
+        # (2) THIN: the reader says it happened, but too few publishers back
+        #     it. Look from the earliest scheduled date (if any) to the
+        #     reported date, to corroborate it -- and to find the first time.
+        reason = "thin"
+        end = event_date or today
+        start = min(lead[0], end) if lead and lead[0] <= today else end - dt.timedelta(days=7)
+        window = (start - dt.timedelta(days=1), min(end + dt.timedelta(days=4), today))
+        hint = VERIFY_HINT.format(
+            date=start.isoformat(), what=(lead[1] if lead else r["answer"].get("event", "")))
+    elif action == "resolved_yes" and lead and event_date and lead[0] < event_date:
+        # (3) EARLIER: resolved, but the act was scheduled before the date the
+        #     reader gave. A repeated act resolves on its FIRST occurrence, so
+        #     check whether it already happened then.
+        reason = "earlier"
+        window = (lead[0] - dt.timedelta(days=1), lead[0] + dt.timedelta(days=4))
+        hint = VERIFY_HINT.format(date=lead[0].isoformat(), what=lead[1])
+    else:
+        return r
+
+    what = lead[1] if lead else r["answer"].get("event", "")
+    fq = followup_queries(form, what)
     try:
         more, p2 = news_search.search(fq, limit=limit, window=window)
     except news_search.SearchUnavailable as exc:
         r["problems"] = problems + [f"follow-up search: {exc}"]
         return r
     merged = news_search.merge(articles, more, limit=limit)
-    answer2, model2 = _read(q, merged, today, router, lead=lead)
+    answer2, model2 = _read(q, merged, today, router, hint=hint)
     action2, why2, facts2 = judge(q, answer2, merged, today, settings)
-    r["followup"] = {"lead": lead, "queries": fq, "found": len(more)}
-    r.update(articles=merged, problems=problems + p2,
-             answer=answer2 if isinstance(answer2, dict) else {},
-             model=model2 or r["model"])
-    if action2 == "not_yet":
-        action2 = "pending"
-        why2 = (f"was due on {lead[0]} ({lead[1]}); a follow-up search found "
-                "no report that it happened -- please check")
-    r.update(action=action2, why=why2, facts=facts2)
+    r["followup"] = {"reason": reason, "lead": lead or (window[0], what),
+                     "window": window, "queries": fq, "found": len(more)}
+    r["problems"] = problems + p2
+
+    take_second = False
+    if reason == "due":
+        take_second = True
+        if action2 == "not_yet":
+            action2 = "pending"
+            why2 = (f"was due on {lead[0]} ({lead[1]}); a follow-up search "
+                    "found no report that it happened -- please check")
+    elif reason == "thin":
+        # Never downgrade: the second look can only resolve or refine.
+        take_second = action2 == "resolved_yes" or (
+            action2 == "pending" and _truthy((answer2 or {}).get("happened")))
+        if not take_second:
+            r["followup"]["kept"] = ("kept the first reading: the second look "
+                                     "did not strengthen it")
+    elif reason == "earlier":
+        # Replace only with an EARLIER date that passes every check.
+        d2 = _date(facts2.get("event_date"))
+        take_second = action2 == "resolved_yes" and d2 is not None and d2 < event_date
+        if not take_second:
+            r["followup"]["kept"] = (f"kept {event_date}: the look back did not "
+                                     "establish an earlier occurrence")
+    if take_second:
+        r.update(articles=merged,
+                 answer=answer2 if isinstance(answer2, dict) else {},
+                 model=model2 or r["model"],
+                 action=action2, why=why2, facts=facts2)
     return r
 
 
@@ -679,9 +732,11 @@ def run(router, settings: dict, today: dt.date, log, dry_run: bool = False,
         queries = r["queries"] + ((r["followup"] or {}).get("queries") or [])
         was_pending = _last_action(qid) == ("pending", why)
         if r["followup"]:
-            lead = r["followup"]["lead"]
-            log.info(f"  {qid}: due on {lead[0]} ({lead[1]}) -- follow-up "
-                     f"search found {r['followup']['found']} more article(s)")
+            f = r["followup"]
+            log.info(f"  {qid}: second look ({_REASON[f['reason']]}), "
+                     f"{f['window'][0]} to {f['window'][1]} -- found "
+                     f"{f['found']} more article(s)"
+                     + (f"; {f['kept']}" if f.get("kept") else ""))
         if r["awaiting"] and not dry_run:
             date, what = r["awaiting"]
             store.update_question(qid, {"awaiting": f"{date.isoformat()}: {what}"})
@@ -760,9 +815,11 @@ def probe(router, settings: dict, qid: str, today: dt.date, out=print) -> str:
         out(f"   [{i:2d}] {a['date']}  {a['publisher'][:24]:24s}  {a['title'][:100]}")
     if r.get("followup"):
         f = r["followup"]
-        out(f"\n  FOLLOW-UP: due on {f['lead'][0]} ({f['lead'][1]}); queries "
-            f"{f['queries']} found {f['found']} more article(s); list above "
-            "is the merged set the second reading saw")
+        out(f"\n  SECOND LOOK ({_REASON[f['reason']]}): searched "
+            f"{f['window'][0]} to {f['window'][1]} with {f['queries']}; found "
+            f"{f['found']} more article(s)"
+            + (f"\n  {f['kept']}" if f.get("kept") else
+               "; the list above is the merged set the second reading saw"))
     if r.get("awaiting"):
         out(f"\n  AWAITING: {r['awaiting'][0]} ({r['awaiting'][1]}) -- would be "
             "stored on the question")
@@ -780,6 +837,13 @@ def _last_action(qid: str):
         if row.get("question_id") == qid and row.get("action") not in ("failed", "skipped"):
             last = (row.get("action"), row.get("why"))
     return last
+
+
+_REASON = {
+    "due": "scheduled date has passed, no report yet",
+    "thin": "says it happened, too few publishers",
+    "earlier": "scheduled earlier than the date given -- checking for a first occurrence",
+}
 
 
 def _apply_yes(q, event_date, answer, why, today, log, dry_run):

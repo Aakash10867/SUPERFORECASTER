@@ -7,7 +7,7 @@ Entry point.
     python run.py --date 2026-08-10        # pretend today is a different date
     python run.py --stages generation      # run one stage only
     python run.py --stages resolution,forecasting
-    python run.py --web-probe Q0003         # test one web check, write nothing
+    python run.py --web-probe Q0003,Q0013   # test web checks, write nothing
 
 The --date flag matters for backtesting: if you feed a paper from 10 August,
 the agents must believe it is 10 August, or every deadline they calculate will
@@ -48,12 +48,13 @@ def main() -> int:
                     help="'all', or a comma-separated subset of: "
                          + ", ".join(pipeline.STAGE_NAMES))
     ap.add_argument("--web-probe", default="",
-                    help="run the web check for ONE question id, print every "
-                         "query, article and decision, and write nothing")
+                    help="run the web check for one or more question ids "
+                         "(comma-separated), print every query, article and "
+                         "decision, and write nothing")
     args = ap.parse_args()
 
     if args.web_probe:
-        return _web_probe(args.web_probe.strip().upper())
+        return _web_probe(args.web_probe)
 
     today = None
     if args.date:
@@ -94,18 +95,28 @@ class _Console:
     def heading(self, t): print(f"== {t}")
 
 
-def _web_probe(qid: str) -> int:
+def _web_probe(ids: str) -> int:
     """
-    v18. Proves the web check works BEFORE it is trusted: one question, real
-    search, real model, everything printed, nothing written. Run it from
-    GitHub (Actions -> Run workflow -> web_probe), where the network is real.
+    v18. Proves the web check works BEFORE it is trusted: real search, real
+    model, everything printed, nothing written. Run it from GitHub (Actions ->
+    Run workflow -> web_probe), where the network is real.
+
+    v21: several ids at once, comma-separated ("Q0003,Q0013,Q0016"), with a
+    one-line summary at the end -- an acceptance test is a SET of questions,
+    some of which must NOT resolve.
     """
     from src import config, models, web_resolve
     settings = config.load_settings()
     router = models.ModelRouter(settings, config.load_models(), _Console())
-    action = web_resolve.probe(router, settings, qid, dt.date.today())
-    print(f"\nProbe finished: {action}. Nothing was written.")
-    return 0 if action != "failed" else 1
+    qids = [x.strip().upper() for x in ids.replace(" ", ",").split(",") if x.strip()]
+    results = []
+    for qid in qids:
+        print("\n" + "=" * 78)
+        results.append((qid, web_resolve.probe(router, settings, qid, dt.date.today())))
+    print("\n" + "=" * 78 + "\nSUMMARY (nothing was written)")
+    for qid, action in results:
+        print(f"  {qid}: {action}")
+    return 0 if all(a != "failed" for _, a in results) else 1
 
 
 if __name__ == "__main__":

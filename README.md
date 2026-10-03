@@ -330,11 +330,17 @@ How one check runs:
    cap"). News reports of an official act count as official. If it happened
    more than once, the date is the **first** time, and the reader must cite
    **every** article that shows it.
-4. **Follow the clue.** If the act has not happened but was **scheduled for a
-   date that has passed**, one more search chases its results and the reader
-   looks again. Still nothing → it goes to you: *"was due on X, no report it
-   happened"*. The follow-up searches only the days around the scheduled
-   date. A scheduled date still in the future is stored on the question
+4. **One second look** (at most once a day per question), searching only the
+   relevant dates, when:
+   - **due:** the act was scheduled for a date that has passed with no report
+     it happened. Still nothing → it goes to you: *"was due on X, no report
+     it happened"*;
+   - **thin:** the reader says it happened but too few publishers back it --
+     the second look tries to corroborate it and find the first occurrence;
+   - **earlier:** it resolved, but the act was scheduled earlier than the date
+     given -- the second look checks whether it first happened then. A YES is
+     never lost: an earlier date replaces the later one only if it passes
+     every check. A scheduled date still in the future is stored on the question
    (`awaiting` in `questions.csv`), and that question is checked first once
    the date passes.
 5. **Code decides.** Only YES is ever automatic:
@@ -359,8 +365,8 @@ Gemini's own search -- made no searches at all, because the only models with a
 search allowance return 404 for new API keys. That failure was a quiet warning
 mid-log. Never again.)
 
-**Test it before trusting it.** Actions → Run workflow → put a question id
-(e.g. `Q0003`) in **web_probe**. It runs that one check, prints every query,
+**Test it before trusting it.** Actions → Run workflow → put one or more
+question ids (e.g. `Q0003,Q0013,Q0016`) in **web_probe**. It runs that one check, prints every query,
 every article found, the model's answer and the code's decision, and writes
 nothing.
 

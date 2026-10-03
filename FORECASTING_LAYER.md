@@ -12,7 +12,8 @@ judged by code. v17 (2 Oct 2026) fixes the structural causes of the Q0003 miss:
 paper coverage, gate H, `resolves_on`, nightly scheduled run. v18 (3 Oct 2026)
 replaces the web search, which never worked; v19 (3 Oct 2026) fixes how it
 reads and adds follow-the-clue; v20 (3 Oct 2026) fixes result ranking and
-the reader's citing and dating. See the v18-v20 sections at the end.
+the reader's citing and dating; v21 (3 Oct 2026) adds the verify step and a
+multi-question acceptance test. See the v18-v21 sections at the end.
 
 ### Repo findings (v7, reviewed at close of §4)
 
@@ -2009,6 +2010,44 @@ first operation dates the resolution.
 Probe Q0003 again. Expected `resolved_yes`; the date should be 10 Sep. If it
 resolves with a later date, the first operation's reports still are not
 reaching the reader — and the printed article list will show it.
+
+---
+
+## v21 — The verify step, and a stop to single-question tuning (3 October 2026)
+
+### The probe
+
+v20's ranking fix worked: the list ran 19 Aug–2 Oct in relevance order. The
+reader said "happened", cited one article (BeInCrypto, 2 Oct) and dated it
+2 Oct. This time it was not under-citing: of 40 headlines, that was genuinely
+the only report of a completed purchase; the rest were announcements and
+commentary. The code refused to resolve on one crypto site and sent it to the
+human — the safety rule working as designed.
+
+Two real gaps remained: nothing tried to corroborate a thin "happened", and
+nothing checked whether the act first happened on the earlier scheduled date
+(10 Sep) that the announcements showed — so the suggested paste-in row would
+have carried the wrong date.
+
+### Decisions (agreed with Aakash)
+
+- **The follow-up becomes a verify step** (Aakash: "generalise the targeted
+  search"). One second look per question per day, windowed by date, for three
+  reasons: **due** (scheduled date passed, no report), **thin** (says
+  happened, too few publishers — search from the earliest scheduled date to
+  the reported one), **earlier** (resolved, but scheduled earlier — look back
+  for a first occurrence). The reader now always reports the EARLIEST
+  scheduled date it sees. A second look can resolve or refine; it can never
+  downgrade, and an earlier date replaces a YES only if it passes every check.
+- **Stop tuning on one question.** Claude flagged, in Aakash's own terms, that
+  three successive fixes shaped around Q0003 is the overfitting risk he named
+  for Brier-driven changes — one case, each fix fitted to its quirks, and
+  Q0003 is itself a defective question. Agreed acceptance test, a SET:
+  **Q0003** should resolve (or at worst sit pending with the right date);
+  **Q0013** (Chinese-bank sanctions, deadline passed) must NOT resolve YES;
+  **Q0016** (RBI repo hike) should stay open. If all three behave, tuning
+  stops and the nightly runs gather the evidence.
+- The probe takes several ids at once and ends with a summary.
 
 ---
 

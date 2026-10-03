@@ -235,10 +235,14 @@ class FakeReader(models.ModelRouter):
         return [c for c in self.calls if c[0] == "web_resolve" and c[1] == qid]
 
 
+WINDOWS: list = []
+
+
 def fake_search_from(script, log=None):
     def search(queries, limit=40, fetch=None, window=None):
         if log is not None:
             log.append(list(queries))
+        WINDOWS.append(window)
         qid = next((k for k in script for q in queries if k in q.split()), None)
         if qid is None:
             return [], []
@@ -507,6 +511,97 @@ def part_four():
 
 
 # ---------------------------------------------------------------------------
+# Part 4b (v21): the verify step -- "thin" and "earlier" second looks
+# ---------------------------------------------------------------------------
+
+V20 = [  # the 3 Oct v20 probe, abridged: announcements plus one done report
+    art("2026-09-22", "Chase Bank", "Why the Treasury's $6 billion bond buyback matters"),
+    art("2026-10-01", "KuCoin", "U.S. Treasury Expands Long-End Buyback Amid Rising Bond Yields"),
+    art("2026-09-09", "CNBC", "Treasury Department to buy back up to $6 billion in longer-term debt"),
+    art("2026-08-19", "Reuters", "Bessent doubles US long-bond buybacks"),
+    art("2026-09-09", "WSJ", "U.S. Treasury Plans $6 Billion Buyback, Yields Rise"),
+    art("2026-10-02", "BeInCrypto", "US Treasury Buys $6 Billion of Bonds", site="beincrypto.com"),
+]
+SEPT = [art("2026-09-10", "Reuters", "Treasury buys $5.4 billion in long-end buyback"),
+        art("2026-09-11", "Bloomberg.com", "Treasury buyback draws $5.4 billion")]
+
+
+def part_four_b():
+    lead = ("2026-09-10", "Q0003 Treasury buyback operation")
+
+    def run_one(script, qid="Q0003"):
+        sandbox = _sandbox()
+        _question(qid, "2026-12-31")
+        calls = []
+        with Patched(fake_search_from(script, calls)):
+            web_resolve.run(FakeReader(script), SETTINGS, TODAY, RunLog(TODAY),
+                            real_today=TODAY)
+        q = store.question_by_id(qid)
+        rows = store.read_rows(config.WEB_CHECKS_CSV)
+        shutil.rmtree(sandbox, ignore_errors=True)
+        return q, rows, calls
+
+    # (thin) REPLAY of the v20 probe: one crypto site says "bought", dated
+    # 2 Oct, and the announcements say it was scheduled for 10 Sep.
+    merged = web_resolve.news_search.merge(V20, SEPT, limit=40)
+    num = {a["title"]: i for i, a in enumerate(merged, 1)}
+    first = {"happened": True, "event_date": "2026-10-02", "supporting_articles": [6],
+             "lead_date": lead[0], "lead_what": lead[1], "event": "e", "reason": "r"}
+    second = {"happened": True, "event_date": "2026-09-10", "event": "e", "reason": "r",
+              "supporting_articles": [num[SEPT[0]["title"]], num[SEPT[1]["title"]]]}
+    WINDOWS.clear()
+    q, rows, calls = run_one({"Q0003": {"first": V20, "follow": SEPT,
+                                        "answers": [first, second]}})
+    check("REPLAY v20: thin evidence triggers ONE second look",
+          len(calls) == 2)
+    check("REPLAY v20: second look searches 9 Sep (day before schedule) to 3 Oct",
+          WINDOWS[1] == (dt.date(2026, 9, 9), dt.date(2026, 10, 3)))
+    check("REPLAY v20: resolves YES, corrected to the FIRST occurrence (10 Sep)",
+          q["outcome"] == "1" and q["resolved_date"] == "2026-09-10")
+
+    # (thin) second look finds nothing -> stays pending, never downgraded.
+    q, rows, calls = run_one({"Q0003": {"first": V20, "follow": [],
+                                        "answers": [first, NO()]}})
+    check("thin + nothing more found -> still pending (not downgraded to not_yet)",
+          q["status"] == "open" and rows[0]["action"] == "pending")
+
+    # (earlier) resolved on 1 Oct by two outlets, but scheduled for 10 Sep:
+    # the look back finds 10 Sep and the date is corrected.
+    oct_ = [art("2026-10-01", "Reuters", "Treasury buys $5bn"),
+            art("2026-10-01", "The Economic Times", "Treasury purchases below cap")]
+    merged = web_resolve.news_search.merge(oct_, SEPT, limit=40)
+    num = {a["title"]: i for i, a in enumerate(merged, 1)}
+    a1 = {"happened": True, "event_date": "2026-10-01", "supporting_articles": [1, 2],
+          "lead_date": lead[0], "lead_what": lead[1], "event": "e", "reason": "r"}
+    a2 = {"happened": True, "event_date": "2026-09-10", "event": "e", "reason": "r",
+          "supporting_articles": [num[SEPT[0]["title"]], num[SEPT[1]["title"]]]}
+    q, rows, calls = run_one({"Q0003": {"first": oct_, "follow": SEPT,
+                                        "answers": [a1, a2]}})
+    check("earlier scheduled date -> look back corrects the date to 10 Sep",
+          q["outcome"] == "1" and q["resolved_date"] == "2026-09-10")
+
+    # (earlier) look back finds nothing -> keeps the 1 Oct YES, never loses it.
+    q, rows, calls = run_one({"Q0003": {"first": oct_, "follow": [],
+                                        "answers": [a1, NO()]}})
+    check("look back fails -> the original YES (1 Oct) is kept",
+          q["outcome"] == "1" and q["resolved_date"] == "2026-10-01")
+
+    # A resolved YES with no earlier scheduled date makes no second look.
+    plain = {"happened": True, "event_date": "2026-10-01", "supporting_articles": [1, 2],
+             "event": "e", "reason": "r"}
+    q, rows, calls = run_one({"Q0003": {"first": oct_, "answers": [plain]}})
+    check("clean YES with no earlier lead -> no second look", len(calls) == 1)
+
+    # Q0013-style: deadline passed, nothing happened, no lead -> nothing fires.
+    q, rows, calls = run_one({"Q13": {"first": [art("2026-09-20", "Reuters",
+                                                    "US weighs sanctions on Chinese banks")],
+                                      "answers": [NO(status="no_relevant_news")]}},
+                             qid="Q13")
+    check("nothing happened, no lead -> stays open, no second look",
+          q["status"] == "open" and len(calls) == 1)
+
+
+# ---------------------------------------------------------------------------
 # Part 5: the full run loop -- the v18 cases still hold
 # ---------------------------------------------------------------------------
 
@@ -594,7 +689,7 @@ def part_six():
     printed = "\n".join(lines)
     check("probe shows the form, the follow-up and the decision",
           action == "resolved_yes" and "form:" in printed
-          and "FOLLOW-UP: due on 2026-09-10" in printed
+          and "SECOND LOOK (scheduled date has passed" in printed
           and "DECISION: resolved_yes" in printed)
     check("probe changes nothing",
           store.question_by_id("Q0003")["status"] == "open"
@@ -617,6 +712,7 @@ def main() -> int:
     part_two()
     part_three()
     part_four()
+    part_four_b()
     part_five()
     part_six()
     ok = True
