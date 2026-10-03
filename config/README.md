@@ -71,11 +71,13 @@ treats it as `carried_out`, the strict reading.
 |---|---|
 | `enabled` | master switch; off means papers-only resolution, exactly as before v16 |
 | `max_checks_per_run` | cap on search calls in one run (the daily allowance is ~80 across both keys) |
-| `min_independent_sources` | different sites needed for an automatic YES (default 2) |
+| `min_independent_sources` | different publishers needed for an automatic YES (default 2) |
 | `official_suffixes` / `official_domains` | a single site matching these is enough on its own |
 
-The search models are set in `models.yaml` under `grounding_models` and the
-`web_resolve` chain. Only models listed in **both** are ever used for it.
+Since v18 no model searches: the code fetches Google News itself
+(`src/news_search.py`). The models that write the queries and read the results
+are the `web_query` and `web_resolve` chains in `models.yaml` -- ordinary Flash
+Lite models. `grounding_models` is empty on purpose; see the note there.
 
 ## lenses.yaml is under the change budget
 

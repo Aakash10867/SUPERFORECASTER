@@ -67,7 +67,9 @@ def test_names():
           papers.name_for("jobs report.pdf") == papers.UNKNOWN
           and papers.name_for("Boston Globe.pdf") == "The Boston Globe")
     check("unrecognised file is Unknown, never guessed",
-          papers.name_for("TT ● Delhi ● 17‹09‹2026.pdf") == papers.UNKNOWN)
+          papers.name_for("THS- Delhi 21-09.pdf") == papers.UNKNOWN)
+    check("TT is The Tribune (v18, from 'TT ● The Tribune' filenames)",
+          papers.name_for("TT ● Delhi ● 17‹09‹2026.pdf") == "The Tribune")
 
 
 # ---------------------------------------------------------------------------
@@ -168,7 +170,8 @@ def test_resolves_on():
     check("announced questions are told the announcement counts",
           "ITSELF resolves" in web_resolve.resolves_on_text({"resolves_on": "announced"}))
     prompt = web_resolve.WEB_PROMPT.format(today="t", question="q", criteria="c",
-                                           deadline="d", resolves_on="X-MARK")
+                                           deadline="d", resolves_on="X-MARK",
+                                           articles="[1] ...")
     check("web prompt carries the resolves_on line", "WHAT RESOLVES IT: X-MARK" in prompt)
 
     # The classifier: fills blanks once, flags ambiguous, leaves set ones alone.

@@ -306,40 +306,60 @@ created today gets its first forecast today.
 Every stage is isolated: a failure logs loudly, with a traceback, into the
 markdown log, and the run continues.
 
-## Web resolution (v16)
+## Web resolution (v18)
 
-Every open question gets **one Google-Search call a day** asking a single
+Every open question is checked against the web **once a day**, asking one
 thing: *has this actually happened, and on what date?* An announcement that
 something **will** happen does not count -- it is evidence, and should move the
-forecast, but it does not close the question. Since v17 each question's
-`resolves_on` field tells the check exactly which act counts.
+forecast, but it does not close the question. Each question's `resolves_on`
+field (announced / carried_out / in_effect) says which act counts.
 
-The model only reads. **Code decides**, and only YES is ever automatic:
+How one check runs:
+
+1. A cheap model call turns the question into one or two keyword queries.
+2. **The code** searches Google News (US and India editions, free RSS feed, no
+   key, no quota) and gets real articles: headline, publisher, site, date.
+3. One model reads that numbered list and says whether the act happened, on
+   what date, and **which articles show it**.
+4. **Code decides.** Only YES is ever automatic:
 
 | check | if it fails |
 |---|---|
-| the search really fired (sources in Google's own record, not links the model wrote) | answer ignored |
+| the search returned articles | stays open |
 | reader says it happened, with a date | stays open / goes to you if undated |
 | date is on or before today, and on or before the deadline | stays open (announced, or too late) |
-| date is not before the question was created | goes to you: the question was born resolved |
-| two different sites, or one official (government) site | goes to you |
+| date is not before the question was created | goes to you: born resolved |
+| reader cites articles, and only those published **on or after** the event count (a story from before the event can only say "will") | stays open / goes to you |
+| two different publishers, or one official (government) site -- taken from the feed, never from the model | goes to you |
 
-A YES resolves on the **event date**, so late detection never distorts the
-score. Anything that goes to you lands in `data/pending_resolutions.csv` with a
-row ready to paste into `config/resolutions.csv`. NO still comes only from the
-deadline lapse.
+A YES resolves on the **event date**. Anything that goes to you lands in
+`data/pending_resolutions.csv` with a row ready to paste into
+`config/resolutions.csv`. NO still comes only from the deadline lapse.
 
-**Budget.** Only Gemini 2.5 Flash Lite and 2.5 Flash can search on this free
-tier (every Gemini 3.x has a search allowance of zero), at 20 calls a day each
-per key -- about 80 a day in total. Each question is checked at most once a
-day, closest deadline first, then questions on the absence watch. When the
-allowance runs out, the rest wait for tomorrow.
+**If the search cannot run, you will know.** The log opens with a red
+"SOMETHING DID NOT RUN" box, and the GitHub Actions run page shows a red
+annotation. (From 1 to 3 October 2026 the v16/v17 web check -- built on
+Gemini's own search -- made no searches at all, because the only models with a
+search allowance return 404 for new API keys. That failure was a quiet warning
+mid-log. Never again.)
+
+**Test it before trusting it.** Actions → Run workflow → put a question id
+(e.g. `Q0003`) in **web_probe**. It runs that one check, prints every query,
+every article found, the model's answer and the code's decision, and writes
+nothing.
+
+**Budget.** Two Flash Lite calls per question per day, from a 500/day
+allowance. The search itself is free. Each question is checked at most once a
+day, closest deadline first, then questions on the absence watch.
+
+**Limit.** The feed gives headlines and a line of snippet, not whole articles.
+Telling "to buy" from "bought" rests on headline wording, so borderline cases
+go to you rather than resolving.
 
 **Wrong YES?** Add `Q00XX,reopen,,<why>` to `config/resolutions.csv`. Any
 question you have written about there is never web-checked again.
 
-**Backfill runs** (`--date` in the past) skip the web entirely: the web would
-show the future relative to that date.
+**Backfill runs** (`--date` in the past) skip the web entirely.
 
 ## The seven lenses
 

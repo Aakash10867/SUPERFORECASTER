@@ -7,6 +7,7 @@ Entry point.
     python run.py --date 2026-08-10        # pretend today is a different date
     python run.py --stages generation      # run one stage only
     python run.py --stages resolution,forecasting
+    python run.py --web-probe Q0003         # test one web check, write nothing
 
 The --date flag matters for backtesting: if you feed a paper from 10 August,
 the agents must believe it is 10 August, or every deadline they calculate will
@@ -46,7 +47,13 @@ def main() -> int:
     ap.add_argument("--stages", default="all",
                     help="'all', or a comma-separated subset of: "
                          + ", ".join(pipeline.STAGE_NAMES))
+    ap.add_argument("--web-probe", default="",
+                    help="run the web check for ONE question id, print every "
+                         "query, article and decision, and write nothing")
     args = ap.parse_args()
+
+    if args.web_probe:
+        return _web_probe(args.web_probe.strip().upper())
 
     today = None
     if args.date:
@@ -76,6 +83,29 @@ def main() -> int:
         print(f"\nRun failed: {exc}")
         return 1
     return 0
+
+
+class _Console:
+    """Minimal log for the probe: prints, never writes a log file."""
+    def info(self, t): print(t)
+    def warn(self, t): print(f"WARNING: {t}")
+    def flag(self, t): print(f"*** {t}")
+    def sub(self, t): print(f"-- {t}")
+    def heading(self, t): print(f"== {t}")
+
+
+def _web_probe(qid: str) -> int:
+    """
+    v18. Proves the web check works BEFORE it is trusted: one question, real
+    search, real model, everything printed, nothing written. Run it from
+    GitHub (Actions -> Run workflow -> web_probe), where the network is real.
+    """
+    from src import config, models, web_resolve
+    settings = config.load_settings()
+    router = models.ModelRouter(settings, config.load_models(), _Console())
+    action = web_resolve.probe(router, settings, qid, dt.date.today())
+    print(f"\nProbe finished: {action}. Nothing was written.")
+    return 0 if action != "failed" else 1
 
 
 if __name__ == "__main__":

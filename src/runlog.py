@@ -41,6 +41,11 @@ class RunLog:
         self._prefix = ""
         self.error_count = 0
         self.flag_count = 0
+        # v18: things that mean a part of the system did NOT RUN. Shown at the
+        # very top of the log, above everything else, and as a red annotation
+        # on the GitHub Actions run page -- never only as a warning in the
+        # middle, which is how the dead web check went unnoticed for days.
+        self.alerts: list[str] = []
         self.warn_count = 0
 
     # -- writing -------------------------------------------------------------
@@ -86,6 +91,13 @@ class RunLog:
         self.lines.append("")
         print(f"\n*** FLAGGED: {text}\n")
         self._flush()
+
+    def alert(self, text: str) -> None:
+        """A part of the system did not run. Top of the log, red in Actions."""
+        self.alerts.append(text)
+        self.flag(text)
+        # GitHub Actions turns this line into a red annotation on the run page.
+        print(f"::error title=Superforecaster::{' '.join(text.split())}")
 
     def error(self, where: str, exc: BaseException) -> None:
         """
@@ -156,6 +168,11 @@ class RunLog:
 
         with open(self.path, "w", encoding="utf-8") as fh:
             fh.write(self._prefix)
+            if getattr(self, "alerts", None):
+                fh.write("\n> ## 🔴 SOMETHING DID NOT RUN\n>\n")
+                for a in self.alerts:
+                    fh.write(f"> - {' '.join(a.split())}\n")
+                fh.write("\n")
             fh.write("\n".join(self.lines))
             fh.write("\n")
 

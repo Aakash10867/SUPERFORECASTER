@@ -31,13 +31,17 @@ declared triggers -- does not survive that, so it lives in `runs/` instead.
 `forecasts.csv` is the numbers-only scoring spine; `runs/` is the record of
 thought.
 
-## Web resolution (v16)
+## Web resolution (v18)
 
-`web_checks.csv` is meaningful from the first run after v16: every open
-question gets one Google-Search check a day. The `action` column is the
+`web_checks.csv` gets one row per question per day. The `action` column is the
 headline -- `resolved_yes`, `pending` (needs you), `not_yet`, or `failed`
-(no search model answered; the question is retried next run). The `why`
-column names the rule that decided it.
+(the search or the reading model did not work; retried next run, and the log
+opens with a red alert). The `why` column names the rule that decided it;
+`queries` and `cited_articles` show exactly what was searched and which
+articles the reader relied on.
+
+Rows dated 1-3 October 2026 are all `failed`: that was the v16/v17 web check,
+whose search models did not exist for these keys.
 
 `pending_resolutions.csv` is usually empty. A row there means the reader
 found the event but a mechanical check failed -- only one non-official

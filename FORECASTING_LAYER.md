@@ -9,8 +9,8 @@ v14's prior work validated at n=49. v15 fixes input quality -- the lenses had
 been reading a fraction of the news all along. All 25 notes accounted for.
 v16 (2 Oct 2026) adds web resolution: one Google-Search reader, YES only,
 judged by code. v17 (2 Oct 2026) fixes the structural causes of the Q0003 miss:
-paper coverage, gate H, `resolves_on`, nightly scheduled run. See the v16 and
-v17 sections at the end.
+paper coverage, gate H, `resolves_on`, nightly scheduled run. v18 (3 Oct 2026)
+replaces the web search, which never worked: see the v18 section at the end.
 
 ### Repo findings (v7, reviewed at close of §4)
 
@@ -1831,6 +1831,74 @@ fingerprinted, refreshes are staleness-driven.
   in the reason. If it starts killing Announced Intention questions that have
   a real obstacle, the wording is too strict.
 - Unknown files: `TT`, `THS`, `th21` are currently unrecognised.
+
+---
+
+## v18 — The web check never searched; replaced (3 October 2026)
+
+### What happened
+
+After v16/v17 went live, Q0003 was still open. Aakash's question: did the
+search fail, or did it find the evidence and fail to resolve?
+
+**Neither — no search ever ran.** `web_checks.csv` held only three rows, all
+for Q0013 (nearest deadline, so first in the queue), all `failed`. Both search
+models — Gemini 2.5 Flash-Lite and 2.5 Flash — returned HTTP 404. By design
+the loop stops when every model fails, so the other 15 questions, Q0003
+included, were never looked up, on 1, 2 or 3 October. The resolving logic was
+never exercised.
+
+**Cause:** Google has withdrawn 2.5 Flash and Flash-Lite for **new API keys**.
+They still appear in the API's model list and in AI Studio's quota table, but
+calls return 404 "no longer available to new users". Every 3.x model has a
+search allowance of zero. So on these keys there is no callable model that
+can search.
+
+**Claude's error, recorded plainly:** v16 was built on these two models on
+the strength of the model list, although this repo had already recorded both
+404ing in v8. Listed is not callable; nothing was test-called before it was
+trusted. Second error: the failure surfaced only as ordinary warnings mid-log,
+so the run looked healthy and Aakash found it from the CSV.
+
+### Decisions
+
+- **The code searches; a model only reads.** `src/news_search.py` fetches
+  Google News RSS (free, no key, no quota), US and India editions, and returns
+  headline, publisher, site and date for each article. 3.x Flash Lite writes
+  the queries and reads the numbered results. Chosen over Tavily (better
+  evidence, but another account) and over paid Google grounding (breaks the
+  free-tier principle). Tavily stays the fallback if headline-only evidence
+  sends too much to pending.
+- **One new code check, made possible by the switch:** the reader must cite
+  articles by number, and only cited articles published on or after the event
+  date count. A story from before the event can only say "will" — a
+  mechanical guard against reading "to buy $6bn" as "bought $6bn".
+  Publishers, sites and dates all come from the feed, so the source count can
+  no longer depend on anything the model writes.
+- **Failure is loud.** New `RunLog.alert()`: a red "SOMETHING DID NOT RUN" box
+  at the very top of the log, and a red annotation on the GitHub Actions run
+  page. Used when the search is unreachable or the reading model fails.
+- **Google's own error text is logged** with every failed call — on 1–3 Oct
+  it would have read "no longer available to new users" and named the cause.
+- **Prove before trusting:** `python run.py --web-probe Q0003`, and a
+  `web_probe` box on the workflow form. One question, real search, real model,
+  everything printed, nothing written. Claude's workspace cannot reach Google
+  News, so this runs on GitHub.
+- 2.5 models removed from `models.yaml`; `grounding_models` is now `[]`, with
+  the reason written beside it.
+- Papers: `TT` identified as The Tribune; LA Times, New York Post, Mumbai
+  Mirror and The Statesman added. `THS` and `th21` remain unknown.
+
+### To watch
+
+- **First thing: run the probe on Q0003.** Expected: the "bought $6bn" stories
+  from 10–11 Sep are found and cited, and the decision is `resolved_yes`
+  dated 2026-09-10. If it says `not_yet` or `pending`, the probe output shows
+  exactly which step fell short.
+- How often headline-only evidence sends a genuine YES to pending. Several in
+  the first weeks would argue for adding Tavily as a second source.
+- Whether Google News starts refusing the GitHub runner. That would show as
+  the red alert, never silently.
 
 ---
 

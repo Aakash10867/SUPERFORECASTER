@@ -26,9 +26,9 @@
 # not one big pool. So the system thinks in ROLES (the chains below), and each
 # role draws from the models suited to it:
 #
-#   web search       2.5 Flash Lite, 2.5 Flash   20/day each per key -> 80/day
-#                    (the ONLY models with a search allowance on this account;
-#                     every Gemini 3.x shows a search grounding quota of 0)
+#   web reading      3.5 / 3.1 Flash Lite        reads Google News results that
+#                    the CODE fetched (v18). No model searches by itself: on
+#                    these keys no callable model has a search allowance.
 #   bulk work        3.1 / 3.5 Flash Lite        500/day each per key
 #   judgement        3.x Flash                   20/day each per key
 #   tiny screens     Gemma 4 31B                 huge daily count, 16K tok/min
@@ -49,11 +49,10 @@ limits:
   gemini-3.5-flash:        {rpm: 5,  rpd: 20}
   gemini-3-flash-preview:  {rpm: 5,  rpd: 20}
 
-  # Search-capable models (v16). Same 20/day as the deep models, but these
-  # are the only ones that can use Google Search on the free tier. Reserved
-  # for web resolution -- see the web_resolve chain.
-  gemini-2.5-flash-lite:   {rpm: 10, rpd: 20}
-  gemini-2.5-flash:        {rpm: 5,  rpd: 20}
+  # (v18) gemini-2.5-flash and gemini-2.5-flash-lite REMOVED. They appear in
+  # the API's model list and in AI Studio's quota table, but Google has
+  # withdrawn them for new API keys: every call returns 404 "no longer
+  # available to new users". Listed is not the same as callable.
 
   # Embeddings, used for similarity checks. Very generous limits.
   gemini-embedding-001:    {rpm: 100, rpd: 1000}
@@ -90,25 +89,15 @@ forecast_tasks:
   - lens_audit
   - advocate
 
-# Only these can perform Google Search grounding on the free tier. Gemini 3
-# models show a grounding quota of ZERO, so asking them to search returns a
-# perfectly normal-looking UNGROUNDED answer. The router refuses to use a
-# non-grounding model for a grounded call, and every grounded response reports
-# whether grounding actually fired (see models._post).
-#
-# HISTORY. After the first live run (v8) this list was emptied: the 2.5 models
-# returned HTTP 404 under the names used then. As of October 2026 both keys
-# list `gemini-2.5-flash` and `gemini-2.5-flash-lite` exactly, with a Search
-# grounding allowance of 1,500/day for the 2.5 family. If they 404 again, the
-# router retires them for the run and web resolution logs that it has no
-# search model -- the papers-only resolution path carries on unaffected.
-#
-# Registering models here does NOT switch on lens grounding: the lens preflight
-# (lenses.py) only enables it if the lens_outside chain itself contains a
-# grounding model, and it does not. That would be a method change.
-grounding_models:
-  - gemini-2.5-flash-lite
-  - gemini-2.5-flash
+# Models that can use Gemini's built-in Google Search. EMPTY, and expected to
+# stay empty on the free tier:
+#   - every Gemini 3.x model has a search allowance of 0;
+#   - 2.5 Flash / Flash-Lite had one, but 404 for new API keys (v8, and again
+#     on 1-3 Oct 2026 under v16/v17, when the web check silently did nothing).
+# Web resolution no longer needs this (v18): the code fetches Google News
+# itself and a model only reads the results. Lens grounding stays off -- the
+# lens preflight requires a grounding model in the lens_outside chain.
+grounding_models: []
 
 chains:
   # ---- stage one: question generation ------------------------------------
@@ -159,14 +148,20 @@ chains:
 
   # ---- resolution on the web (v16) ----------------------------------------
 
-  # One Google-Search call per question per day: "has this actually happened,
-  # and on what date?" Code, not a model, decides whether to act on the answer
-  # (src/web_resolve.py). ONLY search-capable models may appear here -- a
-  # non-grounding model would answer from memory, and the router skips it.
-  # Flash Lite first: twice the per-minute allowance of Flash, same daily.
+  # v18: the CODE searches Google News (src/news_search.py); these models
+  # never search. web_query turns a question into one or two short keyword
+  # queries; web_resolve reads the numbered articles that came back and says
+  # whether the act has happened, on what date, citing article numbers. Code
+  # then decides (src/web_resolve.py). Two cheap calls per question per day.
+  web_query:
+    - gemini-3.1-flash-lite
+    - gemini-3.5-flash-lite
+    - gemini-flash-lite-latest
+
   web_resolve:
-    - gemini-2.5-flash-lite
-    - gemini-2.5-flash
+    - gemini-3.5-flash-lite
+    - gemini-3.1-flash-lite
+    - gemini-flash-lite-latest
 
   # One-time label per question: does the announcement, the act, or it taking
   # effect resolve it? (v17) Cheap; fires once per pre-v17 question.

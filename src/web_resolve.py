@@ -1,102 +1,93 @@
 """
-Web resolution (v16): one reader with Google Search, judged by code.
+Web resolution: code searches Google News, one model reads, code decides.
 
-WHY THIS EXISTS
----------------
-Resolution used to see only the papers. Q0003 (the Treasury buyback question)
-showed that is not enough: Treasury raised its long-end buyback operations to
-"at least $4 billion" and bought a full $6 billion on 10 September, and the
-question sat open at 72% for three weeks afterwards. The papers did carry it
-once -- the 10 September screen escalated on "a $6 billion debt buyback
-announcement" -- but the screen never nominated it, and on every other day the
-story simply was not in the selection.
+HISTORY
+-------
+v16 added this so that resolution would not depend on the papers alone: Q0003
+(the Treasury buyback question) sat open at 72% for weeks after Treasury had
+bought a full $6bn in a single operation on 10 September, because the papers
+that would have reported the completed purchase were never uploaded.
 
-THE DESIGN, AND WHY IT IS THIS SMALL
-------------------------------------
-One grounded call per question per day asks one sharp question: HAS THE EVENT
-ACTUALLY HAPPENED, AND ON WHAT DATE? Then plain code -- not a second model --
-decides whether to act on the answer.
+v16/v17 searched through Gemini's built-in Google Search. On these keys that
+never worked: the only models with a free search allowance (2.5 Flash and
+2.5 Flash-Lite) return HTTP 404 for NEW API keys, and every 3.x model has a
+search allowance of zero. From 1 to 3 October the web check made no searches
+at all -- Q0003 was never even looked up -- and the failure was a quiet warning
+in the middle of the log. v18 replaces the search and makes failure loud.
 
-A second model reading the same excerpts was considered and rejected. It
-shares the first reader's blind spots (same family, same evidence), so it
-catches careless slips but not the systematic misreadings that matter -- the
-same reason prompt-varied agents are not a crowd. The checks below are
-mechanical and cannot be talked round.
+HOW ONE CHECK RUNS (v18)
+------------------------
+  1. A cheap call turns the question into one or two short news-search
+     queries (falls back to the question text if that call fails).
+  2. news_search.py runs them against Google News (US and India editions) and
+     returns real articles: headline, publisher, site, publication date.
+  3. One model (3.x Flash Lite) reads that numbered list and answers: has the
+     act ACTUALLY HAPPENED, on what date, and WHICH ARTICLES show it?
+  4. Plain code decides whether to act on the answer.
+
+A second model was considered and rejected (same family, same evidence, same
+blind spots -- the "prompt variation is not a crowd" principle). The guard is
+code instead.
 
 YES ONLY
 --------
-This module never resolves NO. "This can no longer happen" is exactly the
-judgement where a model overreaches, and NO already has a deterministic route:
-the deadline lapse in resolve.py. A model that thinks a question is dead says
-"happened: false" and the question waits for its deadline.
-
-THE RULE THE READER IS GIVEN
-----------------------------
-An announcement that something WILL happen is evidence, not resolution. It
-should push the forecast up; it must not close the question. The only
-exception is when the criteria themselves name the announcement as the
-resolving act ("Treasury officially announces sanctions ...") -- the criteria
-are read literally either way.
+Never resolves NO. NO comes only from the deadline lapse in resolve.py.
 
 THE CODE CHECKS (all must pass for an automatic YES)
 ----------------------------------------------------
-  1. The search actually fired, with at least one source in Google's record.
-     The record comes from the API's groundingMetadata, not from links the model
-     writes in its answer -- those can be invented.
-  2. The reader says it happened and gives a parseable event date.
+  1. The search returned articles.
+  2. The reader says it happened, with a parseable event date.
   3. created <= event date <= min(today, deadline).
-       - after today       -> announced, not yet happened: stays open.
-       - after deadline    -> happened too late, so it is not a YES: the lapse
-                              rule will resolve NO in the normal way.
-       - before created    -> the question was born resolved. That is a
-                              question defect, and a resolved date before the
-                              creation date would also break the day-weighted
-                              trail. Goes to you.
-  4. At least two DIFFERENT sites in the search record, or one official site
-     (a government domain). A single unofficial source goes to you.
+       after today     -> announced, not yet happened: stays open
+       after deadline  -> not a YES; the lapse rule handles it
+       before created  -> born resolved: a question defect, goes to you
+  4. The reader must CITE articles by number, and only cited articles
+     published ON OR AFTER the event date count. An article from before the
+     event can only have reported it as planned, never as done -- this is the
+     mechanical guard against reading "will buy" as "bought".
+  5. Those counted articles come from at least two DIFFERENT publishers, or one
+     official site (a government domain). Publishers and sites are taken from
+     the feed, never from the model's text.
 
-If 2 holds but 3 or 4 fails, the question goes to data/pending_resolutions.csv
-with a ready-made row to paste into config/resolutions.csv.
+A reader that says "happened" but fails 3, 4 or 5 sends the question to
+data/pending_resolutions.csv with a ready-made row for config/resolutions.csv.
 
-WHEN IT RESOLVES, IT USES THE EVENT DATE
-----------------------------------------
-resolved_date is the day the event happened, not the day the check noticed.
-The day-weighted trail is scored to that date, so a late detection costs a few
-days of portfolio slot, never scoring accuracy.
+Resolution is dated to the EVENT, not to the day of the check.
 
 BUDGET
 ------
-Only the Gemini 2 / 2.5 families can search on the free tier, and Gemini 2
-Flash has a zero daily allowance. That leaves 2.5 Flash Lite and 2.5 Flash at
-20 requests a day each, per key: 80 a day across both keys. Grounding's own
-1,500-a-day allowance never binds, because each grounded call is still an
-ordinary request that counts against the model's 20.
-
-To stay inside that:
-  - each question is checked at most ONCE A DAY, however many runs you do;
-  - open questions are checked closest-deadline first, then lapsed questions
-    still on the absence watch;
-  - a per-run cap (settings: web_resolution.max_checks_per_run);
-  - the first time every search model is out of quota, the loop stops and the
-    rest wait for tomorrow. Nothing blocks.
+Two Flash Lite calls per question per day (query + read), from a 500/day
+allowance per model per key. The news search itself has no quota. Each
+question is still checked at most once a day; a per-run cap remains.
 
 BACKFILL GUARD
 --------------
-With --date set to a past day the web would show the future relative to that
-date. The event-date check would catch most of that, but not all of it, so web
-resolution simply does not run unless the run date is the real today.
+With --date in the past the web shows that date's future, so web resolution
+runs only when the run date is the real today.
 """
 
 from __future__ import annotations
 
 import datetime as dt
 
-from . import config, resolve, store
+from . import config, news_search, resolve, store
 
 TASK = "web_resolve"
+QUERY_TASK = "web_query"
 
-WEB_PROMPT = """Search the web and decide ONE thing: has this forecasting \
-question ALREADY RESOLVED YES?
+QUERY_PROMPT = """Write news-search queries that would find reporting on \
+whether this has happened. Short keyword queries, like a person typing into \
+Google News: names, institutions, the specific act, key numbers. No dates, no \
+quotation marks, no operators.
+
+QUESTION: {question}
+RESOLUTION CRITERIA: {criteria}
+
+Return JSON only: {{"queries": ["first query", "second query"]}}"""
+
+WEB_PROMPT = """Below are news articles found by a search just now. Using ONLY \
+these articles, decide ONE thing: has this forecasting question ALREADY \
+RESOLVED YES?
 
 TODAY: {today}
 QUESTION: {question}
@@ -109,14 +100,20 @@ THE RULE
 or before today and on or before the deadline.
 - An announcement that something WILL happen is NOT resolution, however \
 official or certain it sounds. Plans, proposals, drafts, expectations, votes \
-still pending, "set to", "expected to", "will take effect on <future date>" are \
-all NOT YET. They make YES more likely; they do not make it happen.
+still pending, "set to", "to buy", "expected to", "will take effect on <future \
+date>" are all NOT YET. They make YES more likely; they do not make it happen.
 - "WHAT RESOLVES IT" above says which act counts. Follow it exactly. Read the \
 criteria literally, every clause.
 - If the act happened, give the date it HAPPENED -- not the date it was first \
 announced, unless the announcement is the act.
-- You are judging YES only. If it has not clearly happened, answer \
+- Cite the articles that show it HAPPENED, by their numbers. Cite only \
+articles that report it as done; an article saying it will happen does not \
+count.
+- Use nothing but these articles. If they do not show it clearly, answer \
 "happened": false. Never conclude that the question resolves NO.
+
+ARTICLES (number | published | publisher | headline -- snippet):
+{articles}
 
 Return JSON only, no prose before or after:
 {{
@@ -124,7 +121,8 @@ Return JSON only, no prose before or after:
   "status": "happened | announced_not_yet_happened | in_progress | no_relevant_news",
   "event": "what specifically happened (or what was announced)",
   "event_date": "YYYY-MM-DD, the date it actually happened; empty if it has not",
-  "evidence": "one or two sentences from the reporting that establish it",
+  "supporting_articles": [numbers of the articles that report it as done],
+  "evidence": "one or two sentences from those articles that establish it",
   "reason": "one line, always filled in"
 }}"""
 
@@ -195,10 +193,30 @@ def _is_official(site: str, settings: dict) -> bool:
 # The decision: pure code, no model
 # ---------------------------------------------------------------------------
 
-def judge(question: dict, answer: dict | None, grounding: dict,
+def _numbers(value) -> list[int]:
+    """The reader's cited article numbers, however it formatted them."""
+    if isinstance(value, (int, float)):
+        value = [value]
+    if isinstance(value, str):
+        value = [v for v in value.replace(";", ",").split(",")]
+    out = []
+    for v in value or []:
+        try:
+            n = int(str(v).strip().strip("[]#"))
+        except ValueError:
+            continue
+        if n not in out:
+            out.append(n)
+    return out
+
+
+def judge(question: dict, answer: dict | None, articles: list[dict],
           today: dt.date, settings: dict) -> tuple[str, str, dict]:
     """
     Turn the reader's answer into an action.
+
+    `articles` is the numbered list the reader saw (1-based), straight from
+    news_search -- the only place publishers, sites and dates come from.
 
     Returns (action, why, facts). `action` is one of:
       resolved_yes  every check passed
@@ -206,28 +224,17 @@ def judge(question: dict, answer: dict | None, grounding: dict,
       not_yet       nothing to act on
       failed        no usable answer at all
 
-    Kept free of I/O so it can be tested exhaustively without an API key.
+    Kept free of I/O so it can be tested exhaustively without a network.
     """
     wr = settings.get("web_resolution", {}) or {}
     min_sites = int(wr.get("min_independent_sources", 2))
+    facts = {"sites": [], "official": False, "cited": []}
 
-    sites = []
-    for s in (grounding or {}).get("sources", []) or []:
-        site = _site(s)
-        if site and site not in sites:
-            sites.append(site)
-    official = any(_is_official(s, settings) for s in sites)
-    facts = {"sites": sites, "official": official}
-
+    # Check 1: the search found something to read.
+    if not articles:
+        return "not_yet", "the news search found no articles", facts
     if not isinstance(answer, dict):
-        return "failed", "no parseable answer from the search model", facts
-
-    # Check 1: the search really happened. An ungrounded answer is the model
-    # speaking from memory, which is precisely what we cannot use here.
-    if not (grounding or {}).get("fired") or not sites:
-        return ("not_yet",
-                "the search did not fire (no sources in Google's record), so "
-                "the answer is from memory and is ignored", facts)
+        return "failed", "no parseable answer from the reader", facts
 
     # Check 2: the reader says it happened, with a date.
     if not _truthy(answer.get("happened")):
@@ -258,14 +265,36 @@ def judge(question: dict, answer: dict | None, grounding: dict,
                 f"({created}) -- the question looks born resolved, which is a "
                 "question defect for you to judge", facts)
 
-    # Check 4: independent corroboration, or one official source.
+    # Check 4: cited articles, published on or after the event.
+    cited = [articles[n - 1] for n in _numbers(answer.get("supporting_articles"))
+             if 1 <= n <= len(articles)]
+    facts["cited"] = cited
+    if not cited:
+        return ("pending",
+                "reader says it happened but cited none of the articles found",
+                facts)
+    after = [a for a in cited if (_date(a.get("date")) or dt.date.min) >= event_date]
+    if not after:
+        return ("not_yet",
+                f"every cited article was published before the event date "
+                f"{event_date}, so it can only have reported the act as "
+                "planned, not done", facts)
+
+    # Check 5: independent publishers, or one official site.
+    sites = []
+    for a in after:
+        key = _site(a.get("site") or "") or (a.get("publisher") or "").strip().lower()
+        if key and key not in sites:
+            sites.append(key)
+    official = any(_is_official(_site(a.get("site") or ""), settings) for a in after)
+    facts.update(sites=sites, official=official)
     if official:
-        return "resolved_yes", "official source in the search record", facts
+        return "resolved_yes", "official source among the cited articles", facts
     if len(sites) >= min_sites:
         return ("resolved_yes",
-                f"{len(sites)} different sites in the search record", facts)
+                f"{len(sites)} different publishers report it done", facts)
     return ("pending",
-            f"only {len(sites)} site(s) in the search record and none official "
+            f"only {len(sites)} publisher(s) report it done and none official "
             f"(needs {min_sites}, or one official)", facts)
 
 
@@ -306,9 +335,80 @@ def _candidates(today: dt.date) -> list[dict]:
     return open_qs + watched
 
 
-def _grounding_ready(router) -> bool:
-    chain = (getattr(router, "chains", {}) or {}).get(TASK) or []
-    return any(m in getattr(router, "grounding_models", set()) for m in chain)
+def _ready(router) -> bool:
+    chains = getattr(router, "chains", {}) or {}
+    return bool(chains.get(TASK))
+
+
+def _alert(log, text: str) -> None:
+    """Top-of-log red alert where supported; a flag otherwise (tests, probes)."""
+    if hasattr(log, "alert"):
+        log.alert(text)
+    else:
+        log.flag(text)
+
+
+def _queries_for(q: dict, router) -> list[str]:
+    """One or two short news queries. Falls back to the question text."""
+    result, _model = router.generate(
+        QUERY_TASK,
+        QUERY_PROMPT.format(question=q.get("question", ""),
+                            criteria=q.get("resolution_criteria", "")),
+        temperature=0.2, max_output_tokens=512,
+    )
+    queries = []
+    if isinstance(result, dict):
+        for item in result.get("queries") or []:
+            text = " ".join(str(item).replace('"', " ").split())
+            if text and text not in queries:
+                queries.append(text[:120])
+    if not queries:
+        # Strip the boilerplate so the fallback is still a search, not a sentence.
+        text = q.get("question", "")
+        for junk in ("Will the ", "Will ", "?"):
+            text = text.replace(junk, " ")
+        queries = [" ".join(text.split())[:120]]
+    return queries[:2]
+
+
+def _article_block(articles: list[dict]) -> str:
+    lines = []
+    for i, a in enumerate(articles, 1):
+        snippet = f" -- {a['snippet']}" if a.get("snippet") else ""
+        lines.append(f"[{i}] {a.get('date','')} | {a.get('publisher','')} | "
+                     f"{a.get('title','')}{snippet}")
+    return "\n".join(lines)
+
+
+def check_one(q: dict, router, settings: dict, today: dt.date) -> dict:
+    """
+    One full check -- queries, search, read, decide -- with nothing written.
+    Raises news_search.SearchUnavailable if the search cannot run at all.
+    Returns everything needed to record, apply, or print the result.
+    """
+    queries = _queries_for(q, router)
+    articles, problems = news_search.search(queries)
+    if not articles:
+        action, why, facts = judge(q, None, [], today, settings)
+        return {"queries": queries, "articles": [], "problems": problems,
+                "answer": {}, "model": "", "action": action, "why": why,
+                "facts": facts}
+    answer, model = router.generate(
+        TASK,
+        WEB_PROMPT.format(
+            today=today.isoformat(),
+            question=q.get("question", ""),
+            criteria=q.get("resolution_criteria", ""),
+            deadline=q.get("deadline", ""),
+            resolves_on=resolves_on_text(q),
+            articles=_article_block(articles),
+        ),
+        temperature=0.1, max_output_tokens=2048,
+    )
+    action, why, facts = judge(q, answer, articles, today, settings)
+    return {"queries": queries, "articles": articles, "problems": problems,
+            "answer": answer if isinstance(answer, dict) else {},
+            "model": model or "", "action": action, "why": why, "facts": facts}
 
 
 def run(router, settings: dict, today: dt.date, log, dry_run: bool = False,
@@ -316,12 +416,13 @@ def run(router, settings: dict, today: dt.date, log, dry_run: bool = False,
     """
     Check every eligible question once. Returns a small summary dict.
 
-    Never raises for an API problem: every failure is logged and the newspaper
-    screen, lapses and forecasting carry on regardless.
+    Never raises for a search or API problem: the failure becomes a red alert
+    at the top of the run log, and the newspaper screen, lapses and
+    forecasting carry on regardless.
     """
     summary = {"checked": 0, "resolved": [], "pending": [], "unchecked": 0}
     wr = settings.get("web_resolution", {}) or {}
-    log.sub("Web resolution (Google Search, YES only)")
+    log.sub("Web resolution (Google News search, YES only)")
 
     if not wr.get("enabled", True):
         log.info("  disabled in config/settings.yaml (web_resolution.enabled)")
@@ -336,12 +437,10 @@ def run(router, settings: dict, today: dt.date, log, dry_run: bool = False,
         )
         return summary
 
-    if not _grounding_ready(router):
-        log.warn(
-            "Web resolution has no search-capable model: the 'web_resolve' "
-            "chain in config/models.yaml lists no model that is also in "
-            "grounding_models. Resolution falls back to the papers alone."
-        )
+    if not _ready(router):
+        _alert(log, "WEB CHECK DID NOT RUN: no 'web_resolve' chain in "
+                    "config/models.yaml. Resolution is relying on the papers "
+                    "alone.")
         return summary
 
     cap = int(wr.get("max_checks_per_run", 30))
@@ -363,44 +462,46 @@ def run(router, settings: dict, today: dt.date, log, dry_run: bool = False,
             break
 
         qid = q.get("id", "")
-        prompt = WEB_PROMPT.format(
-            today=today.isoformat(),
-            question=q.get("question", ""),
-            criteria=q.get("resolution_criteria", ""),
-            deadline=q.get("deadline", ""),
-            resolves_on=resolves_on_text(q),
-        )
-        # Lots of room: 2.5 Flash spends part of its output budget thinking,
-        # and a truncated answer costs a retry out of a 20-a-day allowance.
-        answer, model = router.generate(
-            TASK, prompt, temperature=0.1, max_output_tokens=4096,
-            grounded=True,
-        )
-        grounding = dict(getattr(router, "last_grounding", {}) or {})
-
-        if answer is None:
-            # Every search model is out (quota) or erroring. Stop here rather
-            # than burn through the queue logging the same failure.
+        try:
+            r = check_one(q, router, settings, today)
+        except news_search.SearchUnavailable as exc:
             summary["unchecked"] = len(queue) - i
-            log.warn(
-                f"Web resolution stopped at {qid}: no search model answered "
-                f"({router.stats.last_error or 'unknown error'}). "
-                f"{summary['unchecked']} question(s) wait for the next run."
-            )
+            _alert(log,
+                   f"WEB CHECK DID NOT RUN: the news search could not be "
+                   f"reached ({exc}). {summary['unchecked']} question(s) were "
+                   "not checked; resolution is relying on the papers alone "
+                   "this run.")
             if not dry_run:
-                _record(today, q, "failed", "no search model answered",
-                        {}, grounding, model or "", {})
+                _record(today, q, "failed", f"news search unreachable: {exc}",
+                        {}, [], "", {})
+            break
+
+        if r["action"] == "failed":
+            # The reader model failed. If that is quota or a dead model it
+            # will fail for every question, so stop and say so loudly.
+            summary["unchecked"] = len(queue) - i
+            _alert(log,
+                   f"WEB CHECK STOPPED at {qid}: the reading model gave no "
+                   f"answer ({router.stats.last_error or 'unknown error'}). "
+                   f"{summary['unchecked']} question(s) were not checked.")
+            if not dry_run:
+                _record(today, q, "failed", r["why"], {}, r["queries"],
+                        r["model"], r["facts"])
             break
 
         summary["checked"] += 1
-        action, why, facts = judge(q, answer, grounding, today, settings)
+        answer, facts, why = r["answer"], r["facts"], r["why"]
+        if r["problems"]:
+            log.info(f"  {qid}: {len(r['problems'])} of the search fetches "
+                     f"failed (others worked): {r['problems'][0]}")
         if not dry_run:
-            _record(today, q, action, why, answer, grounding, model, facts)
+            _record(today, q, r["action"], why, answer, r["queries"],
+                    r["model"], facts)
 
-        if action == "resolved_yes":
+        if r["action"] == "resolved_yes":
             _apply_yes(q, facts["event_date"], answer, why, today, log, dry_run)
             summary["resolved"].append(qid)
-        elif action == "pending":
+        elif r["action"] == "pending":
             summary["pending"].append(qid)
             log.flag(
                 f"{qid}: the web check says this HAPPENED, but it needs your "
@@ -408,12 +509,16 @@ def run(router, settings: dict, today: dt.date, log, dry_run: bool = False,
                 f"    Question: {q.get('question','')}\n"
                 f"    Event:    {answer.get('event','')} "
                 f"({answer.get('event_date','no date')})\n"
-                f"    Sources:  {', '.join(facts.get('sites', [])) or 'none'}\n"
-                f"    If you agree, paste into config/resolutions.csv:\n"
+                f"    Cited:    "
+                + ("; ".join(f"{a['date']} {a['publisher']}: {a['title'][:80]}"
+                             for a in facts.get("cited", [])) or "none")
+                + f"\n    If you agree, paste into config/resolutions.csv:\n"
                 f"      {_paste_row(qid, answer)}"
             )
         else:
-            log.info(f"  {qid}: {action} -- {answer.get('reason') or why}")
+            log.info(f"  {qid}: {r['action']} -- {why} "
+                     f"({len(r['articles'])} articles; "
+                     f"queries: {' | '.join(r['queries'])})")
 
     _rebuild_pending(today, log, dry_run)
     log.info(
@@ -422,6 +527,40 @@ def run(router, settings: dict, today: dt.date, log, dry_run: bool = False,
         f"waiting for you: {len(summary['pending'])}"
     )
     return summary
+
+
+def probe(router, settings: dict, qid: str, today: dt.date, out=print) -> str:
+    """
+    Run ONE question's web check end to end and print everything -- queries,
+    every article found, the reader's answer, the code's decision. Writes
+    nothing: no question changes, no web_checks row.
+
+    Run from GitHub (Actions -> Run workflow -> web_probe = Q0003), because
+    that is where the real network is. Returns the action.
+    """
+    q = store.question_by_id(qid)
+    if q is None:
+        out(f"No question {qid} in data/questions.csv")
+        return "failed"
+    out(f"PROBE {qid}: {q.get('question','')}")
+    out(f"  created {q.get('created')}  deadline {q.get('deadline')}  "
+        f"resolves_on {q.get('resolves_on') or '(blank -> carried_out)'}")
+    try:
+        r = check_one(q, router, settings, today)
+    except news_search.SearchUnavailable as exc:
+        out(f"\n  SEARCH UNREACHABLE: {exc}")
+        return "failed"
+    out(f"\n  queries: {r['queries']}")
+    if r["problems"]:
+        out(f"  fetch problems: {r['problems']}")
+    out(f"\n  {len(r['articles'])} articles found:")
+    for i, a in enumerate(r["articles"], 1):
+        out(f"   [{i:2d}] {a['date']}  {a['publisher'][:24]:24s}  {a['title'][:100]}")
+    out(f"\n  reader ({r['model'] or 'none'}): {r['answer']}")
+    out(f"\n  DECISION: {r['action']} -- {r['why']}")
+    if r["facts"].get("sites"):
+        out(f"  publishers counted: {r['facts']['sites']}")
+    return r["action"]
 
 
 def _apply_yes(q, event_date, answer, why, today, log, dry_run):
@@ -453,8 +592,9 @@ def _paste_row(qid: str, answer: dict) -> str:
     return f"{qid},1,{answer.get('event_date','')},web: {event[:120]}"
 
 
-def _record(today, q, action, why, answer, grounding, model, facts):
+def _record(today, q, action, why, answer, queries, model, facts):
     answer = answer or {}
+    cited = facts.get("cited", []) or []
     store.append_row(config.WEB_CHECKS_CSV, {
         "date": today.isoformat(),
         "question_id": q.get("id", ""),
@@ -465,10 +605,12 @@ def _record(today, q, action, why, answer, grounding, model, facts):
         "event": answer.get("event", ""),
         "event_date": answer.get("event_date", ""),
         "evidence": answer.get("evidence", ""),
-        "sources": "; ".join(facts.get("sites", [])
-                             or (grounding or {}).get("sources", []) or []),
+        "sources": "; ".join(facts.get("sites", []) or []),
         "official_source": "yes" if facts.get("official") else "no",
-        "queries": "; ".join((grounding or {}).get("queries", []) or []),
+        "queries": "; ".join(queries or []),
+        "cited_articles": " || ".join(
+            f"{a.get('date','')} {a.get('publisher','')}: {a.get('title','')}"
+            for a in cited),
         "model": model or "",
     })
 

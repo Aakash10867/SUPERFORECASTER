@@ -244,7 +244,11 @@ class ModelRouter:
                     return parsed, model
 
                 self.stats.failures_by_model[model].append(err)
-                self.stats.last_error = f"{model}: {err}"
+                self.stats.last_error = (
+                    f"{model}: {err}"
+                    + (f" ({self.last_http_detail})"
+                       if getattr(self, "last_http_detail", "") else "")
+                )
 
                 if err == "truncated" and attempt < self._max_retries:
                     continue
@@ -269,9 +273,10 @@ class ModelRouter:
                     for kn in self.key_names:
                         self.stats.exhausted.add((kn, model))
                     self.log.warn(
-                        f"Model '{model}' rejected the request ({err}). "
-                        "Check the name in config/models.yaml -- run verify_models.py "
-                        "to see the models your key can actually use."
+                        f"Model '{model}' rejected the request ({err}; Google "
+                        f"says: {getattr(self, 'last_http_detail', '') or 'no detail'}). "
+                        "Being listed by the API does NOT mean a model can be "
+                        "called -- check config/models.yaml."
                     )
                     break
                 if attempt < self._max_retries:
@@ -285,6 +290,7 @@ class ModelRouter:
               grounded: bool = False):
         url = f"{API_ROOT}/{model}:generateContent"
         key = self.key_by_name.get(key_name or "", self.key)
+        self.last_http_detail = ""
         gen_config = {
             "temperature": temperature,
             "maxOutputTokens": max_tokens,
@@ -360,6 +366,15 @@ class ModelRouter:
                 return True, text, None
             except (KeyError, IndexError, ValueError):
                 return False, None, "malformed-response"
+
+        # v18: keep Google's own explanation. On 1-3 Oct the log said only
+        # "not-found"; the real message was "no longer available to new users",
+        # which would have named the cause at once.
+        try:
+            detail = (r.json().get("error") or {}).get("message", "")
+        except ValueError:
+            detail = r.text[:200]
+        self.last_http_detail = f"HTTP {r.status_code}: {' '.join(str(detail).split())[:200]}"
 
         if r.status_code == 429:
             return False, None, "rate-limited"

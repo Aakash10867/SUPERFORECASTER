@@ -247,7 +247,8 @@ WEB_CHECK_FIELDS = [
     "evidence",
     "sources",            # "; " separated site names from Google's search record
     "official_source",    # yes | no
-    "queries",            # what the model actually searched for
+    "queries",            # the news-search queries actually run
+    "cited_articles",     # v18: the articles the reader cited, from the feed
     "model",
 ]
 
@@ -339,6 +340,7 @@ def ensure_files() -> None:
     # v17 added `resolves_on` to proposals. Without this, new rows would be
     # written under the old header and every column after it would shift.
     _migrate(config.PROPOSALS_CSV, PROPOSAL_FIELDS)
+    _migrate(config.WEB_CHECKS_CSV, WEB_CHECK_FIELDS)     # v18: cited_articles
 
 
 def _migrate(path: Path, fields: list[str]) -> None:
