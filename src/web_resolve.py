@@ -15,15 +15,36 @@ search allowance of zero. From 1 to 3 October the web check made no searches
 at all -- Q0003 was never even looked up -- and the failure was a quiet warning
 in the middle of the log. v18 replaces the search and makes failure loud.
 
-HOW ONE CHECK RUNS (v18)
+v18's first live probe (3 Oct) proved the search worked -- 25 real articles,
+several reporting the completed operation ("buyback results fuel sell-off",
+"exceeding $5 billion, fell short of its upper limit") -- but the reader
+called it "announced, not yet happened". Its queries were topic-only, it read
+"fell short" as "did not happen", and it held out for an "official"
+confirmation it could never see. v19 fixes all three.
+
+HOW ONE CHECK RUNS (v19)
 ------------------------
-  1. A cheap call turns the question into one or two short news-search
-     queries (falls back to the question text if that call fails).
+  1. A cheap call fills a FORM: actor, the act in the past tense in headline
+     words, object. Code assembles three queries of a FIXED SHAPE from it:
+     topic, completion, and one standard phrase for the kind of act.
   2. news_search.py runs them against Google News (US and India editions) and
      returns real articles: headline, publisher, site, publication date.
   3. One model (3.x Flash Lite) reads that numbered list and answers: has the
-     act ACTUALLY HAPPENED, on what date, and WHICH ARTICLES show it?
-  4. Plain code decides whether to act on the answer.
+     act ACTUALLY HAPPENED, on what date, and WHICH ARTICLES show it? A report
+     of the act's results proves it happened, even a disappointing one; news
+     reports of an official act count as official.
+  4. FOLLOW THE CLUE: if it has not happened but was scheduled for a date that
+     has passed (read today, or stored on the question earlier as
+     `awaiting`), ONE more search chases that act's results and the reader
+     looks again. Still nothing -> pending for you: "was due on X, no report
+     it happened". A future date is stored as `awaiting`, and the question
+     jumps the queue once that date passes.
+  5. Plain code decides whether to act on the answer.
+
+Searching is about recall: a mistake costs a missed find, and step 4 catches
+it. Deciding is about precision: a false YES corrupts the record. So the
+search is free to use the act's own words, and the decision stays fixed
+rules.
 
 A second model was considered and rejected (same family, same evidence, same
 blind spots -- the "prompt variation is not a crowd" principle). The guard is
@@ -56,8 +77,9 @@ Resolution is dated to the EVENT, not to the day of the check.
 
 BUDGET
 ------
-Two Flash Lite calls per question per day (query + read), from a 500/day
-allowance per model per key. The news search itself has no quota. Each
+Two or three Flash Lite calls per question per day (form + read, plus a
+second read only when a follow-up fires), from a 500/day allowance per model
+per key. The news search itself has no quota. Each
 question is still checked at most once a day; a per-run cap remains.
 
 BACKFILL GUARD
@@ -75,15 +97,27 @@ from . import config, news_search, resolve, store
 TASK = "web_resolve"
 QUERY_TASK = "web_query"
 
-QUERY_PROMPT = """Write news-search queries that would find reporting on \
-whether this has happened. Short keyword queries, like a person typing into \
-Google News: names, institutions, the specific act, key numbers. No dates, no \
-quotation marks, no operators.
+# v19: the model fills a FORM; code assembles the queries. The words belong
+# to the act (a buyback is "bought", a nominee "confirmed", a scheme
+# "notified"), so no fixed word list could find them -- but the SHAPE of the
+# queries is fixed, so it is predictable and testable. Freedom where a
+# mistake only costs a missed find (and the follow-up tripwire catches it);
+# fixed rules where a mistake corrupts the record (the decision, in judge()).
+QUERY_PROMPT = """Fill in this form for a news search that would find \
+reporting on whether the act below has happened. Short plain words, as a \
+person would type into Google News. No dates, no quotation marks.
 
 QUESTION: {question}
 RESOLUTION CRITERIA: {criteria}
 
-Return JSON only: {{"queries": ["first query", "second query"]}}"""
+  actor     -- who must act (e.g. "US Treasury", "RBI", "US Senate")
+  act_past  -- the act in the PAST TENSE, in the words a headline would use \
+when reporting it DONE (e.g. "bought back", "confirms", "signed", \
+"notified", "struck", "imposes")
+  object    -- what it is done to, with any key number (e.g. "long-dated \
+bonds $4 billion", "Heidi Overton FDA", "Ganga water treaty")
+
+Return JSON only: {{"actor": "...", "act_past": "...", "object": "..."}}"""
 
 WEB_PROMPT = """Below are news articles found by a search just now. Using ONLY \
 these articles, decide ONE thing: has this forecasting question ALREADY \
@@ -94,7 +128,7 @@ QUESTION: {question}
 RESOLUTION CRITERIA: {criteria}
 DEADLINE: {deadline}
 WHAT RESOLVES IT: {resolves_on}
-
+{lead_hint}
 THE RULE
 - YES requires that the event the criteria describe has ACTUALLY HAPPENED, on \
 or before today and on or before the deadline.
@@ -102,15 +136,23 @@ or before today and on or before the deadline.
 official or certain it sounds. Plans, proposals, drafts, expectations, votes \
 still pending, "set to", "to buy", "expected to", "will take effect on <future \
 date>" are all NOT YET. They make YES more likely; they do not make it happen.
+- A report of the act's RESULTS or OUTCOME proves it happened, even when the \
+outcome disappointed. "Buyback results fuel sell-off", "purchase fell short of \
+its upper limit", "vote passed narrowly", "strike disrupts banks" all report \
+an act that took place. Judge whether it HAPPENED, not whether it succeeded.
+- Where the criteria say "officially" (officially confirms, announces, \
+implements), reliable news reports OF the official act count -- you will not \
+see the official record itself.
 - "WHAT RESOLVES IT" above says which act counts. Follow it exactly. Read the \
-criteria literally, every clause.
+criteria literally, every other clause.
 - If the act happened, give the date it HAPPENED -- not the date it was first \
 announced, unless the announcement is the act.
-- Cite the articles that show it HAPPENED, by their numbers. Cite only \
-articles that report it as done; an article saying it will happen does not \
-count.
+- Cite the articles that show it HAPPENED, by their numbers.
 - Use nothing but these articles. If they do not show it clearly, answer \
 "happened": false. Never conclude that the question resolves NO.
+- LEAD: if the articles show the resolving act was announced or scheduled for \
+a SPECIFIC date but do not show it took place, give that date and a short \
+description of the act. Otherwise leave both empty.
 
 ARTICLES (number | published | publisher | headline -- snippet):
 {articles}
@@ -123,8 +165,23 @@ Return JSON only, no prose before or after:
   "event_date": "YYYY-MM-DD, the date it actually happened; empty if it has not",
   "supporting_articles": [numbers of the articles that report it as done],
   "evidence": "one or two sentences from those articles that establish it",
+  "lead_date": "YYYY-MM-DD the act was scheduled for, if announced but not shown done; else empty",
+  "lead_what": "short description of that scheduled act; else empty",
   "reason": "one line, always filled in"
 }}"""
+
+LEAD_HINT = """THIS ACT WAS DUE ON {date}: {what}. Look specifically for \
+reports that it took place -- results, outcomes, reactions to it having \
+happened.
+"""
+
+# The only fixed vocabulary: one phrase per kind of resolving act. These words
+# really are standard across acts of that kind.
+TYPE_PHRASE = {
+    "announced": "{actor} announces {object}",
+    "in_effect": "{object} takes effect",
+    "carried_out": "{actor} {act_past}",
+}
 
 
 # v17: each question declares what resolves it. Blank or "ambiguous" gets the
@@ -328,8 +385,15 @@ def _candidates(today: dt.date) -> list[dict]:
         return (q.get("id") not in human
                 and q.get("outcome_set_by") != "human")
 
+    def order(q):
+        # v19: a question whose awaited act has fallen due goes first -- that
+        # is the day its follow-up search is most likely to find the report.
+        due = _lead({}, q)
+        return (0 if due and due[0] <= today else 1,
+                _date(q.get("deadline")) or far)
+
     open_qs = sorted((q for q in store.open_questions() if eligible(q)),
-                     key=lambda q: _date(q.get("deadline")) or far)
+                     key=order)
     watched = sorted((q for q in store.watched_questions() if eligible(q)),
                      key=lambda q: _date(q.get("deadline")) or far)
     return open_qs + watched
@@ -348,27 +412,83 @@ def _alert(log, text: str) -> None:
         log.flag(text)
 
 
-def _queries_for(q: dict, router) -> list[str]:
-    """One or two short news queries. Falls back to the question text."""
+def _clean(text, words: int = 10) -> str:
+    text = " ".join(str(text or "").replace('"', " ").split())
+    return " ".join(text.split()[:words])
+
+
+def _fallback_query(q: dict) -> str:
+    text = q.get("question", "")
+    for junk in ("Will the ", "Will ", "?"):
+        text = text.replace(junk, " ")
+    return _clean(text, 14)
+
+
+def _form_for(q: dict, router) -> dict:
+    """The model fills actor / act_past / object. Empty dict if it fails."""
     result, _model = router.generate(
         QUERY_TASK,
         QUERY_PROMPT.format(question=q.get("question", ""),
                             criteria=q.get("resolution_criteria", "")),
         temperature=0.2, max_output_tokens=512,
     )
-    queries = []
-    if isinstance(result, dict):
-        for item in result.get("queries") or []:
-            text = " ".join(str(item).replace('"', " ").split())
-            if text and text not in queries:
-                queries.append(text[:120])
-    if not queries:
-        # Strip the boilerplate so the fallback is still a search, not a sentence.
-        text = q.get("question", "")
-        for junk in ("Will the ", "Will ", "?"):
-            text = text.replace(junk, " ")
-        queries = [" ".join(text.split())[:120]]
-    return queries[:2]
+    if not isinstance(result, dict):
+        return {}
+    form = {k: _clean(result.get(k), 8) for k in ("actor", "act_past", "object")}
+    return form if form["actor"] and form["object"] else {}
+
+
+def build_queries(form: dict, q: dict) -> list[str]:
+    """
+    Fixed shape, the act's own words (v19):
+      1. topic       actor + object
+      2. completion  actor + act_past + object
+      3. by type     one standard phrase for the kind of act (TYPE_PHRASE)
+    Falls back to the question text if the form is missing.
+    """
+    if not form:
+        return [_fallback_query(q)]
+    kind = (q.get("resolves_on") or "").strip().lower()
+    template = TYPE_PHRASE.get(kind, TYPE_PHRASE["carried_out"])
+    out = []
+    for text in (
+        f"{form['actor']} {form['object']}",
+        f"{form['actor']} {form.get('act_past','')} {form['object']}",
+        template.format(**{"actor": form["actor"], "object": form["object"],
+                           "act_past": form.get("act_past", "")}),
+    ):
+        text = _clean(text, 14)
+        if text and text not in out:
+            out.append(text)
+    return out
+
+
+def followup_queries(form: dict, lead_what: str) -> list[str]:
+    """The one extra search when a scheduled date has passed (v19)."""
+    what = _clean(lead_what, 10)
+    out = [f"{what} results"] if what else []
+    if form:
+        out.append(_clean(f"{form['actor']} {form.get('act_past','')} "
+                          f"{form['object']}", 14))
+    return [x for x in out if x][:2]
+
+
+def _lead(answer: dict, q: dict):
+    """
+    (date, what) of a scheduled resolving act: from today's reading if it
+    found one, otherwise from the date stored on the question earlier.
+    """
+    d = _date((answer or {}).get("lead_date"))
+    what = _clean((answer or {}).get("lead_what"), 14)
+    if d and what:
+        return d, what
+    stored = (q.get("awaiting") or "").strip()
+    if ":" in stored:
+        sd, _, swhat = stored.partition(":")
+        sd = _date(sd)
+        if sd and swhat.strip():
+            return sd, swhat.strip()
+    return None
 
 
 def _article_block(articles: list[dict]) -> str:
@@ -380,20 +500,9 @@ def _article_block(articles: list[dict]) -> str:
     return "\n".join(lines)
 
 
-def check_one(q: dict, router, settings: dict, today: dt.date) -> dict:
-    """
-    One full check -- queries, search, read, decide -- with nothing written.
-    Raises news_search.SearchUnavailable if the search cannot run at all.
-    Returns everything needed to record, apply, or print the result.
-    """
-    queries = _queries_for(q, router)
-    articles, problems = news_search.search(queries)
-    if not articles:
-        action, why, facts = judge(q, None, [], today, settings)
-        return {"queries": queries, "articles": [], "problems": problems,
-                "answer": {}, "model": "", "action": action, "why": why,
-                "facts": facts}
-    answer, model = router.generate(
+def _read(q, articles, today, router, lead=None):
+    hint = LEAD_HINT.format(date=lead[0].isoformat(), what=lead[1]) if lead else ""
+    return router.generate(
         TASK,
         WEB_PROMPT.format(
             today=today.isoformat(),
@@ -401,14 +510,77 @@ def check_one(q: dict, router, settings: dict, today: dt.date) -> dict:
             criteria=q.get("resolution_criteria", ""),
             deadline=q.get("deadline", ""),
             resolves_on=resolves_on_text(q),
+            lead_hint=hint,
             articles=_article_block(articles),
         ),
         temperature=0.1, max_output_tokens=2048,
     )
-    action, why, facts = judge(q, answer, articles, today, settings)
-    return {"queries": queries, "articles": articles, "problems": problems,
-            "answer": answer if isinstance(answer, dict) else {},
-            "model": model or "", "action": action, "why": why, "facts": facts}
+
+
+def check_one(q: dict, router, settings: dict, today: dt.date) -> dict:
+    """
+    One full check -- form, search, read, decide, and at most ONE follow-up
+    -- with nothing written. Raises news_search.SearchUnavailable if the first
+    search cannot run at all. Returns everything needed to record, apply or
+    print the result.
+
+    FOLLOW THE CLUE (v19). If the reading finds no completed act but the act
+    was scheduled for a date that has now passed -- read today, or stored on
+    the question from an earlier day -- run ONE more search aimed at that act,
+    and read again. If that still shows nothing, the question goes to you:
+    "was due on X, no report it happened". That is the Q0003 pattern, and it
+    turns a silent miss into a prompt. A future date is returned as
+    `awaiting`, to be stored on the question.
+    """
+    limit = int((settings.get("web_resolution", {}) or {}).get("max_articles", 40))
+    form = _form_for(q, router)
+    queries = build_queries(form, q)
+    articles, problems = news_search.search(queries, limit=limit)
+    r = {"form": form, "queries": queries, "articles": articles,
+         "problems": problems, "answer": {}, "model": "",
+         "followup": None, "awaiting": None}
+
+    if articles:
+        answer, model = _read(q, articles, today, router)
+        action, why, facts = judge(q, answer, articles, today, settings)
+        r.update(answer=answer if isinstance(answer, dict) else {},
+                 model=model or "")
+    else:
+        action, why, facts = judge(q, None, [], today, settings)
+    r.update(action=action, why=why, facts=facts)
+    if action != "not_yet":
+        return r
+
+    lead = _lead(r["answer"], q)
+    if lead is None:
+        return r
+    deadline = _date(q.get("deadline")) or dt.date.max
+    if lead[0] > today:
+        r["awaiting"] = lead
+        return r
+    if lead[0] > deadline:
+        return r                           # too late to be a YES; lapse handles it
+
+    # The one follow-up.
+    fq = followup_queries(form, lead[1])
+    try:
+        more, p2 = news_search.search(fq, limit=limit)
+    except news_search.SearchUnavailable as exc:
+        r["problems"] = problems + [f"follow-up search: {exc}"]
+        return r
+    merged = news_search.merge(articles, more, limit=limit)
+    answer2, model2 = _read(q, merged, today, router, lead=lead)
+    action2, why2, facts2 = judge(q, answer2, merged, today, settings)
+    r["followup"] = {"lead": lead, "queries": fq, "found": len(more)}
+    r.update(articles=merged, problems=problems + p2,
+             answer=answer2 if isinstance(answer2, dict) else {},
+             model=model2 or r["model"])
+    if action2 == "not_yet":
+        action2 = "pending"
+        why2 = (f"was due on {lead[0]} ({lead[1]}); a follow-up search found "
+                "no report that it happened -- please check")
+    r.update(action=action2, why=why2, facts=facts2)
+    return r
 
 
 def run(router, settings: dict, today: dt.date, log, dry_run: bool = False,
@@ -491,16 +663,32 @@ def run(router, settings: dict, today: dt.date, log, dry_run: bool = False,
 
         summary["checked"] += 1
         answer, facts, why = r["answer"], r["facts"], r["why"]
+        queries = r["queries"] + ((r["followup"] or {}).get("queries") or [])
+        was_pending = _last_action(qid) == ("pending", why)
+        if r["followup"]:
+            lead = r["followup"]["lead"]
+            log.info(f"  {qid}: due on {lead[0]} ({lead[1]}) -- follow-up "
+                     f"search found {r['followup']['found']} more article(s)")
+        if r["awaiting"] and not dry_run:
+            date, what = r["awaiting"]
+            store.update_question(qid, {"awaiting": f"{date.isoformat()}: {what}"})
+            log.info(f"  {qid}: scheduled for {date} ({what}); will look for "
+                     "it specifically once that date passes")
         if r["problems"]:
             log.info(f"  {qid}: {len(r['problems'])} of the search fetches "
                      f"failed (others worked): {r['problems'][0]}")
         if not dry_run:
-            _record(today, q, r["action"], why, answer, r["queries"],
+            _record(today, q, r["action"], why, answer, queries,
                     r["model"], facts)
 
         if r["action"] == "resolved_yes":
             _apply_yes(q, facts["event_date"], answer, why, today, log, dry_run)
             summary["resolved"].append(qid)
+        elif r["action"] == "pending" and was_pending:
+            # Same pending reason as the last check: still listed in
+            # data/pending_resolutions.csv, but not flagged again every day.
+            summary["pending"].append(qid)
+            log.info(f"  {qid}: still waiting for you -- {why}")
         elif r["action"] == "pending":
             summary["pending"].append(qid)
             log.flag(
@@ -550,17 +738,35 @@ def probe(router, settings: dict, qid: str, today: dt.date, out=print) -> str:
     except news_search.SearchUnavailable as exc:
         out(f"\n  SEARCH UNREACHABLE: {exc}")
         return "failed"
-    out(f"\n  queries: {r['queries']}")
+    out(f"\n  form: {r.get('form') or '(failed; question text used)'}")
+    out(f"  queries: {r['queries']}")
     if r["problems"]:
         out(f"  fetch problems: {r['problems']}")
     out(f"\n  {len(r['articles'])} articles found:")
     for i, a in enumerate(r["articles"], 1):
         out(f"   [{i:2d}] {a['date']}  {a['publisher'][:24]:24s}  {a['title'][:100]}")
+    if r.get("followup"):
+        f = r["followup"]
+        out(f"\n  FOLLOW-UP: due on {f['lead'][0]} ({f['lead'][1]}); queries "
+            f"{f['queries']} found {f['found']} more article(s); list above "
+            "is the merged set the second reading saw")
+    if r.get("awaiting"):
+        out(f"\n  AWAITING: {r['awaiting'][0]} ({r['awaiting'][1]}) -- would be "
+            "stored on the question")
     out(f"\n  reader ({r['model'] or 'none'}): {r['answer']}")
     out(f"\n  DECISION: {r['action']} -- {r['why']}")
     if r["facts"].get("sites"):
         out(f"  publishers counted: {r['facts']['sites']}")
     return r["action"]
+
+
+def _last_action(qid: str):
+    """(action, why) of this question's most recent recorded web check."""
+    last = None
+    for row in store.read_rows(config.WEB_CHECKS_CSV):
+        if row.get("question_id") == qid and row.get("action") not in ("failed", "skipped"):
+            last = (row.get("action"), row.get("why"))
+    return last
 
 
 def _apply_yes(q, event_date, answer, why, today, log, dry_run):
@@ -569,6 +775,8 @@ def _apply_yes(q, event_date, answer, why, today, log, dry_run):
     if dry_run:
         log.info(f"  {qid}: WOULD resolve YES on {event_date} (dry run)")
         return
+    if q.get("awaiting"):
+        store.update_question(qid, {"awaiting": ""})
     resolve.resolve_now(
         q, "1", event_date, today, log, basis="web_confirmed",
         how=f"web check -- {why}",

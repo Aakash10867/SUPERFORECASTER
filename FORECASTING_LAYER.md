@@ -10,7 +10,8 @@ been reading a fraction of the news all along. All 25 notes accounted for.
 v16 (2 Oct 2026) adds web resolution: one Google-Search reader, YES only,
 judged by code. v17 (2 Oct 2026) fixes the structural causes of the Q0003 miss:
 paper coverage, gate H, `resolves_on`, nightly scheduled run. v18 (3 Oct 2026)
-replaces the web search, which never worked: see the v18 section at the end.
+replaces the web search, which never worked; v19 (3 Oct 2026) fixes how it
+reads and adds follow-the-clue. See the v18 and v19 sections at the end.
 
 ### Repo findings (v7, reviewed at close of §4)
 
@@ -1899,6 +1900,67 @@ so the run looked healthy and Aakash found it from the CSV.
   the first weeks would argue for adding Tavily as a second source.
 - Whether Google News starts refusing the GitHub runner. That would show as
   the red alert, never silently.
+
+---
+
+## v19 — The search worked; the reading did not (3 October 2026)
+
+### The probe
+
+The v18 probe on Q0003 ran on GitHub. **The search worked**: 25 real
+articles, several reporting the completed operation — "buyback results fuel
+sell-off" (Business Times, 11 Sep), "buyback program, exceeding $5 billion,
+fell short of its upper limit" (10 Sep), "repurchase falls short of
+expectations". Two different publishers dated on or after 10 Sep: the code
+checks would have passed. **The reader said "announced, not yet happened"**
+and cited nothing. Three causes: topic-only queries (15 of 25 results were
+9 Sep announcement stories); "fell short" read as "did not happen"; and the
+criteria's "officially confirms" read as demanding an official record no
+headline can supply.
+
+Correction: Treasury bought more than $5bn, short of the $6bn cap — not the
+full $6bn stated earlier. The YES and the 10 Sep date stand.
+
+### Decisions (philosophy settled with Aakash)
+
+- **Queries: fixed shape, the act's own words.** Aakash asked whether
+  results-seeking queries should be word-specific — does a fixed vocabulary
+  restrict or free us? Answer adopted: a fixed list restricts (completion
+  words are act-specific — "bought", "confirmed", "notified", "struck"; the
+  decisive Q0003 headline said "fell short"), but free-form queries are
+  untestable and drifted to topic-only. So the model fills a form (actor,
+  act in past tense, object) and code assembles three queries of a fixed
+  shape. Only fixed vocabulary: one phrase per resolves_on type.
+- **The principle under it:** searching is recall — a miss is cheap and is
+  caught by the follow-up; deciding is precision — a false YES corrupts the
+  record. Freedom for the first, fixed rules for the second.
+- **Results rule:** a report of an act's results or outcome proves it
+  happened, however it turned out.
+- **"Officially" (D, Aakash accepted):** news reports of the official act
+  count as official, under the usual two-publishers-after-the-event check.
+- **Follow the clue (Aakash: generalise C):** any scheduled date for the
+  resolving act becomes a lead. Passed → one follow-up search for its
+  results, read again; still nothing → pending for the human ("was due on X,
+  no report it happened"). Future → stored as `awaiting` on the question,
+  which jumps the queue when it falls due. **One hop only**: a search allowed
+  to follow leads to more leads can wander and burn quota. This is the
+  "awaiting date" state deferred in v17, now built because it costs nothing
+  extra. A repeated pending reason is listed daily but flagged once.
+
+### Deferred
+
+- **Email for pending items (Aakash's idea).** Postponed until web resolution
+  is proven. Proposed shape when it comes: one GitHub issue per pending item —
+  GitHub emails it, replying to the email comments on the issue, the nightly
+  run reads "yes"/"no" from the comments. No mail server, decision trail in
+  the repo.
+
+### Acceptance test
+
+Re-run the probe on Q0003. Expected: `resolved_yes`, dated 2026-09-10 —
+either straight from the first reading (the results headlines were already in
+the list) or via the follow-up. The offline suite replays the real 25
+headlines and the reader's real mistake, and checks the follow-up rescues it.
 
 ---
 

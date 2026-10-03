@@ -171,7 +171,7 @@ def test_resolves_on():
           "ITSELF resolves" in web_resolve.resolves_on_text({"resolves_on": "announced"}))
     prompt = web_resolve.WEB_PROMPT.format(today="t", question="q", criteria="c",
                                            deadline="d", resolves_on="X-MARK",
-                                           articles="[1] ...")
+                                           articles="[1] ...", lead_hint="")
     check("web prompt carries the resolves_on line", "WHAT RESOLVES IT: X-MARK" in prompt)
 
     # The classifier: fills blanks once, flags ambiguous, leaves set ones alone.

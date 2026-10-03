@@ -306,7 +306,7 @@ created today gets its first forecast today.
 Every stage is isolated: a failure logs loudly, with a traceback, into the
 markdown log, and the run continues.
 
-## Web resolution (v18)
+## Web resolution (v18, refined in v19)
 
 Every open question is checked against the web **once a day**, asking one
 thing: *has this actually happened, and on what date?* An announcement that
@@ -316,12 +316,24 @@ field (announced / carried_out / in_effect) says which act counts.
 
 How one check runs:
 
-1. A cheap model call turns the question into one or two keyword queries.
+1. A cheap model call fills a form -- **actor**, the **act in the past tense**
+   as a headline would say it, **object** -- and the code builds three queries
+   of a fixed shape from it: topic, completion, and a standard phrase for the
+   kind of act ("takes effect", "announces"). The shape is fixed; the words
+   are the act's own.
 2. **The code** searches Google News (US and India editions, free RSS feed, no
    key, no quota) and gets real articles: headline, publisher, site, date.
 3. One model reads that numbered list and says whether the act happened, on
-   what date, and **which articles show it**.
-4. **Code decides.** Only YES is ever automatic:
+   what date, and **which articles show it**. A report of the act's
+   *results* proves it happened, even a disappointing one ("fell short of its
+   cap"). News reports of an official act count as official.
+4. **Follow the clue.** If the act has not happened but was **scheduled for a
+   date that has passed**, one more search chases its results and the reader
+   looks again. Still nothing → it goes to you: *"was due on X, no report it
+   happened"*. A scheduled date still in the future is stored on the question
+   (`awaiting` in `questions.csv`), and that question is checked first once
+   the date passes.
+5. **Code decides.** Only YES is ever automatic:
 
 | check | if it fails |
 |---|---|
@@ -348,8 +360,8 @@ mid-log. Never again.)
 every article found, the model's answer and the code's decision, and writes
 nothing.
 
-**Budget.** Two Flash Lite calls per question per day, from a 500/day
-allowance. The search itself is free. Each question is checked at most once a
+**Budget.** Two Flash Lite calls per question per day (three when a
+follow-up fires), from a 500/day allowance. The search itself is free. Each question is checked at most once a
 day, closest deadline first, then questions on the absence watch.
 
 **Limit.** The feed gives headlines and a line of snippet, not whole articles.

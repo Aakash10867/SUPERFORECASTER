@@ -37,8 +37,12 @@ thought.
 headline -- `resolved_yes`, `pending` (needs you), `not_yet`, or `failed`
 (the search or the reading model did not work; retried next run, and the log
 opens with a red alert). The `why` column names the rule that decided it;
-`queries` and `cited_articles` show exactly what was searched and which
-articles the reader relied on.
+`queries` and `cited_articles` show exactly what was searched (including any
+follow-up search) and which articles the reader relied on.
+
+`questions.csv` has an `awaiting` column (v19): `YYYY-MM-DD: act` when the web
+check found the resolving act scheduled for a date. Once that date passes the
+question is checked first and a follow-up search chases the act's results.
 
 Rows dated 1-3 October 2026 are all `failed`: that was the v16/v17 web check,
 whose search models did not exist for these keys.

@@ -158,6 +158,18 @@ def search(queries: list[str], limit: int = 25, fetch=None) -> tuple[list[dict],
     return articles[:limit], problems
 
 
+def merge(first: list[dict], second: list[dict], limit: int = 40) -> list[dict]:
+    """Union of two result lists, de-duplicated by headline, newest first."""
+    seen, out = set(), []
+    for a in list(first) + list(second):
+        key = re.sub(r"\W+", " ", a.get("title", "").lower()).strip()
+        if key and key not in seen:
+            seen.add(key)
+            out.append(a)
+    out.sort(key=lambda a: a["date"], reverse=True)
+    return out[:limit]
+
+
 def _http_get(url: str) -> tuple[int, str]:
     r = requests.get(url, headers=HEADERS, timeout=TIMEOUT)
     return r.status_code, r.text

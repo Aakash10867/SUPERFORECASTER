@@ -54,6 +54,7 @@ QUESTION_FIELDS = [
     "calendar_hooks",      # known scheduled catalysts, "; " separated
     "resolution_basis",    # confirmed_act | lapsed_absence | web_confirmed
     "resolves_on",         # announced | carried_out | in_effect | ambiguous (v17)
+    "awaiting",            # v19: "YYYY-MM-DD: act" the resolving act is scheduled for
     "outcome_set_by",      # system | human
     "watch_until",         # absence-watch expiry; blank when not watching
     "last_refresh",        # date of last full seven-lens refresh
