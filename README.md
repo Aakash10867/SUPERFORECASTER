@@ -334,6 +334,10 @@ How one check runs:
 3. The reader must **quote word for word** the sentence that shows the act
    done. **Code checks the quote is really in that source** -- an invented or
    paraphrased quote is thrown away.
+   If something is verified but not yet enough, a second narrow read asks only
+   *which other sources also report it done?* (no Tavily credit) -- the
+   corroborating quotes are checked the same way. Facebook, Instagram,
+   YouTube and X are never read.
 4. **Evidence tiers** decide:
 
 | tier | what | enough to resolve? |

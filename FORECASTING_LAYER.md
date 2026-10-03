@@ -14,7 +14,8 @@ replaces the web search, which never worked; v19 (3 Oct 2026) fixes how it
 reads and adds follow-the-clue; v20 (3 Oct 2026) fixes result ranking and
 the reader's citing and dating; v21 (3 Oct 2026) adds the verify step and a
 multi-question acceptance test; v22 (3 Oct 2026) reads full text via Tavily
-with evidence tiers and code-verified quotes. See the v18-v22 sections.
+with evidence tiers and code-verified quotes; v23 adds a corroboration step.
+See the v18-v23 sections.
 
 ### Repo findings (v7, reviewed at close of §4)
 
@@ -2125,6 +2126,48 @@ from a verified full-text quote; Q0013 not resolved; Q0016 not resolved
 before 7 Oct. If Q0003 does not resolve, the probe shows which article texts
 came back and why each quote was accepted or rejected — that is the next
 thing to read, not another patch.
+
+---
+
+## v23 — Corroboration (3 October 2026)
+
+### The probe
+
+v22's probe: **the right answer, found by the system itself.** Q0003's full
+text gave, from Chase: *"The Treasury Department completed a $6 billion
+buyback of Treasury securities maturing in 10 to 20 years on September 10."*
+Code verified it — tier B, dated 10 Sep. Q0013 and Q0016 correctly stayed
+open; the RBI meeting was stored as an occasion. 3 credits used.
+
+It stopped at `pending` because the second-publisher rule failed — with the
+corroboration sitting in the list: headline H7 (BeInCrypto, 2 Oct, "US
+Treasury Buys $6 Billion of Bonds") was dated after the event, from another
+publisher, but the reader did not cite it. The reader under-cites; asked to
+do four things at once, it lists the clearest source and stops.
+
+### Decisions (Aakash agreed)
+
+- **A corroboration step**, not a looser rule. When something is verified but
+  not enough, one narrow extra call asks only "which OTHER sources also report
+  this act — or a later instance of it — as done?", quoting each verbatim.
+  Those quotes go through the same judge. It adds evidence, never removes
+  it; a failed call leaves the first judgement unchanged and never stops the
+  run. No Tavily credit; one Flash Lite call, only when it can help.
+- Rejected alternative: let one verified full-text quote resolve alone.
+  Simpler, but drops the guard against a single wrong article.
+- **Facebook, Instagram, YouTube, X excluded** from Tavily — in the request
+  and again in code (a request option can be ignored). They took 6 of 23
+  slots in the probe, nearly all stubs.
+
+### Tested for failure
+
+New wrong-YES cases: invented corroborating quote; same publisher;
+"to buy" headline from before the event. New breakage cases: corroboration
+call fails (run continues to the next question, no alert needed). Cost
+cases: not called when already resolved or nothing verified. Four new
+sabotages in test_guards.py — 15/15 caught. Writing these tests found that
+the corroboration prompt did not include the question, so the model could
+not tell which act it was corroborating; fixed.
 
 ---
 

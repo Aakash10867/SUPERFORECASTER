@@ -47,6 +47,18 @@ KEY_ENV = "TAVILY_API_KEY"
 TIMEOUT = 45
 FULL_TEXT_MIN = 400          # chars; below this the "article" is really a stub
 
+# v23: social sites. In the 3 Oct probe they took 6 of 23 result slots and
+# were nearly all stubs. Excluded in the request AND filtered again in code,
+# because a request option can be silently ignored (or dropped by the
+# minimal retry below).
+DEFAULT_EXCLUDE = ("facebook.com", "instagram.com", "youtube.com", "x.com",
+                   "twitter.com")
+
+
+def excluded(site: str, domains) -> bool:
+    site = (site or "").lower()
+    return any(site == d or site.endswith("." + d) for d in domains)
+
 
 class DeepUnavailable(RuntimeError):
     """kind: no_key | bad_key | out_of_credits | rate_limited | error"""
@@ -106,11 +118,12 @@ class TavilyClient:
     """
 
     def __init__(self, key: str | None = None, post=None, get=None,
-                 max_results: int = 8):
+                 max_results: int = 8, exclude=DEFAULT_EXCLUDE):
         self.key = key if key is not None else os.environ.get(KEY_ENV, "").strip()
         self._post = post or _http_post
         self._get = get or _http_get
         self.max_results = max_results
+        self.exclude = tuple(d.strip().lower() for d in (exclude or ()) if d.strip())
         self.calls = 0
         self.disabled = ""            # set to a reason once a fatal error is seen
 
@@ -158,6 +171,8 @@ class TavilyClient:
             "include_raw_content": "text",
             "include_published_date": True,
         }
+        if self.exclude:
+            body["exclude_domains"] = list(self.exclude)
         if window:
             body["start_date"] = window[0].isoformat()
             body["end_date"] = window[1].isoformat()
@@ -172,6 +187,7 @@ class TavilyClient:
                 data["_degraded"] = f"first request rejected; retried minimal ({text[:120]})"
         if status == 200 and isinstance(data, dict):
             arts = [to_article(r) for r in data.get("results") or []]
+            arts = [a for a in arts if not excluded(a["site"], self.exclude)]
             for a in arts:
                 if data.get("_degraded"):
                     a["_degraded"] = data["_degraded"]

@@ -41,7 +41,12 @@ HOW ONE CHECK RUNS (v22)
        sweep     no full-text read for 7 days (catches what headlines miss)
   3. The full-text reader must QUOTE, word for word, the sentence showing the
      act done, for every source that shows it.
-  4. CODE (judge_deep) checks every quote really appears in that source and
+  4. CORROBORATION (v23): if something was verified but not enough to
+     resolve, one narrow extra call asks only "which OTHER sources also
+     report it done?" (no Tavily credit). Its quotes are judged like any
+     others; it can add evidence, never remove it, and its failure changes
+     nothing.
+  5. CODE (judge_deep) checks every quote really appears in that source and
      applies the EVIDENCE TIERS:
        A  quote verified in an official (government) page    -> resolves
        B  quote verified in a full article                   -> resolves with
@@ -249,6 +254,33 @@ Return JSON only:
   "lead_kind": "act | occasion; or empty",
   "reason": "one line, always filled in"
 }}"""
+
+CORROBORATE_PROMPT = """QUESTION: {question}
+
+One source has ALREADY been verified to report the act this question is \
+about as done:
+
+  ACT: {event}
+  DATE: {date}
+  VERIFIED SOURCE: {publisher} -- "{quote}"
+
+Your ONLY job: which of the OTHER sources below ALSO report this act -- or a \
+later instance of the same act -- as having HAPPENED? Do not judge the \
+question. Ignore sources that only say it WILL happen, is planned, expected or \
+being considered.
+
+For EACH such source, copy ONE sentence from it WORD FOR WORD: from a full \
+text (T#) a sentence of its text; from a headline (H#) the headline itself. \
+Do not paraphrase, shorten, translate or fix typos -- a quote that cannot be \
+found verbatim is thrown away. List every one; if none, return an empty list.
+
+FULL TEXTS:
+{texts}
+
+HEADLINES:
+{headlines}
+
+Return JSON only: {{"evidence": [{{"source": "H7", "quote": "exact words"}}]}}"""
 
 # The only fixed vocabulary: one phrase per kind of resolving act. These words
 # really are standard across acts of that kind.
@@ -756,6 +788,22 @@ def check_one(q: dict, router, settings: dict, today: dt.date,
     r.update(answer=answer if isinstance(answer, dict) else {}, model=model2 or r["model"],
              action=action, why=why, facts=facts)
 
+    # v23 CORROBORATION. The 3 Oct probe verified a tier-B quote (Chase: "The
+    # Treasury Department completed a $6 billion buyback ... on September
+    # 10") but the reader did not cite headline H7 from another publisher,
+    # which reported a buyback as done -- so the second-publisher rule failed
+    # with the corroboration sitting in the list. One narrow follow-up call
+    # asks only "which OTHER sources also report it done?"; its quotes go
+    # through judge_deep like any others. No Tavily credit. It can only add
+    # evidence; a failed call leaves the first judgement exactly as it was.
+    if action == "pending" and any(v.get("ok") for v in facts.get("evidence") or []):
+        r["corroboration"] = _corroborate(q, r["answer"], facts, full, heads[:25],
+                                          today, settings, router, chars)
+        c = r["corroboration"]
+        if c.get("action"):
+            action, why, facts = c["action"], c["why"], c["facts"]
+            r.update(action=action, why=why, facts=facts, answer=c["answer"])
+
     if action == "not_yet" and trigger == "due":
         r.update(action="pending",
                  why=f"was due on {lead[0]} ({lead[1]}); the full text shows no "
@@ -770,12 +818,59 @@ def check_one(q: dict, router, settings: dict, today: dt.date,
     return r
 
 
+def _corroborate(q, answer, facts, full, heads, today, settings, router, chars):
+    """
+    Ask for MORE evidence for an act already verified once; re-judge the
+    union. Returns {"asked", "added", "action"/"why"/"facts"/"answer" if the
+    re-judgement ran}. Never raises; never removes evidence.
+    """
+    first = next(v for v in facts["evidence"] if v.get("ok"))
+    src = first["source"]
+    pool = full if src.startswith("T") else heads
+    publisher = pool[int(src[1:]) - 1].get("publisher", "") if src[1:].isdigit() else ""
+    got, _model = router.generate(
+        TASK,
+        CORROBORATE_PROMPT.format(
+            question=q.get("question", ""),
+            event=answer.get("event") or "the act", date=facts.get("event_date", ""),
+            publisher=publisher, quote=first.get("quote", ""),
+            texts=_text_block(full, chars), headlines=_head_block(heads),
+        ),
+        temperature=0.1, max_output_tokens=2048,
+    )
+    out = {"asked": True, "added": 0}
+    if not isinstance(got, dict):
+        out["note"] = "corroboration call gave no answer; first judgement kept"
+        return out
+    have = {(str(e.get("source", "")).upper(), deep_search.normalise(e.get("quote", "")))
+            for e in answer.get("evidence") or [] if isinstance(e, dict)}
+    extra = []
+    for e in got.get("evidence") or []:
+        if not isinstance(e, dict):
+            continue
+        k = (str(e.get("source", "")).upper(), deep_search.normalise(e.get("quote", "")))
+        if k not in have:
+            have.add(k)
+            extra.append({"source": e.get("source", ""), "quote": e.get("quote", "")})
+    out["added"] = len(extra)
+    if not extra:
+        out["note"] = "no other source found reporting it done"
+        return out
+    merged = dict(answer)
+    merged["evidence"] = list(answer.get("evidence") or []) + extra
+    action, why, new_facts = judge_deep(q, merged, full, heads, today, settings)
+    out.update(action=action, why=why, facts=new_facts, answer=merged)
+    return out
+
+
 def make_deep(settings: dict):
     """The Tavily client per settings, or None if full-text reading is off."""
     ds = settings.get("deep_check", {}) or {}
     if not ds.get("enabled", True):
         return None
-    return deep_search.TavilyClient(max_results=int(ds.get("max_results", 8)))
+    return deep_search.TavilyClient(
+        max_results=int(ds.get("max_results", 8)),
+        exclude=ds.get("exclude_domains", deep_search.DEFAULT_EXCLUDE))
 
 
 def deep_budget(deep, settings: dict, log=None) -> dict:
@@ -917,6 +1012,10 @@ def run(router, settings: dict, today: dt.date, log, dry_run: bool = False,
             log.info(f"  {qid}: full text read ({r['trigger']}), "
                      f"{w[0]} to {w[1]}: {len(r['full'])} article(s), "
                      f"{sum(1 for a in r['full'] if a.get('full'))} with full text")
+        if r.get("corroboration"):
+            c = r["corroboration"]
+            log.info(f"  {qid}: corroboration offered {c.get('added', 0)} more "
+                     f"quote(s)" + (f" ({c['note']})" if c.get("note") else ""))
         if r["awaiting"] and not dry_run:
             date, what, kind = r["awaiting"]
             store.update_question(qid, {"awaiting": awaiting_text(r["awaiting"])})
@@ -1018,6 +1117,10 @@ def probe(router, settings: dict, qid: str, today: dt.date, out=print,
     for v in (r.get("facts") or {}).get("evidence") or []:
         mark = f"OK tier {v.get('tier')}" if v.get("ok") else f"REJECTED ({v.get('why')})"
         out(f"   evidence {v.get('source')}: {mark}: \"{(v.get('quote') or '')[:110]}\"")
+    c = r.get("corroboration")
+    if c:
+        out(f"\n  CORROBORATION: {c.get('added', 0)} more quote(s) offered"
+            + (f" -- {c['note']}" if c.get("note") else ""))
     if r.get("awaiting"):
         out(f"\n  AWAITING: {awaiting_text(r['awaiting'])} -- would be stored")
     out(f"\n  DECISION: {r['action']} -- {r['why']}")

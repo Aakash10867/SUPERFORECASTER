@@ -308,6 +308,25 @@ def part_three():
     except deep_search.DeepUnavailable as e:
         check("Tavily: network error -> DeepUnavailable(error)", e.kind == "error")
 
+    # v23: social sites -- asked to exclude, AND filtered if returned anyway.
+    sent2 = []
+
+    def social(url, body, headers):
+        sent2.append(body)
+        return 200, {"results": [tav_result(url="https://www.facebook.com/p/1"),
+                                 tav_result(url="https://m.youtube.com/watch"),
+                                 tav_result(url="https://x.com/a/status/1"),
+                                 tav_result(url="https://www.tax.com/news"),
+                                 tav_result()]}, ""
+    arts = deep_search.TavilyClient(key="k", post=social).search("q")
+    check("EXCLUDE: social sites named in the request",
+          set(sent2[0]["exclude_domains"]) >= {"facebook.com", "instagram.com",
+                                               "youtube.com", "x.com"})
+    check("EXCLUDE: filtered in code even when Tavily returns them anyway",
+          sorted(a["site"] for a in arts) == ["cnbc.com", "tax.com"])
+    check("EXCLUDE: 'tax.com' is not mistaken for x.com",
+          not deep_search.excluded("tax.com", deep_search.DEFAULT_EXCLUDE))
+
     u = deep_search.TavilyClient(key="k", get=lambda u, h: (200, {
         "key": {"usage": 120, "limit": 1000}, "account": {}}, "")).usage()
     check("Tavily usage: credits left computed", u == {"used": 120, "limit": 1000, "left": 880})
@@ -342,11 +361,18 @@ class FakeReader(models.ModelRouter):
     def generate(self, task, prompt, *, expect_json=True, temperature=0.4,
                  max_output_tokens=4096, grounded=False):
         qid = next((k for k in self.script if f"QUESTION: {k} " in prompt), None)
-        kind = "web_query" if task == "web_query" else (
-            "deep" if "FULL TEXTS:" in prompt else "headline")
+        kind = ("web_query" if task == "web_query"
+                else "corrob" if "Your ONLY job" in prompt
+                else "deep" if "FULL TEXTS:" in prompt else "headline")
         self.calls.append((kind, qid, prompt))
         if kind == "web_query":
             return {"actor": qid, "act_past": "did", "object": "thing"}, "fake"
+        if kind == "corrob":
+            ans_ = (self.script.get(qid) or {}).get("c", {"evidence": []})
+            if ans_ is None:
+                self.stats.last_error = "fake: corroboration failed"
+                return None, None
+            return ans_, "fake"
         ans_ = (self.script.get(qid) or {}).get("d" if kind == "deep" else "h")
         if ans_ is None:
             self.stats.last_error = "fake: no answer"
@@ -622,6 +648,104 @@ def part_four():
 
 
 # ---------------------------------------------------------------------------
+# Part 4b (v23): corroboration -- and every way it could go wrong
+# ---------------------------------------------------------------------------
+
+CHASE_SENT = ("The Treasury Department completed a $6 billion buyback of Treasury "
+              "securities maturing in 10 to 20 years on September 10.")
+CHASE = full("2026-09-22", "chase.com", "Why the Treasury's $6 Billion Bond Buyback Matters",
+             ("Investors have watched the Treasury closely this autumn. " + CHASE_SENT + " ") * 3)
+PROBE_HEADS = [   # from the live v22 probe of 3 Oct
+    head("2026-09-22", "Chase Bank", "Why the Treasury's $6 billion bond buyback matters for investors", site="chase.com"),
+    head("2026-10-01", "KuCoin", "U.S. Treasury Expands Long-End Buyback Amid Rising Bond Yields", site="kucoin.com"),
+    head("2026-09-09", "CNBC", "Treasury Department to buy back up to $6 billion in longer-term debt, triple the normal level", site="cnbc.com"),
+    head("2026-08-19", "Reuters", "Treasury Secretary Bessent doubles US long-bond buybacks in the face of surging yields", site="reuters.com"),
+    head("2026-09-09", "Financial Times", "Treasury yields jump as Scott Bessent's $6bn buyback plan disappoints investors", site="ft.com"),
+    head("2026-09-09", "WSJ", "U.S. Treasury Plans $6 Billion Buyback, Yields Rise", site="wsj.com"),
+    head("2026-10-02", "BeInCrypto", "US Treasury Buys $6 Billion of Bonds as Bitcoin Battles 24-Year-High Yields", site="beincrypto.com"),
+]
+PROBE_FULL = [full("2026-09-09", "cnbc.com", "Treasury to buy back up to $6 billion", PLAN_TEXT),
+              CHASE]
+
+
+def q3_script(corrob):
+    return {"Q0003": {
+        "heads": [dict(h, title=("Q0003 " + h["title"]) if i == 0 else h["title"])
+                  for i, h in enumerate(PROBE_HEADS)],
+        "h": {"happened": True, "event_date": "2026-10-02", "event": "bought $6bn", "reason": "r"},
+        "full": PROBE_FULL,
+        "d": ans(("T2", CHASE_SENT)),           # what the live reader actually gave
+        "c": corrob}}
+
+
+def part_four_b():
+    def one(corrob, extra_q=False):
+        sb = _sandbox()
+        _q("Q0003")
+        script = q3_script(corrob)
+        if extra_q:
+            # Later deadline, so QZ is checked AFTER Q0003 -- the point is to
+            # show the run carries on past a failed corroboration.
+            _q("QZ", deadline="2027-06-30")
+            script["QZ"] = {"heads": [], "h": NO(), "full": [], "d": NO()}
+        reader, tav, log, s = run_day(script)
+        q = store.question_by_id("Q0003")
+        rows = store.read_rows(config.WEB_CHECKS_CSV)
+        out = (q, rows, reader, tav, log)
+        shutil.rmtree(sb, ignore_errors=True)
+        return out
+
+    q, rows, reader, tav, log = one({"evidence": [
+        {"source": "H7", "quote": "US Treasury Buys $6 Billion of Bonds as Bitcoin Battles 24-Year-High Yields"}]})
+    check("REPLAY v22 probe: corroboration finds BeInCrypto -> Q0003 RESOLVES",
+          q["outcome"] == "1")
+    check("REPLAY v22 probe: dated 10 Sep (the verified Chase sentence)",
+          q["resolved_date"] == "2026-09-10")
+    check("REPLAY v22 probe: corroboration costs no Tavily credit",
+          tav.calls == 1 and reader.n("corrob") == 1)
+
+    q, rows, *_ = one({"evidence": [{"source": "H7",
+                                     "quote": "US Treasury Buys $9 Billion of Bonds in record operation"}]})
+    check("CORROB WRONG-YES: invented corroborating quote -> still pending",
+          q["status"] == "open" and rows[-1]["action"] == "pending")
+
+    q, rows, *_ = one({"evidence": [{"source": "H1",
+                                     "quote": "Why the Treasury's $6 billion bond buyback matters for investors"}]})
+    check("CORROB WRONG-YES: same publisher (Chase headline) is not a second publisher",
+          q["status"] == "open")
+
+    q, rows, *_ = one({"evidence": [{"source": "H3",
+                                     "quote": "Treasury Department to buy back up to $6 billion in longer-term debt, triple the normal level"}]})
+    check("CORROB WRONG-YES: a 'to buy' headline from BEFORE the event is rejected",
+          q["status"] == "open" and "before the event" in rows[-1]["quotes"])
+
+    q, rows, reader, tav, log = one(None, extra_q=True)
+    check("CORROB FAILURE: call fails -> stays pending, run carries on to the next question",
+          q["status"] == "open"
+          and [(r["question_id"], r["action"]) for r in rows]
+              == [("Q0003", "pending"), ("QZ", "not_yet")]
+          and not log.alerts)
+
+    # Not called when it cannot help (cost): already resolved, or not happened.
+    sb = _sandbox()
+    _q("Q0003")
+    script = q3_script({"evidence": []})
+    script["Q0003"]["d"] = ans(("T2", CHASE_SENT),
+                               ("H7", "US Treasury Buys $6 Billion of Bonds as Bitcoin Battles 24-Year-High Yields"))
+    reader, *_ = run_day(script)
+    check("CORROB COST: not called when the first reading already resolves",
+          reader.n("corrob") == 0 and store.question_by_id("Q0003")["outcome"] == "1")
+    shutil.rmtree(sb, ignore_errors=True)
+    sb = _sandbox()
+    _q("Q0003")
+    script = q3_script({"evidence": []})
+    script["Q0003"]["d"] = NO()
+    reader, *_ = run_day(script)
+    check("CORROB COST: not called when nothing was verified", reader.n("corrob") == 0)
+    shutil.rmtree(sb, ignore_errors=True)
+
+
+# ---------------------------------------------------------------------------
 # Part 5: probe safety, lens grounding
 # ---------------------------------------------------------------------------
 
@@ -661,6 +785,7 @@ def main() -> int:
     part_two()
     part_three()
     part_four()
+    part_four_b()
     part_five()
     ok = True
     for label, passed in RESULTS:
