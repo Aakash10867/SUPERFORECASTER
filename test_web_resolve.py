@@ -149,7 +149,27 @@ def part_two():
     check("each query runs against US and India editions",
           len(calls) == 2 and "gl=US" in calls[0] and "gl=IN" in calls[1])
     check("duplicate headlines across editions are merged", len(arts) == 2)
-    check("newest first", arts[0]["date"] >= arts[1]["date"])
+    check("feed (relevance) order kept, not re-sorted by date",
+          [a["date"] for a in arts] == ["2026-09-10", "2026-09-09"])
+
+    # v20: THE 3 OCT BUG. A flood of fresh results must not push an old,
+    # relevant report out of the list. Feed A is relevance-ordered with the
+    # Sep report first; feed B is 60 fresh October stories.
+    old = art("2026-09-10", "Reuters", "Treasury buys $5.4 billion in buyback")
+    flood = [art("2026-10-0%d" % (1 + i % 3), f"Pub{i}", f"Yields story {i}")
+             for i in range(60)]
+    got = news_search._interleave([[old] + flood[:5], flood], 40)
+    check("an old relevant report survives a flood of new stories",
+          got[0]["title"] == old["title"] and len(got) == 40)
+
+    urls = []
+    def spy(url):
+        urls.append(url)
+        return 200, FEED
+    news_search.search(["treasury buyback"], fetch=spy,
+                       window=(dt.date(2026, 9, 9), dt.date(2026, 9, 14)))
+    check("date window becomes after:/before: in the query",
+          "after%3A2026-09-09" in urls[0] and "before%3A2026-09-14" in urls[0])
 
     def half(url):
         return (200, FEED) if "gl=US" in url else (503, "")
@@ -216,7 +236,7 @@ class FakeReader(models.ModelRouter):
 
 
 def fake_search_from(script, log=None):
-    def search(queries, limit=40, fetch=None):
+    def search(queries, limit=40, fetch=None, window=None):
         if log is not None:
             log.append(list(queries))
         qid = next((k for k in script for q in queries if k in q.split()), None)
@@ -300,10 +320,11 @@ def part_three():
     form = {"actor": "US Treasury", "act_past": "bought back",
             "object": "long-dated bonds $4 billion"}
     qs = web_resolve.build_queries(form, {"resolves_on": "carried_out"})
-    check("three queries: topic, completion, by type",
+    check("carried_out: two queries, topic and completion, both with the object",
           qs == ["US Treasury long-dated bonds $4 billion",
-                 "US Treasury bought back long-dated bonds $4 billion",
-                 "US Treasury bought back"])
+                 "US Treasury bought back long-dated bonds $4 billion"])
+    check("no query is actor + verb alone (the 3 Oct junk query)",
+          all(form["object"].split()[0] in q for q in qs))
     check("in_effect adds the standard 'takes effect' phrase",
           web_resolve.build_queries(form, {"resolves_on": "in_effect"})[-1]
           == "long-dated bonds $4 billion takes effect")
@@ -320,6 +341,12 @@ def part_three():
           "RESULTS or OUTCOME proves it happened" in prompt)
     check("reader told: news reports of an official act count as official",
           "reliable news reports OF the official act count" in prompt)
+    check("reader told: repeated act -> date of the FIRST time",
+          "give the date of the FIRST time" in prompt)
+    check("reader told: cite EVERY supporting article",
+          "Cite EVERY article that shows it happened" in prompt)
+    check("form told: the act itself, not a policy change about it",
+          '"bought", not "increased the program"' in web_resolve.QUERY_PROMPT)
 
 
 # ---------------------------------------------------------------------------
@@ -396,6 +423,30 @@ def part_four():
     check("REPLAY: both searches' queries recorded",
           row["queries"].count("Q0003") >= 4)
     shutil.rmtree(sandbox, ignore_errors=True)
+
+    # (a2) REPLAY of the 3 Oct v19 probe. The reader cited only [5] and dated
+    # the latest operation; ET [26] and Reuters [27] also reported operations
+    # done. Its real answer must stay pending; a cite-everything answer over
+    # the same 40 articles must resolve.
+    v19 = [art("2026-10-0%d" % (3 - i % 3), f"Pub{i}", f"Yields story {i}")
+           for i in range(40)]
+    v19[4] = art("2026-10-02", "BeInCrypto",
+                 "US Treasury Buys $6 Billion of Bonds as Bitcoin Battles 24-Year-High Yields",
+                 site="beincrypto.com")
+    v19[25] = art("2026-10-01", "The Economic Times",
+                  "US Market: Treasury bond purchases fall below $6 billion buyback cap",
+                  site="economictimes.indiatimes.com")
+    v19[26] = art("2026-10-01", "Reuters",
+                  "Treasury's smaller-than-expected buybacks fuel debate over aims",
+                  site="reuters.com")
+    q3 = {"id": "Q0003", "created": "2026-08-22", "deadline": "2026-12-31"}
+    real = {"happened": True, "event_date": "2026-10-02", "supporting_articles": [5]}
+    check("REPLAY v19: its real one-citation answer stays pending",
+          web_resolve.judge(q3, real, v19, TODAY, SETTINGS)[0] == "pending")
+    full = {"happened": True, "event_date": "2026-10-01",
+            "supporting_articles": [5, 26, 27]}
+    check("REPLAY v19: citing every report over the same articles resolves",
+          web_resolve.judge(q3, full, v19, TODAY, SETTINGS)[0] == "resolved_yes")
 
     # (b) Follow-up finds nothing either -> it goes to you, not silence.
     sandbox = _sandbox()

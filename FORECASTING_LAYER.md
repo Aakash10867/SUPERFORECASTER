@@ -11,7 +11,8 @@ v16 (2 Oct 2026) adds web resolution: one Google-Search reader, YES only,
 judged by code. v17 (2 Oct 2026) fixes the structural causes of the Q0003 miss:
 paper coverage, gate H, `resolves_on`, nightly scheduled run. v18 (3 Oct 2026)
 replaces the web search, which never worked; v19 (3 Oct 2026) fixes how it
-reads and adds follow-the-clue. See the v18 and v19 sections at the end.
+reads and adds follow-the-clue; v20 (3 Oct 2026) fixes result ranking and
+the reader's citing and dating. See the v18-v20 sections at the end.
 
 ### Repo findings (v7, reviewed at close of §4)
 
@@ -1961,6 +1962,53 @@ Re-run the probe on Q0003. Expected: `resolved_yes`, dated 2026-09-10 —
 either straight from the first reading (the results headlines were already in
 the list) or via the follow-up. The offline suite replays the real 25
 headlines and the reader's real mistake, and checks the follow-up rescues it.
+
+---
+
+## v20 — Second probe: right answer, wrong evidence and wrong date (3 October 2026)
+
+### The probe
+
+v19's probe on Q0003: the reader said **happened** — progress — but the
+decision was `pending` (one publisher), and the date it gave was **2 Oct**,
+not 10 Sep. Had it resolved, the trail would have been scored three weeks
+too long. Four causes, all implementation, none philosophy:
+
+1. **Results were sorted newest-first, then cut to 40** (Claude's bug since
+   v18). On 3 Oct the queries returned hundreds of fresh "Treasury yields"
+   stories, so all 40 articles were dated 1–3 Oct; every September report of
+   the 10 Sep operation — which v18's probe had found — was cut before the
+   reader saw it.
+2. **A junk query.** The third query for carried-out acts was actor + verb
+   alone ("US Treasury increased"), which matches every Treasury story.
+3. **The form described a policy change, not the act** ("increased … program
+   to 4 billion" instead of "bought").
+4. **The reader cited one article when three supported it** (BeInCrypto 2 Oct,
+   Economic Times and Reuters 1 Oct all reported operations done), and dated
+   the latest operation, not the first.
+
+Note: buyback operations have continued since September, so later reports
+of later operations are real evidence that the act happened — but only the
+first operation dates the resolution.
+
+### Fixes
+
+- Results keep each feed's relevance order, interleaved fairly across
+  queries and editions, then capped; never re-sorted by date.
+- No actor-plus-verb query; every query carries the object. Carried-out acts
+  get topic + completion queries only.
+- Form: describe the act the criteria require, not a plan or policy change.
+- Reader: cite EVERY supporting article; for a repeated act, give the FIRST
+  date.
+- Follow-up search restricted to the days around the scheduled date (Google's
+  after:/before: operators), so reports of the act are not drowned by later
+  news.
+
+### Acceptance test
+
+Probe Q0003 again. Expected `resolved_yes`; the date should be 10 Sep. If it
+resolves with a later date, the first operation's reports still are not
+reaching the reader — and the printed article list will show it.
 
 ---
 

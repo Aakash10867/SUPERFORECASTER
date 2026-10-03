@@ -25,8 +25,10 @@ confirmation it could never see. v19 fixes all three.
 HOW ONE CHECK RUNS (v19)
 ------------------------
   1. A cheap call fills a FORM: actor, the act in the past tense in headline
-     words, object. Code assembles three queries of a FIXED SHAPE from it:
-     topic, completion, and one standard phrase for the kind of act.
+     words, object. Code assembles queries of a FIXED SHAPE from it: topic
+     and completion, plus one standard phrase for announced / in-effect acts.
+     Results keep Google's relevance order (v20) -- never re-sorted by date,
+     which on 3 Oct cut every September report out of the list.
   2. news_search.py runs them against Google News (US and India editions) and
      returns real articles: headline, publisher, site, publication date.
   3. One model (3.x Flash Lite) reads that numbered list and answers: has the
@@ -111,9 +113,12 @@ QUESTION: {question}
 RESOLUTION CRITERIA: {criteria}
 
   actor     -- who must act (e.g. "US Treasury", "RBI", "US Senate")
-  act_past  -- the act in the PAST TENSE, in the words a headline would use \
-when reporting it DONE (e.g. "bought back", "confirms", "signed", \
-"notified", "struck", "imposes")
+  act_past  -- the act the RESOLUTION CRITERIA require to have happened, in \
+the PAST TENSE, in the words a headline would use when reporting it DONE \
+(e.g. "bought back", "confirms", "signed", "notified", "struck", \
+"imposes"). The act itself -- not a plan, policy change or decision about \
+it: for a question about buyback purchases reaching a size, the act is \
+"bought", not "increased the program".
   object    -- what it is done to, with any key number (e.g. "long-dated \
 bonds $4 billion", "Heidi Overton FDA", "Ganga water treaty")
 
@@ -146,8 +151,10 @@ see the official record itself.
 - "WHAT RESOLVES IT" above says which act counts. Follow it exactly. Read the \
 criteria literally, every other clause.
 - If the act happened, give the date it HAPPENED -- not the date it was first \
-announced, unless the announcement is the act.
-- Cite the articles that show it HAPPENED, by their numbers.
+announced, unless the announcement is the act. If it has happened MORE THAN \
+ONCE (repeated operations, several votes), give the date of the FIRST time.
+- Cite EVERY article that shows it happened, by number -- all of them, not \
+just the clearest one.
 - Use nothing but these articles. If they do not show it clearly, answer \
 "happened": false. Never conclude that the question resolves NO.
 - LEAD: if the articles show the resolving act was announced or scheduled for \
@@ -180,7 +187,10 @@ happened.
 TYPE_PHRASE = {
     "announced": "{actor} announces {object}",
     "in_effect": "{object} takes effect",
-    "carried_out": "{actor} {act_past}",
+    # v20: none for carried_out. "{actor} {act_past}" without the object
+    # ("US Treasury increased") matched every Treasury story of the week and
+    # flooded the 3 Oct probe with bond-yield news.
+    "carried_out": "",
 }
 
 
@@ -455,7 +465,7 @@ def build_queries(form: dict, q: dict) -> list[str]:
         f"{form['actor']} {form['object']}",
         f"{form['actor']} {form.get('act_past','')} {form['object']}",
         template.format(**{"actor": form["actor"], "object": form["object"],
-                           "act_past": form.get("act_past", "")}),
+                           "act_past": form.get("act_past", "")}) if template else "",
     ):
         text = _clean(text, 14)
         if text and text not in out:
@@ -563,8 +573,11 @@ def check_one(q: dict, router, settings: dict, today: dt.date) -> dict:
 
     # The one follow-up.
     fq = followup_queries(form, lead[1])
+    # v20: look right around the scheduled date (a day before, four after),
+    # so the reports of the act are not drowned by later news.
+    window = (lead[0] - dt.timedelta(days=1), lead[0] + dt.timedelta(days=4))
     try:
-        more, p2 = news_search.search(fq, limit=limit)
+        more, p2 = news_search.search(fq, limit=limit, window=window)
     except news_search.SearchUnavailable as exc:
         r["problems"] = problems + [f"follow-up search: {exc}"]
         return r

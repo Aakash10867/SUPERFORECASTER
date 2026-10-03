@@ -318,19 +318,23 @@ How one check runs:
 
 1. A cheap model call fills a form -- **actor**, the **act in the past tense**
    as a headline would say it, **object** -- and the code builds three queries
-   of a fixed shape from it: topic, completion, and a standard phrase for the
-   kind of act ("takes effect", "announces"). The shape is fixed; the words
-   are the act's own.
+   of a fixed shape from it: topic and completion, plus a standard phrase for
+   announced or in-effect acts ("announces", "takes effect"). The shape is
+   fixed; the words are the act's own. Results keep Google's relevance order,
+   so an old report of the act is not pushed out by a flood of fresh news.
 2. **The code** searches Google News (US and India editions, free RSS feed, no
    key, no quota) and gets real articles: headline, publisher, site, date.
 3. One model reads that numbered list and says whether the act happened, on
    what date, and **which articles show it**. A report of the act's
    *results* proves it happened, even a disappointing one ("fell short of its
-   cap"). News reports of an official act count as official.
+   cap"). News reports of an official act count as official. If it happened
+   more than once, the date is the **first** time, and the reader must cite
+   **every** article that shows it.
 4. **Follow the clue.** If the act has not happened but was **scheduled for a
    date that has passed**, one more search chases its results and the reader
    looks again. Still nothing → it goes to you: *"was due on X, no report it
-   happened"*. A scheduled date still in the future is stored on the question
+   happened"*. The follow-up searches only the days around the scheduled
+   date. A scheduled date still in the future is stored on the question
    (`awaiting` in `questions.csv`), and that question is checked first once
    the date passes.
 5. **Code decides.** Only YES is ever automatic:

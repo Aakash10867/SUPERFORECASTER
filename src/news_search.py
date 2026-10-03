@@ -119,22 +119,62 @@ def parse(xml_text: str) -> list[dict]:
     return out
 
 
-def search(queries: list[str], limit: int = 25, fetch=None) -> tuple[list[dict], list[str]]:
+def _key(a: dict) -> str:
+    return re.sub(r"\W+", " ", a.get("title", "").lower()).strip()
+
+
+def _interleave(lists: list[list[dict]], limit: int) -> list[dict]:
+    """
+    Round-robin across result lists, keeping each list's own order, dropping
+    duplicate headlines, stopping at `limit`.
+
+    v20: results are NOT sorted by date. Google returns each feed in relevance
+    order, and that order is what we keep. v18/v19 sorted newest-first and
+    then cut to the limit -- so on 3 Oct, a flood of fresh "Treasury yields"
+    stories pushed every September report of the 10 Sep buyback out of the
+    list before the reader saw it. For resolution, the old report is often
+    the one that matters.
+    """
+    seen, out = set(), []
+    longest = max((len(x) for x in lists), default=0)
+    for i in range(longest):
+        for lst in lists:
+            if i < len(lst):
+                k = _key(lst[i])
+                if k and k not in seen:
+                    seen.add(k)
+                    out.append(lst[i])
+                    if len(out) >= limit:
+                        return out
+    return out
+
+
+def search(queries: list[str], limit: int = 40, fetch=None,
+           window: tuple | None = None) -> tuple[list[dict], list[str]]:
     """
     Run every query against both editions; return (articles, problems).
 
-    Articles are merged, de-duplicated by headline, newest first, capped at
-    `limit`. `problems` lists fetches that failed -- partial failure is
-    reported but tolerated. If EVERY fetch fails, raises SearchUnavailable.
+    Articles from all fetches are interleaved (relevance order within each
+    feed, fair shares across feeds), de-duplicated by headline and capped at
+    `limit`. `window` = (after, before) as dates restricts results to that
+    span with Google's after:/before: operators -- used by the follow-up
+    search to look right around a scheduled date. `problems` lists fetches
+    that failed; partial failure is tolerated. If EVERY fetch fails, raises
+    SearchUnavailable.
 
     `fetch(url) -> (status_code, text)` is injectable for offline tests.
     """
     fetch = fetch or _http_get
-    seen, articles, problems = set(), [], []
+    lists, problems = [], []
     attempts = ok = 0
+    suffix = ""
+    if window:
+        after, before = window
+        suffix = f" after:{after.isoformat()} before:{before.isoformat()}"
     for query in [q for q in queries if q and q.strip()][:3]:
         for hl, gl, ceid in EDITIONS:
-            url = FEED.format(q=quote_plus(query.strip()), hl=hl, gl=gl, ceid=ceid)
+            url = FEED.format(q=quote_plus(query.strip() + suffix),
+                              hl=hl, gl=gl, ceid=ceid)
             attempts += 1
             try:
                 status, text = fetch(url)
@@ -145,29 +185,21 @@ def search(queries: list[str], limit: int = 25, fetch=None) -> tuple[list[dict],
                 problems.append(f"{gl} '{query}': HTTP {status}")
                 continue
             ok += 1
-            for a in parse(text):
-                key = re.sub(r"\W+", " ", a["title"].lower()).strip()
-                if key and key not in seen:
-                    seen.add(key)
-                    articles.append(a)
+            lists.append(parse(text))
             if fetch is _http_get:
                 time.sleep(PAUSE)
     if attempts and not ok:
         raise SearchUnavailable("; ".join(problems[:4]) or "no fetch succeeded")
-    articles.sort(key=lambda a: a["date"], reverse=True)
-    return articles[:limit], problems
+    return _interleave(lists, limit), problems
 
 
 def merge(first: list[dict], second: list[dict], limit: int = 40) -> list[dict]:
-    """Union of two result lists, de-duplicated by headline, newest first."""
-    seen, out = set(), []
-    for a in list(first) + list(second):
-        key = re.sub(r"\W+", " ", a.get("title", "").lower()).strip()
-        if key and key not in seen:
-            seen.add(key)
-            out.append(a)
-    out.sort(key=lambda a: a["date"], reverse=True)
-    return out[:limit]
+    """
+    Union of two result lists for the follow-up reading. The targeted
+    follow-up results go FIRST -- they were searched for this exact act and
+    date -- then the first search's, interleaved, de-duplicated, capped.
+    """
+    return _interleave([list(second), list(first)], limit)
 
 
 def _http_get(url: str) -> tuple[int, str]:
