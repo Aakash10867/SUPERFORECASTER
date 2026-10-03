@@ -137,6 +137,10 @@ web_resolution:
   # watch fits; this cap stops one run from spending the whole day.
   max_checks_per_run: 30
 
+  # v22: official = the page's site ends with one of official_suffixes or
+  # is one of official_domains (below). A verified quote from an official
+  # page is evidence tier A and resolves on its own.
+
   # v19: most articles the reader sees per check (first search plus the one
   # follow-up, merged, newest first). Headlines are short; 40 is cheap.
   max_articles: 40
@@ -174,3 +178,19 @@ coverage:
   window_days: 30
   regular_share: 0.5
   min_upload_days: 5     # below this, too little history to call anything regular
+
+# ---------------------------------------------------------------------------
+# FULL-TEXT CHECK (v22) -- Tavily; see src/deep_search.py and web_resolve.py
+# ---------------------------------------------------------------------------
+# Headlines (free) screen every question daily but NEVER resolve. Full text
+# (1 Tavily credit per read) is read when a headline says it happened, when a
+# dated lead passes, and in a weekly sweep. The free plan is 1,000 credits a
+# month; with ~16 questions this uses roughly 100-300.
+deep_check:
+  enabled: true
+  max_results: 8            # articles per full-text read
+  chars_per_article: 4000   # how much of each article the reader sees
+  sweep_days: 7             # read every open question in full at least this often
+  max_deep_per_run: 20      # full-text reads per run, whatever triggers them
+  reserve_credits: 100      # below this, weekly sweeps pause
+  min_credits: 5            # below this, full-text reading stops (red alert)

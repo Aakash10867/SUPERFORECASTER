@@ -1,18 +1,19 @@
 #!/usr/bin/env python3
 """
-Offline test for web resolution (v19: the model fills a form, code builds the
-queries and searches Google News, a model reads, code decides, and one
-follow-up search chases a scheduled act whose date has passed). No API key,
-no network.
+Offline tests for web resolution (v22: headlines screen, Tavily full text
+decides, code verifies every quote). No API key, no network.
 
-  Part 1  every code check in web_resolve.judge(), one case each
-  Part 2  the RSS parser on a realistic Google News feed
-  Part 3  query shape (form -> fixed queries) and the reader's new rules
-  Part 4  REPLAY of the live 3 Oct probe: the 25 real headlines, the reader's
-          real mistake, and the follow-up that must rescue it; plus the
-          pending tripwire and stored "awaiting" dates
-  Part 5  the full run loop, and LOUD failure at the top of the log
-  Part 6  the probe writes nothing; lens grounding stays off
+Written from a FAILURE LIST, not only from the happy path. v16-v21 tests fed
+fakes that behaved the way the code's author imagined; every live failure was
+where reality differed. So each part below names the ways a step can go
+wrong -- a WRONG YES (corrupts the record) or a MISSED YES (the Q0003 kind) --
+and tests each one.
+
+  Part 1  headline search and query shape
+  Part 2  the evidence judge: every wrong-YES and missed-YES case
+  Part 3  the Tavily client against HTTP failures
+  Part 4  end to end, including replays of the real Q0003/Q0013/Q0016 probes
+  Part 5  the probe writes nothing; lens grounding stays off
 
     python test_web_resolve.py
 """
@@ -25,11 +26,12 @@ import tempfile
 from pathlib import Path
 
 os.environ.setdefault("SUPERFORECASTER_API", "fake-key-for-offline-test")
+os.environ.pop("TAVILY_API_KEY", None)            # tests must never use a real key
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from src import config, models, news_search, resolve, store, web_resolve  # noqa: E402
-from src.lenses import LensRunner                                        # noqa: E402
-from src.runlog import RunLog                                            # noqa: E402
+from src import config, deep_search, models, news_search, store, web_resolve  # noqa: E402
+from src.lenses import LensRunner                                              # noqa: E402
+from src.runlog import RunLog                                                  # noqa: E402
 
 TODAY = dt.date(2026, 10, 3)
 SETTINGS = config.load_settings()
@@ -41,69 +43,37 @@ def check(label, passed):
     RESULTS.append((label, bool(passed)))
 
 
-def art(date, publisher, title, site=None):
+def head(date, publisher, title, site=None):
+    """A headline as news_search returns it."""
     return {"date": date, "publisher": publisher, "title": title,
             "site": site or publisher.lower().replace(" ", "") + ".com",
             "snippet": "", "link": ""}
 
 
-# ---------------------------------------------------------------------------
-# Part 1: the code checks
-# ---------------------------------------------------------------------------
+def full(date, site, title, text):
+    """A full-text article as deep_search returns it."""
+    return {"date": date, "site": site, "publisher": site, "title": title,
+            "url": f"https://{site}/a", "text": text, "snippet": text[:200],
+            "full": bool(text)}
+
+
+# Realistic material, modelled on what the 3 Oct probes actually returned.
+CNBC_TEXT = ("WASHINGTON -- The Treasury Department on Thursday bought $5.4 billion "
+             "of older long-dated bonds in its first enlarged buyback operation, "
+             "short of the $6 billion it had offered to repurchase. Dealers "
+             "offered fewer bonds than expected. " * 3)
+PLAN_TEXT = ("The Treasury said on Wednesday it will buy back up to $6 billion of "
+             "longer-dated debt on Thursday, triple the normal size. " * 4)
+OFFICIAL_TEXT = ("Treasury Buyback Results. Operation date September 10, 2026. "
+                 "Total par amount accepted: $5,412 million in the 20 to 30 year "
+                 "sector. " * 4)
 
 Q = {"id": "Q1", "created": "2026-08-22", "deadline": "2026-12-31",
      "question": "q", "resolution_criteria": "c"}
 
-ARTS = [
-    art("2026-09-11", "Reuters", "Treasury buys $6 billion in long-dated buyback"),
-    art("2026-09-10", "CNBC", "Treasury completes $6 billion buyback operation"),
-    art("2026-09-09", "Bloomberg", "Treasury to buy back up to $6 billion on Thursday"),
-    art("2026-09-10", "Treasury", "Buyback results", site="home.treasury.gov"),
-    art("2026-09-12", "Reuters", "Reuters follow-up on buyback",
-        site="www.reuters.com"),
-]
-
-
-def yes(date="2026-09-10", cite=(1, 2), **extra):
-    return {"happened": True, "status": "happened", "event": "e",
-            "event_date": date, "supporting_articles": list(cite),
-            "evidence": "ev", "reason": "r", **extra}
-
-
-def act(answer, articles=ARTS, q=Q):
-    return web_resolve.judge(q, answer, articles, TODAY, SETTINGS)[0]
-
-
-def part_one():
-    check("two different publishers report it done -> YES",
-          act(yes(cite=(1, 2))) == "resolved_yes")
-    check("one official site -> YES", act(yes(cite=(4,))) == "resolved_yes")
-    check("one unofficial publisher -> pending", act(yes(cite=(1,))) == "pending")
-    check("same publisher twice is ONE source", act(yes(cite=(1, 5))) == "pending")
-    check("cited article from BEFORE the event cannot show it done",
-          act(yes(cite=(3,))) == "not_yet")
-    check("pre-event article ignored, post-event ones still count",
-          act(yes(cite=(3, 1, 2))) == "resolved_yes")
-    check("cites nothing -> pending", act(yes(cite=())) == "pending")
-    check("cites numbers that don't exist -> pending",
-          act(yes(cite=(0, 99))) == "pending")
-    check("citations as a string are understood",
-          act(yes(cite=(), supporting_articles="1, 2")) == "resolved_yes")
-    check("no articles found -> not yet, without asking a model",
-          act(yes(), articles=[]) == "not_yet")
-    check("reader says not happened -> not yet",
-          act({"happened": False, "status": "announced_not_yet_happened"}) == "not_yet")
-    check("happened but no date -> pending", act(yes(date="")) == "pending")
-    check("future date -> not yet", act(yes(date="2026-11-04")) == "not_yet")
-    check("after the deadline -> not a YES",
-          act(yes(), q={**Q, "deadline": "2026-09-05"}) == "not_yet")
-    check("before the question existed -> pending (born resolved)",
-          act(yes(date="2026-08-19")) == "pending")
-    check("no answer at all -> failed", act(None) == "failed")
-
 
 # ---------------------------------------------------------------------------
-# Part 2: the RSS parser
+# Part 1: headline search and query shape
 # ---------------------------------------------------------------------------
 
 FEED = """<?xml version="1.0" encoding="UTF-8"?>
@@ -112,82 +82,241 @@ FEED = """<?xml version="1.0" encoding="UTF-8"?>
   <title>Treasury buys $6 billion of older bonds in expanded buyback - Reuters</title>
   <link>https://news.google.com/rss/articles/abc</link>
   <pubDate>Thu, 10 Sep 2026 19:12:00 GMT</pubDate>
-  <description>&lt;a href="x"&gt;Treasury buys $6 billion of older bonds in expanded buyback&lt;/a&gt;&amp;nbsp;&amp;nbsp;&lt;font color="#6f6f6f"&gt;Reuters&lt;/font&gt;</description>
+  <description>Treasury buys</description>
   <source url="https://www.reuters.com">Reuters</source>
 </item>
 <item>
   <title>Treasury to buy back up to $6 billion - CNBC</title>
-  <link>https://news.google.com/rss/articles/def</link>
   <pubDate>Wed, 09 Sep 2026 21:00:00 GMT</pubDate>
-  <description>Treasury to buy back up to $6 billion</description>
   <source url="https://www.cnbc.com">CNBC</source>
 </item>
-<item>
-  <title>No date here - Somebody</title>
-  <source url="https://x.com">Somebody</source>
-</item>
+<item><title>No date here - Somebody</title><source url="https://x.com">Somebody</source></item>
 </channel></rss>"""
 
 
-def part_two():
+def part_one():
     items = news_search.parse(FEED)
-    check("parser reads every dated item, drops the undated one", len(items) == 2)
-    a = items[0]
-    check("headline has the ' - Publisher' suffix removed",
-          a["title"] == "Treasury buys $6 billion of older bonds in expanded buyback")
-    check("publisher and site come from the feed's <source>",
-          a["publisher"] == "Reuters" and a["site"] == "reuters.com")
-    check("publication date parsed (UTC)", a["date"] == "2026-09-10")
-    check("garbage XML gives no items, not a crash", news_search.parse("<oops") == [])
+    check("RSS: dated items parsed, undated dropped", len(items) == 2)
+    check("RSS: publisher/site from the feed, headline suffix removed",
+          items[0]["site"] == "reuters.com"
+          and items[0]["title"] == "Treasury buys $6 billion of older bonds in expanded buyback")
 
-    calls = []
-
-    def fetch(url):
-        calls.append(url)
-        return 200, FEED
-    arts, problems = news_search.search(["treasury buyback"], fetch=fetch)
-    check("each query runs against US and India editions",
-          len(calls) == 2 and "gl=US" in calls[0] and "gl=IN" in calls[1])
-    check("duplicate headlines across editions are merged", len(arts) == 2)
-    check("feed (relevance) order kept, not re-sorted by date",
-          [a["date"] for a in arts] == ["2026-09-10", "2026-09-09"])
-
-    # v20: THE 3 OCT BUG. A flood of fresh results must not push an old,
-    # relevant report out of the list. Feed A is relevance-ordered with the
-    # Sep report first; feed B is 60 fresh October stories.
-    old = art("2026-09-10", "Reuters", "Treasury buys $5.4 billion in buyback")
-    flood = [art("2026-10-0%d" % (1 + i % 3), f"Pub{i}", f"Yields story {i}")
-             for i in range(60)]
+    old = head("2026-09-10", "Reuters", "Treasury buys $5.4 billion")
+    flood = [head("2026-10-02", f"P{i}", f"Yields story {i}") for i in range(60)]
     got = news_search._interleave([[old] + flood[:5], flood], 40)
-    check("an old relevant report survives a flood of new stories",
-          got[0]["title"] == old["title"] and len(got) == 40)
-
-    urls = []
-    def spy(url):
-        urls.append(url)
-        return 200, FEED
-    news_search.search(["treasury buyback"], fetch=spy,
-                       window=(dt.date(2026, 9, 9), dt.date(2026, 9, 14)))
-    check("date window becomes after:/before: in the query",
-          "after%3A2026-09-09" in urls[0] and "before%3A2026-09-14" in urls[0])
-
-    def half(url):
-        return (200, FEED) if "gl=US" in url else (503, "")
-    arts, problems = news_search.search(["x"], fetch=half)
-    check("one edition failing is tolerated and reported",
-          len(arts) == 2 and len(problems) == 1)
+    check("RSS: an old relevant report survives a flood of new stories",
+          got[0]["title"] == old["title"])
 
     def dead(url):
         raise OSError("blocked")
     try:
         news_search.search(["x"], fetch=dead)
-        check("every fetch failing raises SearchUnavailable", False)
+        check("RSS: every fetch failing raises SearchUnavailable", False)
     except news_search.SearchUnavailable:
-        check("every fetch failing raises SearchUnavailable", True)
+        check("RSS: every fetch failing raises SearchUnavailable", True)
+
+    form = {"actor": "US Treasury", "act_past": "bought back",
+            "object": "long-dated bonds $4 billion"}
+    qs = web_resolve.build_queries(form, {"resolves_on": "carried_out"})
+    check("queries: topic + completion, every query carries the object",
+          len(qs) == 2 and all("long-dated" in x for x in qs))
 
 
 # ---------------------------------------------------------------------------
-# Fakes and sandbox
+# Part 2: the evidence judge -- every way to a WRONG YES or a MISSED YES
+# ---------------------------------------------------------------------------
+
+FULL = [full("2026-09-10", "cnbc.com", "Treasury buys $5.4bn", CNBC_TEXT),
+        full("2026-09-09", "wsj.com", "Treasury plans $6bn buyback", PLAN_TEXT),
+        full("", "home.treasury.gov", "Buyback results", OFFICIAL_TEXT),
+        full("", "cnbc.com", "Undated CNBC piece", CNBC_TEXT),
+        full("2026-09-11", "treasury.gov.evil.com", "Fake official", OFFICIAL_TEXT),
+        full("2026-09-12", "cnbc.com", "CNBC follow-up", CNBC_TEXT)]   # T6: same site, DATED
+HEADS = [head("2026-10-02", "BeInCrypto", "US Treasury Buys $6 Billion of Bonds",
+              site="beincrypto.com"),
+         head("2026-09-09", "CNBC", "Treasury to buy back up to $6 billion",
+              site="cnbc.com"),
+         head("2026-09-11", "Reuters", "Treasury buyback draws $5.4 billion", site="reuters.com")]
+Q_SENT = "The Treasury Department on Thursday bought $5.4 billion of older long-dated bonds"
+
+
+def ans(*evidence, date="2026-09-10", happened=True):
+    return {"happened": happened, "event_date": date, "event": "e", "reason": "r",
+            "evidence": [{"source": s, "quote": qt} for s, qt in evidence]}
+
+
+def verdict(answer, full_=FULL, heads=HEADS, q=Q):
+    return web_resolve.judge_deep(q, answer, full_, heads, TODAY, SETTINGS)
+
+
+def part_two():
+    # The intended paths
+    a, w, f = verdict(ans(("T1", Q_SENT), ("H3", "Treasury buyback draws $5.4 billion")))
+    check("RESOLVE: full-text quote (B) + a second publisher's headline (C)",
+          a == "resolved_yes" and f["tier"] == "B")
+    a, w, f = verdict(ans(("T3", "Total par amount accepted: $5,412 million in the 20 to 30 year sector")))
+    check("RESOLVE: one official page, quote verified (A), even undated",
+          a == "resolved_yes" and f["tier"] == "A")
+
+    # WRONG-YES risks
+    a, w, f = verdict(ans(("T1", "The Treasury bought $9 billion of bonds on Thursday morning"),
+                          ("H3", "Treasury buyback draws $5.4 billion")))
+    check("WRONG-YES guard: invented quote (not in the text) is thrown away",
+          a != "resolved_yes" and f["evidence"][0]["ok"] is False)
+    a, w, f = verdict(ans(("T2", "it will buy back up to $6 billion of longer-dated debt on Thursday"),
+                          ("H3", "Treasury buyback draws $5.4 billion")))
+    check("WRONG-YES guard: a 'will buy' article dated BEFORE the event never counts",
+          a != "resolved_yes" and "before the event" in f["evidence"][0]["why"])
+    # Both CNBC articles are dated and verified, so ONLY de-duplication
+    # stands between this and a YES. (An earlier draft used an undated
+    # article, which was rejected for its missing date -- the test passed
+    # without ever exercising de-duplication.)
+    a, w, f = verdict(ans(("T1", Q_SENT), ("T6", Q_SENT)))
+    check("WRONG-YES guard: the same publisher twice is ONE publisher",
+          a == "pending" and f["sites"] == ["cnbc.com"]
+          and sum(e["ok"] for e in f["evidence"]) == 2)
+    a, w, f = verdict(ans(("T5", "Total par amount accepted: $5,412 million in the 20 to 30 year sector")))
+    check("WRONG-YES guard: treasury.gov.evil.com is not official",
+          a == "pending" and f["tier"] == "B")
+    a, w, f = verdict(ans(("T1", "Treasury Department on Thursday bought"),
+                          ("H3", "Treasury buyback draws $5.4 billion")))
+    check("WRONG-YES guard: a too-short quote does not count",
+          a != "resolved_yes" and f["evidence"][0]["ok"] is False)
+    a, w, f = verdict(ans(("T4", Q_SENT), ("H3", "Treasury buyback draws $5.4 billion")))
+    check("WRONG-YES guard: an undated non-official article does not count",
+          a != "resolved_yes" and "no date" in f["evidence"][0]["why"])
+    a, w, f = verdict(ans(("H1", "US Treasury Buys $6 Billion of Bonds"),
+                          ("H3", "Treasury buyback draws $5.4 billion")))
+    check("WRONG-YES guard: headlines alone NEVER resolve, however many",
+          a == "pending" and f["tier"] == "C")
+    a, w, f = verdict(ans(("T9", Q_SENT), ("Z1", Q_SENT), ("H0", "x")))
+    check("WRONG-YES guard: citations to sources that don't exist are rejected",
+          a == "pending" and all(not e["ok"] for e in f["evidence"]))
+    check("WRONG-YES guard: future event date -> not yet",
+          verdict(ans(("T1", Q_SENT), date="2026-11-04"))[0] == "not_yet")
+    check("WRONG-YES guard: event after the deadline -> not a YES",
+          verdict(ans(("T1", Q_SENT)), q={**Q, "deadline": "2026-09-05"})[0] == "not_yet")
+    # With B + C this WOULD resolve; only the born-resolved check stops it.
+    a, w, f = verdict(ans(("T1", Q_SENT), ("H3", "Treasury buyback draws $5.4 billion"),
+                          date="2026-08-19"))
+    check("WRONG-YES guard: event before the question existed -> you decide",
+          a == "pending" and "BEFORE the question was created" in w)
+    check("WRONG-YES guard: says happened but no date -> you decide",
+          verdict(ans(("T1", Q_SENT), date=""))[0] == "pending")
+    check("WRONG-YES guard: reader says not happened -> not yet",
+          verdict(ans(happened=False))[0] == "not_yet")
+    check("WRONG-YES guard: no parseable answer -> failed, not a guess",
+          verdict(None)[0] == "failed")
+
+    # MISSED-YES risks
+    curly = Q_SENT.replace("$5.4", "$5.4").replace("Thursday", "Thursday") \
+                  .replace("The Treasury", "The “Treasury”")
+    a, w, f = verdict(ans(("T1", curly), ("H3", "Treasury buyback draws $5.4 billion")))
+    check("MISSED-YES guard: curly quotes / punctuation differences still verify",
+          a == "resolved_yes")
+    a, w, f = verdict(ans(("T1", "  " + Q_SENT.upper() + ".  "),
+                          ("H3", "Treasury buyback draws $5.4 billion")))
+    check("MISSED-YES guard: case and spacing differences still verify", a == "resolved_yes")
+    a, w, f = verdict(ans(("t1", Q_SENT), ("[H3]", "Treasury buyback draws $5.4 billion")))
+    check("MISSED-YES guard: 't1' and '[H3]' source labels are understood",
+          a == "resolved_yes")
+    check("MISSED-YES guard: a B with no second publisher waits for you, not dropped",
+          verdict(ans(("T1", Q_SENT)))[0] == "pending")
+
+
+# ---------------------------------------------------------------------------
+# Part 3: the Tavily client against HTTP failures
+# ---------------------------------------------------------------------------
+
+def tav_result(**kw):
+    base = {"title": "Treasury buys $5.4bn", "url": "https://www.cnbc.com/x",
+            "content": "snippet", "raw_content": CNBC_TEXT,
+            "published_date": "Thu, 10 Sep 2026 19:00:00 GMT"}
+    base.update(kw)
+    return base
+
+
+def part_three():
+    sent = []
+
+    def ok_post(url, body, headers):
+        sent.append((url, body, headers))
+        return 200, {"results": [tav_result()]}, ""
+    c = deep_search.TavilyClient(key="tvly-test", post=ok_post)
+    arts = c.search("q", (dt.date(2026, 9, 9), dt.date(2026, 9, 14)))
+    b = sent[0][1]
+    check("Tavily: request shape matches the docs (topic, raw text, dates, published date)",
+          sent[0][0].endswith("/search") and b["topic"] == "news"
+          and b["include_raw_content"] == "text" and b["include_published_date"] is True
+          and b["start_date"] == "2026-09-09" and b["end_date"] == "2026-09-14"
+          and sent[0][2]["Authorization"] == "Bearer tvly-test")
+    check("Tavily: RFC-2822 date and site parsed", arts[0]["date"] == "2026-09-10"
+          and arts[0]["site"] == "cnbc.com" and arts[0]["full"])
+    check("Tavily: ISO dates parse too",
+          deep_search.parse_date("2026-09-10T19:00:00Z") == dt.date(2026, 9, 10))
+    check("Tavily: garbage date -> None, not a crash", deep_search.parse_date("soon") is None)
+
+    stub = deep_search.to_article(tav_result(raw_content="Subscribe to read"))
+    check("Tavily: a paywall stub is NOT full text", stub["full"] is False and stub["text"] == "")
+
+    try:
+        deep_search.TavilyClient(key="").search("q")
+        check("Tavily: no key -> DeepUnavailable(no_key)", False)
+    except deep_search.DeepUnavailable as e:
+        check("Tavily: no key -> DeepUnavailable(no_key)", e.kind == "no_key")
+
+    for status, kind in ((401, "bad_key"), (432, "out_of_credits"),
+                         (433, "out_of_credits"), (429, "rate_limited"), (500, "error")):
+        c = deep_search.TavilyClient(key="k", post=lambda u, b, h, s=status: (s, None, "x"))
+        try:
+            c.search("q")
+            got = None
+        except deep_search.DeepUnavailable as e:
+            got = e.kind
+        check(f"Tavily: HTTP {status} -> {kind}", got == kind)
+
+    c = deep_search.TavilyClient(key="k", post=lambda u, b, h: (432, None, ""))
+    try:
+        c.search("q")
+    except deep_search.DeepUnavailable:
+        pass
+    calls_before = c.calls
+    try:
+        c.search("q2")
+    except deep_search.DeepUnavailable as e:
+        check("Tavily: after out-of-credits, later searches stop without calling",
+              c.calls == calls_before and e.kind == "out_of_credits")
+
+    seen = []
+
+    def picky(url, body, headers):
+        seen.append(body)
+        if "topic" in body:
+            return 400, None, "unknown field: topic"
+        return 200, {"results": [tav_result()]}, ""
+    c = deep_search.TavilyClient(key="k", post=picky)
+    arts = c.search("q", (dt.date(2026, 9, 1), dt.date(2026, 9, 5)))
+    check("Tavily: a rejected parameter (400) retries ONCE with the minimum, and says so",
+          len(seen) == 2 and "topic" not in seen[1] and arts
+          and "_degraded" in arts[0])
+
+    def net_down(url, body, headers):
+        raise OSError("connection reset")
+    try:
+        deep_search.TavilyClient(key="k", post=net_down).search("q")
+        check("Tavily: network error -> DeepUnavailable(error)", False)
+    except deep_search.DeepUnavailable as e:
+        check("Tavily: network error -> DeepUnavailable(error)", e.kind == "error")
+
+    u = deep_search.TavilyClient(key="k", get=lambda u, h: (200, {
+        "key": {"usage": 120, "limit": 1000}, "account": {}}, "")).usage()
+    check("Tavily usage: credits left computed", u == {"used": 120, "limit": 1000, "left": 880})
+    check("Tavily usage: endpoint down -> unknown (None), not a crash",
+          deep_search.TavilyClient(key="k", get=lambda u, h: (500, None, "")).usage() is None)
+
+
+# ---------------------------------------------------------------------------
+# Part 4: end to end
 # ---------------------------------------------------------------------------
 
 class FakeQuota:
@@ -200,16 +329,10 @@ class FakeQuota:
 
 
 class FakeReader(models.ModelRouter):
-    """
-    web_query  -> a form whose actor is the question id, so every query
-                  carries it and the fake search knows which list to return.
-    web_resolve -> the next scripted answer for that question, in order.
-    A question with no answers left makes the reader fail, as a dead model
-    or exhausted quota would.
-    """
+    """web_query -> form (actor = question id); headline / full-text reads ->
+    script[qid]["h"] / ["d"], told apart by the prompt."""
     def __init__(self, script):
         self.script = script
-        self.used = {k: 0 for k in script}
         self.calls = []
         self.chains = MODELS["chains"]
         self.grounding_models = set()
@@ -218,60 +341,76 @@ class FakeReader(models.ModelRouter):
 
     def generate(self, task, prompt, *, expect_json=True, temperature=0.4,
                  max_output_tokens=4096, grounded=False):
-        assert not grounded, "v18+ never asks a model to search"
         qid = next((k for k in self.script if f"QUESTION: {k} " in prompt), None)
-        self.calls.append((task, qid, prompt))
-        if task == "web_query":
-            return {"actor": qid, "act_past": "did", "object": "thing"}, "fake-lite"
-        answers = (self.script.get(qid) or {}).get("answers", [])
-        i = self.used.get(qid, 0)
-        if qid is None or i >= len(answers) or answers[i] is None:
-            self.stats.last_error = "gemini-3.5-flash-lite: rate-limited"
+        kind = "web_query" if task == "web_query" else (
+            "deep" if "FULL TEXTS:" in prompt else "headline")
+        self.calls.append((kind, qid, prompt))
+        if kind == "web_query":
+            return {"actor": qid, "act_past": "did", "object": "thing"}, "fake"
+        ans_ = (self.script.get(qid) or {}).get("d" if kind == "deep" else "h")
+        if ans_ is None:
+            self.stats.last_error = "fake: no answer"
             return None, None
-        self.used[qid] = i + 1
-        return answers[i], "fake-lite"
+        return ans_, "fake"
 
-    def reads(self, qid):
-        return [c for c in self.calls if c[0] == "web_resolve" and c[1] == qid]
-
-
-WINDOWS: list = []
+    def n(self, kind, qid=None):
+        return sum(1 for k, q, _ in self.calls if k == kind and (qid is None or q == qid))
 
 
-def fake_search_from(script, log=None):
+class FakeTavily:
+    def __init__(self, script, key="tvly-test", left=900, fail=None):
+        self.script, self.key, self.left, self.fail = script, key, left, fail
+        self.calls, self.windows, self.disabled = 0, [], ""
+
+    def usage(self):
+        return {"used": 1000 - self.left, "limit": 1000, "left": self.left}
+
+    def search(self, query, window=None):
+        if self.disabled:
+            raise deep_search.DeepUnavailable(self.disabled)
+        self.calls += 1
+        self.windows.append(window)
+        if self.fail:
+            self.disabled = self.fail
+            raise deep_search.DeepUnavailable(self.fail, "fake")
+        qid = query.split()[0]
+        return list((self.script.get(qid) or {}).get("full", []))
+
+
+def rss_from(script):
     def search(queries, limit=40, fetch=None, window=None):
-        if log is not None:
-            log.append(list(queries))
-        WINDOWS.append(window)
-        qid = next((k for k in script for q in queries if k in q.split()), None)
-        if qid is None:
-            return [], []
-        followup = any(q.endswith(" results") for q in queries)
-        return list(script[qid].get("follow" if followup else "first", [])), []
+        qid = queries[0].split()[0]
+        return list((script.get(qid) or {}).get("heads", [])), []
     return search
+
+
+class Patched:
+    def __init__(self, fn):
+        self.fn = fn
+    def __enter__(self):
+        self.orig = web_resolve.news_search.search
+        web_resolve.news_search.search = self.fn
+    def __exit__(self, *a):
+        web_resolve.news_search.search = self.orig
 
 
 def _sandbox() -> Path:
     sandbox = Path(tempfile.mkdtemp(prefix="sf-web-"))
     config.DATA = sandbox / "data"
     config.LOGS = sandbox / "logs"
-    config.RUNS = config.DATA / "runs"
-    config.REFERENCE = config.DATA / "reference"
-    config.REPORTS = config.DATA / "reports"
-    names = {
-        "QUESTIONS_CSV": "questions.csv", "PROPOSALS_CSV": "proposals.csv",
-        "FORECASTS_CSV": "forecasts.csv", "PROCESSED_CSV": "processed.csv",
-        "WAITING_CSV": "waiting_list.csv", "PENDING_TAGS_CSV": "pending_tags.csv",
-        "SCREENS_CSV": "screens.csv", "LENS_CSV": "lens_outputs.csv",
-        "DIAGNOSTICS_CSV": "diagnostics.csv",
-        "SYSTEM_PROPOSALS_CSV": "system_proposals.csv",
-        "WEB_CHECKS_CSV": "web_checks.csv",
-        "PENDING_RESOLUTIONS_CSV": "pending_resolutions.csv",
-        "COVERAGE_CSV": "coverage.csv",
-    }
+    names = {"QUESTIONS_CSV": "questions.csv", "WEB_CHECKS_CSV": "web_checks.csv",
+             "PENDING_RESOLUTIONS_CSV": "pending_resolutions.csv",
+             "PROPOSALS_CSV": "proposals.csv", "FORECASTS_CSV": "forecasts.csv",
+             "PROCESSED_CSV": "processed.csv", "WAITING_CSV": "waiting_list.csv",
+             "PENDING_TAGS_CSV": "pending_tags.csv", "SCREENS_CSV": "screens.csv",
+             "LENS_CSV": "lens_outputs.csv", "DIAGNOSTICS_CSV": "diagnostics.csv",
+             "SYSTEM_PROPOSALS_CSV": "system_proposals.csv", "COVERAGE_CSV": "coverage.csv"}
     for attr, fname in names.items():
         setattr(config, attr, config.DATA / fname)
+    config.REFERENCE = config.DATA / "reference"
     config.REFERENCE_INDEX_CSV = config.REFERENCE / "index.csv"
+    config.RUNS = config.DATA / "runs"
+    config.REPORTS = config.DATA / "reports"
     config.QUOTA_JSON = config.DATA / "quota.json"
     config.OVERRIDES_CSV = sandbox / "overrides.csv"
     config.RESOLUTIONS_CSV = sandbox / "resolutions.csv"
@@ -290,411 +429,221 @@ def _sandbox() -> Path:
     return sandbox
 
 
-def _question(qid, deadline, created="2026-08-22", **extra):
+def _q(qid, deadline="2026-12-31", created="2026-08-22", **extra):
     row = {"id": qid, "question": f"{qid} test question", "domain": "global_macro",
            "bucket": "medium", "created": created, "deadline": deadline,
-           "primary_tag": "t", "resolution_criteria": "criteria",
-           "status": "open", "shape": "point", "admitted_by": "test",
-           "resolves_on": "carried_out"}
+           "primary_tag": "t", "resolution_criteria": "criteria", "status": "open",
+           "shape": "point", "admitted_by": "test", "resolves_on": "carried_out"}
     row.update(extra)
     store.append_row(config.QUESTIONS_CSV, row)
 
 
-def NO(lead_date="", lead_what="", status="announced_not_yet_happened"):
-    return {"happened": False, "status": status, "supporting_articles": [],
-            "lead_date": lead_date, "lead_what": lead_what, "reason": "r"}
+def NO(status="no_relevant_news", **lead):
+    return {"happened": False, "status": status, "evidence": [], "reason": "r", **lead}
 
 
-class Patched:
-    """Swap the search for a fake inside a with-block."""
-    def __init__(self, fn):
-        self.fn = fn
-    def __enter__(self):
-        self.orig = web_resolve.news_search.search
-        web_resolve.news_search.search = self.fn
-    def __exit__(self, *a):
-        web_resolve.news_search.search = self.orig
-
-
-# ---------------------------------------------------------------------------
-# Part 3: queries -- fixed shape, the act's own words
-# ---------------------------------------------------------------------------
-
-def part_three():
-    form = {"actor": "US Treasury", "act_past": "bought back",
-            "object": "long-dated bonds $4 billion"}
-    qs = web_resolve.build_queries(form, {"resolves_on": "carried_out"})
-    check("carried_out: two queries, topic and completion, both with the object",
-          qs == ["US Treasury long-dated bonds $4 billion",
-                 "US Treasury bought back long-dated bonds $4 billion"])
-    check("no query is actor + verb alone (the 3 Oct junk query)",
-          all(form["object"].split()[0] in q for q in qs))
-    check("in_effect adds the standard 'takes effect' phrase",
-          web_resolve.build_queries(form, {"resolves_on": "in_effect"})[-1]
-          == "long-dated bonds $4 billion takes effect")
-    check("announced adds 'announces'",
-          "announces" in web_resolve.build_queries(form, {"resolves_on": "announced"})[-1])
-    check("no form -> falls back to the question text",
-          web_resolve.build_queries({}, {"question": "Will the RBI raise the repo rate?"})
-          == ["RBI raise the repo rate"])
-    check("follow-up queries chase the act's results",
-          web_resolve.followup_queries(form, "Treasury $6 billion buyback operation")[0]
-          == "Treasury $6 billion buyback operation results")
-    prompt = web_resolve.WEB_PROMPT
-    check("reader told: a RESULTS report proves the act happened",
-          "RESULTS or OUTCOME proves it happened" in prompt)
-    check("reader told: news reports of an official act count as official",
-          "reliable news reports OF the official act count" in prompt)
-    check("reader told: repeated act -> date of the FIRST time",
-          "give the date of the FIRST time" in prompt)
-    check("reader told: cite EVERY supporting article",
-          "Cite EVERY article that shows it happened" in prompt)
-    check("form told: the act itself, not a policy change about it",
-          '"bought", not "increased the program"' in web_resolve.QUERY_PROMPT)
-
-
-# ---------------------------------------------------------------------------
-# Part 4: the Q0003 replay -- the real probe headlines of 3 Oct 2026
-# ---------------------------------------------------------------------------
-
-PROBE = [  # the 25 articles the live v18 probe found, as (date, publisher, title)
-    ("2026-09-23", "Yahoo Finance UK", "US to Buy Back Up to $6 Billion in Longer-Dated Treasuries"),
-    ("2026-09-22", "Chase Bank", "Why the Treasury's $6 billion bond buyback matters for investors"),
-    ("2026-09-13", "Seeking Alpha", "Treasury buyback test exposes limits of support for long-term debt: SocGen"),
-    ("2026-09-11", "The Business Times", "US Treasury yields surge as oil spike, buyback results fuel sell-off"),
-    ("2026-09-10", "qz.com", "Bond yields hit multiyear highs before ECB rate decision"),
-    ("2026-09-10", "Asia Economy", "U.S. Triples Long-Term Treasury Buybacks, but Yields Rise Instead"),
-    ("2026-09-10", "WSJ", "U.S. 10-Year Treasury Yield Nears 5% as Oil Fuels Inflation Fears"),
-    ("2026-09-10", "Moomoo", "The U.S. dollar gave back approximately 1% of its summer gains"),
-    ("2026-09-10", "Futu", "Long-term municipal bond yields hit their highest level since 2011"),
-    ("2026-09-10", "Futu", "The U.S. Treasury's long-term bond buyback program, exceeding $5 billion, fell short of its upper limit"),
-    ("2026-09-09", "qz.com", "Treasury is doubling its long-term bond buybacks to boost market liquidity"),
-    ("2026-09-09", "KuCoin", "U.S. stocks fall as Treasury repurchase falls short of expectations"),
-    ("2026-09-09", "CNBC", "Treasury Department to buy back up to $6 billion in longer-term debt"),
-    ("2026-09-09", "Yahoo Finance", "Bond yields jump despite $6 bn US government intervention"),
-    ("2026-09-09", "UA.NEWS", "US Treasury Secretary Bessent to speak at Republican convention"),
-    ("2026-09-09", "WSJ", "U.S. Treasury Plans $6 Billion Buyback, Yields Rise"),
-    ("2026-09-09", "qz.com", "Bessent dared currency traders to bet against him"),
-    ("2026-09-09", "CNBC", "Bessent bond plan details to be revealed"),
-    ("2026-09-09", "Yahoo Finance", "US Treasury Triples Long-Dated Debt Buyback to $6 Billion"),
-    ("2026-09-09", "The Hill", "Treasury to buy $6B in debt, but bond yields rise"),
-    ("2026-09-09", "The New York Times", "Bond Market Rebuffs Treasury's $6 Billion Plan"),
-    ("2026-09-09", "Politico", "Treasury poised to buy up to $6B in bonds"),
-    ("2026-09-09", "WKOW", "Bond yields rise after Treasury announces size of buyback operation"),
-    ("2026-09-09", "Bloomberg.com", "Bessent's Upsized Buybacks Get Hit by Bond Market Reality"),
-    ("2026-09-09", "qz.com", "Bond yields hit a 3-year high even as Bessent triples the buyback plan"),
-]
-PROBE_ARTS = [art(d, p, t) for d, p, t in PROBE]
-# What a results-seeking follow-up would add (illustrative, not from the probe):
-FOLLOW = [art("2026-09-10", "Reuters", "Treasury buys $5.4 billion in long-end buyback, short of $6 billion cap"),
-          art("2026-09-11", "Bloomberg.com", "Treasury buyback draws $5.4 billion as dealers hold back")]
+def run_day(script, day=TODAY, tav=None, dry=False, real_today=None):
+    # real_today defaults to `day`; the backfill test passes a DIFFERENT one.
+    # (An earlier draft hard-wired real_today=day, so the backfill guard could
+    # never trigger and its test could never fail.)
+    reader = FakeReader(script)
+    tav = tav if tav is not None else FakeTavily(script)
+    log = RunLog(day)
+    with Patched(rss_from(script)):
+        summary = web_resolve.run(reader, SETTINGS, day, log, dry_run=dry,
+                                  real_today=real_today or day, deep=tav)
+    return reader, tav, log, summary
 
 
 def part_four():
-    # (a) The exact v18 failure: the reader read "fell short" as "didn't
-    # happen" and called it announced. v19's follow-up must rescue it.
-    sandbox = _sandbox()
-    _question("Q0003", "2026-12-31")
-    lead = ("2026-09-10", "Q0003 Treasury $6 billion buyback operation")
-    found = {}
-    for n, (d, p, t) in enumerate(PROBE + [(a["date"], a["publisher"], a["title"]) for a in FOLLOW], 1):
-        found[t] = n
+    # -- REPLAY Q0003 (3 Oct): one crypto headline said "bought", dated 2 Oct.
+    #    v22: that headline only ROUTES; full text finds the 10 Sep operation.
+    sb = _sandbox()
+    _q("Q0003")
+    heads = [head("2026-09-09", "CNBC", "Q0003 Treasury to buy back up to $6 billion", site="cnbc.com"),
+             head("2026-10-02", "BeInCrypto", "US Treasury Buys $6 Billion of Bonds", site="beincrypto.com")]
+    fulls = [full("2026-09-10", "cnbc.com", "Treasury buys $5.4bn", CNBC_TEXT),
+             full("2026-09-09", "wsj.com", "Treasury plans $6bn", PLAN_TEXT)]
     script = {"Q0003": {
-        "first": PROBE_ARTS, "follow": FOLLOW,
-        "answers": [NO(*lead),                               # the v18 mistake
-                    None]}}                                  # filled below
-    # Second reading, over the merged list: cites the Futu results headline
-    # and the Reuters results story by their numbers in the merged list.
-    merged = web_resolve.news_search.merge(PROBE_ARTS, FOLLOW, limit=40)
-    num = {a["title"]: i for i, a in enumerate(merged, 1)}
-    script["Q0003"]["answers"][1] = {
-        "happened": True, "status": "happened", "event": "first $4bn+ operation",
-        "event_date": "2026-09-10",
-        "supporting_articles": [num[PROBE[9][2]], num[FOLLOW[0]["title"]]],
-        "evidence": "bought $5.4bn", "reason": "results reported"}
-    calls = []
-    with Patched(fake_search_from(script, calls)):
-        r = FakeReader(script)
-        web_resolve.run(r, SETTINGS, TODAY, RunLog(TODAY), real_today=TODAY)
-    q3 = store.question_by_id("Q0003")
-    check("REPLAY: Q0003 resolves YES via the follow-up", q3["outcome"] == "1")
-    check("REPLAY: dated 10 Sep 2026", q3["resolved_date"] == "2026-09-10")
-    check("REPLAY: exactly one follow-up search, aimed at results",
-          len(calls) == 2 and calls[1][0].endswith(" results"))
-    check("REPLAY: second reading was told the act was due on 10 Sep",
-          "THIS ACT WAS DUE ON 2026-09-10" in r.reads("Q0003")[1][2])
-    row = store.read_rows(config.WEB_CHECKS_CSV)[0]
-    check("REPLAY: both searches' queries recorded",
-          row["queries"].count("Q0003") >= 4)
-    shutil.rmtree(sandbox, ignore_errors=True)
+        "heads": heads,
+        "h": {"happened": True, "event_date": "2026-10-02", "event": "bought $6bn", "reason": "r"},
+        "full": fulls,
+        "d": ans(("T1", Q_SENT), ("H2", "US Treasury Buys $6 Billion of Bonds"))}}
+    reader, tav, log, s = run_day(script)
+    q = store.question_by_id("Q0003")
+    check("REPLAY Q0003: resolves YES on its own", q["outcome"] == "1")
+    check("REPLAY Q0003: dated 10 Sep (first operation), not 2 Oct",
+          q["resolved_date"] == "2026-09-10")
+    check("REPLAY Q0003: full text searched from creation (21 Aug) to today",
+          tav.windows[0] == (dt.date(2026, 8, 21), TODAY))
+    row = store.read_rows(config.WEB_CHECKS_CSV)[-1]
+    check("REPLAY Q0003: the log records trigger, tier and the verified quotes",
+          row["deep"] == "headline" and row["tier"] == "B" and "B ok" in row["quotes"])
+    shutil.rmtree(sb, ignore_errors=True)
 
-    # (a2) REPLAY of the 3 Oct v19 probe. The reader cited only [5] and dated
-    # the latest operation; ET [26] and Reuters [27] also reported operations
-    # done. Its real answer must stay pending; a cite-everything answer over
-    # the same 40 articles must resolve.
-    v19 = [art("2026-10-0%d" % (3 - i % 3), f"Pub{i}", f"Yields story {i}")
-           for i in range(40)]
-    v19[4] = art("2026-10-02", "BeInCrypto",
-                 "US Treasury Buys $6 Billion of Bonds as Bitcoin Battles 24-Year-High Yields",
-                 site="beincrypto.com")
-    v19[25] = art("2026-10-01", "The Economic Times",
-                  "US Market: Treasury bond purchases fall below $6 billion buyback cap",
-                  site="economictimes.indiatimes.com")
-    v19[26] = art("2026-10-01", "Reuters",
-                  "Treasury's smaller-than-expected buybacks fuel debate over aims",
-                  site="reuters.com")
-    q3 = {"id": "Q0003", "created": "2026-08-22", "deadline": "2026-12-31"}
-    real = {"happened": True, "event_date": "2026-10-02", "supporting_articles": [5]}
-    check("REPLAY v19: its real one-citation answer stays pending",
-          web_resolve.judge(q3, real, v19, TODAY, SETTINGS)[0] == "pending")
-    full = {"happened": True, "event_date": "2026-10-01",
-            "supporting_articles": [5, 26, 27]}
-    check("REPLAY v19: citing every report over the same articles resolves",
-          web_resolve.judge(q3, full, v19, TODAY, SETTINGS)[0] == "resolved_yes")
+    # -- Same day, but the reader INVENTS its quote -> must not resolve.
+    sb = _sandbox()
+    _q("Q0003")
+    script["Q0003"]["d"] = ans(("T1", "Treasury bought $6 billion on Thursday, its largest ever"),
+                               ("H2", "US Treasury Buys $6 Billion of Bonds"))
+    run_day(script)
+    q = store.question_by_id("Q0003")
+    check("WRONG-YES end to end: invented quote -> stays open, goes to you",
+          q["status"] == "open"
+          and [p["question_id"] for p in store.read_rows(config.PENDING_RESOLUTIONS_CSV)] == ["Q0003"])
+    shutil.rmtree(sb, ignore_errors=True)
 
-    # (b) Follow-up finds nothing either -> it goes to you, not silence.
-    sandbox = _sandbox()
-    _question("Q0003", "2026-12-31")
-    script = {"Q0003": {"first": PROBE_ARTS, "follow": [],
-                        "answers": [NO(*lead), NO()]}}
-    with Patched(fake_search_from(script)):
-        web_resolve.run(FakeReader(script), SETTINGS, TODAY, RunLog(TODAY),
-                        real_today=TODAY)
-    pend = store.read_rows(config.PENDING_RESOLUTIONS_CSV)
-    check("due date passed, no report found -> pending for you, not silent",
-          [p["question_id"] for p in pend] == ["Q0003"]
-          and "was due on 2026-09-10" in pend[0]["why"])
-    # Next day: same reason -> listed, but not flagged again.
-    log2 = RunLog(TODAY + dt.timedelta(days=1))
-    with Patched(fake_search_from(script)):
-        web_resolve.run(FakeReader({"Q0003": {"first": PROBE_ARTS, "follow": [],
-                                              "answers": [NO(*lead), NO()]}}),
-                        SETTINGS, TODAY + dt.timedelta(days=1), log2,
-                        real_today=TODAY + dt.timedelta(days=1))
-    check("same pending reason next day is not flagged again",
-          log2.flag_count == 0
-          and len(store.read_rows(config.PENDING_RESOLUTIONS_CSV)) == 1)
-    shutil.rmtree(sandbox, ignore_errors=True)
+    # -- REPLAY Q0013: deadline passed, Russian/Turkish banks sanctioned, not
+    #    Chinese. Headlines: no. Weekly sweep reads full text once: no.
+    sb = _sandbox()
+    _q("Q0013", deadline="2026-09-30", created="2026-08-26", resolves_on="announced")
+    script = {"Q0013": {
+        "heads": [head("2026-09-14", "CNBC", "Treasury hits Russia's VTB Bank over Iran ties")],
+        "h": NO(),
+        "full": [full("2026-08-26", "fortune.com", "China's banks got a pass",
+                      "The U.S. declared an onslaught on Iran. China's banks got a pass. " * 10)],
+        "d": NO()}}
+    reader, tav, log, s = run_day(script)
+    check("REPLAY Q0013: not resolved", store.question_by_id("Q0013")["status"] == "open")
+    check("REPLAY Q0013: first run does its weekly full-text sweep", tav.calls == 1)
+    reader2, tav2, log2, s2 = run_day(script, day=TODAY + dt.timedelta(days=1))
+    check("COST: next day, no trigger and sweep not due -> no Tavily credit spent",
+          tav2.calls == 0)
+    reader3, tav3, _, _ = run_day(script, day=TODAY + dt.timedelta(days=7))
+    check("COST: seven days later the sweep comes round again", tav3.calls == 1)
+    shutil.rmtree(sb, ignore_errors=True)
 
-    # (c) A FUTURE scheduled date is stored, and chased when it falls due --
-    # even when that day's search no longer surfaces the announcement.
-    sandbox = _sandbox()
-    _question("QV", "2026-12-31")
-    _question("QZ", "2026-10-10")          # nearer deadline, normally first
-    script = {"QV": {"first": [art("2026-10-01", "AP", "Senate vote set for 14 Oct")],
-                     "answers": [NO("2026-10-14", "QV Senate vote")]},
-              "QZ": {"first": [], "answers": []}}
-    with Patched(fake_search_from(script)):
-        web_resolve.run(FakeReader(script), SETTINGS, TODAY, RunLog(TODAY),
-                        real_today=TODAY)
-    check("future scheduled date stored on the question",
-          store.question_by_id("QV")["awaiting"] == "2026-10-14: QV Senate vote")
-    day = dt.date(2026, 10, 15)
-    script2 = {"QV": {"first": [art("2026-10-15", "AP", "Unrelated QV story")],
-                      "follow": [art("2026-10-14", "AP", "Senate passes it"),
-                                 art("2026-10-14", "Reuters", "Senate vote passes")],
-                      "answers": [NO(), {"happened": True, "event_date": "2026-10-14",
-                                         "supporting_articles": [2, 3], "event": "v",
-                                         "reason": "r"}]},
-               "QZ": {"first": [], "answers": []}}
-    r = FakeReader(script2)
-    with Patched(fake_search_from(script2)):
-        web_resolve.run(r, SETTINGS, day, RunLog(day), real_today=day)
-    first_read = next(c for c in r.calls if c[0] == "web_query")
-    check("a question whose awaited date fell due is checked first",
-          first_read[1] == "QV")
-    qv = store.question_by_id("QV")
-    check("stored date drives the follow-up when today's search shows no lead",
-          qv["outcome"] == "1" and qv["resolved_date"] == "2026-10-14")
-    check("awaiting cleared once resolved", qv["awaiting"] == "")
-    shutil.rmtree(sandbox, ignore_errors=True)
+    # -- REPLAY Q0016: the MPC meeting is an OCCASION.
+    sb = _sandbox()
+    _q("Q16", created="2026-09-21", resolves_on="announced")
+    fc = [head("2026-10-03", "SBI", "Q16 RBI may raise repo rate in October")]
+    script = {"Q16": {"heads": fc,
+                      "h": NO("announced_not_yet_happened", lead_date="2026-10-05",
+                              lead_what="Q16 RBI MPC meeting", lead_kind="occasion"),
+                      "full": [], "d": NO()}}
+    run_day(script)
+    check("REPLAY Q0016: meeting stored as an occasion",
+          store.question_by_id("Q16")["awaiting"] == "2026-10-05 [occasion]: Q16 RBI MPC meeting")
+    script["Q16"]["h"] = NO()
+    reader, tav, log, s = run_day(script, day=dt.date(2026, 10, 6))
+    check("Q0016 on 6 Oct: occasion read in full, nothing yet -> not_yet, NO alarm",
+          store.read_rows(config.WEB_CHECKS_CSV)[-1]["action"] == "not_yet"
+          and log.flag_count == 0 and tav.windows == [(dt.date(2026, 10, 4), dt.date(2026, 10, 6))])
+    check("COST: an occasion with nothing yet spends ONE credit, no undated retry",
+          tav.calls == 1)
+    script["Q16"]["full"] = [full("2026-10-07", "reuters.com", "RBI raises repo rate",
+                                  "The Reserve Bank of India on Wednesday raised its key repo rate by 25 basis points to 5.50%. " * 5)]
+    script["Q16"]["heads"] = fc + [head("2026-10-07", "Livemint", "RBI hikes repo rate to 5.5%", site="livemint.com")]
+    script["Q16"]["d"] = ans(("T1", "The Reserve Bank of India on Wednesday raised its key repo rate by 25 basis points"),
+                             ("H2", "RBI hikes repo rate to 5.5%"), date="2026-10-07")
+    run_day(script, day=dt.date(2026, 10, 8))
+    q = store.question_by_id("Q16")
+    check("Q0016 on 8 Oct: hike found in full text -> YES dated 7 Oct",
+          q["outcome"] == "1" and q["resolved_date"] == "2026-10-07")
+    shutil.rmtree(sb, ignore_errors=True)
 
+    # -- An announced ACT whose date passes unreported -> goes to you.
+    sb = _sandbox()
+    _q("QA", awaiting="2026-09-10: QA buyback operation")
+    script = {"QA": {"heads": [head("2026-09-09", "CNBC", "QA to buy Thursday")],
+                     "h": NO(), "full": [], "d": NO()}}
+    run_day(script)
+    check("an ACT due and unreported -> pending 'was due'",
+          "was due on 2026-09-10" in store.read_rows(config.WEB_CHECKS_CSV)[-1]["why"])
+    shutil.rmtree(sb, ignore_errors=True)
 
-# ---------------------------------------------------------------------------
-# Part 4b (v21): the verify step -- "thin" and "earlier" second looks
-# ---------------------------------------------------------------------------
+    # -- Failure modes of the full-text step itself.
+    sb = _sandbox()
+    _q("QK")
+    script = {"QK": {"heads": [head("2026-10-02", "Blog", "QK it happened")],
+                     "h": {"happened": True, "event_date": "2026-10-02", "reason": "r"},
+                     "full": [], "d": None}}
+    reader, tav, log, s = run_day(script, tav=FakeTavily(script, key=""))
+    check("NO KEY: red alert at the top, headline 'happened' waits for you, nothing resolves",
+          log.alerts and "TAVILY_API_KEY" in log.alerts[0]
+          and store.question_by_id("QK")["status"] == "open"
+          and store.read_rows(config.WEB_CHECKS_CSV)[-1]["action"] == "pending")
+    shutil.rmtree(sb, ignore_errors=True)
 
-V20 = [  # the 3 Oct v20 probe, abridged: announcements plus one done report
-    art("2026-09-22", "Chase Bank", "Why the Treasury's $6 billion bond buyback matters"),
-    art("2026-10-01", "KuCoin", "U.S. Treasury Expands Long-End Buyback Amid Rising Bond Yields"),
-    art("2026-09-09", "CNBC", "Treasury Department to buy back up to $6 billion in longer-term debt"),
-    art("2026-08-19", "Reuters", "Bessent doubles US long-bond buybacks"),
-    art("2026-09-09", "WSJ", "U.S. Treasury Plans $6 Billion Buyback, Yields Rise"),
-    art("2026-10-02", "BeInCrypto", "US Treasury Buys $6 Billion of Bonds", site="beincrypto.com"),
-]
-SEPT = [art("2026-09-10", "Reuters", "Treasury buys $5.4 billion in long-end buyback"),
-        art("2026-09-11", "Bloomberg.com", "Treasury buyback draws $5.4 billion")]
+    sb = _sandbox()
+    _q("QK"), _q("QL", deadline="2026-12-30")
+    script["QL"] = dict(script["QK"])
+    script["QL"]["heads"] = [head("2026-10-02", "Blog", "QL it happened")]
+    tav = FakeTavily(script, fail="out_of_credits")
+    reader, tav, log, s = run_day(script, tav=tav)
+    check("OUT OF CREDITS: alerted once, and Tavily not called again this run",
+          sum("out_of_credits" in a for a in log.alerts) == 1 and tav.calls == 1)
+    check("OUT OF CREDITS: both questions wait as pending, none resolved",
+          all(store.question_by_id(x)["status"] == "open" for x in ("QK", "QL")))
+    shutil.rmtree(sb, ignore_errors=True)
 
+    sb = _sandbox()
+    _q("QS")                                    # sweep-only question
+    _q("QH", deadline="2026-12-30")             # headline-triggered question
+    script = {"QS": {"heads": [], "h": NO(), "full": [], "d": NO()},
+              "QH": {"heads": [head("2026-10-02", "AP", "QH it happened")],
+                     "h": {"happened": True, "event_date": "2026-10-02", "reason": "r"},
+                     "full": [], "d": NO()}}
+    tav = FakeTavily(script, left=50)          # below the reserve of 100
+    reader, tav, log, s = run_day(script, tav=tav)
+    check("LOW CREDITS: sweeps paused, news-triggered reads still run",
+          tav.calls == 1 and log.flag_count >= 1)
+    tav = FakeTavily(script, left=3)           # below the minimum of 5
+    _sandbox(); _q("QS"); _q("QH", deadline="2026-12-30")
+    reader, tav, log, s = run_day(script, tav=tav)
+    check("CREDITS NEARLY GONE: red alert, no Tavily calls at all",
+          tav.calls == 0 and any("FULL-TEXT CHECK OFF" in a for a in log.alerts))
+    shutil.rmtree(sb, ignore_errors=True)
 
-def part_four_b():
-    lead = ("2026-09-10", "Q0003 Treasury buyback operation")
+    sb = _sandbox()
+    _q("QB")
+    script = {"QB": {"heads": [], "h": NO(), "full": [], "d": NO()}}
+    reader, tav, log, s = run_day(script, day=dt.date(2026, 9, 1), real_today=TODAY)
+    check("BACKFILL date: no reads, no credits", reader.calls == [] and tav.calls == 0)
+    reader, tav, log, s = run_day(script, dry=True)
+    check("DRY RUN: nothing written", store.read_rows(config.WEB_CHECKS_CSV) == [])
+    run_day(script)
+    reader, tav, log, s = run_day(script)
+    check("ONCE A DAY: second run the same day makes no calls",
+          reader.calls == [] and tav.calls == 0)
+    shutil.rmtree(sb, ignore_errors=True)
 
-    def run_one(script, qid="Q0003"):
-        sandbox = _sandbox()
-        _question(qid, "2026-12-31")
-        calls = []
-        with Patched(fake_search_from(script, calls)):
-            web_resolve.run(FakeReader(script), SETTINGS, TODAY, RunLog(TODAY),
-                            real_today=TODAY)
-        q = store.question_by_id(qid)
-        rows = store.read_rows(config.WEB_CHECKS_CSV)
-        shutil.rmtree(sandbox, ignore_errors=True)
-        return q, rows, calls
-
-    # (thin) REPLAY of the v20 probe: one crypto site says "bought", dated
-    # 2 Oct, and the announcements say it was scheduled for 10 Sep.
-    merged = web_resolve.news_search.merge(V20, SEPT, limit=40)
-    num = {a["title"]: i for i, a in enumerate(merged, 1)}
-    first = {"happened": True, "event_date": "2026-10-02", "supporting_articles": [6],
-             "lead_date": lead[0], "lead_what": lead[1], "event": "e", "reason": "r"}
-    second = {"happened": True, "event_date": "2026-09-10", "event": "e", "reason": "r",
-              "supporting_articles": [num[SEPT[0]["title"]], num[SEPT[1]["title"]]]}
-    WINDOWS.clear()
-    q, rows, calls = run_one({"Q0003": {"first": V20, "follow": SEPT,
-                                        "answers": [first, second]}})
-    check("REPLAY v20: thin evidence triggers ONE second look",
-          len(calls) == 2)
-    check("REPLAY v20: second look searches 9 Sep (day before schedule) to 3 Oct",
-          WINDOWS[1] == (dt.date(2026, 9, 9), dt.date(2026, 10, 3)))
-    check("REPLAY v20: resolves YES, corrected to the FIRST occurrence (10 Sep)",
-          q["outcome"] == "1" and q["resolved_date"] == "2026-09-10")
-
-    # (thin) second look finds nothing -> stays pending, never downgraded.
-    q, rows, calls = run_one({"Q0003": {"first": V20, "follow": [],
-                                        "answers": [first, NO()]}})
-    check("thin + nothing more found -> still pending (not downgraded to not_yet)",
-          q["status"] == "open" and rows[0]["action"] == "pending")
-
-    # (earlier) resolved on 1 Oct by two outlets, but scheduled for 10 Sep:
-    # the look back finds 10 Sep and the date is corrected.
-    oct_ = [art("2026-10-01", "Reuters", "Treasury buys $5bn"),
-            art("2026-10-01", "The Economic Times", "Treasury purchases below cap")]
-    merged = web_resolve.news_search.merge(oct_, SEPT, limit=40)
-    num = {a["title"]: i for i, a in enumerate(merged, 1)}
-    a1 = {"happened": True, "event_date": "2026-10-01", "supporting_articles": [1, 2],
-          "lead_date": lead[0], "lead_what": lead[1], "event": "e", "reason": "r"}
-    a2 = {"happened": True, "event_date": "2026-09-10", "event": "e", "reason": "r",
-          "supporting_articles": [num[SEPT[0]["title"]], num[SEPT[1]["title"]]]}
-    q, rows, calls = run_one({"Q0003": {"first": oct_, "follow": SEPT,
-                                        "answers": [a1, a2]}})
-    check("earlier scheduled date -> look back corrects the date to 10 Sep",
-          q["outcome"] == "1" and q["resolved_date"] == "2026-09-10")
-
-    # (earlier) look back finds nothing -> keeps the 1 Oct YES, never loses it.
-    q, rows, calls = run_one({"Q0003": {"first": oct_, "follow": [],
-                                        "answers": [a1, NO()]}})
-    check("look back fails -> the original YES (1 Oct) is kept",
-          q["outcome"] == "1" and q["resolved_date"] == "2026-10-01")
-
-    # A resolved YES with no earlier scheduled date makes no second look.
-    plain = {"happened": True, "event_date": "2026-10-01", "supporting_articles": [1, 2],
-             "event": "e", "reason": "r"}
-    q, rows, calls = run_one({"Q0003": {"first": oct_, "answers": [plain]}})
-    check("clean YES with no earlier lead -> no second look", len(calls) == 1)
-
-    # Q0013-style: deadline passed, nothing happened, no lead -> nothing fires.
-    q, rows, calls = run_one({"Q13": {"first": [art("2026-09-20", "Reuters",
-                                                    "US weighs sanctions on Chinese banks")],
-                                      "answers": [NO(status="no_relevant_news")]}},
-                             qid="Q13")
-    check("nothing happened, no lead -> stays open, no second look",
-          q["status"] == "open" and len(calls) == 1)
+    sb = _sandbox()
+    _q("QR")
+    with open(config.RESOLUTIONS_CSV, "a", encoding="utf-8") as fh:
+        fh.write("QR,reopen,,wrong web YES\n")
+    script = {"QR": {"heads": [head("2026-10-02", "AP", "QR done")],
+                     "h": {"happened": True, "event_date": "2026-10-02", "reason": "r"},
+                     "full": [], "d": NO()}}
+    reader, tav, log, s = run_day(script)
+    check("YOUR WORD IS FINAL: a question in resolutions.csv is never checked",
+          reader.calls == [] and tav.calls == 0)
+    shutil.rmtree(sb, ignore_errors=True)
 
 
 # ---------------------------------------------------------------------------
-# Part 5: the full run loop -- the v18 cases still hold
+# Part 5: probe safety, lens grounding
 # ---------------------------------------------------------------------------
 
 def part_five():
-    sandbox = _sandbox()
-    _question("QB", "2026-11-05")                    # one outlet -> pending
-    _question("QC", "2027-08-26")                    # announced, no date -> open
-    _question("QD", "2026-09-15", created="2026-08-20", status="resolved",
-              outcome="0", resolved_date="2026-09-15",
-              resolution_basis="lapsed_absence", outcome_set_by="system",
-              watch_until="2026-12-14")              # lapsed NO, really happened
-    _question("QE", "2026-10-20")                    # nothing found
-    script = {
-        "QB": {"first": [art("2026-09-28", "Reuters", "It happened")],
-               "answers": [yes("2026-09-28", cite=(1,))]},
-        "QC": {"first": [art("2026-10-01", "PIB", "Scheme announced", site="pib.gov.in")],
-               "answers": [NO()]},
-        "QD": {"first": [art("2026-09-12", "State Dept", "Done", site="state.gov")],
-               "answers": [yes("2026-09-12", cite=(1,))]},
-        "QE": {"first": [], "answers": []},
-    }
-    with Patched(fake_search_from(script)):
-        r = FakeReader(script)
-        web_resolve.run(r, SETTINGS, dt.date(2026, 9, 1), RunLog(TODAY), real_today=TODAY)
-        check("backfill date -> no calls at all", r.calls == [])
-        r = FakeReader(script)
-        web_resolve.run(r, SETTINGS, TODAY, RunLog(TODAY), real_today=TODAY)
-        check("single outlet -> pending",
-              [p["question_id"] for p in store.read_rows(config.PENDING_RESOLUTIONS_CSV)] == ["QB"])
-        check("announced with no date -> open, no follow-up",
-              store.question_by_id("QC")["status"] == "open" and len(r.reads("QC")) == 1)
-        check("lapsed NO flipped to YES by late web evidence",
-              store.question_by_id("QD")["outcome"] == "1")
-        check("no articles -> no reader call", r.reads("QE") == [])
-        r2 = FakeReader(script)
-        web_resolve.run(r2, SETTINGS, TODAY, RunLog(TODAY), real_today=TODAY)
-        check("second run same day makes no calls", r2.calls == [])
-
-    # Dead reader -> stop and alert at the top of the log.
-    _question("QF", "2026-10-21")
-    day = TODAY + dt.timedelta(days=1)
-    log = RunLog(day)
-    dead = {"QF": {"first": [art("2026-10-02", "AP", "x")], "answers": [None]}}
-    with Patched(fake_search_from(dead)):
-        web_resolve.run(FakeReader(dead), SETTINGS, day, log, real_today=day)
-    check("dead reader -> red alert at the top of the log",
-          log.alerts and "WEB CHECK STOPPED" in log.alerts[0]
-          and "SOMETHING DID NOT RUN" in log.path.read_text())
-    shutil.rmtree(sandbox, ignore_errors=True)
-
-    # Unreachable search -> loud, recorded, retried.
-    sandbox = _sandbox()
-    _question("QX", "2026-12-30")
-    log = RunLog(TODAY)
-
-    def unreachable(queries, **k):
-        raise news_search.SearchUnavailable("HTTP 403")
-    with Patched(unreachable):
-        web_resolve.run(FakeReader({"QX": {}}), SETTINGS, TODAY, log, real_today=TODAY)
-    text = log.path.read_text()
-    check("unreachable search -> 'WEB CHECK DID NOT RUN' at the top",
-          log.alerts and "WEB CHECK DID NOT RUN" in log.alerts[0]
-          and text.index("SOMETHING DID NOT RUN") < text.index("Web resolution"))
-    shutil.rmtree(sandbox, ignore_errors=True)
-
-
-# ---------------------------------------------------------------------------
-# Part 6: the probe writes nothing; lens grounding stays off
-# ---------------------------------------------------------------------------
-
-def part_six():
-    sandbox = _sandbox()
-    _question("Q0003", "2026-12-31")
-    lead = ("2026-09-10", "Q0003 Treasury $6 billion buyback operation")
-    merged = web_resolve.news_search.merge(PROBE_ARTS, FOLLOW, limit=40)
-    num = {a["title"]: i for i, a in enumerate(merged, 1)}
-    script = {"Q0003": {"first": PROBE_ARTS, "follow": FOLLOW, "answers": [
-        NO(*lead),
-        {"happened": True, "event_date": "2026-09-10", "event": "e", "reason": "r",
-         "supporting_articles": [num[FOLLOW[0]["title"]], num[PROBE[9][2]]]}]}}
+    sb = _sandbox()
+    _q("Q0003")
+    script = {"Q0003": {
+        "heads": [head("2026-10-02", "BeInCrypto", "US Treasury Buys $6 Billion of Bonds", site="beincrypto.com")],
+        "h": {"happened": True, "event_date": "2026-10-02", "reason": "r"},
+        "full": [full("2026-09-10", "cnbc.com", "Treasury buys $5.4bn", CNBC_TEXT)],
+        "d": ans(("T1", Q_SENT), ("H1", "US Treasury Buys $6 Billion of Bonds"))}}
     lines = []
-    with Patched(fake_search_from(script)):
+    with Patched(rss_from(script)):
         action = web_resolve.probe(FakeReader(script), SETTINGS, "Q0003", TODAY,
-                                   out=lines.append)
-    printed = "\n".join(lines)
-    check("probe shows the form, the follow-up and the decision",
-          action == "resolved_yes" and "form:" in printed
-          and "SECOND LOOK (scheduled date has passed" in printed
-          and "DECISION: resolved_yes" in printed)
-    check("probe changes nothing",
-          store.question_by_id("Q0003")["status"] == "open"
+                                   out=lines.append, deep=FakeTavily(script))
+    text = "\n".join(lines)
+    check("PROBE: shows trigger, each full article's length, and every quote's verdict",
+          action == "resolved_yes" and "trigger=headline" in text
+          and "chars" in text and "OK tier B" in text)
+    check("PROBE: writes nothing", store.question_by_id("Q0003")["status"] == "open"
           and store.read_rows(config.WEB_CHECKS_CSV) == [])
-    shutil.rmtree(sandbox, ignore_errors=True)
+    shutil.rmtree(sb, ignore_errors=True)
 
     class Bare:
         chains = MODELS["chains"]
@@ -702,9 +651,9 @@ def part_six():
 
     class QuietLog:
         def info(self, *_a): pass
-    settings = {**SETTINGS, "reference": {"verify_with_grounding": True}}
     check("lens grounding stays OFF",
-          LensRunner(Bare(), QuietLog(), settings, "t").grounding_enabled is False)
+          LensRunner(Bare(), QuietLog(), {**SETTINGS, "reference": {
+              "verify_with_grounding": True}}, "t").grounding_enabled is False)
 
 
 def main() -> int:
@@ -712,9 +661,7 @@ def main() -> int:
     part_two()
     part_three()
     part_four()
-    part_four_b()
     part_five()
-    part_six()
     ok = True
     for label, passed in RESULTS:
         print(f"  [{'PASS' if passed else 'FAIL'}] {label}")

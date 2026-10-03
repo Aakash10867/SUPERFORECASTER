@@ -37,11 +37,15 @@ thought.
 headline -- `resolved_yes`, `pending` (needs you), `not_yet`, or `failed`
 (the search or the reading model did not work; retried next run, and the log
 opens with a red alert). The `why` column names the rule that decided it;
-`queries` and `cited_articles` show exactly what was searched (including any
-follow-up search) and which articles the reader relied on.
+`queries` shows what was searched (`[full text]` marks the Tavily query).
+From v22: `deep` says why full text was read (headline / due / occasion /
+sweep, empty if not), `tier` the best verified evidence (A / B / C), and
+`quotes` every quote the reader gave with "ok" or the reason it was rejected.
 
 `questions.csv` has an `awaiting` column (v19): `YYYY-MM-DD: act` when the web
-check found the resolving act scheduled for a date. Once that date passes the
+check found the resolving act scheduled for a date, or
+`YYYY-MM-DD [occasion]: meeting` (v22) for a decision date whose outcome is
+open. An occasion is dropped a few days after it passes. Once that date passes the
 question is checked first and a follow-up search chases the act's results.
 
 Rows dated 1-3 October 2026 are all `failed`: that was the v16/v17 web check,

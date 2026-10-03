@@ -306,77 +306,64 @@ created today gets its first forecast today.
 Every stage is isolated: a failure logs loudly, with a traceback, into the
 markdown log, and the run continues.
 
-## Web resolution (v18, refined in v19)
+## Web resolution (v22)
 
-Every open question is checked against the web **once a day**, asking one
-thing: *has this actually happened, and on what date?* An announcement that
-something **will** happen does not count -- it is evidence, and should move the
-forecast, but it does not close the question. Each question's `resolves_on`
-field (announced / carried_out / in_effect) says which act counts.
+Every open question is checked against the web **once a day**: *has this
+actually happened, and on what date?* An announcement that something **will**
+happen does not count. Each question's `resolves_on` (announced /
+carried_out / in_effect) says which act counts. Only YES is ever automatic;
+NO comes only from the deadline lapse.
+
+**Setup:** add a repository secret named exactly `TAVILY_API_KEY` (Settings →
+Secrets and variables → Actions). Without it nothing can resolve from the web,
+and every run says so in red.
 
 How one check runs:
 
-1. A cheap model call fills a form -- **actor**, the **act in the past tense**
-   as a headline would say it, **object** -- and the code builds three queries
-   of a fixed shape from it: topic and completion, plus a standard phrase for
-   announced or in-effect acts ("announces", "takes effect"). The shape is
-   fixed; the words are the act's own. Results keep Google's relevance order,
-   so an old report of the act is not pushed out by a flood of fresh news.
-2. **The code** searches Google News (US and India editions, free RSS feed, no
-   key, no quota) and gets real articles: headline, publisher, site, date.
-3. One model reads that numbered list and says whether the act happened, on
-   what date, and **which articles show it**. A report of the act's
-   *results* proves it happened, even a disappointing one ("fell short of its
-   cap"). News reports of an official act count as official. If it happened
-   more than once, the date is the **first** time, and the reader must cite
-   **every** article that shows it.
-4. **One second look** (at most once a day per question), searching only the
-   relevant dates, when:
-   - **due:** the act was scheduled for a date that has passed with no report
-     it happened. Still nothing → it goes to you: *"was due on X, no report
-     it happened"*;
-   - **thin:** the reader says it happened but too few publishers back it --
-     the second look tries to corroborate it and find the first occurrence;
-   - **earlier:** it resolved, but the act was scheduled earlier than the date
-     given -- the second look checks whether it first happened then. A YES is
-     never lost: an earlier date replaces the later one only if it passes
-     every check. A scheduled date still in the future is stored on the question
-   (`awaiting` in `questions.csv`), and that question is checked first once
-   the date passes.
-5. **Code decides.** Only YES is ever automatic:
+1. **Headlines screen** (Google News, free, every day). A form -- actor, the
+   act in the past tense, object -- builds the queries. One cheap read only
+   **routes**: did a headline say it happened? Is there a dated lead?
+   **Headlines never resolve anything.**
+2. **Full text decides** (Tavily, one credit), only when it matters:
+   - **headline** -- a headline says it happened
+   - **due** -- an act announced for a date that has now passed
+   - **occasion** -- a meeting, vote or decision date has passed (if the
+     outcome was something else, e.g. rates held, it just stays open -- no alarm)
+   - **sweep** -- every question is read in full at least once a week, which
+     catches what headlines miss
+3. The reader must **quote word for word** the sentence that shows the act
+   done. **Code checks the quote is really in that source** -- an invented or
+   paraphrased quote is thrown away.
+4. **Evidence tiers** decide:
 
-| check | if it fails |
-|---|---|
-| the search returned articles | stays open |
-| reader says it happened, with a date | stays open / goes to you if undated |
-| date is on or before today, and on or before the deadline | stays open (announced, or too late) |
-| date is not before the question was created | goes to you: born resolved |
-| reader cites articles, and only those published **on or after** the event count (a story from before the event can only say "will") | stays open / goes to you |
-| two different publishers, or one official (government) site -- taken from the feed, never from the model | goes to you |
+| tier | what | enough to resolve? |
+|---|---|---|
+| **A** | verified quote from an official (government) page | yes, on its own |
+| **B** | verified quote from a full article | yes, with one more publisher (A, B or C) |
+| **C** | verified quote from a headline | never alone -- corroboration only |
 
-A YES resolves on the **event date**. Anything that goes to you lands in
-`data/pending_resolutions.csv` with a row ready to paste into
-`config/resolutions.csv`. NO still comes only from the deadline lapse.
+   A source published **before** the event never counts (it can only say
+   "will"). An undated article counts only if official. Quotes under 8 words
+   (5 for a headline) don't count. The same publisher counts once. An event
+   dated before the question existed goes to you (born resolved).
 
-**If the search cannot run, you will know.** The log opens with a red
-"SOMETHING DID NOT RUN" box, and the GitHub Actions run page shows a red
-annotation. (From 1 to 3 October 2026 the v16/v17 web check -- built on
-Gemini's own search -- made no searches at all, because the only models with a
-search allowance return 404 for new API keys. That failure was a quiet warning
-mid-log. Never again.)
+A YES is dated to the **first** time the act happened. Anything that goes to
+you lands in `data/pending_resolutions.csv`, with every quote and why it was
+accepted or rejected.
 
-**Test it before trusting it.** Actions → Run workflow → put one or more
-question ids (e.g. `Q0003,Q0013,Q0016`) in **web_probe**. It runs that one check, prints every query,
-every article found, the model's answer and the code's decision, and writes
-nothing.
+**Cost.** Tavily: roughly 100-300 credits a month of the free 1,000. Below 100
+left, weekly sweeps pause; below 5, full-text reading stops with a red alert.
 
-**Budget.** Two Flash Lite calls per question per day (three when a
-follow-up fires), from a 500/day allowance. The search itself is free. Each question is checked at most once a
-day, closest deadline first, then questions on the absence watch.
+**If anything cannot run, you will know**: a red "SOMETHING DID NOT RUN" box at
+the top of the log and a red annotation on the Actions page.
 
-**Limit.** The feed gives headlines and a line of snippet, not whole articles.
-Telling "to buy" from "bought" rests on headline wording, so borderline cases
-go to you rather than resolving.
+**Test it.** Actions → Run workflow → `web_probe` = `Q0003,Q0013,Q0016`. It
+first prints whether the Tavily key works and how many credits are left, then
+for each question: the headlines, the route taken, every full article (with
+its length), every quote with its verdict, and the decision. It writes nothing.
+
+**Are the tests real?** `python test_guards.py` breaks each safety guard in
+turn and confirms the tests fail. All must be caught.
 
 **Wrong YES?** Add `Q00XX,reopen,,<why>` to `config/resolutions.csv`. Any
 question you have written about there is never web-checked again.
@@ -506,6 +493,9 @@ never silently degrade question quality.
   matching no pattern is read but called Unknown and flagged; add a pattern and
   the whole history re-labels. Sundays and holidays will show regular papers as
   missing — read the coverage flags with the calendar in mind.
+- **Full text is not always available.** Paywalled papers (WSJ, Bloomberg, FT)
+  often return only a stub; such articles count as headlines (tier C). An
+  event reported only behind paywalls may wait for you.
 - **`shape` is not produced by stage one.** New questions default to `point`
   and are logged; set them to `window` by hand in `questions.csv`.
 - **Extremizing is stored but never used.** It sits as a shadow number for the

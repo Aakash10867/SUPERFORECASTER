@@ -109,10 +109,28 @@ def _web_probe(ids: str) -> int:
     settings = config.load_settings()
     router = models.ModelRouter(settings, config.load_models(), _Console())
     qids = [x.strip().upper() for x in ids.replace(" ", ",").split(",") if x.strip()]
+
+    # v22 PREFLIGHT: say plainly whether full-text reading can work at all,
+    # before any question is judged.
+    deep = web_resolve.make_deep(settings)
+    print("PREFLIGHT")
+    if deep is None:
+        print("  full-text check: DISABLED in settings (deep_check.enabled)")
+    elif not deep.key:
+        print("  full-text check: NO KEY -- add the TAVILY_API_KEY secret. "
+              "Without it nothing can resolve.")
+    else:
+        u = deep.usage()
+        print(f"  full-text check: key present; credits left: "
+              f"{u['left'] if u and u.get('left') is not None else 'unknown'}"
+              f"{' of ' + str(u['limit']) if u and u.get('limit') else ''}")
+    budget = {"deep": True, "sweeps": True, "spent": 0, "cap": 99}
+
     results = []
     for qid in qids:
         print("\n" + "=" * 78)
-        results.append((qid, web_resolve.probe(router, settings, qid, dt.date.today())))
+        results.append((qid, web_resolve.probe(router, settings, qid, dt.date.today(),
+                                               deep=deep, budget=budget)))
     print("\n" + "=" * 78 + "\nSUMMARY (nothing was written)")
     for qid, action in results:
         print(f"  {qid}: {action}")

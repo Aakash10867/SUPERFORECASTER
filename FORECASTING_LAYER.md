@@ -13,7 +13,8 @@ paper coverage, gate H, `resolves_on`, nightly scheduled run. v18 (3 Oct 2026)
 replaces the web search, which never worked; v19 (3 Oct 2026) fixes how it
 reads and adds follow-the-clue; v20 (3 Oct 2026) fixes result ranking and
 the reader's citing and dating; v21 (3 Oct 2026) adds the verify step and a
-multi-question acceptance test. See the v18-v21 sections at the end.
+multi-question acceptance test; v22 (3 Oct 2026) reads full text via Tavily
+with evidence tiers and code-verified quotes. See the v18-v22 sections.
 
 ### Repo findings (v7, reviewed at close of §4)
 
@@ -2048,6 +2049,82 @@ have carried the wrong date.
   **Q0016** (RBI repo hike) should stay open. If all three behave, tuning
   stops and the nightly runs gather the evidence.
 - The probe takes several ids at once and ends with a summary.
+
+---
+
+## v22 — Full text, evidence tiers, and tests that try to break things (3 October 2026)
+
+### What the three-question test found (kept from the first v22 draft)
+
+Q0013 (sanctions on Chinese banks) and Q0016 (RBI hike) correctly stayed
+open. Two bugs surfaced and stay fixed: dated leads now carry a KIND — an
+**act** announced for a date (passed and unreported → human) vs an
+**occasion** like an MPC meeting (outcome open; nothing found → stays
+`not_yet`, no alarm) — and a search with no dated lead starts at the
+question's creation date.
+
+### Rejected: "resolve Q0003 by hand" (Aakash)
+
+The first v22 draft ended tuning and told Aakash to resolve Q0003 manually.
+**Rejected.** If something happened, the system must find it itself — that
+is the point of the project. That draft is not v22.
+
+### The real problem: we were reading headlines
+
+Aakash asked why two sources, and whether we read articles or just headlines.
+Answer: just headlines plus a one-line snippet. Two sources was a crude
+stand-in for judging one source well; v19–v21 kept tuning around that hole.
+
+### Decisions
+
+- **Headlines screen; full text decides.** Google News RSS (free) routes
+  daily; **Tavily** (Aakash's key, free 1,000 credits/month) returns article
+  text and is called only when it matters: a headline says it happened, a
+  dated act or occasion passes, or a weekly sweep. Headlines never resolve.
+- **Evidence tiers, not a score** (Aakash chose tiers). Claude's caution: a
+  model's stated confidence is not a probability, and with almost no data a
+  weighted score's weights and threshold would be guesses — tiers keep the
+  "no weights" principle. **A** official page with verified quote resolves
+  alone; **B** verified full-text quote resolves with one more publisher;
+  **C** verified headline corroborates only.
+- **Quotes are verified by code.** The reader must copy the sentence word for
+  word; code checks it appears in that source (normalised for case,
+  punctuation, curly quotes), at least 8 words (5 for headlines). Invented or
+  paraphrased quotes are discarded. Sources dated before the event never
+  count; undated non-official articles never count.
+- **Cost guards.** One credit per read; sweeps pause below 100 credits left;
+  everything stops (red alert) below 5; per-run cap of 20 reads.
+- Tavily's request/response format was taken from its API reference, not
+  from memory — the v16 lesson ("listed is not callable").
+
+### Why Claude kept failing (Aakash's question, Claude's answer)
+
+1. **Tests checked Claude's assumptions, not the world.** Fakes behaved as
+   imagined; every live failure was where reality differed (models listed but
+   not callable, news floods, under-citing, undated headlines).
+2. **Symptoms were patched one at a time**, not failure classes.
+3. **No network in Claude's workspace**, so the probe was the first real test.
+
+Remedy in this build:
+- A written **failure list** — every way to a wrong YES and a missed YES —
+  with a test for each (test_web_resolve.py, Parts 2–4).
+- **test_guards.py**: sabotages each of 11 safety guards in a throwaway copy
+  and requires the tests to fail. On its first run it caught two tests that
+  passed for the wrong reason ("same publisher twice" never reached
+  de-duplication; "born resolved" passed because the case had one source) —
+  plus, while writing the tests, a backfill test that could never fail and a
+  quote-length rule that counted characters instead of words. All fixed;
+  11/11 caught.
+- The probe's **preflight** prints whether the Tavily key works and credits
+  left before any question is judged.
+
+### Acceptance test
+
+Probe `Q0003,Q0013,Q0016`. Expected: Q0003 `resolved_yes` dated 2026-09-10
+from a verified full-text quote; Q0013 not resolved; Q0016 not resolved
+before 7 Oct. If Q0003 does not resolve, the probe shows which article texts
+came back and why each quote was accepted or rejected — that is the next
+thing to read, not another patch.
 
 ---
 

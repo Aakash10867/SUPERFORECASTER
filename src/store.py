@@ -249,7 +249,10 @@ WEB_CHECK_FIELDS = [
     "sources",            # "; " separated site names from Google's search record
     "official_source",    # yes | no
     "queries",            # the news-search queries actually run
-    "cited_articles",     # v18: the articles the reader cited, from the feed
+    "cited_articles",     # v18-v21 (headline era); empty from v22
+    "deep",               # v22: why full text was read (headline|due|occasion|sweep), or empty
+    "tier",               # v22: best verified evidence tier: A | B | C | empty
+    "quotes",             # v22: every quote, with "ok" or the reason it was rejected
     "model",
 ]
 

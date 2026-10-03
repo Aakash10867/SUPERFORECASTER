@@ -1,5 +1,5 @@
 """
-Web resolution: code searches Google News, one model reads, code decides.
+Web resolution: headlines screen, full text decides, code verifies every quote.
 
 HISTORY
 -------
@@ -22,67 +22,63 @@ called it "announced, not yet happened". Its queries were topic-only, it read
 "fell short" as "did not happen", and it held out for an "official"
 confirmation it could never see. v19 fixes all three.
 
-HOW ONE CHECK RUNS (v19)
+v19-v21 tuned the headline reader three times against Q0003 and it still
+could not resolve: headlines carry no dates, "fell short of its cap" reads
+like "did not happen", and one crypto headline cannot be judged. Counting
+"two sources" was a stand-in for judging one source well. v22 stops tuning
+the headline step and reads the ARTICLES.
+
+HOW ONE CHECK RUNS (v22)
 ------------------------
-  1. A cheap call fills a FORM: actor, the act in the past tense in headline
-     words, object. Code assembles queries of a FIXED SHAPE from it: topic
-     and completion, plus one standard phrase for announced / in-effect acts.
-     Results keep Google's relevance order (v20) -- never re-sorted by date,
-     which on 3 Oct cut every September report out of the list.
-  2. news_search.py runs them against Google News (US and India editions) and
-     returns real articles: headline, publisher, site, publication date.
-  3. One model (3.x Flash Lite) reads that numbered list and answers: has the
-     act ACTUALLY HAPPENED, on what date, and WHICH ARTICLES show it? A report
-     of the act's results proves it happened, even a disappointing one; news
-     reports of an official act count as official.
-  4. FOLLOW THE CLUE: if it has not happened but was scheduled for a date that
-     has passed (read today, or stored on the question earlier as
-     `awaiting`), ONE more search chases that act's results and the reader
-     looks again. Still nothing -> pending for you: "was due on X, no report
-     it happened". A future date is stored as `awaiting`, and the question
-     jumps the queue once that date passes.
-  5. Plain code decides whether to act on the answer.
+  1. HEADLINES (Google News RSS, free, every question every day). A form
+     (actor, act in past tense, object) builds fixed-shape queries; one cheap
+     read ROUTES only: did a headline say it happened, is there a dated lead?
+     Headlines never resolve anything.
+  2. FULL TEXT (Tavily, 1 credit) when it matters:
+       headline  a headline says it happened  -> read from question creation
+       due       an announced ACT's date has passed
+       occasion  a meeting/vote/decision date has passed (outcome open)
+       sweep     no full-text read for 7 days (catches what headlines miss)
+  3. The full-text reader must QUOTE, word for word, the sentence showing the
+     act done, for every source that shows it.
+  4. CODE (judge_deep) checks every quote really appears in that source and
+     applies the EVIDENCE TIERS:
+       A  quote verified in an official (government) page    -> resolves
+       B  quote verified in a full article                   -> resolves with
+                                                                one more publisher
+       C  quote verified in a headline                       -> corroboration only
+     A source dated before the event never counts ("will buy" stories); an
+     undated full article counts only if official; quotes under 8 words (5
+     for headlines) do not count; the same publisher counts once.
 
-Searching is about recall: a mistake costs a missed find, and step 4 catches
-it. Deciding is about precision: a false YES corrupts the record. So the
-search is free to use the act's own words, and the decision stays fixed
-rules.
-
-A second model was considered and rejected (same family, same evidence, same
-blind spots -- the "prompt variation is not a crowd" principle). The guard is
-code instead.
+Searching is recall; deciding is precision. The search may use the act's own
+words and look again; the decision is fixed rules over verified evidence.
+A second model was considered and rejected (same family, same blind spots).
 
 YES ONLY
 --------
 Never resolves NO. NO comes only from the deadline lapse in resolve.py.
 
-THE CODE CHECKS (all must pass for an automatic YES)
-----------------------------------------------------
-  1. The search returned articles.
-  2. The reader says it happened, with a parseable event date.
-  3. created <= event date <= min(today, deadline).
-       after today     -> announced, not yet happened: stays open
-       after deadline  -> not a YES; the lapse rule handles it
-       before created  -> born resolved: a question defect, goes to you
-  4. The reader must CITE articles by number, and only cited articles
-     published ON OR AFTER the event date count. An article from before the
-     event can only have reported it as planned, never as done -- this is the
-     mechanical guard against reading "will buy" as "bought".
-  5. Those counted articles come from at least two DIFFERENT publishers, or one
-     official site (a government domain). Publishers and sites are taken from
-     the feed, never from the model's text.
-
-A reader that says "happened" but fails 3, 4 or 5 sends the question to
-data/pending_resolutions.csv with a ready-made row for config/resolutions.csv.
-
-Resolution is dated to the EVENT, not to the day of the check.
+OTHER GUARDS
+------------
+  created <= event date <= min(today, deadline); before created -> born
+  resolved, goes to you. Dated to the EVENT (first occurrence), not the check.
+  Your entry in config/resolutions.csv is final: such questions are never
+  checked again.
 
 BUDGET
 ------
-Two or three Flash Lite calls per question per day (form + read, plus a
-second read only when a follow-up fires), from a 500/day allowance per model
-per key. The news search itself has no quota. Each
-question is still checked at most once a day; a per-run cap remains.
+Flash Lite: 2-3 calls per question per day (form, headline read, full-text
+read when triggered), from 500/day. Tavily: one credit per full-text read;
+with ~16 questions roughly 100-300 a month of the free 1,000; sweeps pause
+below a reserve, everything stops (red alert) near zero.
+
+FAILURE IS LOUD
+---------------
+No key, a bad key, no credits, a rate limit, an unreachable search or a dead
+reading model each put a red "SOMETHING DID NOT RUN" box at the top of the
+log and a red annotation on the Actions page. test_guards.py sabotages each
+safety guard in turn and confirms the tests catch it.
 
 BACKFILL GUARD
 --------------
@@ -94,7 +90,7 @@ from __future__ import annotations
 
 import datetime as dt
 
-from . import config, news_search, resolve, store
+from . import config, deep_search, news_search, resolve, store
 
 TASK = "web_resolve"
 QUERY_TASK = "web_query"
@@ -157,9 +153,15 @@ ONCE (repeated operations, several votes), give the date of the FIRST time.
 just the clearest one.
 - Use nothing but these articles. If they do not show it clearly, answer \
 "happened": false. Never conclude that the question resolves NO.
-- LEAD: if the articles show the resolving act was announced or scheduled for \
-a SPECIFIC date, give the EARLIEST such date and a short description of the \
-act -- whether or not it has happened since. Otherwise leave both empty.
+- LEAD: if the articles show a SPECIFIC date bearing on the resolving act, \
+give the EARLIEST such date, a short description, and its KIND -- whether or \
+not anything has happened since:
+    "act"      -- the act ITSELF was announced to happen on that date \
+("Treasury will buy $6bn on Thursday", "tariffs take effect 1 November")
+    "occasion" -- a meeting, vote, hearing or decision date where the act \
+MIGHT happen but the outcome is still open ("RBI policy meeting 5-7 October", \
+"Senate vote scheduled for 14 October")
+  Otherwise leave all three empty.
 
 ARTICLES (number | published | publisher | headline -- snippet):
 {articles}
@@ -173,9 +175,16 @@ Return JSON only, no prose before or after:
   "supporting_articles": [numbers of the articles that report it as done],
   "evidence": "one or two sentences from those articles that establish it",
   "lead_date": "YYYY-MM-DD, the EARLIEST date the act was scheduled for, if any; else empty",
-  "lead_what": "short description of that scheduled act; else empty",
+  "lead_what": "short description of that scheduled act or occasion; else empty",
+  "lead_kind": "act | occasion; else empty",
   "reason": "one line, always filled in"
 }}"""
+
+OCCASION_HINT = """A DECISION OCCASION FELL ON {date}: {what}. Look for \
+reports of its OUTCOME. If the outcome was the act the criteria require, it \
+happened; if the outcome was something else (a hold, a delay, a rejection), \
+it has NOT happened.
+"""
 
 LEAD_HINT = """THIS ACT WAS DUE ON {date}: {what}. Look specifically for \
 reports that it took place -- results, outcomes, reactions to it having \
@@ -187,6 +196,59 @@ VERIFY_HINT = """CHECK THIS CAREFULLY: the act was scheduled for {date} \
 has happened more than once, find the FIRST time and give that date. Cite \
 every article that reports it done.
 """
+
+DEEP_PROMPT = """Below are news articles found just now: FULL TEXTS (T1, T2, \
+...) and HEADLINES (H1, H2, ...). Using ONLY these, decide ONE thing: has \
+this forecasting question ALREADY RESOLVED YES?
+
+TODAY: {today}
+QUESTION: {question}
+RESOLUTION CRITERIA: {criteria}
+DEADLINE: {deadline}
+WHAT RESOLVES IT: {resolves_on}
+{focus}
+THE RULE
+- YES requires that the event the criteria describe has ACTUALLY HAPPENED, on \
+or before today and on or before the deadline.
+- An announcement that something WILL happen is NOT resolution. "Set to", \
+"to buy", "expected to", "will take effect on <future date>" are NOT YET.
+- A report of the act's RESULTS or OUTCOME proves it happened, even when the \
+outcome disappointed ("purchases fell short of the cap" means purchases \
+took place). Judge whether it HAPPENED, not whether it succeeded.
+- Where the criteria say "officially", reliable reports of the official act \
+count.
+- "WHAT RESOLVES IT" says which act counts. Read every clause literally.
+- If it happened more than once, event_date is the FIRST time.
+- EVIDENCE: for each source that shows the act DONE, copy ONE sentence WORD \
+FOR WORD -- the sentence stating it was done. From a full text (T#) copy a \
+sentence of its text; from a headline (H#) copy the headline. Do not \
+paraphrase, shorten, translate or fix typos: a quote that cannot be found \
+verbatim in the source is thrown away. List every source that shows it done.
+- If these sources do not clearly show it done, answer "happened": false. \
+Never conclude that the question resolves NO.
+- LEAD: if the sources show a SPECIFIC date bearing on the resolving act, give \
+the EARLIEST such date, a short description, and its KIND: "act" (the act \
+itself was announced for that date) or "occasion" (a meeting, vote or \
+decision date where it MIGHT happen). Otherwise leave all three empty.
+
+FULL TEXTS:
+{texts}
+
+HEADLINES:
+{headlines}
+
+Return JSON only:
+{{
+  "happened": true or false,
+  "status": "happened | announced_not_yet_happened | in_progress | no_relevant_news",
+  "event": "what specifically happened",
+  "event_date": "YYYY-MM-DD, the FIRST date it happened; empty if it has not",
+  "evidence": [{{"source": "T1", "quote": "exact sentence copied from it"}}],
+  "lead_date": "YYYY-MM-DD or empty",
+  "lead_what": "short description or empty",
+  "lead_kind": "act | occasion; or empty",
+  "reason": "one line, always filled in"
+}}"""
 
 # The only fixed vocabulary: one phrase per kind of resolving act. These words
 # really are standard across acts of that kind.
@@ -266,109 +328,110 @@ def _is_official(site: str, settings: dict) -> bool:
 # The decision: pure code, no model
 # ---------------------------------------------------------------------------
 
-def _numbers(value) -> list[int]:
-    """The reader's cited article numbers, however it formatted them."""
-    if isinstance(value, (int, float)):
-        value = [value]
-    if isinstance(value, str):
-        value = [v for v in value.replace(";", ",").split(",")]
-    out = []
-    for v in value or []:
-        try:
-            n = int(str(v).strip().strip("[]#"))
-        except ValueError:
-            continue
-        if n not in out:
-            out.append(n)
-    return out
+QUOTE_MIN_TEXT = 8        # words: a real sentence, not "Treasury Department bought"
+QUOTE_MIN_HEADLINE = 5
 
 
-def judge(question: dict, answer: dict | None, articles: list[dict],
-          today: dt.date, settings: dict) -> tuple[str, str, dict]:
+def judge_deep(question: dict, answer: dict | None, full: list[dict],
+               heads: list[dict], today: dt.date,
+               settings: dict) -> tuple[str, str, dict]:
     """
-    Turn the reader's answer into an action.
+    The decision, from the FULL-TEXT reading. Pure code; no model. (v22)
 
-    `articles` is the numbered list the reader saw (1-based), straight from
-    news_search -- the only place publishers, sites and dates come from.
+    EVIDENCE TIERS -- replacing "count two sources":
+      A  a quote verified VERBATIM in the text of an official (government)
+         page                                         -> resolves on its own
+      B  a quote verified verbatim in a full article  -> resolves with one more
+                                                         publisher (A, B or C)
+      C  a quote verified verbatim in a HEADLINE      -> corroboration only
+    Headlines alone never resolve. Every quote must be found in the source
+    text by code -- a quote the model invented, paraphrased or took from
+    another article is thrown away. A dated source published BEFORE the event
+    cannot report it done ("will buy" stories), so it does not count; an
+    undated full article counts only if official.
 
-    Returns (action, why, facts). `action` is one of:
-      resolved_yes  every check passed
-      pending       the reader says it happened, but a check failed -> you decide
-      not_yet       nothing to act on
-      failed        no usable answer at all
-
-    Kept free of I/O so it can be tested exhaustively without a network.
+    Returns (action, why, facts): action is resolved_yes | pending | not_yet
+    | failed. facts["evidence"] lists every quote with its verdict, for the
+    log and the probe.
     """
     wr = settings.get("web_resolution", {}) or {}
-    min_sites = int(wr.get("min_independent_sources", 2))
-    facts = {"sites": [], "official": False, "cited": []}
-
-    # Check 1: the search found something to read.
-    if not articles:
-        return "not_yet", "the news search found no articles", facts
+    facts = {"evidence": [], "sites": [], "official": False, "tier": ""}
+    if not full and not heads:
+        return "not_yet", "nothing found to read", facts
     if not isinstance(answer, dict):
         return "failed", "no parseable answer from the reader", facts
-
-    # Check 2: the reader says it happened, with a date.
     if not _truthy(answer.get("happened")):
-        status = answer.get("status") or "not happened"
-        return "not_yet", f"reader: {status}", facts
+        return "not_yet", f"full-text reader: {answer.get('status') or 'not happened'}", facts
 
     event_date = _date(answer.get("event_date"))
     if event_date is None:
-        return ("pending",
-                "reader says it happened but gave no usable event date", facts)
+        return "pending", "reader says it happened but gave no usable date", facts
     facts["event_date"] = event_date.isoformat()
-
-    # Check 3: the date sits inside the question's life.
     deadline = _date(question.get("deadline"))
     created = _date(question.get("created"))
     if event_date > today:
-        return ("not_yet",
-                f"event date {event_date} is in the future -- announced, not "
-                "yet happened", facts)
+        return "not_yet", f"event date {event_date} is in the future", facts
     if deadline and event_date > deadline:
-        return ("not_yet",
-                f"event date {event_date} is after the deadline {deadline}; "
-                "that is not a YES, and the deadline lapse will handle it",
-                facts)
+        return ("not_yet", f"event date {event_date} is after the deadline "
+                f"{deadline}; the lapse rule handles it", facts)
     if created and event_date < created:
-        return ("pending",
-                f"event date {event_date} is BEFORE the question was created "
-                f"({created}) -- the question looks born resolved, which is a "
-                "question defect for you to judge", facts)
+        return ("pending", f"event date {event_date} is BEFORE the question was "
+                f"created ({created}) -- looks born resolved", facts)
 
-    # Check 4: cited articles, published on or after the event.
-    cited = [articles[n - 1] for n in _numbers(answer.get("supporting_articles"))
-             if 1 <= n <= len(articles)]
-    facts["cited"] = cited
-    if not cited:
-        return ("pending",
-                "reader says it happened but cited none of the articles found",
-                facts)
-    after = [a for a in cited if (_date(a.get("date")) or dt.date.min) >= event_date]
-    if not after:
-        return ("not_yet",
-                f"every cited article was published before the event date "
-                f"{event_date}, so it can only have reported the act as "
-                "planned, not done", facts)
+    good = []
+    for item in answer.get("evidence") or []:
+        if not isinstance(item, dict):
+            continue
+        ref = str(item.get("source", "")).strip().upper().lstrip("[").rstrip("]")
+        quote = str(item.get("quote", "")).strip()
+        verdict = {"source": ref, "quote": quote[:200], "ok": False, "tier": "", "why": ""}
+        facts["evidence"].append(verdict)
+        kind, num = ref[:1], ref[1:]
+        pool = full if kind == "T" else heads if kind == "H" else None
+        if pool is None or not num.isdigit() or not 1 <= int(num) <= len(pool):
+            verdict["why"] = "no such source"
+            continue
+        art = pool[int(num) - 1]
+        site = _site(art.get("site") or "") or (art.get("publisher") or "").lower()
+        official = _is_official(site, settings)
+        where = art.get("text", "") if kind == "T" else art.get("title", "")
+        if not deep_search.quote_found(
+                quote, where, QUOTE_MIN_TEXT if kind == "T" else QUOTE_MIN_HEADLINE):
+            verdict["why"] = "quote not found verbatim in the source (or too short)"
+            continue
+        pub = _date(art.get("date"))
+        if pub is None and not (kind == "T" and official):
+            verdict["why"] = "source has no date, and is not official"
+            continue
+        if pub is not None and pub < event_date:
+            verdict["why"] = (f"published {pub}, before the event -- can only "
+                              "have reported it as planned")
+            continue
+        verdict.update(ok=True, site=site,
+                       tier="A" if (kind == "T" and official) else "B" if kind == "T" else "C",
+                       why="verified")
+        good.append(verdict)
 
-    # Check 5: independent publishers, or one official site.
     sites = []
-    for a in after:
-        key = _site(a.get("site") or "") or (a.get("publisher") or "").strip().lower()
-        if key and key not in sites:
-            sites.append(key)
-    official = any(_is_official(_site(a.get("site") or ""), settings) for a in after)
-    facts.update(sites=sites, official=official)
-    if official:
-        return "resolved_yes", "official source among the cited articles", facts
-    if len(sites) >= min_sites:
-        return ("resolved_yes",
-                f"{len(sites)} different publishers report it done", facts)
-    return ("pending",
-            f"only {len(sites)} publisher(s) report it done and none official "
-            f"(needs {min_sites}, or one official)", facts)
+    for v in good:
+        if v["site"] and v["site"] not in sites:
+            sites.append(v["site"])
+    tiers = {v["tier"] for v in good}
+    facts.update(sites=sites, official="A" in tiers,
+                 tier="A" if "A" in tiers else "B" if "B" in tiers else "C" if tiers else "")
+
+    if "A" in tiers:
+        return "resolved_yes", "official source, quote verified in its text", facts
+    if "B" in tiers and len(sites) >= 2:
+        return ("resolved_yes", f"full-text quote verified, corroborated by "
+                f"{len(sites) - 1} more publisher(s)", facts)
+    if "B" in tiers:
+        return ("pending", "one full-text source verified, no second publisher "
+                "corroborates it yet", facts)
+    if tiers:
+        return "pending", "only headlines back it -- headlines never resolve", facts
+    return ("pending", "reader says it happened, but none of its quotes could "
+            "be verified in the sources", facts)
 
 
 # ---------------------------------------------------------------------------
@@ -479,32 +542,40 @@ def build_queries(form: dict, q: dict) -> list[str]:
     return out
 
 
-def followup_queries(form: dict, lead_what: str) -> list[str]:
-    """The one extra search when a scheduled date has passed (v19)."""
-    what = _clean(lead_what, 10)
-    out = [f"{what} results"] if what else []
-    if form:
-        out.append(_clean(f"{form['actor']} {form.get('act_past','')} "
-                          f"{form['object']}", 14))
-    return [x for x in out if x][:2]
+def _kind(value) -> str:
+    """v22: 'occasion' only when said so; anything else is treated as an act."""
+    return "occasion" if str(value or "").strip().lower() == "occasion" else "act"
 
 
 def _lead(answer: dict, q: dict):
     """
-    (date, what) of a scheduled resolving act: from today's reading if it
-    found one, otherwise from the date stored on the question earlier.
+    (date, what, kind) of a dated lead: from today's reading if it found one,
+    otherwise from the date stored on the question earlier.
+
+    v22 -- KIND MATTERS. An "act" lead means the act itself was announced for
+    that date; if the date passes with no report, the human is asked. An
+    "occasion" lead (a meeting, vote, decision date) only means the act MIGHT
+    happen then; the RBI can hold rates. Treating the 5 Oct MPC meeting as an
+    act would have sent a false "was due, no report" alarm on 6 Oct.
+    Stored as "YYYY-MM-DD: what" (act) or "YYYY-MM-DD [occasion]: what".
     """
     d = _date((answer or {}).get("lead_date"))
     what = _clean((answer or {}).get("lead_what"), 14)
     if d and what:
-        return d, what
+        return d, what, _kind((answer or {}).get("lead_kind"))
     stored = (q.get("awaiting") or "").strip()
     if ":" in stored:
-        sd, _, swhat = stored.partition(":")
-        sd = _date(sd)
+        head, _, swhat = stored.partition(":")
+        kind = "occasion" if "[occasion]" in head else "act"
+        sd = _date(head.replace("[occasion]", "").strip())
         if sd and swhat.strip():
-            return sd, swhat.strip()
+            return sd, swhat.strip(), kind
     return None
+
+
+def awaiting_text(lead) -> str:
+    tag = " [occasion]" if lead[2] == "occasion" else ""
+    return f"{lead[0].isoformat()}{tag}: {lead[1]}"
 
 
 def _article_block(articles: list[dict]) -> str:
@@ -533,124 +604,214 @@ def _read(q, articles, today, router, hint=None):
     )
 
 
-def check_one(q: dict, router, settings: dict, today: dt.date) -> dict:
-    """
-    One full check -- form, search, read, decide, and at most ONE follow-up
-    -- with nothing written. Raises news_search.SearchUnavailable if the first
-    search cannot run at all. Returns everything needed to record, apply or
-    print the result.
+def _text_block(full: list[dict], chars: int) -> str:
+    out = []
+    for i, a in enumerate(full, 1):
+        body = (a.get("text") or a.get("snippet") or "")[:chars]
+        out.append(f"[T{i}] {a.get('date') or 'undated'} | {a.get('publisher','')} | "
+                   f"{a.get('title','')}\n{body}")
+    return "\n\n".join(out) or "(none)"
 
-    FOLLOW THE CLUE (v19). If the reading finds no completed act but the act
-    was scheduled for a date that has now passed -- read today, or stored on
-    the question from an earlier day -- run ONE more search aimed at that act,
-    and read again. If that still shows nothing, the question goes to you:
-    "was due on X, no report it happened". That is the Q0003 pattern, and it
-    turns a silent miss into a prompt. A future date is returned as
-    `awaiting`, to be stored on the question.
+
+def _head_block(heads: list[dict]) -> str:
+    return "\n".join(f"[H{i}] {a.get('date','')} | {a.get('publisher','')} | "
+                     f"{a.get('title','')}" for i, a in enumerate(heads, 1)) or "(none)"
+
+
+def _last_deep(qid: str):
+    last = None
+    for row in store.read_rows(config.WEB_CHECKS_CSV):
+        if row.get("question_id") == qid and row.get("deep"):
+            last = _date(row.get("date")) or last
+    return last
+
+
+def check_one(q: dict, router, settings: dict, today: dt.date,
+              deep=None, budget: dict | None = None) -> dict:
     """
-    limit = int((settings.get("web_resolution", {}) or {}).get("max_articles", 40))
+    One full check, nothing written (v22).
+
+      1. HEADLINES (Google News RSS, free): the cheap screen. Read once, only
+         to ROUTE: did any headline say it happened, and is there a dated lead?
+         Headlines never resolve anything.
+      2. FULL TEXT (Tavily, 1 credit) when it matters:
+           headline   -- a headline says it happened: search from creation
+           due        -- an announced ACT's date has passed
+           occasion   -- a decision occasion has passed (meeting, vote)
+           sweep      -- no full-text check for `sweep_days` (default 7):
+                         catches what headlines miss ("fell short" read as
+                         "didn't happen")
+      3. The full-text reader quotes evidence verbatim; judge_deep() verifies
+         every quote in the source text and applies the tiers.
+
+    Raises news_search.SearchUnavailable if the headline search cannot run.
+    """
+    wr = settings.get("web_resolution", {}) or {}
+    ds = settings.get("deep_check", {}) or {}
+    budget = budget if budget is not None else {"deep": True, "sweeps": True}
+    limit = int(wr.get("max_articles", 40))
     form = _form_for(q, router)
     queries = build_queries(form, q)
-    articles, problems = news_search.search(queries, limit=limit)
-    r = {"form": form, "queries": queries, "articles": articles,
-         "problems": problems, "answer": {}, "model": "",
-         "followup": None, "awaiting": None}
+    heads, problems = news_search.search(queries, limit=limit)
+    r = {"form": form, "queries": queries, "articles": heads, "full": [],
+         "problems": problems, "answer": {}, "headline_answer": {}, "model": "",
+         "trigger": "", "window": None, "deep_query": "", "deep_error": None,
+         "awaiting": None, "clear_awaiting": False}
 
-    if articles:
-        answer, model = _read(q, articles, today, router)
-        action, why, facts = judge(q, answer, articles, today, settings)
-        r.update(answer=answer if isinstance(answer, dict) else {},
-                 model=model or "")
-    else:
-        action, why, facts = judge(q, None, [], today, settings)
-    r.update(action=action, why=why, facts=facts)
+    h_answer = {}
+    if heads:
+        got, model = _read(q, heads, today, router)
+        if got is None:
+            r.update(action="failed", why="headline reader gave no answer",
+                     facts={}, model=model or "")
+            return r
+        h_answer = got if isinstance(got, dict) else {}
+        r.update(headline_answer=h_answer, model=model or "")
 
-    # v21: ONE second look, for any of three reasons. Still one hop, once a
-    # day. Searching is recall, so it is allowed to look again; the decision
-    # stays with judge().
-    lead = _lead(r["answer"], q)
+    # -- route ---------------------------------------------------------------
+    created = _date(q.get("created")) or today - dt.timedelta(days=30)
     deadline = _date(q.get("deadline")) or dt.date.max
-    event_date = _date(facts.get("event_date"))
-    window = hint = None
-    reason = ""
+    said = _truthy(h_answer.get("happened"))
+    lead = _lead(h_answer, q)
+    trigger, window, hint = "", None, ""
+    if said:
+        trigger = "headline"
+        window = (created - dt.timedelta(days=1), today)
+        hint = VERIFY_HINT.format(date=created.isoformat(),
+                                  what=h_answer.get("event", "the act"))
+    elif lead and lead[0] <= min(today, deadline):
+        trigger = "due" if lead[2] == "act" else "occasion"
+        window = (lead[0] - dt.timedelta(days=1),
+                  min(lead[0] + dt.timedelta(days=4), today))
+        hint = (LEAD_HINT if lead[2] == "act" else OCCASION_HINT).format(
+            date=lead[0].isoformat(), what=lead[1])
+        if lead[2] == "occasion" and today > lead[0] + dt.timedelta(days=4):
+            r["clear_awaiting"] = True
+    elif lead and lead[0] > today:
+        r["awaiting"] = lead
+    if not trigger:
+        last = _last_deep(q.get("id", ""))
+        every = int(ds.get("sweep_days", 7))
+        if last is None or (today - last).days >= every:
+            trigger = "sweep"
+            window = (created - dt.timedelta(days=1), today)
+    r.update(trigger=trigger, window=window)
 
-    if action == "not_yet":
-        if lead is None or lead[0] > deadline:
-            return r
-        if lead[0] > today:
-            r["awaiting"] = lead
-            return r
-        # (1) DUE: scheduled for a date that has passed, no report it
-        #     happened. Look right around that date.
-        reason = "due"
-        window = (lead[0] - dt.timedelta(days=1), lead[0] + dt.timedelta(days=4))
-        hint = LEAD_HINT.format(date=lead[0].isoformat(), what=lead[1])
-    elif action == "pending" and _truthy(r["answer"].get("happened")) and (
-            "publisher" in why or "cited none" in why):
-        # (2) THIN: the reader says it happened, but too few publishers back
-        #     it. Look from the earliest scheduled date (if any) to the
-        #     reported date, to corroborate it -- and to find the first time.
-        reason = "thin"
-        end = event_date or today
-        start = min(lead[0], end) if lead and lead[0] <= today else end - dt.timedelta(days=7)
-        window = (start - dt.timedelta(days=1), min(end + dt.timedelta(days=4), today))
-        hint = VERIFY_HINT.format(
-            date=start.isoformat(), what=(lead[1] if lead else r["answer"].get("event", "")))
-    elif action == "resolved_yes" and lead and event_date and lead[0] < event_date:
-        # (3) EARLIER: resolved, but the act was scheduled before the date the
-        #     reader gave. A repeated act resolves on its FIRST occurrence, so
-        #     check whether it already happened then.
-        reason = "earlier"
-        window = (lead[0] - dt.timedelta(days=1), lead[0] + dt.timedelta(days=4))
-        hint = VERIFY_HINT.format(date=lead[0].isoformat(), what=lead[1])
-    else:
+    if not trigger:
+        r.update(action="not_yet", facts={},
+                 why=f"headlines: {h_answer.get('status') or 'nothing new'}; "
+                     "full text not due today")
         return r
 
-    what = lead[1] if lead else r["answer"].get("event", "")
-    fq = followup_queries(form, what)
+    # -- full text -------------------------------------------------------------
+    allowed = budget.get("deep", True) and (trigger != "sweep" or budget.get("sweeps", True))
+    if deep is None or not allowed:
+        reason = ("full-text reading unavailable" if deep is None
+                  else "credit reserve -- sweeps paused" if trigger == "sweep"
+                  else "full-text budget for this run is spent")
+        r["deep_error"] = reason if deep is None else None
+        if said:
+            r.update(action="pending", facts={},
+                     why=f"headlines say it happened, but the full text was not "
+                         f"read ({reason}) -- headlines never resolve")
+        else:
+            r.update(action="not_yet", facts={}, why=f"headlines: nothing; {reason}")
+        return r
+
+    query = (f"{form['actor']} {form.get('act_past','')} {form['object']}"
+             if form else _fallback_query(q))
+    query = _clean(query, 14)
+    r["deep_query"] = query
     try:
-        more, p2 = news_search.search(fq, limit=limit, window=window)
-    except news_search.SearchUnavailable as exc:
-        r["problems"] = problems + [f"follow-up search: {exc}"]
+        full = deep.search(query, window)
+        if not full and trigger == "due":
+            # An announced act's date may be off by a few days: try once
+            # without dates. Not for an occasion -- a meeting with no decision
+            # yet is normal, and the retry would just spend a second credit.
+            full = deep.search(query, None)
+    except deep_search.DeepUnavailable as exc:
+        r["deep_error"] = exc
+        if said:
+            r.update(action="pending", facts={},
+                     why=f"headlines say it happened, but full text could not be "
+                         f"read ({exc.kind}) -- headlines never resolve")
+        else:
+            r.update(action="not_yet", facts={}, why=f"full text unavailable ({exc.kind})")
         return r
-    merged = news_search.merge(articles, more, limit=limit)
-    answer2, model2 = _read(q, merged, today, router, hint=hint)
-    action2, why2, facts2 = judge(q, answer2, merged, today, settings)
-    r["followup"] = {"reason": reason, "lead": lead or (window[0], what),
-                     "window": window, "queries": fq, "found": len(more)}
-    r["problems"] = problems + p2
+    if budget is not None:
+        budget["spent"] = budget.get("spent", 0) + 1
+    chars = int(ds.get("chars_per_article", 4000))
+    r["full"] = full
+    answer, model2 = router.generate(
+        TASK,
+        DEEP_PROMPT.format(
+            today=today.isoformat(), question=q.get("question", ""),
+            criteria=q.get("resolution_criteria", ""), deadline=q.get("deadline", ""),
+            resolves_on=resolves_on_text(q), focus=hint,
+            texts=_text_block(full, chars), headlines=_head_block(heads[:25]),
+        ),
+        temperature=0.1, max_output_tokens=3072,
+    )
+    action, why, facts = judge_deep(q, answer, full, heads[:25], today, settings)
+    r.update(answer=answer if isinstance(answer, dict) else {}, model=model2 or r["model"],
+             action=action, why=why, facts=facts)
 
-    take_second = False
-    if reason == "due":
-        take_second = True
-        if action2 == "not_yet":
-            action2 = "pending"
-            why2 = (f"was due on {lead[0]} ({lead[1]}); a follow-up search "
-                    "found no report that it happened -- please check")
-    elif reason == "thin":
-        # Never downgrade: the second look can only resolve or refine.
-        take_second = action2 == "resolved_yes" or (
-            action2 == "pending" and _truthy((answer2 or {}).get("happened")))
-        if not take_second:
-            r["followup"]["kept"] = ("kept the first reading: the second look "
-                                     "did not strengthen it")
-    elif reason == "earlier":
-        # Replace only with an EARLIER date that passes every check.
-        d2 = _date(facts2.get("event_date"))
-        take_second = action2 == "resolved_yes" and d2 is not None and d2 < event_date
-        if not take_second:
-            r["followup"]["kept"] = (f"kept {event_date}: the look back did not "
-                                     "establish an earlier occurrence")
-    if take_second:
-        r.update(articles=merged,
-                 answer=answer2 if isinstance(answer2, dict) else {},
-                 model=model2 or r["model"],
-                 action=action2, why=why2, facts=facts2)
+    if action == "not_yet" and trigger == "due":
+        r.update(action="pending",
+                 why=f"was due on {lead[0]} ({lead[1]}); the full text shows no "
+                     "report that it happened -- please check")
+    elif action == "not_yet" and trigger == "headline":
+        r.update(action="pending",
+                 why="a headline says it happened, but the full text does not "
+                     "confirm it -- please check")
+    later = _lead(r["answer"], {})
+    if later and later[0] > today and action != "resolved_yes":
+        r["awaiting"] = later
     return r
 
 
+def make_deep(settings: dict):
+    """The Tavily client per settings, or None if full-text reading is off."""
+    ds = settings.get("deep_check", {}) or {}
+    if not ds.get("enabled", True):
+        return None
+    return deep_search.TavilyClient(max_results=int(ds.get("max_results", 8)))
+
+
+def deep_budget(deep, settings: dict, log=None) -> dict:
+    """
+    Check Tavily credits ONCE per run and decide what may be spent:
+      left <= min_credits  -> no full-text reading at all (alert)
+      left <= reserve      -> triggered checks only; weekly sweeps paused
+    Unknown usage (endpoint down) -> proceed; the 432 error is the backstop.
+    """
+    ds = settings.get("deep_check", {}) or {}
+    budget = {"deep": deep is not None and bool(getattr(deep, "key", "")),
+              "sweeps": True, "spent": 0, "left": None,
+              "cap": int(ds.get("max_deep_per_run", 20))}
+    if not budget["deep"]:
+        return budget
+    u = deep.usage()
+    if u and u.get("left") is not None:
+        budget["left"] = u["left"]
+        if u["left"] <= int(ds.get("min_credits", 5)):
+            budget["deep"] = False
+            if log:
+                _alert(log, f"FULL-TEXT CHECK OFF: only {u['left']} Tavily "
+                            "credits left this month. Nothing can resolve until "
+                            "they reset.")
+        elif u["left"] <= int(ds.get("reserve_credits", 100)):
+            budget["sweeps"] = False
+            if log:
+                log.flag(f"Tavily credits low ({u['left']} left): weekly sweeps "
+                         "paused; checks triggered by news still run.")
+        elif log:
+            log.info(f"  Tavily credits left this month: {u['left']} of {u['limit']}")
+    return budget
+
+
 def run(router, settings: dict, today: dt.date, log, dry_run: bool = False,
-        real_today: dt.date | None = None) -> dict:
+        real_today: dt.date | None = None, deep="auto") -> dict:
     """
     Check every eligible question once. Returns a small summary dict.
 
@@ -658,9 +819,10 @@ def run(router, settings: dict, today: dt.date, log, dry_run: bool = False,
     at the top of the run log, and the newspaper screen, lapses and
     forecasting carry on regardless.
     """
-    summary = {"checked": 0, "resolved": [], "pending": [], "unchecked": 0}
+    summary = {"checked": 0, "resolved": [], "pending": [], "unchecked": 0,
+               "deep_used": 0}
     wr = settings.get("web_resolution", {}) or {}
-    log.sub("Web resolution (Google News search, YES only)")
+    log.sub("Web resolution (headlines screen, full text decides, YES only)")
 
     if not wr.get("enabled", True):
         log.info("  disabled in config/settings.yaml (web_resolution.enabled)")
@@ -681,6 +843,16 @@ def run(router, settings: dict, today: dt.date, log, dry_run: bool = False,
                     "alone.")
         return summary
 
+    if deep == "auto":
+        deep = make_deep(settings)
+    if deep is not None and not getattr(deep, "key", ""):
+        _alert(log, "FULL-TEXT CHECK OFF: the TAVILY_API_KEY secret is not set. "
+                    "Headlines are still screened, but headlines never resolve, "
+                    "so nothing can resolve from the web until the key is added.")
+        deep = None
+    budget = deep_budget(deep, settings, log)
+    alerted = set()
+
     cap = int(wr.get("max_checks_per_run", 30))
     done_today = _checked_today(today.isoformat())
     queue = [q for q in _candidates(today) if q.get("id") not in done_today]
@@ -698,25 +870,26 @@ def run(router, settings: dict, today: dt.date, log, dry_run: bool = False,
             log.info(f"  per-run cap of {cap} reached; "
                      f"{summary['unchecked']} left for the next run")
             break
+        if budget["deep"] and budget["spent"] >= budget["cap"]:
+            budget["deep"] = False
+            log.info(f"  full-text cap of {budget['cap']} reached for this run")
 
         qid = q.get("id", "")
         try:
-            r = check_one(q, router, settings, today)
+            r = check_one(q, router, settings, today, deep=deep, budget=budget)
         except news_search.SearchUnavailable as exc:
             summary["unchecked"] = len(queue) - i
             _alert(log,
-                   f"WEB CHECK DID NOT RUN: the news search could not be "
+                   f"WEB CHECK DID NOT RUN: the headline search could not be "
                    f"reached ({exc}). {summary['unchecked']} question(s) were "
                    "not checked; resolution is relying on the papers alone "
                    "this run.")
             if not dry_run:
-                _record(today, q, "failed", f"news search unreachable: {exc}",
+                _record(today, q, "failed", f"headline search unreachable: {exc}",
                         {}, [], "", {})
             break
 
         if r["action"] == "failed":
-            # The reader model failed. If that is quota or a dead model it
-            # will fail for every question, so stop and say so loudly.
             summary["unchecked"] = len(queue) - i
             _alert(log,
                    f"WEB CHECK STOPPED at {qid}: the reading model gave no "
@@ -724,109 +897,130 @@ def run(router, settings: dict, today: dt.date, log, dry_run: bool = False,
                    f"{summary['unchecked']} question(s) were not checked.")
             if not dry_run:
                 _record(today, q, "failed", r["why"], {}, r["queries"],
-                        r["model"], r["facts"])
+                        r["model"], r.get("facts") or {}, r.get("trigger", ""))
             break
+
+        err = r.get("deep_error")
+        if isinstance(err, deep_search.DeepUnavailable) and err.kind not in alerted:
+            alerted.add(err.kind)
+            _alert(log, f"FULL-TEXT CHECK FAILED ({err.kind}): {err.detail or err}. "
+                        "Headlines never resolve, so questions that need full "
+                        "text wait for the next run.")
 
         summary["checked"] += 1
         answer, facts, why = r["answer"], r["facts"], r["why"]
-        queries = r["queries"] + ((r["followup"] or {}).get("queries") or [])
+        queries = r["queries"] + ([f"[full text] {r['deep_query']}"] if r.get("deep_query") else [])
         was_pending = _last_action(qid) == ("pending", why)
-        if r["followup"]:
-            f = r["followup"]
-            log.info(f"  {qid}: second look ({_REASON[f['reason']]}), "
-                     f"{f['window'][0]} to {f['window'][1]} -- found "
-                     f"{f['found']} more article(s)"
-                     + (f"; {f['kept']}" if f.get("kept") else ""))
+        if r.get("deep_query"):
+            summary["deep_used"] += 1
+            w = r["window"]
+            log.info(f"  {qid}: full text read ({r['trigger']}), "
+                     f"{w[0]} to {w[1]}: {len(r['full'])} article(s), "
+                     f"{sum(1 for a in r['full'] if a.get('full'))} with full text")
         if r["awaiting"] and not dry_run:
-            date, what = r["awaiting"]
-            store.update_question(qid, {"awaiting": f"{date.isoformat()}: {what}"})
-            log.info(f"  {qid}: scheduled for {date} ({what}); will look for "
-                     "it specifically once that date passes")
+            date, what, kind = r["awaiting"]
+            store.update_question(qid, {"awaiting": awaiting_text(r["awaiting"])})
+            log.info(f"  {qid}: {kind} on {date} ({what}); will read for it "
+                     "once that date passes")
+        if r.get("clear_awaiting") and not dry_run:
+            store.update_question(qid, {"awaiting": ""})
+            log.info(f"  {qid}: the awaited occasion is past; stopped watching it")
         if r["problems"]:
-            log.info(f"  {qid}: {len(r['problems'])} of the search fetches "
+            log.info(f"  {qid}: {len(r['problems'])} headline fetch(es) "
                      f"failed (others worked): {r['problems'][0]}")
         if not dry_run:
             _record(today, q, r["action"], why, answer, queries,
-                    r["model"], facts)
+                    r["model"], facts, r.get("trigger", "") if r.get("deep_query") else "")
 
         if r["action"] == "resolved_yes":
             _apply_yes(q, facts["event_date"], answer, why, today, log, dry_run)
             summary["resolved"].append(qid)
         elif r["action"] == "pending" and was_pending:
-            # Same pending reason as the last check: still listed in
-            # data/pending_resolutions.csv, but not flagged again every day.
             summary["pending"].append(qid)
             log.info(f"  {qid}: still waiting for you -- {why}")
         elif r["action"] == "pending":
             summary["pending"].append(qid)
             log.flag(
-                f"{qid}: the web check says this HAPPENED, but it needs your "
-                f"call -- {why}.\n"
+                f"{qid}: needs your call -- {why}.\n"
                 f"    Question: {q.get('question','')}\n"
                 f"    Event:    {answer.get('event','')} "
                 f"({answer.get('event_date','no date')})\n"
-                f"    Cited:    "
-                + ("; ".join(f"{a['date']} {a['publisher']}: {a['title'][:80]}"
-                             for a in facts.get("cited", [])) or "none")
-                + f"\n    If you agree, paste into config/resolutions.csv:\n"
+                f"    Evidence: {_evidence_text(facts) or 'none'}\n"
+                f"    If you agree, paste into config/resolutions.csv:\n"
                 f"      {_paste_row(qid, answer)}"
             )
         else:
-            log.info(f"  {qid}: {r['action']} -- {why} "
-                     f"({len(r['articles'])} articles; "
-                     f"queries: {' | '.join(r['queries'])})")
+            log.info(f"  {qid}: {r['action']} -- {why}")
 
     _rebuild_pending(today, log, dry_run)
     log.info(
-        f"  web checks this run: {summary['checked']}; "
-        f"resolved YES: {len(summary['resolved'])}; "
+        f"  web checks this run: {summary['checked']}; full-text reads: "
+        f"{summary['deep_used']}; resolved YES: {len(summary['resolved'])}; "
         f"waiting for you: {len(summary['pending'])}"
     )
     return summary
 
 
-def probe(router, settings: dict, qid: str, today: dt.date, out=print) -> str:
-    """
-    Run ONE question's web check end to end and print everything -- queries,
-    every article found, the reader's answer, the code's decision. Writes
-    nothing: no question changes, no web_checks row.
+def _evidence_text(facts: dict) -> str:
+    out = []
+    for v in facts.get("evidence") or []:
+        mark = f"{v.get('tier')} ok" if v.get("ok") else f"rejected: {v.get('why')}"
+        out.append(f"{v.get('source')} [{mark}] \"{(v.get('quote') or '')[:90]}\"")
+    return " | ".join(out)
 
-    Run from GitHub (Actions -> Run workflow -> web_probe = Q0003), because
-    that is where the real network is. Returns the action.
+
+def probe(router, settings: dict, qid: str, today: dt.date, out=print,
+          deep="auto", budget=None) -> str:
+    """
+    Run ONE question's web check end to end and print everything: headlines,
+    the route taken, every full-text article (with its length), every quote
+    and whether code verified it, and the decision. Writes nothing.
+    Run from GitHub (Actions -> Run workflow -> web_probe), where the network is.
     """
     q = store.question_by_id(qid)
     if q is None:
         out(f"No question {qid} in data/questions.csv")
         return "failed"
+    if deep == "auto":
+        deep = make_deep(settings)
+    if deep is not None and not getattr(deep, "key", ""):
+        deep = None
     out(f"PROBE {qid}: {q.get('question','')}")
     out(f"  created {q.get('created')}  deadline {q.get('deadline')}  "
-        f"resolves_on {q.get('resolves_on') or '(blank -> carried_out)'}")
+        f"resolves_on {q.get('resolves_on') or '(blank -> carried_out)'}"
+        f"  awaiting {q.get('awaiting') or '-'}")
     try:
-        r = check_one(q, router, settings, today)
+        r = check_one(q, router, settings, today, deep=deep, budget=budget)
     except news_search.SearchUnavailable as exc:
-        out(f"\n  SEARCH UNREACHABLE: {exc}")
+        out(f"\n  HEADLINE SEARCH UNREACHABLE: {exc}")
         return "failed"
     out(f"\n  form: {r.get('form') or '(failed; question text used)'}")
-    out(f"  queries: {r['queries']}")
+    out(f"  headline queries: {r['queries']}")
     if r["problems"]:
-        out(f"  fetch problems: {r['problems']}")
-    out(f"\n  {len(r['articles'])} articles found:")
-    for i, a in enumerate(r["articles"], 1):
-        out(f"   [{i:2d}] {a['date']}  {a['publisher'][:24]:24s}  {a['title'][:100]}")
-    if r.get("followup"):
-        f = r["followup"]
-        out(f"\n  SECOND LOOK ({_REASON[f['reason']]}): searched "
-            f"{f['window'][0]} to {f['window'][1]} with {f['queries']}; found "
-            f"{f['found']} more article(s)"
-            + (f"\n  {f['kept']}" if f.get("kept") else
-               "; the list above is the merged set the second reading saw"))
+        out(f"  headline fetch problems: {r['problems']}")
+    out(f"  {len(r['articles'])} headlines; first 15:")
+    for i, a in enumerate(r["articles"][:15], 1):
+        out(f"   [H{i:<2d}] {a['date']}  {a['publisher'][:22]:22s}  {a['title'][:95]}")
+    out(f"\n  headline reader: {r.get('headline_answer') or '(none)'}")
+    if r.get("trigger"):
+        out(f"\n  FULL TEXT: trigger={r['trigger']}  window={r['window']}  "
+            f"query='{r.get('deep_query') or '(not run)'}'")
+    else:
+        out("\n  FULL TEXT: not triggered today")
+    if r.get("deep_error"):
+        out(f"  FULL TEXT UNAVAILABLE: {r['deep_error']}")
+    for i, a in enumerate(r.get("full") or [], 1):
+        kind = f"{len(a.get('text',''))} chars" if a.get("full") else "stub only"
+        out(f"   [T{i}] {a.get('date') or 'undated':10s}  {a.get('site','')[:26]:26s}  "
+            f"{kind:12s} {a.get('title','')[:80]}")
+    if r.get("deep_query"):
+        out(f"\n  full-text reader ({r['model'] or 'none'}): {r['answer']}")
+    for v in (r.get("facts") or {}).get("evidence") or []:
+        mark = f"OK tier {v.get('tier')}" if v.get("ok") else f"REJECTED ({v.get('why')})"
+        out(f"   evidence {v.get('source')}: {mark}: \"{(v.get('quote') or '')[:110]}\"")
     if r.get("awaiting"):
-        out(f"\n  AWAITING: {r['awaiting'][0]} ({r['awaiting'][1]}) -- would be "
-            "stored on the question")
-    out(f"\n  reader ({r['model'] or 'none'}): {r['answer']}")
+        out(f"\n  AWAITING: {awaiting_text(r['awaiting'])} -- would be stored")
     out(f"\n  DECISION: {r['action']} -- {r['why']}")
-    if r["facts"].get("sites"):
-        out(f"  publishers counted: {r['facts']['sites']}")
     return r["action"]
 
 
@@ -837,13 +1031,6 @@ def _last_action(qid: str):
         if row.get("question_id") == qid and row.get("action") not in ("failed", "skipped"):
             last = (row.get("action"), row.get("why"))
     return last
-
-
-_REASON = {
-    "due": "scheduled date has passed, no report yet",
-    "thin": "says it happened, too few publishers",
-    "earlier": "scheduled earlier than the date given -- checking for a first occurrence",
-}
 
 
 def _apply_yes(q, event_date, answer, why, today, log, dry_run):
@@ -877,9 +1064,8 @@ def _paste_row(qid: str, answer: dict) -> str:
     return f"{qid},1,{answer.get('event_date','')},web: {event[:120]}"
 
 
-def _record(today, q, action, why, answer, queries, model, facts):
+def _record(today, q, action, why, answer, queries, model, facts, deep=""):
     answer = answer or {}
-    cited = facts.get("cited", []) or []
     store.append_row(config.WEB_CHECKS_CSV, {
         "date": today.isoformat(),
         "question_id": q.get("id", ""),
@@ -889,13 +1075,14 @@ def _record(today, q, action, why, answer, queries, model, facts):
         "status": answer.get("status", ""),
         "event": answer.get("event", ""),
         "event_date": answer.get("event_date", ""),
-        "evidence": answer.get("evidence", ""),
+        "evidence": answer.get("evidence", "") if isinstance(answer.get("evidence"), str) else "",
         "sources": "; ".join(facts.get("sites", []) or []),
         "official_source": "yes" if facts.get("official") else "no",
         "queries": "; ".join(queries or []),
-        "cited_articles": " || ".join(
-            f"{a.get('date','')} {a.get('publisher','')}: {a.get('title','')}"
-            for a in cited),
+        "cited_articles": "",
+        "deep": deep,
+        "tier": facts.get("tier", ""),
+        "quotes": _evidence_text(facts),
         "model": model or "",
     })
 

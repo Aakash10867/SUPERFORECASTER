@@ -86,6 +86,9 @@ jobs:
         env:
           SUPERFORECASTER_API: ${{ secrets.SUPERFORECASTER_API }}
           SUPERFORECASTER_API2: ${{ secrets.SUPERFORECASTER_API2 }}
+          # v22: full-text reading. Add it under Settings -> Secrets and
+          # variables -> Actions, named exactly TAVILY_API_KEY.
+          TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY }}
         run: |
           # v18: probe mode -- one question's web check, printed, nothing saved.
           if [ -n "${{ inputs.web_probe }}" ]; then
