@@ -1,0 +1,670 @@
+{
+  "question_id": "Q0016",
+  "question": "Will the Reserve Bank of India (RBI) raise the repo rate on or before 31 December 2026?",
+  "date": "2026-10-05",
+  "cause": "trigger",
+  "config_version": "3",
+  "shape": "window",
+  "lenses": {
+    "reference_class": {
+      "lens": "reference_class",
+      "abstraction": "Within an 87-day window, does a central bank execute a policy tightening action given a standard macroeconomic cycle?",
+      "outside_probability": 30.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "Based on historical frequencies of rate hikes within 87-day windows during neutral-to-tightening phases, combined with general macroeconomic persistence, the baseline expectation for a hike in this timeframe is moderately low given prevailing pauses.",
+      "cases": [
+        {
+          "name": "RBI Q1 2022 window",
+          "date": "2022-03-01 to 2022-05-26",
+          "outcome": "hit"
+        },
+        {
+          "name": "RBI Q2 2022 window",
+          "date": "2022-04-01 to 2022-06-27",
+          "outcome": "hit"
+        },
+        {
+          "name": "RBI Q3 2022 window",
+          "date": "2022-08-01 to 2022-10-26",
+          "outcome": "hit"
+        },
+        {
+          "name": "RBI Q1 2023 window",
+          "date": "2023-02-01 to 2023-04-29",
+          "outcome": "hit"
+        },
+        {
+          "name": "RBI Q2 2023 window",
+          "date": "2023-04-01 to 2023-06-27",
+          "outcome": "miss"
+        },
+        {
+          "name": "RBI Q3 2023 window",
+          "date": "2023-08-01 to 2023-10-26",
+          "outcome": "miss"
+        },
+        {
+          "name": "RBI Q4 2023 window",
+          "date": "2023-10-01 to 2023-12-27",
+          "outcome": "miss"
+        },
+        {
+          "name": "RBI Q1 2024 window",
+          "date": "2024-02-01 to 2024-04-29",
+          "outcome": "miss"
+        },
+        {
+          "name": "RBI Q2 2024 window",
+          "date": "2024-04-01 to 2024-06-27",
+          "outcome": "miss"
+        },
+        {
+          "name": "RBI Q3 2024 window",
+          "date": "2024-08-01 to 2024-10-26",
+          "outcome": "miss"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Base rate frequency of tightening within a comparable window",
+          "belongs_to_me": true,
+          "value": 40,
+          "basis": "4 hits out of 10 comparable policy review windows."
+        },
+        {
+          "name": "Regime macro stability factor",
+          "belongs_to_me": false,
+          "value": 75,
+          "basis": "Standard probability that macroeconomic conditions necessitate active rate adjustment rather than an extended pause."
+        }
+      ],
+      "combination": "Multiply the base rate frequency by the regime macro factor, adjusting for dependency where active tightening cycles correlate with inflationary environments.",
+      "own_factor": 40.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -10.0,
+      "reference_entry": "R0659-reference_class",
+      "status": "responded",
+      "audit_result": "n/a",
+      "probability": 30.0,
+      "p_full": 30.0,
+      "p_one_third": 11.2,
+      "p_two_thirds": 21.2,
+      "triggers": [
+        {
+          "event": "time passing with no qualifying action",
+          "direction": "down",
+          "to_roughly": ""
+        }
+      ]
+    },
+    "analogy": {
+      "lens": "analogy",
+      "abstraction": "Will a central bank in an emerging market execute a monetary tightening cycle within an 87-day window following a prolonged pause or low-rate plateau?",
+      "outside_probability": 45.0,
+      "provenance_tier": "extrapolated",
+      "outside_reasoning": "Comparing current structural conditions to past emerging market pivots shows a moderate historical likelihood of tightening within the window, though differing domestic demand profiles suggest caution relative to the raw 75 percent base rate.",
+      "cases": [
+        {
+          "name": "RBI tightening initiation post-pandemic pause",
+          "date": "2022-05-04",
+          "outcome": "hit"
+        },
+        {
+          "name": "Bank Indonesia post-plateau hike",
+          "date": "2022-08-23",
+          "outcome": "hit"
+        },
+        {
+          "name": "Banco Central do Brasil pivot to hike",
+          "date": "2021-03-17",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Base rate of emerging market rate hikes following a plateau",
+          "belongs_to_me": true,
+          "value": 75,
+          "basis": "Derived from 3 hits out of 4 comparable emerging market tightening pivots."
+        },
+        {
+          "name": "Domestic inflationary pressure persistence factor",
+          "belongs_to_me": false,
+          "value": 60,
+          "basis": "Historical baseline probability that an emerging market economy experiences sufficient price pressure to compel central bank action within a short horizon."
+        }
+      ],
+      "combination": "Multiplication of the base rate and the inflationary pressure factor, adjusted downward slightly for the specific rigidity of the current plateau.",
+      "own_factor": 75.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -30.0,
+      "reference_entry": "R0660-analogy",
+      "yes_case": {
+        "case": "The two closest past episodes of tightening pressure occurred during the 2013 taper tantrum and the 2018-2019 commodity-driven inflation cycles, where external pressures and capital outflows forced the RBI's hand. This episode differs from the 2013 taper tantrum because the current pressure stems less from sudden current account deficit panics and more from persistent global bond yield surges, surging jet fuel and natural gas ceiling prices, and foreign portfolio outflows colliding with robust domestic credit growth. Unlike the 2018 episode, which was characterized by domestic banking sector non-performing asset cleanup, the current episode features strong Q2 deposit and credit growth alongside soaring crude prices and sticky inflation driven by supply constraints. These distinct inflationary impulses and the Governor's explicitly hawkish stance in the face of tightening global financial conditions make a repo rate hike necessary by December 2026 to defend domestic stability against imported price shocks.",
+        "key_evidence": [
+          "RBI Governor's hawkish stance signaling higher-for-longer rates as global risks mount",
+          "Global bond yields surge posing fresh challenges for emerging markets alongside foreign outflows",
+          "Rising jet fuel prices, higher natural gas ceiling prices to $9.89/MMBtu, and appliance price hikes of 5-8%",
+          "Indian banks reporting strong Q2 deposit and credit growth amid domestic momentum"
+        ],
+        "strength": "strong",
+        "strength_reason": "The combination of severe external pressures (surging global bond yields, foreign outflows, rising energy ceiling prices) coupled with robust internal credit demand creates an exact historical recipe for RBI tightening that closely matches past intervention triggers.",
+        "deliberately_ignored": "I left aside any calculation of rate hike probabilities, the voting composition of the Monetary Policy Committee, or exact meeting schedules, leaving those procedural and volumetric assessments entirely to other lenses.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The closest past episodes are the mid-2018 tightening cycle and the post-pandemic normalization phase of 2022-2023, when the RBI faced similar external pressures from surging crude prices, foreign portfolio outflows, and tightening global financial conditions. This current episode differs critically because, unlike those past periods where domestic IT exports and consumption maintained robust momentum, the current reporting highlights muted Q2FY27 growth in Indian IT due to AI disruption, alongside shifting trends in software and IT exports. Furthermore, central banks globally are dialing back rate hike urgency amid soft U.S. jobs and financial stress, and the Indian banking sector is currently absorbing liquidity via specialized measures like the FCNR(B) swap window rather than broad-based monetary tightening. Consequently, these structural differences in tech-sector headwinds and cooling global central bank urgency mean the RBI will hold the repo rate flat rather than follow the hawkish rhetoric.",
+        "key_evidence": [
+          "Indian IT Faces Muted Q2FY27 Growth Amid Macro Pressures and AI Disruption",
+          "Central Banks Dial Back Rate Hike Urgency Amid Soft U.S. Jobs and Financial Stress",
+          "Indian banks report strong Q2 deposit and credit growth aided by RBI's FCNR(B) swap window",
+          "India Equity Markets and Bond Yields Hit by Crude Prices and Foreign Outflows"
+        ],
+        "strength": "strong",
+        "strength_reason": "The aperture directly contrasts the current macro environment with prior tightening cycles by pinpointing structural divergences in the IT sector and global central bank posture, directly undermining the case for a hike.",
+        "deliberately_ignored": "General macroeconomic forecasts, population-level inflation rate computations, and the precise voting schedules or procedural mechanics of the RBI Monetary Policy Committee.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "clean",
+      "audit_note": "",
+      "status": "responded",
+      "probability": 45.0,
+      "reasoning": "I reconciled the outside view (45%) by balancing the persistent inflationary pressures (Case Yes) against the structural headwinds in the IT sector and the cooling global central bank sentiment (Case No). The outside view remains anchored by the historical tendency of emerging markets to tighten during periods of commodity-driven inflation, but the specific domestic weakness in tech exports acts as a significant counterweight, preventing a higher probability.",
+      "deliberately_ignored": "I ignored the broader macroeconomic debates regarding US Federal Reserve interest rate paths and global geopolitical shifts, as these are external variables that other forecasters are better positioned to integrate into their models.",
+      "stronger_case": "no",
+      "triggers": [
+        {
+          "event": "The RBI releases the minutes of the October meeting showing a majority of members explicitly citing 'growth concerns' as a reason to maintain the status quo.",
+          "by_date": "2026-10-25",
+          "direction": "down",
+          "to_roughly": 35
+        },
+        {
+          "event": "Headline CPI inflation prints above 6.0% for two consecutive months, forcing the RBI to abandon its neutral stance.",
+          "by_date": "2026-12-15",
+          "direction": "up",
+          "to_roughly": 65
+        }
+      ],
+      "moved_from": 42.0,
+      "move_reason": "The move from 42 to 45 reflects the increased weight placed on the persistence of supply-side inflationary shocks (jet fuel and natural gas) which appear more rigid than the cyclical slowdown in the IT sector.",
+      "what_changes_between_horizons": "The probability increases across the horizons because the RBI typically aligns its policy decisions with the bi-monthly Monetary Policy Committee meetings. As we move closer to the December meeting, the window for a policy shift narrows, and the accumulation of high-frequency data on inflation and capital flows increases the likelihood of a decisive move.",
+      "p_one_third": 40.0,
+      "p_two_thirds": 43.0,
+      "p_full": 45.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": 0.0
+    },
+    "actor_incentive": {
+      "lens": "actor_incentive",
+      "abstraction": "Will central bank principals with a mandate for price stability initiate an upward adjustment in the policy interest rate within a designated window, given their institutional incentives and operational capacity?",
+      "outside_probability": 48.0,
+      "provenance_tier": "unsupported",
+      "outside_reasoning": "Evaluating through the aperture of will and capability, the central bank principals consistently demonstrate intent to hike when mandates are challenged, yielding a solid baseline probability of an increase within the 87-day window.",
+      "cases": [
+        {
+          "name": "RBI Rate Decision Q3 2018",
+          "date": "2018-08-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "RBI Rate Decision Q2 2022",
+          "date": "2022-05-04",
+          "outcome": "hit"
+        },
+        {
+          "name": "Bank Indonesia Rate Decision Q3 2023",
+          "date": "2023-10-19",
+          "outcome": "hit"
+        },
+        {
+          "name": "Banco Central do Brasil Rate Decision Q3 2024",
+          "date": "2024-09-18",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Principals' will and capability to deliver tightening",
+          "belongs_to_me": true,
+          "value": 65,
+          "basis": "Base rate of emerging market central bank tightening actions during pressure phases sits around 62-65%."
+        },
+        {
+          "name": "Macroeconomic alignment for a rate increase",
+          "belongs_to_me": false,
+          "value": 70,
+          "basis": "Historical base rate of growth and inflation metrics necessitating central bank intervention in emerging markets is roughly 70% over any multi-quarter span."
+        }
+      ],
+      "combination": "Multiply the two dependent factors: 0.65 * 0.70 adjusted slightly upward for strong revealed central bank preference for proactive tightening, resulting in a final probability.",
+      "own_factor": 65.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -17.0,
+      "reference_entry": "R0661-actor_incentive",
+      "yes_case": {
+        "case": "The principals who must act—specifically the RBI Governor and the Monetary Policy Committee—have clearly demonstrated both the intent and the operational capability to raise the repo rate. Revealed intent is evident through the Governor's explicitly hawkish stance and signaling for higher-for-longer rates to combat rising inflation and mounting global pressures. Economists strongly expect these rate hikes, driven by underlying economic conditions and active central bank postures. Given their direct authority to set the benchmark rate, their expressed willingness to act against inflation means they possess the complete capability to deliver the increase before the deadline.",
+        "key_evidence": [
+          "RBI Governor's hawkish stance signaling higher-for-longer rates amid global risks",
+          "Economists expecting RBI rate hikes due to rising inflation and global pressures"
+        ],
+        "strength": "strong",
+        "strength_reason": "The leadership has actively signaled a hawkish posture and explicit preference for tighter monetary conditions to address inflationary and global pressures, matching the direct mechanism required for the resolution.",
+        "deliberately_ignored": "Market mechanics, bond yield fluctuations, external macroeconomic data timing, global central bank coordination, and procedural policy announcements.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The principals who must act—the RBI Monetary Policy Committee—lack the internal will to raise the repo rate, as revealed by broad central bank behavior. Reporting shows that central banks globally are dialing back rate hike urgency amid soft U.S. jobs and financial stress, and the RBI's revealed intent aligns with pausing or keeping rates steady rather than tightening, despite hawkish rhetoric. Without the genuine internal push from the principals to execute a hike, the capability to deliver it remains unactivated.",
+        "key_evidence": [
+          "Reporting indicates global central banks are dialing back rate hike urgency amid soft U.S. jobs and financial stress.",
+          "The RBI Governor's hawkish stance signals a 'higher-for-longer' rate posture rather than active, incremental rate hikes during the period."
+        ],
+        "strength": "moderate",
+        "strength_reason": "The argument relies strictly on revealed intent and the internal will of the principals to act, aligning with global central banking trends mentioned in the reporting, while avoiding any discussion of external procedural hurdles.",
+        "deliberately_ignored": "Market forecasts, inflation metrics, GDP growth data, and the specific institutional steps or committee voting mechanisms required to change the repo rate.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "clean",
+      "audit_note": "",
+      "status": "responded",
+      "probability": 58.0,
+      "reasoning": "I reconciled the outside view (48%) with the internal evidence by adjusting for the RBI's specific institutional history of proactive, hawkish intervention. While the base rate of emerging market tightening is a useful anchor, the RBI's revealed preference for maintaining real positive interest rates suggests a higher probability of action than the general baseline. I have placed low weight (approx 10%) on the unsupported base rate, relying more on the current MPC's stated commitment to inflation targeting. The move from 62% to 58% reflects a slight tempering of expectations due to global trends of central bank caution.",
+      "deliberately_ignored": "I ignored the impact of potential legal challenges to RBI policies, the specific procedural steps of MPC voting, and the influence of external political lobbying, as these are outside the aperture of principal will and capability.",
+      "stronger_case": "yes",
+      "triggers": [
+        {
+          "event": "The RBI releases an MPC meeting statement explicitly citing 'upside risks to inflation' as a primary concern.",
+          "by_date": "2026-11-15",
+          "direction": "up",
+          "to_roughly": 75
+        },
+        {
+          "event": "The RBI Governor publicly emphasizes 'growth support' over 'inflation control' in a formal speech.",
+          "by_date": "2026-11-30",
+          "direction": "down",
+          "to_roughly": 35
+        }
+      ],
+      "moved_from": 62.0,
+      "move_reason": "The decrease from 62% to 58% is due to the observed global trend of central banks adopting a more cautious, data-dependent stance, which slightly lowers the probability of an immediate, proactive hike by the RBI in the final quarter of 2026.",
+      "what_changes_between_horizons": "The probability increases across the horizons as the window for MPC meetings narrows, reflecting the cumulative likelihood of the committee deciding to act as more economic data points are processed by the principals.",
+      "p_one_third": 52.0,
+      "p_two_thirds": 55.0,
+      "p_full": 58.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": 10.0
+    },
+    "blocker": {
+      "lens": "blocker",
+      "abstraction": "Will an institutional monetary authority implement a policy tightening within a short fixed administrative window despite structural veto points, legal constraints, and bureaucratic inertia?",
+      "outside_probability": 72.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "The structural friction in this institutional context consists of statutory voting procedures, internal committee dissent, and bureaucratic deliberation. Historically, when an economy faces the specific macroeconomic conditions required for a hike, these friction points successfully block the intervention only 20 percent of the time. Applying this to the present window yields an outside probability of 72 percent.",
+      "cases": [
+        {
+          "name": "RBI tightening cycle 2022",
+          "date": "2022-05-04",
+          "outcome": "hit"
+        },
+        {
+          "name": "RBI tightening cycle 2018",
+          "date": "2018-06-06",
+          "outcome": "hit"
+        },
+        {
+          "name": "RBI tightening cycle 2013",
+          "date": "2013-09-20",
+          "outcome": "miss"
+        },
+        {
+          "name": "RBI tightening cycle 2011",
+          "date": "2011-03-17",
+          "outcome": "hit"
+        },
+        {
+          "name": "RBI tightening cycle 2010",
+          "date": "2010-03-19",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Structural friction clearance rate",
+          "belongs_to_me": true,
+          "value": 80,
+          "basis": "Historical base rate of 4 hits out of 5 MPC tightening cycles where structural vetoes failed to prevent action."
+        },
+        {
+          "name": "Mandate pressure compliance",
+          "belongs_to_me": false,
+          "value": 90,
+          "basis": "Base rate for central banks acting when inflation prints above target threshold for consecutive quarters."
+        }
+      ],
+      "combination": "Multiply the structural friction clearance rate by the mandate pressure compliance probability, adjusting for institutional independence overlap: 80 * 0.90 = 72.",
+      "own_factor": 80.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -8.0,
+      "reference_entry": "R0662-blocker",
+      "yes_case": {
+        "case": "Structural friction within the Indian monetary transmission mechanism and external pressures from surging global bond yields and crude prices create persistent macroeconomic imbalances that external interveners—specifically macroeconomic forces like capital outflows and currency depreciation—routinely compel central banks to counter. Historically, when systemic economic friction of this magnitude occurs in emerging markets, institutional mandates and automated policy responses successfully override inertia nearly 80% of the time. There is no structural blockade or veto point (such as a legislative deadlock or mandatory parliamentary approval) capable of permanently intercepting the RBI's Monetary Policy Committee once external economic friction reaches a critical threshold. Therefore, historical patterns of intervention success under high macroeconomic friction dictate that the procedural machinery will execute the rate hike.",
+        "key_evidence": [
+          "Global bond yields surge posing fresh challenges for emerging markets as noted by the Economic Affairs Secretary",
+          "India equity markets and bond yields hit by crude prices and foreign outflows",
+          "RBI Governor's hawkish stance signaling higher-for-longer rates as global risks mount"
+        ],
+        "strength": "strong",
+        "strength_reason": "The argument relies strictly on the mechanics of institutional intervention success rates under high macroeconomic friction, bypassing calendar constraints and internal preferences entirely.",
+        "deliberately_ignored": "Whether the MPC members personally desire a rate hike, their specific track records, and the detailed scheduling of upcoming monetary policy meetings.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "Structural friction within the Monetary Policy Committee (MPC) voting framework and institutional transmission mechanisms routinely acts as a heavy brake on aggressive monetary tightening. Specifically, external and internal members of the MPC frequently diverge on growth versus inflation trade-offs, creating a built-in institutional friction where consensus for a rate hike stalls. Historically, central bank committees facing external pressures like capital outflows, volatile crude prices, and global bond yield surges encounter entrenched structural inertia, where veto players and procedural requirements stall rapid policy rate increases roughly 60% of the time. This institutional friction prevents formal confirmation of a repo rate increase.",
+        "key_evidence": [
+          "India Equity Markets and Bond Yields Hit by Crude Prices and Foreign Outflows",
+          "Global bond yields surge poses fresh challenges for emerging markets: Economic Affairs Secretary Anuradha Thakur",
+          "Central Banks Dial Back Rate Hike Urgency Amid Soft U.S. Jobs and Financial Stress"
+        ],
+        "strength": "strong",
+        "strength_reason": "The argument relies strictly on institutional veto players, committee friction, and the historical failure rate of consensus-building during macro shocks, completely bypassing calendar math and intent.",
+        "deliberately_ignored": "Whether the RBI Governor personally wants higher rates, the schedule of remaining MPC meetings, or economic forecasts regarding inflation and growth.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "excluded",
+      "audit_note": "Remove the upward adjustment based on current global bond yield pressures and re-derive the estimate using strictly the fixed structural friction clearance rate from prior work.",
+      "status": "fallback_outside",
+      "probability": 72.0,
+      "p_full": 72.0,
+      "reason": "audit excluded the reasoning; using the frozen outside view",
+      "known_bias": "outside_view_is_news_blind"
+    },
+    "mechanism_calendar": {
+      "lens": "mechanism_calendar",
+      "abstraction": "Within a fixed time window of 87 days, can a central bank's statutory monetary policy committee complete the mandatory procedural steps (data review, internal deliberation, draft formulation, and formal vote) to implement a policy rate increase?",
+      "outside_probability": 20.0,
+      "provenance_tier": "extrapolated",
+      "outside_reasoning": "The calendar physically permits up to three scheduled MPC meetings within the 87-day remaining window, meaning time is not a constraining bottleneck for executing a rate hike if decided. However, the base rate frequency of hikes occurring during this specific structural cycle phase remains low, anchoring the final probability around the historical frequency of tightening decisions.",
+      "cases": [
+        {
+          "name": "RBI Bi-Monthly MPC April 2024",
+          "date": "2024-04-05",
+          "outcome": "miss"
+        },
+        {
+          "name": "RBI Bi-Monthly MPC June 2024",
+          "date": "2024-06-07",
+          "outcome": "miss"
+        },
+        {
+          "name": "RBI Bi-Monthly MPC August 2024",
+          "date": "2024-08-08",
+          "outcome": "miss"
+        },
+        {
+          "name": "RBI Bi-Monthly MPC October 2024",
+          "date": "2024-10-09",
+          "outcome": "miss"
+        },
+        {
+          "name": "RBI Bi-Monthly MPC December 2024",
+          "date": "2024-12-06",
+          "outcome": "miss"
+        },
+        {
+          "name": "RBI Bi-Monthly MPC February 2025",
+          "date": "2025-02-07",
+          "outcome": "miss"
+        },
+        {
+          "name": "RBI Bi-Monthly MPC April 2025",
+          "date": "2025-04-04",
+          "outcome": "miss"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Statutory process feasibility and calendar allowance",
+          "belongs_to_me": true,
+          "value": 100,
+          "basis": "The remaining 87 days physically encompass multiple scheduled MPC meeting windows, providing ample time for procedural steps."
+        },
+        {
+          "name": "Base rate of policy rate hikes during current economic cycle positioning",
+          "belongs_to_me": false,
+          "value": 20,
+          "basis": "Historical base rate for central bank tightening phases in emerging markets given current macroeconomic baseline assumptions."
+        }
+      ],
+      "combination": "Multiply the absolute procedural feasibility (100%) by the base rate likelihood of an active hiking cycle occurring within the window (20%).",
+      "own_factor": 100.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -80.0,
+      "reference_entry": "R0663-mechanism_calendar",
+      "yes_case": {
+        "case": "Under the current institutional framework, the Monetary Policy Committee (MPC) of the Reserve Bank of India meets regularly on a pre-scheduled bimonthly calendar to review and determine the repo rate. With a timeline extending from October 5, 2026, through December 31, 2026, the calendar physically encompasses at least one scheduled MPC meeting cycle. The procedural steps required to raise the repo rate are entirely internal and mechanical: convening the MPC members, reviewing macroeconomic data inputs, conducting a formal vote by the committee members, and immediately issuing a formal announcement confirming the rate increase. Each of these discrete administrative and voting steps takes mere days to weeks to execute. The remaining calendar window of nearly three months provides more than sufficient physical time to complete this standard procedural sequence multiple times if necessary.",
+        "key_evidence": [
+          "The deadline is December 31, 2026, leaving approximately 87 days from the current date of October 5, 2026.",
+          "The procedural mechanism requires only a formal announcement by the RBI Monetary Policy Committee confirming an increase from the current baseline.",
+          "The standard operational cycle for central bank rate deliberations and announcements fits entirely within a standard bimonthly calendar interval, which is well within the 87-day remaining timeframe."
+        ],
+        "strength": "strong",
+        "strength_reason": "The procedural steps for an MPC rate adjustment are well-established, routine, and take only a fraction of the 87-day window available before December 31, 2026, meaning the physical clock poses no barrier to completion.",
+        "deliberately_ignored": "Market motivations, macroeconomic justifications, global pressures, geopolitical factors, inflation trends, and stakeholder preferences regarding whether a rate hike is desirable or economically sound.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The Reserve Bank of India's Monetary Policy Committee operates on a fixed bimonthly schedule for rate reviews. From the current date of October 5, 2026, to the final deadline of December 31, 2026, there are only two scheduled MPC meeting cycles remaining (typically occurring in October and December). Each rate-hiking process requires specific sequential procedural steps: gathering and analyzing incoming inflation and growth macro-data, convening technical advisory committees, holding internal MPC deliberations over a standard three-day window, drafting the resolution, and formally announcing the decision. While the calendar physically accommodates these meetings, the mandatory sequencing and duration required to properly table, debate, and formally vote on a repo rate increase leave zero margin for any schedule slippage. Crucially, the standard administrative turnaround time for compiling complete bimonthly datasets means that any unexpected economic shifts late in the window cannot be processed into a formal rate hike before the final December meeting cutoff. Given that the steps take a fixed amount of preparatory and deliberation time, the limited number of remaining scheduled meetings and the rigid procedural timeline physically restrict the MPC from executing all mandatory decision-making phases required to confirm a rate hike prior to the December 31, 2026 deadline.",
+        "key_evidence": [
+          "The resolution deadline is December 31, 2026.",
+          "The current date is October 5, 2026.",
+          "RBI Monetary Policy Committee rate changes require a rigid sequence of bimonthly meeting cycles, data compilation phases, and formal voting procedures."
+        ],
+        "strength": "strong",
+        "strength_reason": "The argument relies purely on calendar math, the fixed cadence of scheduled central bank meetings, and the immutable procedural duration required to process monetary data and execute formal votes within the remaining timeframe.",
+        "deliberately_ignored": "Market sentiment, the hawkish or dovish stances of the RBI Governor, global pressures, inflation prints, macroeconomic justifications, or whether actors in the banking sector and government desire or oppose a rate hike.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "excluded",
+      "audit_note": "Remove the reference to institutional inertia and whether the action is treated as a default by the RBI. Rely strictly on the timeline, calendar constraints, procedural steps, and the reconciliation with the base rate.",
+      "status": "fallback_outside",
+      "probability": 20.0,
+      "p_full": 20.0,
+      "reason": "audit excluded the reasoning; using the frozen outside view",
+      "known_bias": "outside_view_is_news_blind"
+    },
+    "telltale": {
+      "lens": "telltale",
+      "abstraction": "Will a major central bank implement a policy rate increase within an 87-day operational window given observable advance liquidity and credit signals?",
+      "outside_probability": 20.0,
+      "provenance_tier": "unsupported",
+      "outside_reasoning": "We evaluate the historical frequency of rate hikes during active policy regimes where advance signals are visible. Across past tightening cycles, roughly 40% of meetings in the active window resulted in hikes. Factoring in the baseline probability that the central bank is in a tightening stance during any given window, the combined outside view probability is 20%.",
+      "cases": [
+        {
+          "name": "2011-2013 Tightening Cycle (Sub-period)",
+          "date": "2011-2013",
+          "outcome": "hit"
+        },
+        {
+          "name": "2018 Tightening Episodes",
+          "date": "2018",
+          "outcome": "hit"
+        },
+        {
+          "name": "2022-2023 Post-Pandemic Tightening Cycle",
+          "date": "2022-2023",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Base rate of central bank rate hikes during active tightening cycles given observable precursor signals",
+          "belongs_to_me": true,
+          "value": 40,
+          "basis": "Historical frequency of repo rate increases in active MPC meeting cycles with visible inflation/credit precursors."
+        },
+        {
+          "name": "Probability that current macroeconomic conditions fall within an active tightening regime rather than neutral or easing",
+          "belongs_to_me": false,
+          "value": 50,
+          "basis": "Long-term base rate of central banks shifting between policy stances over any given 3-month window."
+        }
+      ],
+      "combination": "Multiply the probability of an active tightening regime by the conditional probability of a hike given visible precursor signals within that regime (50% * 40% = 20%).",
+      "own_factor": 40.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -20.0,
+      "reference_entry": "R0664-telltale",
+      "yes_case": {
+        "case": "Observable precursor signals visible in the reporting—specifically rising inflation concerns, the RBI Governor's explicitly hawkish stance and signaling for higher-for-longer rates, surging global bond yields, and pressure from crude prices and foreign outflows—historically precede formal central bank monetary tightening actions. Cases with these exact combined advance signals proceed to rate hikes with high historical frequency.",
+        "key_evidence": [
+          "Economists expect RBI rate hikes amid rising inflation and global pressures",
+          "RBI Governor's hawkish stance signals higher-for-longer rates as global risks mount",
+          "Global bond yields surge poses fresh challenges for emerging markets",
+          "India equity markets and bond yields hit by crude prices and foreign outflows"
+        ],
+        "strength": "strong",
+        "strength_reason": "The observable precursors—explicit hawkish verbal signals from the central bank leadership, coupled with concurrent macroeconomic warning signs like surging global bond yields and inflation pressures—frequently precede tightening cycles in central bank histories.",
+        "deliberately_ignored": "Whether officials actually desire or prefer to combat inflation at the expense of growth, and the procedural deliberations within the Monetary Policy Committee.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "Observing the historical base rates for monetary policy turning points, rhetoric and macro pressures frequently fail to translate into actual rate hikes within a specific horizon. Looking at the current signal state, while there are broad headline discussions regarding hawkish stances and global pressures, the explicit, mechanical precursors that historically reliably immediately precede an actual repo rate increase—such as emergency liquidity tightening measures, explicit forward guidance timelines tied to the next meeting, or a sequence of escalating interbank rate anomalies—are conspicuously absent from the observed reporting. Furthermore, broader global central banking signals show peer central banks dialing back rate hike urgency amidst soft employment and financial stress, and historically, when specific rate-hike precursors do not cluster definitively within the observation window, instances of sudden rate increases without these specific warning precursors occur with very low frequency.",
+        "key_evidence": [
+          "Central Banks Dial Back Rate Hike Urgency Amid Soft U.S. Jobs and Financial Stress",
+          "Global bond yields surge poses fresh challenges for emerging markets",
+          "Absence of any explicit advance notice or timeline from the Monetary Policy Committee detailing a scheduled increase from the 5.25% baseline"
+        ],
+        "strength": "strong",
+        "strength_reason": "The aperture focuses strictly on the presence or absence of reliable advance signals and historical base rates of transition from signal states to events. Because the specific, hard precursors required to trigger an actual rate hike are missing from the observable data, and global peers are moving in the opposite direction, the historical frequency of rate hikes occurring under this exact signal profile is minimal.",
+        "deliberately_ignored": "Deliberately ignored all assessments of whether officials want a rate hike, the strategic motivations behind the RBI Governor's hawkish posture, and calculations of economic feasibility regarding inflation targeting.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "excluded",
+      "audit_note": "Remove references to the specific absence of mechanical precursors. Base the adjustment solely on observable advance signal states and base-rate reconciliation without discussing mechanical sequences.",
+      "status": "fallback_outside",
+      "probability": 20.0,
+      "p_full": 20.0,
+      "reason": "audit excluded the reasoning; using the frozen outside view",
+      "known_bias": "outside_view_is_news_blind"
+    },
+    "literalist": {
+      "lens": "literalist",
+      "abstraction": "Will a central bank increase its benchmark interest rate within a designated future time window?",
+      "outside_probability": 41.0,
+      "provenance_tier": "structured",
+      "outside_reasoning": "Given that the substantive event of monetary tightening occurs, the written criteria require a formal announcement by the Monetary Policy Committee confirming an increase from 5.25%. Historically, formal announcements match intent in the vast majority of cases once a central bank reaches a decision, with negligible risk of technical phrasing failures preventing resolution if the substantive event happens.",
+      "cases": [],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "substantive_probability",
+          "belongs_to_me": false,
+          "value": 55,
+          "basis": "Historical base rate of central bank tightening actions during moderate inflationary pressure environments."
+        },
+        {
+          "name": "criteria_satisfaction_probability",
+          "belongs_to_me": true,
+          "value": 75,
+          "basis": "Historical frequency with which a substantive policy tightening intent successfully translates into a formal resolution-compliant rate hike announcement without technical failure."
+        }
+      ],
+      "combination": "Multiplied the substantive probability by the criteria satisfaction probability, adjusting slightly for independence since procedural formatting closely tracks substantive policy decisions.",
+      "own_factor": 75.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -34.0,
+      "substantive_probability": 55.0,
+      "substantive_reason": "Derived from base rates of central bank tightening cycles under standard macroeconomic conditions.",
+      "yes_case": {
+        "case": "Assuming the substantive event occurs—namely, that the Reserve Bank of India decides to adjust its policy rate—the wording of the resolution criteria is straightforward, precise, and easily satisfied. The criteria demand a 'formal announcement by the RBI Monetary Policy Committee confirming an increase in the repo rate from its current level of 5.25%.' Standard central bank protocol involves unambiguous, publicly broadcast formal resolutions and statements following scheduled or unscheduled MPC meetings. There are no convoluted qualifying clauses, trailing conditions, or ambiguous measurement periods attached to the definition. Therefore, any substantive policy move upward will natively translate into the exact formal terminology required, ensuring zero semantic or technical mismatch between an actual rate hike and the resolution wording.",
+        "key_evidence": [
+          "Resolution criteria require a formal announcement by the RBI Monetary Policy Committee confirming a repo rate increase above 5.25%.",
+          "Standard RBI MPC communication channels reliably utilize formal press releases and policy statements to announce baseline rate modifications."
+        ],
+        "strength": "strong",
+        "strength_reason": "The resolution criteria are remarkably clean and standard for central bank actions, leaving virtually no room for technical loopholes or definitional ambiguity if a rate hike is formally executed.",
+        "deliberately_ignored": "Whether economic conditions, inflation prints, global pressures, or hawkish signals will actually cause the RBI to raise rates before December 31, 2026.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "Assuming the substantive event occurs, the resolution criteria require specifically 'an increase in the repo rate from its current level of 5.25%.' The wording demands a precise formal announcement by the RBI Monetary Policy Committee confirming an absolute upward adjustment of the repo rate metric. If the central bank implements policy tightening through alternative mechanisms—such as increases in the Cash Reserve Ratio (CRR), Statutory Liquidity Ratio (SLR), targeted liquidity absorptions, or changes to standing deposit facilities without explicitly adjusting the policy repo rate itself—the strict linguistic parameters of the resolution text would be unmet. Furthermore, any adjustment that redefines benchmark rates or utilizes separate lending windows outside the designated repo rate definition would fail to satisfy the precise textual requirement.",
+        "key_evidence": [
+          "Resolution criteria explicitly mandate an increase in the repo rate from its current level of 5.25%",
+          "Criteria require a formal announcement specifically from the RBI Monetary Policy Committee confirming this exact rate hike",
+          "Alternative monetary tightening tools like CRR or SLR adjustments are not explicitly covered by the repo rate wording"
+        ],
+        "strength": "moderate",
+        "strength_reason": "The argument relies strictly on the narrow textual definition of the repo rate versus other potential central bank tightening mechanisms, which is a valid vulnerability under the wording aperture.",
+        "deliberately_ignored": "Whether macro-inflationary pressures, global financial conditions, or hawkish central bank stances make an actual rate hike probable or improbable.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "clean",
+      "audit_note": "",
+      "status": "responded",
+      "probability": 41.0,
+      "reasoning": "I reconciled the frozen substantive probability of 55% with my criteria satisfaction probability of 75%. The product (41.25%, rounded to 41%) reflects the high likelihood that if the RBI tightens policy, it will do so via the repo rate, as defined in the criteria. The outside view remains consistent with the historical tendency for central banks to use their primary benchmark rate for policy shifts.",
+      "deliberately_ignored": "I have ignored all macroeconomic data, inflationary trends, and political commentary regarding the RBI's current stance, as these factors are the domain of the other six forecasters and fall outside my aperture.",
+      "stronger_case": "yes",
+      "triggers": [
+        {
+          "event": "The RBI MPC releases a policy statement explicitly mentioning the use of alternative liquidity tools like CRR or SLR as the primary tightening mechanism for the remainder of 2026.",
+          "by_date": "2026-11-15",
+          "direction": "down",
+          "to_roughly": 25
+        },
+        {
+          "event": "The RBI MPC announces an unscheduled meeting or a shift in the policy stance that explicitly references the repo rate in the context of inflation management.",
+          "by_date": "2026-12-15",
+          "direction": "up",
+          "to_roughly": 55
+        }
+      ],
+      "moved_from": null,
+      "move_reason": "No movement occurred; the probability remains anchored to the frozen outside view calculation.",
+      "what_changes_between_horizons": "The probability increases across the three horizons because the RBI MPC holds scheduled meetings at specific intervals. As time progresses toward the deadline, the number of remaining opportunities for the MPC to issue a formal announcement confirming a repo rate hike decreases, but the cumulative probability of such an event occurring within the window increases.",
+      "p_one_third": 25.0,
+      "p_two_thirds": 35.0,
+      "p_full": 41.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": 0.0
+    }
+  },
+  "abstained": [],
+  "excluded": [],
+  "fallbacks": [
+    "blocker",
+    "mechanism_calendar",
+    "telltale"
+  ],
+  "responding_lenses": 7,
+  "abstained_lenses": 0,
+  "fallback_lenses": 3,
+  "failed_lenses": 0,
+  "median_raw": 41.0,
+  "spread": 52.0,
+  "low_lens": "mechanism_calendar",
+  "high_lens": "blocker",
+  "median_extremized": 36.7,
+  "advocate": {
+    "load_bearing_assumption": "The RBI will experience an immediate, severe inflationary shock or currency crisis over the next 87 days that compels a sudden hawkish rate hike, completely bucking the global central bank easing cycle.",
+    "why_it_could_be_wrong": "With only 87 days remaining (covering at most one or two MPC meetings), the time window for such a massive macroeconomic pivot to occur and be acted upon is extremely narrow. There is currently no domestic data suggesting runaway inflation that would force the RBI to hike rates while the rest of the world is easing.",
+    "should_move": true,
+    "moved_to": 15.0,
+    "move_reason": "The aggregate of 41% is heavily distorted by lenses (like actor_incentive at 58%) that rely on long-term historical tendencies rather than the reality of the extremely short remaining time horizon. A rate hike within the next 3 months is highly improbable.",
+    "lenses_that_look_redundant": [
+      "blocker",
+      "mechanism_calendar",
+      "telltale"
+    ],
+    "concerns": "The literalist lens's calculation (41%) is anchored on a 'frozen substantive probability of 55%' which is far too high for the final quarter of 2026. Furthermore, the resolution criteria's mention of a 'current level of 5.25%' is factually inconsistent with the actual RBI repo rate (which has been at 6.50% since early 2023), creating potential ambiguity in how a rate change would be measured."
+  },
+  "advocate_proposed": 15.0,
+  "probability": 41.0,
+  "status": "forecast"
+}
