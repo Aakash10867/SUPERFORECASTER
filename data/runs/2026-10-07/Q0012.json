@@ -1,0 +1,290 @@
+{
+  "question_id": "Q0012",
+  "question": "Will the U.S. Congress pass a joint resolution to block the 30-year nuclear cooperation agreement with Saudi Arabia on or before 26 August 2027?",
+  "date": "2026-10-07",
+  "cause": "refresh",
+  "config_version": "3",
+  "shape": "window",
+  "lenses": {
+    "reference_class": {
+      "lens": "reference_class",
+      "abstraction": "Within a 323-day statutory review window, will a bicameral legislature successfully pass a joint resolution of disapproval to block a major bilateral executive agreement, overcoming potential executive veto?",
+      "outside_probability": 5.0,
+      "provenance_tier": "thin",
+      "outside_reasoning": "Historical precedent shows that while members of Congress frequently introduce resolutions of disapproval regarding sensitive nuclear and Middle East agreements, overcoming the high procedural hurdles (passing both houses and mustering a two-thirds majority to override a presidential veto) has never successfully blocked a major agreement in this category.",
+      "cases": [
+        {
+          "name": "1981 Saudi AWACS arms sale",
+          "date": "1981-10-28",
+          "outcome": "miss"
+        },
+        {
+          "name": "1985 Saudi arms sale package",
+          "date": "1985-05-01",
+          "outcome": "miss"
+        },
+        {
+          "name": "2015 Iran Nuclear Agreement (JCPOA) review",
+          "date": "2015-09-10",
+          "outcome": "miss"
+        },
+        {
+          "name": "2019 Saudi/UAE arms sales disapproval resolutions",
+          "date": "2019-07-24",
+          "outcome": "miss"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Base rate of congressional override of executive foreign policy agreements via joint resolution",
+          "belongs_to_me": true,
+          "value": 5,
+          "basis": "0 hits out of 4 major historical challenges; set at a low non-zero baseline (5%) due to the extreme difficulty of achieving veto-proof majorities in both chambers."
+        },
+        {
+          "name": "Executive willingness to veto and sustain veto",
+          "belongs_to_me": false,
+          "value": 100,
+          "basis": "Executives uniformly veto resolutions overriding major international agreements."
+        }
+      ],
+      "combination": "Multiply the base rate of successful legislative override by the condition that the executive branch defends its agreement, yielding the final low probability.",
+      "own_factor": 5.0,
+      "assumed_factors": 1,
+      "scaffold_shift": 0.0,
+      "reference_entry": "R0728-reference_class",
+      "status": "responded",
+      "audit_result": "n/a",
+      "probability": 5.0,
+      "p_full": 5.0,
+      "p_one_third": 1.7,
+      "p_two_thirds": 3.4,
+      "triggers": [
+        {
+          "event": "time passing with no qualifying action",
+          "direction": "down",
+          "to_roughly": ""
+        }
+      ]
+    },
+    "analogy": {
+      "lens": "analogy",
+      "abstraction": "Will a legislative body pass a joint resolution of disapproval to block a major bilateral civil nuclear cooperation agreement within the statutory review window of roughly 30 to 120 days on or before 26 August 2027?",
+      "outside_probability": 12.0,
+      "provenance_tier": "unsupported",
+      "outside_reasoning": "While past episodes like the UAE and Vietnam agreements demonstrate that Congress rarely successfully blocks 123 agreements due to the high hurdle of veto-proof majorities, the specific entanglement with Middle Eastern security architecture, Senate skepticism, and defense commitments creates more friction than standard technical renewals. However, because passing a joint resolution through both chambers and defeating a likely presidential veto requires extraordinary consensus, the probability remains low.",
+      "cases": [
+        {
+          "name": "U.S.-UAE 123 Agreement",
+          "date": "2009-05-21",
+          "outcome": "miss"
+        },
+        {
+          "name": "U.S.-Vietnam 123 Agreement",
+          "date": "2013-12-13",
+          "outcome": "miss"
+        },
+        {
+          "name": "U.S.-South Korea 123 Agreement Extension",
+          "date": "2015-11-15",
+          "outcome": "miss"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Historical frequency of Congress blocking a Section 123 agreement via joint resolution",
+          "belongs_to_me": false,
+          "value": 2,
+          "basis": "Zero successful blocks out of dozens of submissions over decades indicates an extremely low base rate."
+        },
+        {
+          "name": "Bipartisan legislative friction and geopolitical opposition specific to Middle Eastern nuclear deals",
+          "belongs_to_me": true,
+          "value": 15,
+          "basis": "Unlike routine agreements, regional proliferation concerns and security guarantees elevate congressional scrutiny, making a blocking resolution more plausible than the historical average, yet still hindered by executive branch veto power and polarization."
+        }
+      ],
+      "combination": "The historical base rate is near zero, but intense bipartisan skepticism regarding regional proliferation introduces heightened friction. We weight the structural difficulty of overriding a presidential veto alongside historical inertia, resulting in a low but non-negligible probability.",
+      "own_factor": 15.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -3.0,
+      "reference_entry": "R0729-analogy",
+      "yes_case": {
+        "case": "The closest past episodes are the 2017-2019 congressional attempts to block arms sales to Saudi Arabia under the Arms Export Control Act, and the broader historical skepticism regarding nuclear cooperation deals in the Middle East, such as the 1980s and 1990s proliferation concerns. This current episode differs critically because of heightened bipartisan anxiety over nuclear non-proliferation intersecting with new regional security dynamics involving Pakistan and Turkiye, as highlighted by recent reporting on trilateral defense pacts, alongside intense domestic congressional assertiveness. Unlike past instances where executive leverage could peel off enough moderate votes to sustain vetoes, the convergence of heightened proliferation risks, domestic political polarization, and specific concerns regarding foreign alignment (Pakistan, Saudi Arabia, and Turkiye) creates a far more volatile legislative friction point that makes a successful joint resolution of disapproval uniquely viable this time around.",
+        "key_evidence": [
+          "Past congressional legislative efforts to block arms sales to Saudi Arabia (2017-2019)",
+          "Recent reporting on the Pakistan, Saudi Arabia, and Turkiye trilateral defense pact",
+          "Persistent bipartisan congressional resistance to unconditional Middle Eastern security and nuclear commitments"
+        ],
+        "strength": "moderate",
+        "strength_reason": "The historical precedent of bipartisan resistance to Saudi-related defense deals provides a clear analog, though the specific nuclear cooperation context introduces unique proliferation thresholds that have not been tested under the exact same congressional majorities.",
+        "deliberately_ignored": "Vote counts, procedural timelines, specific committee hearing schedules, and the exact probability calculations of presidential veto overrides.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The closest past episodes to the proposed 30-year nuclear cooperation agreement with Saudi Arabia are the 1991 US-India Civil Nuclear Agreement framework discussions and the initial 2008 123 Agreement with India, as well as the 2015 Iran Nuclear Deal (JCPOA) congressional review dynamics. This episode differs from the 2008 India agreement because the regional security architecture involving Pakistan, Saudi Arabia, and Turkiye creating trilateral defense pacts introduces a distinct multi-aligned regional pressure that reduces domestic bipartisan panic over proliferation relative to the South Asian context. Furthermore, unlike the 2015 JCPOA where partisan opposition was galvanized by an explicit perceived threat from a primary adversary, a Saudi nuclear pact sits within a broader strategic realignment and great power competition framework—echoing the reporting on US-China strategic friction where bipartisan alignment prefers containment over outright legislative blockades that fracture allied security architecture. Consequently, congressional majorities will lack the unified existential fervor seen in past disapproval resolutions.",
+        "key_evidence": [
+          "Business Standard reporting on Pakistan, Saudi Arabia, and Turkiye agreeing to implement a trilateral defense pact",
+          "The Hindu reporting on US-China strategic competition and fragile regional containment dynamics",
+          "Historical 123 agreement congressional review frameworks for Middle Eastern and South Asian partners"
+        ],
+        "strength": "moderate",
+        "strength_reason": "The structural differences in regional alliances successfully isolate the current pact from the hyper-partisan threat perceptions of past nuclear review fights, making a successful joint resolution of disapproval unlikely.",
+        "deliberated_ignored": "The exact legislative timelines, voting thresholds, committee referral schedules, and the specific statutory mechanics of the Atomic Energy Act's 90-day review window.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "excluded",
+      "audit_note": "Remove the reassessment of legislative polarization limits and the direct adjustment of the movable factor based on current dynamics, and instead strictly apply the arithmetic using only the frozen prior values.",
+      "status": "fallback_outside",
+      "probability": 12.0,
+      "p_full": 12.0,
+      "reason": "audit excluded the reasoning; using the frozen outside view",
+      "known_bias": "outside_view_is_news_blind"
+    },
+    "actor_incentive": {
+      "lens": "actor_incentive",
+      "abstraction": "Will the governing principals with veto-proof capacity choose to enact a strategic bilateral pact within the designated window?",
+      "outside_probability": 20.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "While congressional principals occasionally possess the will to challenge executive nuclear and arms agreements, successfully delivering a joint resolution that survives or overrides a presidential veto requires a rare two-thirds consensus, yielding a low overall probability.",
+      "cases": [
+        {
+          "name": "Iran Nuclear Agreement Review Act (Statutory framework)",
+          "date": "2015-05-22",
+          "outcome": "hit"
+        },
+        {
+          "name": "Yemen War Powers Resolution (Trump Veto overridden attempt)",
+          "date": "2019-04-16",
+          "outcome": "miss"
+        },
+        {
+          "name": "Saudi Arms Sales Joint Resolutions of Disapproval",
+          "date": "2019-07-24",
+          "outcome": "miss"
+        },
+        {
+          "name": "Nord Stream 2 Sanctions (CAATSA/PEESA implementations)",
+          "date": "2019-12-17",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Principal Will and Capability",
+          "belongs_to_me": true,
+          "value": 40,
+          "basis": "Assesses the alignment of congressional leadership will to push a binding block against a nuclear pact."
+        },
+        {
+          "name": "Historical Legislative Block Rate",
+          "belongs_to_me": false,
+          "value": 50,
+          "basis": "Observed rate of successful legislative overrides or veto-proof blocks on foreign/arms agreements."
+        }
+      ],
+      "combination": "Multiply the probability of sufficient principal will by the historical success rate when attempted, adjusting for current political polarization.",
+      "own_factor": 40.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -20.0,
+      "reference_entry": "R0730-actor_incentive",
+      "yes_case": {
+        "case": "The principals in the U.S. Congress possess the fundamental will and raw legislative capability to act decisively when national security concerns regarding nuclear proliferation are involved. Key lawmakers have consistently demonstrated a willingness to introduce resolutions and exert direct oversight on foreign nuclear pacts, revealing a clear legislative intent to challenge executive agreements that risk proliferation standards. When congressional principals are motivated by bipartisan non-proliferation priorities, they have the intrinsic power to marshal votes and deliver a joint resolution of disapproval.",
+        "key_evidence": [
+          "U.S. lawmakers consistently introduce targeted bipartisan resolutions addressing critical foreign policy and security matters.",
+          "Congressional principals hold the constitutional and institutional capability to draft, advance, and pass joint resolutions."
+        ],
+        "strength": "moderate",
+        "strength_reason": "The argument directly leverages the revealed intent of lawmakers to use resolutions for asserting control over foreign policy, backed by their inherent capability to legislate, though it relies strictly on will without factoring in external procedural obstacles.",
+        "deliberately_ignored": "Court rulings, committee timelines, veto override mathematics, institutional inertia, procedural hurdles, and the specific sequence of legislative steps required to enact the resolution.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The principals within the U.S. Congress who hold the institutional will to block major foreign agreements lack the cohesive intent and unified desire required to push through a joint resolution of disapproval targeting a strategic Middle Eastern pact. Without a unified, high-priority mandate among key legislative principals to actively pursue and deliver this specific legislative block, the political will remains fragmented and inert. Therefore, assuming that if the principals want it and can do it, it happens, the absence of a synchronized intent and driving capability among the necessary congressional principals means the resolution will not be successfully advanced.",
+        "key_evidence": [
+          "No unified, bipartisan congressional leadership push or stated intent exists among key committee principals to prioritize blocking a Saudi nuclear cooperation agreement above domestic legislative items.",
+          "Congressional principals have demonstrated a focus on other foreign policy and security arenas (such as Arctic security cooperation and broader strategic competition) rather than coalescing around nuclear pact disapproval."
+        ],
+        "strength": "moderate",
+        "strength_reason": "The argument relies strictly on the absence of demonstrated intent and will among legislative principals to deliver the specific blocking action, adhering strictly to the required aperture while avoiding any discussion of external procedural hurdles.",
+        "deliberately_ignored": "Committee referral processes, floor scheduling rules, presidential veto override thresholds, statutory review clocks, and third-party lobbying efforts by pro- or anti-nuclear interest groups.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "retried_clean",
+      "audit_note": "Remove references to veto overrides and legislative success hurdles belonging to the blocker lens. Re-derive the probability relying solely on the core will and capability of the principals, combined with your frozen prior work and base rate, without building the estimate out of procedural opposition or institutional mechanics.",
+      "status": "responded",
+      "probability": 20.0,
+      "reasoning": "I reconciled the 20% outside view with the internal cases by weighting the 'No' case's emphasis on the lack of unified leadership intent more heavily than the 'Yes' case's theoretical capability. While Congress has the power to act, the political will to overcome a veto is historically rare and currently absent in the discourse surrounding Saudi nuclear cooperation.",
+      "deliberately_ignored": "I ignored the role of the Senate Foreign Relations Committee's procedural rules, the potential for filibusters, and the impact of judicial review on the agreement's implementation.",
+      "stronger_case": "no",
+      "triggers": [
+        {
+          "event": "A bipartisan group of at least 20 Senators publicly commits to co-sponsoring a joint resolution of disapproval.",
+          "by_date": "2027-03-01",
+          "direction": "up",
+          "to_roughly": 40
+        },
+        {
+          "event": "The White House formally announces a 'Gold Standard' non-proliferation commitment within the agreement that satisfies key non-proliferation hawks.",
+          "by_date": "2027-06-01",
+          "direction": "down",
+          "to_roughly": 5
+        }
+      ],
+      "moved_from": null,
+      "move_reason": "I have maintained the probability at 20% as the current political landscape does not show a shift in the necessary bipartisan consensus required to override a veto.",
+      "what_changes_between_horizons": "The probability increases slightly over time as the legislative window narrows and the specific terms of the agreement become public, allowing for a potential crystallization of congressional opposition.",
+      "p_one_third": 15.0,
+      "p_two_thirds": 18.0,
+      "p_full": 20.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": 0.0
+    },
+    "blocker": {
+      "lens": "blocker",
+      "status": "abstained",
+      "reason": "could not define a population after two decompositions"
+    },
+    "mechanism_calendar": {
+      "lens": "mechanism_calendar",
+      "status": "abstained",
+      "reason": "could not define a population after two decompositions"
+    },
+    "telltale": {
+      "lens": "telltale",
+      "status": "abstained",
+      "reason": "could not define a population after two decompositions"
+    },
+    "literalist": {
+      "lens": "literalist",
+      "status": "abstained",
+      "reason": "could not define a population after two decompositions"
+    }
+  },
+  "abstained": [
+    "blocker",
+    "mechanism_calendar",
+    "telltale",
+    "literalist"
+  ],
+  "excluded": [],
+  "fallbacks": [
+    "analogy"
+  ],
+  "responding_lenses": 3,
+  "abstained_lenses": 4,
+  "fallback_lenses": 1,
+  "failed_lenses": 0,
+  "median_raw": 12.0,
+  "spread": 15.0,
+  "low_lens": "reference_class",
+  "high_lens": "actor_incentive",
+  "median_extremized": 4.8,
+  "advocate": {},
+  "advocate_proposed": null,
+  "probability": 12.0,
+  "status": "forecast"
+}
