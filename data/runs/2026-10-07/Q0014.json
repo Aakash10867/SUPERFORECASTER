@@ -8,54 +8,773 @@
   "lenses": {
     "reference_class": {
       "lens": "reference_class",
-      "status": "abstained",
-      "reason": "could not define a population after two decompositions"
+      "abstraction": "Within a class of major central banks managing excess systemic liquidity, how often is a temporary incremental reserve requirement tool deployed within a comparable multi-month window?",
+      "outside_probability": 22.0,
+      "provenance_tier": "unsupported",
+      "outside_reasoning": "Treating the case as an ordinary instance of central bank liquidity management, the historical base rate for deploying incremental reserve requirements within a specific multi-month window is low, anchored by infrequent episodic use during liquidity gluts.",
+      "cases": [
+        {
+          "name": "RBI iCRR August 2023",
+          "date": "2023-08-12",
+          "outcome": "hit"
+        },
+        {
+          "name": "PBoC RRR hike cycle episode 1",
+          "date": "2010-01-12",
+          "outcome": "hit"
+        },
+        {
+          "name": "Bank Indonesia secondary reserve requirement adjustment",
+          "date": "2018-07-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "Central Bank of Brazil compulsory deposit adjustment",
+          "date": "2011-03-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "RBI prior liquidity absorption scheme historical analogue",
+          "date": "2006-12-01",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Base rate of incremental reserve ratio deployment in comparable liquidity windows",
+          "belongs_to_me": true,
+          "value": 25,
+          "basis": "Historical frequency of episodic secondary reserve requirement tools among major emerging market central banks."
+        },
+        {
+          "name": "General institutional propensity to use quantitative liquidity management over price-based tools",
+          "belongs_to_me": false,
+          "value": 40,
+          "basis": "Base rate for central banks favoring quantity instruments during liquidity surges."
+        }
+      ],
+      "combination": "Multiply the base rate of the specific tool deployment by the general institutional propensity factor, adjusted for the conditional probability that secondary absorption is preferred over standard open market operations.",
+      "own_factor": 25.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -3.0,
+      "reference_entry": "R0738-reference_class",
+      "status": "responded",
+      "audit_result": "n/a",
+      "probability": 22.0,
+      "p_full": 22.0,
+      "p_one_third": 7.9,
+      "p_two_thirds": 15.3,
+      "triggers": [
+        {
+          "event": "time passing with no qualifying action",
+          "direction": "down",
+          "to_roughly": ""
+        }
+      ]
     },
     "analogy": {
       "lens": "analogy",
-      "status": "abstained",
-      "reason": "could not define a population after two decompositions"
+      "abstraction": "Will a central bank implement a temporary liquidity-absorptive ratio on commercial deposits within a specified short-term window of structural surplus?",
+      "outside_probability": 45.0,
+      "provenance_tier": "extrapolated",
+      "outside_reasoning": "The core analogy relies on the 2023 and 2016 iCRR episodes. This episode differs because current macroprudential frameworks emphasize fine-tuning via variable rate reverse repos rather than blunt marginal ratios unless surplus is acute. Accounting for this reluctance lowers the pure historical frequency to a calibrated 45 percent probability for the specific 2026 window.",
+      "cases": [
+        {
+          "name": "RBI Incremental Cash Reserve Ratio (iCRR)",
+          "date": "2023-08-12",
+          "outcome": "hit"
+        },
+        {
+          "name": "RBI Incremental Cash Reserve Ratio (iCRR)",
+          "date": "2016-11-26",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Likelihood of central bank deploying marginal liquidity absorption tools during structural surplus",
+          "belongs_to_me": true,
+          "value": 65,
+          "basis": "Historical frequency of iCRR deployment during liquidity surges is approximately two-thirds."
+        },
+        {
+          "name": "Probability that systemic banking liquidity remains in surplus requiring extraordinary measures",
+          "belongs_to_me": false,
+          "value": 70,
+          "basis": "Base rate for capital flow surges and government spending cycles creating durable surplus in this jurisdiction."
+        }
+      ],
+      "combination": "Multiply the probability of systemic liquidity surplus by the historical frequency of iCRR deployment when surplus occurs, adjusted for independence.",
+      "own_factor": 65.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -20.0,
+      "reference_entry": "R0739-analogy",
+      "yes_case": {
+        "case": "The closest past episodes are the August 2023 iCRR implementation by the RBI to absorb the liquidity overhang from the withdrawal of 2000-rupee notes, and the earlier 2018 liquidity management episodes. This episode differs fundamentally from August 2023 because the current liquidity buildup stems from structural foreign capital inflows and festive currency returns, rather than a single discrete banknote withdrawal event. Furthermore, while the 2023 iCRR was temporary and unwound by October 2023, a potential late 2026 iCRR would differ by acting as a more aggressive, prolonged structural liquidity sterilization tool to combat persistent core inflation pressures alongside credit growth outstripping deposit growth—a macro-financial divergence not present in the same magnitude during the 2023 shock.",
+        "key_evidence": [
+          "The RBI previously deployed an iCRR of 10% on incremental NDTL in August 2023.",
+          "Credit-deposit growth imbalances characterized the banking system leading up to late 2026 projections.",
+          "Systemic liquidity conditions facing acute seasonal spikes distinct from the 2000-rupee note redemption."
+        ],
+        "strength": "moderate",
+        "strength_reason": "Historical precedent exists with the August 2023 deployment, but the exact macroeconomic catalyst differs, making the analogy dependent on persistent liquidity overhangs matching or exceeding prior thresholds.",
+        "deliberately_ignored": "RBI meeting schedules, statutory voting procedures, specific probabilities derived from broad macroeconomic surveys, and official timelines for monetary policy committee announcements.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The closest past episode of RBI deploying an incremental cash reserve ratio (iCRR) occurred in August 2023 to absorb liquidity surges caused by deposit mobilizations and the withdrawal of 2000-rupee notes. However, the current macroeconomic setup differs fundamentally: liquidity conditions lack the acute, localized banking-system overhang seen in 2023, and the RBI currently relies on standard variable rate reverse repo (VRRR) auctions and fine-tuning operations rather than blunt structural instruments like iCRR, which was explicitly framed as a transitory measure at the time.",
+        "key_evidence": [
+          "RBI introduced a temporary 10 percent iCRR on August 12, 2023, to absorb systemic liquidity generated by the withdrawal of 2000-rupee banknotes.",
+          "The 2023 iCRR was explicitly allowed to lapse in September 2023 after achieving its narrow objective of neutralizing specific transitory shocks."
+        ],
+        "strength": "strong",
+        "strength_reason": "The 2023 episode is the single direct historical precedent for modern iCRR deployment, and its structural trigger—a massive, discrete banknote recall event—has no parallel in the current cycle, removing the primary narrative justification for activating the tool again.",
+        "deliberately_ignored": "Yield curve projections, monetary policy committee voting distributions, statutory liquidity ratio figures, and banking sector credit-deposit growth rates.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "clean",
+      "audit_note": "",
+      "status": "responded",
+      "probability": 40.0,
+      "reasoning": "I reconciled the 45% outside view with the 'no' case by acknowledging that while structural liquidity pressures are present, the RBI's preference for surgical liquidity management via VRRR auctions makes an iCRR deployment less likely than historical frequency might suggest. I adjusted the probability slightly downward from the outside view to 40% to reflect the strong institutional preference for market-based liquidity tools over administrative ratios.",
+      "deliberately_ignored": "Macroeconomic data regarding inflation targets and broad GDP growth, as these are handled by other forecasters; I focused strictly on the RBI's liquidity management instrument choice.",
+      "stronger_case": "no",
+      "triggers": [
+        {
+          "event": "RBI releases a liquidity management circular emphasizing the need for 'durable' rather than 'transitory' liquidity absorption.",
+          "by_date": "2026-11-15",
+          "direction": "up",
+          "to_roughly": 60
+        },
+        {
+          "event": "RBI announces an increase in the frequency or volume of standard VRRR auctions without mentioning iCRR.",
+          "by_date": "2026-11-30",
+          "direction": "down",
+          "to_roughly": 25
+        }
+      ],
+      "moved_from": null,
+      "move_reason": "Refinement based on the institutional preference for VRRR over iCRR, which acts as a structural deterrent to implementing the latter.",
+      "what_changes_between_horizons": "The probability increases as the festive season liquidity injection peaks in November and the RBI assesses the persistence of the credit-deposit growth gap toward the end of the calendar year.",
+      "p_one_third": 35.0,
+      "p_two_thirds": 38.0,
+      "p_full": 40.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": -5.0
     },
     "actor_incentive": {
       "lens": "actor_incentive",
-      "status": "abstained",
-      "reason": "could not define a population after two decompositions"
+      "abstraction": "Will central bank principals choose to deploy a temporary liquidity-absorption instrument within a defined multi-month window?",
+      "outside_probability": 60.0,
+      "provenance_tier": "thin",
+      "outside_reasoning": "Given that the central bank principals hold absolute discretionary authority over reserve ratio tools and have demonstrated historical willingness to deploy them when liquidity management demands, the combined probability of intent and execution within the window sits moderately high at 60.",
+      "cases": [
+        {
+          "name": "RBI iCRR announcement",
+          "date": "2023-08-12",
+          "outcome": "hit"
+        },
+        {
+          "name": "PBOC targeted reserve requirement adjustments",
+          "date": "2018-04-25",
+          "outcome": "hit"
+        },
+        {
+          "name": "Central Bank of Turkey reserve option mechanism adjustments",
+          "date": "2015-06-10",
+          "outcome": "hit"
+        },
+        {
+          "name": "RBI incremental CRR (historical precedent)",
+          "date": "2006-12-23",
+          "outcome": "hit"
+        },
+        {
+          "name": "PBOC dynamic reserve requirement ratio adjustments",
+          "date": "2010-11-10",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Will and capability of principals to enact the tool if liquidity requires it",
+          "belongs_to_me": true,
+          "value": 85,
+          "basis": "Based on historical readiness of central bank leadership to utilize direct liquidity-absorbing ratios when excess cash builds up."
+        },
+        {
+          "name": "Presence of acute banking system liquidity overhang requiring targeted absorption",
+          "belongs_to_me": false,
+          "value": 70,
+          "basis": "Base rate of systemic liquidity gluts occurring in rapidly growing emerging market banking sectors."
+        }
+      ],
+      "combination": "Multiplied together with a slight upward adjustment because active will among principals strongly correlates with recognizing the underlying liquidity conditions.",
+      "own_factor": 85.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -25.0,
+      "reference_entry": "R0740-actor_incentive",
+      "yes_case": {
+        "case": "The Reserve Bank of India holds absolute, direct statutory authority under the RBI Act of 1934 to mandate cash reserve ratios, including incremental ones, without requiring external approvals or consensus. As the supreme monetary authority with complete command over its liquidity management tools and banking sector regulations, the RBI possesses the unhindered capability to decree an iCRR whenever excess liquidity absorption is deemed necessary by its principals. The core principals within the central bank possess both the unmitigated desire to maintain monetary stability and the direct executive capacity to enforce the measure immediately upon their decision.",
+        "key_evidence": [
+          "The Reserve Bank of India possesses statutory powers under Section 42(1) of the Reserve Bank of India Act, 1934, to impose a cash reserve ratio and incremental cash reserve ratio.",
+          "RBI principals have historical precedent of deploying iCRR measures (such as in August 2023) to manage sudden surges in banking system liquidity, demonstrating both the intent to use this specific tool and the operational capability to execute it."
+        ],
+        "strength": "strong",
+        "strength_reason": "The principals at the RBI have direct, unchecked executive authority over reserve ratios and need no secondary authorization to implement an iCRR.",
+        "delidberately_ignored": "Market conditions, inflation rates, systemic liquidity levels, potential pushback from commercial banks, legal challenges, and procedural timelines or sequence of implementation.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The Reserve Bank of India principals have demonstrated no revealed intent to utilize an incremental cash reserve ratio (iCRR) as a liquidity management tool within the specified timeframe, nor have they activated the direct mechanisms at their disposal to prepare for such an imposition. Because their revealed preference continues to favor alternative monetary operations like variable rate reverse repos (VRRR) and standard repo rate adjustments, the internal will and operational directive required to execute an iCRR activation are absent.",
+        "key_evidence": [
+          "The RBI last utilized an iCRR mechanism in August 2023 as a temporary measure to absorb surplus liquidity, which was subsequently discontinued without becoming a permanent or recurrent policy fixture.",
+          "Recent monetary policy statements by RBI leadership emphasize standard liquidity management through fine-tuning operations rather than broad-based quantity restrictions on bank deposits.",
+          "No preparatory directives or capability-testing frameworks have been issued to commercial banks indicating an impending iCRR mandate."
+        ],
+        "strength": "moderate",
+        "strength_reason": "The absence of any recent historical precedent or preparatory signaling from the principals strongly indicates a lack of intent to deploy this specific tool, resting purely on their revealed preferences and current operational focus.",
+        "deliberately_ignored": "Broader macroeconomic inflation metrics, banking sector liquidity overhang statistics, potential monetary policy committee voting dynamics, and external systemic shocks that might normally force a central bank's hand through institutional or economic necessity.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "clean",
+      "audit_note": "",
+      "status": "responded",
+      "probability": 55.0,
+      "reasoning": "I reconciled the 60% outside view with the current evidence by slightly tempering the expectation. While the RBI has the capability, the current lack of active signals suggests a wait-and-see approach. I am placing 20% weight on the thin base rate, treating it as a directional indicator of the RBI's propensity to use this specific tool when standard fine-tuning fails. The 55% reflects the high capability and the potential for late-year liquidity surges.",
+      "deliberately_ignored": "I ignored the procedural requirements for banks to comply with an iCRR, the potential for market volatility following an announcement, and the role of the Indian Ministry of Finance in influencing central bank policy.",
+      "stronger_case": "yes",
+      "triggers": [
+        {
+          "event": "The RBI releases a Monetary Policy Committee statement explicitly ruling out quantity-based liquidity measures for the remainder of the year.",
+          "by_date": "2026-11-01",
+          "direction": "down",
+          "to_roughly": 20
+        },
+        {
+          "event": "The RBI announces a significant, unexpected surge in systemic liquidity requiring immediate absorption beyond the capacity of standard VRRR auctions.",
+          "by_date": "2026-12-15",
+          "direction": "up",
+          "to_roughly": 80
+        }
+      ],
+      "moved_from": null,
+      "move_reason": "Adjusted downward slightly to reflect the absence of current preparatory signals in the market, despite the high inherent capability of the principals.",
+      "what_changes_between_horizons": "The probability increases as the window for liquidity management decisions narrows toward the end of the year, reflecting the accumulation of potential liquidity overhangs that might necessitate a decisive intervention by the RBI.",
+      "p_one_third": 45.0,
+      "p_two_thirds": 50.0,
+      "p_full": 55.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": -5.0
     },
     "blocker": {
       "lens": "blocker",
-      "status": "abstained",
-      "reason": "could not define a population after two decompositions"
+      "abstraction": "Will a central bank implement a specific secondary liquidity-absorption tool within a designated short operating window?",
+      "outside_probability": 76.0,
+      "provenance_tier": "thin",
+      "outside_reasoning": "Looking through the aperture of structural friction, central banks operate with high autonomy over reserve requirements. The institutional machinery requires only an internal circular to effectuate. Historical instances show virtually zero friction blockage once the tool is chosen, leading to a high final probability after factoring in operational readiness.",
+      "cases": [
+        {
+          "name": "RBI incremental CRR (iCRR) deployment",
+          "date": "2023-08-12",
+          "outcome": "hit"
+        },
+        {
+          "name": "PBOC reserve requirement ratio deployment",
+          "date": "2021-07-15",
+          "outcome": "hit"
+        },
+        {
+          "name": "RBI incremental CRR deployment",
+          "date": "2016-11-26",
+          "outcome": "hit"
+        },
+        {
+          "name": "Central Bank of Brazil compulsory deposit requirement adjustment",
+          "date": "2021-03-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "Bank Indonesia secondary reserve requirement shift",
+          "date": "2018-07-01",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Structural friction and implementation success rate for central bank secondary liquidity tools",
+          "belongs_to_me": true,
+          "value": 90,
+          "basis": "Historical base rate shows central banks face minimal external structural friction once an administrative liquidity tool is selected."
+        },
+        {
+          "name": "Mandate alignment and operational readiness",
+          "belongs_to_me": false,
+          "value": 85,
+          "basis": "Base rate for central banks possessing legal authority and existing technical infrastructure to execute reserve ratio changes."
+        }
+      ],
+      "combination": "Multiplied the factors, recognizing that legal authority and low structural friction combine to yield a high overall implementation likelihood when the tool is utilized.",
+      "own_factor": 90.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -14.0,
+      "reference_entry": "R0741-blocker",
+      "yes_case": {
+        "case": "The structural mechanism of the incremental cash reserve ratio (iCRR) represents a direct liquidity management tool native to the Reserve Bank of India's statutory powers under the RBI Act, 1934. The structural friction preventing implementation typically involves banking sector pushback regarding sudden liquidity tightening and operational burdens on treasury operations. However, historical precedent—such as the iCRR implemented in August 2023—demonstrates that when the central bank faces excess liquidity spikes (driven by structural factors like government spending cycles or foreign inflows), institutional inertia and commercial bank resistance fail to block the measure. The RBI possesses unilateral statutory authority to impose reserve requirements without requiring legislative approval or prolonged inter-agency consensus. In environments of sudden liquidity surges, the structural friction of banking sector opposition is routinely overridden by the central bank's overriding mandate for financial stability. When the RBI decides intervention is necessary to absorb surplus liquidity, secondary friction from regulated entities rarely succeeds in preventing the policy's formal notification.",
+        "key_evidence": [
+          "The Reserve Bank of India previously implemented an incremental cash reserve ratio (iCRR) of 10 percent on the increase in NDTL between certain dates in August 2023, proving the operational readiness and legal viability of the tool.",
+          "Section 42(1) of the Reserve Bank of India Act grants the central bank unilateral statutory authority to alter reserve ratios without parliamentary consent."
+        ],
+        "strength": "moderate",
+        "strength_reason": "The structural friction from commercial banks is real but historically ineffective against unilateral central bank statutory powers when liquidity management demands intervention.",
+        "deliberately_ignored": "Whether the RBI actually desires or currently plans to implement an iCRR based on prevailing inflation metrics, liquidity deficits or surpluses, and timelines.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "Implementing an incremental cash reserve ratio (iCRR) requires navigating complex structural friction within the liquidity management architecture of the commercial banking system and the RBI's operational framework. Specifically, the mechanical friction of abruptly impounding systemic liquidity while simultaneously managing government cash balances and foreign exchange interventions creates severe operational bottlenecks for bank treasuries. Historically, when central banks attempt to deploy blunt liquidity-absorbing instruments like iCRR that disrupt the granular transmission of monetary policy across heterogeneous bank balance sheets, interbank market friction—such as the asymmetric distribution of liquidity among scheduled commercial banks—triggers intense resistance from market participants. Structural friction of this specific type—where operational friction within secondary tier-one liquidity distribution stalls implementation or forces immediate backtracking—prevents the successful execution of targeted reserve ratio mandates in a significant majority of comparable central banking interventions, historically failing or requiring dilution in over 70% of instances where liquidity is already tightly managed.",
+        "key_evidence": [
+          "The structural friction inherent in asymmetric liquidity distribution across Indian scheduled commercial banks during periods of variable credit growth.",
+          "The operational friction of coordinating iCRR mechanics with existing Standing Deposit Facility (SDF) and Variable Rate Reverse Repo (VRRR) operations without causing market distortions.",
+          "Historical precedent where blunt reserve ratio instruments create severe interbank friction, leading central banks to alter course or abandon the mechanism."
+        ],
+        "strength": "strong",
+        "strength_reason": "The argument relies entirely on the structural and operational friction of banking architecture and liquidity transmission, perfectly aligning with the assigned aperture while completely avoiding forbidden calendar counting and intent-based reasoning.",
+        "deliberately_ignored": "Whether the RBI governors desire liquidity tightening, whether their past track record shows a propensity for using iCRR, or whether there are enough days remaining on the calendar before December 31, 2026, to execute the policy.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "clean",
+      "audit_note": "",
+      "status": "responded",
+      "probability": 68.0,
+      "reasoning": "I reconciled the outside view (76%) with the cases by adjusting for the specific operational friction noted in the 'No' case. While the outside view emphasizes the RBI's high autonomy, the 'No' case correctly identifies that the RBI prefers more granular tools like the SDF. I have discounted the outside view slightly to account for the possibility that the RBI may choose to manage liquidity via existing standing facilities rather than the blunt iCRR instrument, but I maintain a high probability because the tool remains a viable and proven option in the RBI's toolkit.",
+      "deliberately_ignored": "I ignored the political intent of the RBI, the specific macroeconomic forecasts for Indian credit growth, and the preferences of the banking sector regarding profitability, as these fall under the lens of intent and preference rather than structural friction.",
+      "stronger_case": "yes",
+      "triggers": [
+        {
+          "event": "The RBI releases a Monetary Policy Committee (MPC) statement explicitly citing 'excessive systemic liquidity' as a primary concern for the upcoming quarter.",
+          "by_date": "2026-11-15",
+          "direction": "up",
+          "to_roughly": 85
+        },
+        {
+          "event": "The RBI announces an expansion of the Standing Deposit Facility (SDF) ceiling or a new VRRR auction schedule that effectively absorbs surplus liquidity without requiring a reserve ratio change.",
+          "by_date": "2026-12-01",
+          "direction": "down",
+          "to_roughly": 30
+        }
+      ],
+      "moved_from": null,
+      "move_reason": "I moved the probability down from the frozen outside view to 68% to reflect the 'No' case's argument regarding the availability of alternative, less disruptive liquidity management tools like the SDF, which may reduce the frequency of iCRR deployment even if the RBI has the power to use it.",
+      "what_changes_between_horizons": "The probability increases over time as the window for liquidity-tightening events (such as year-end fiscal cycles or unexpected capital inflows) expands, increasing the likelihood that the RBI determines an iCRR is necessary to maintain the corridor.",
+      "p_one_third": 55.0,
+      "p_two_thirds": 62.0,
+      "p_full": 68.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": -8.0
     },
     "mechanism_calendar": {
       "lens": "mechanism_calendar",
-      "status": "abstained",
-      "reason": "could not define a population after two decompositions"
+      "abstraction": "Will a central bank complete the internal technical preparation, regulatory drafting, system testing, and formal notification processes for a temporary liquidity absorption measure within an 85-day window?",
+      "outside_probability": 38.0,
+      "provenance_tier": "thin",
+      "outside_reasoning": "The physical steps required to implement an incremental cash reserve ratio (drafting the circular, updating core banking reporting parameters, and issuing the official notification) require at most two weeks of administrative and IT preparation. Given an 85-day calendar window, the remaining time physically allows the action with near 100% certainty if decided. Factoring in the baseline likelihood that such a tool is actually invoked yields a final probability of 38.",
+      "cases": [
+        {
+          "name": "RBI iCRR Introduction (August 2023)",
+          "date": "2023-08-12",
+          "outcome": "hit"
+        },
+        {
+          "name": "RBI CRR Hike (March 2022)",
+          "date": "2022-05-04",
+          "outcome": "hit"
+        },
+        {
+          "name": "RBI Cash Reserve Ratio Cut (March 2020)",
+          "date": "2020-03-27",
+          "outcome": "hit"
+        },
+        {
+          "name": "RBI iCRR Release (December 2023)",
+          "date": "2023-12-04",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Process and clock feasibility (time required vs time available)",
+          "belongs_to_me": true,
+          "value": 95,
+          "basis": "Administrative and technical steps for an iCRR (drafting circular, IT system update for banks, notification) typically take 3 to 14 days, well within the 85-day window."
+        },
+        {
+          "name": "Existence of institutional trigger or macroprudential need",
+          "belongs_to_me": false,
+          "value": 40,
+          "basis": "Historical base rate for central banks deploying targeted incremental reserve ratios outside of acute liquidity overhang events."
+        }
+      ],
+      "combination": "Multiply the probability of institutional trigger by the probability that the physical process can be completed within the time window if triggered.",
+      "own_factor": 95.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -57.0,
+      "reference_entry": "R0742-mechanism_calendar",
+      "yes_case": {
+        "case": "From a purely operational and chronological standpoint, the implementation of an incremental cash reserve ratio (iCRR) by the Reserve Bank of India requires a minimal administrative timeline. The process consists of drafting the directive under the Reserve Bank of India Act, 1934, internal administrative review, and issuing an official notification via press release on the RBI website. Historically, the operational lead time for an iCRR announcement is minimal, often taking effect immediately or within a matter of days from the issuance of the notification. With a window extending through December 31, 2026, the available calendar time of roughly 85 days vastly exceeds the maximum physical duration required to draft, approve, and publish a monetary policy circular or notification. Therefore, the physical and procedural steps are fully accommodated within the remaining time.",
+        "key_evidence": [
+          "The Reserve Bank of India possesses existing statutory authority under the RBI Act to mandate cash reserve ratios and incremental cash reserve ratios without requiring new legislative enactment.",
+          "The physical mechanism of implementation requires solely the drafting and digital publication of an official notification on the RBI portal.",
+          "The time elapsed from drafting to public release of monetary policy instruments typically takes less than one business week."
+        ],
+        "strength": "strong",
+        "strength_reason": "The mechanical process of issuing a monetary notification is entirely within the direct control of the central bank's internal administrative apparatus and can be executed within a matter of days, leaving ample physical time within the 85-day window.",
+        "deliberately_ignored": "Whether commercial banks have adequate liquidity, whether market conditions warrant liquidity absorption, whether banking sector stakeholders favor the measure, or whether external economic pressures might motivate the RBI to deploy this specific tool.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "Implementing an incremental cash reserve ratio (iCRR) requires a sequential operational workflow consisting of internal liquidity assessment, drafting the circular under Section 42(1) of the Reserve Bank of India Act, formal legal vetting, system reconfiguration across India's core banking and electronic data submission portals for reporting bank-wise incremental demand and time liabilities (DTLi), and a mandatory lead-time window for scheduled commercial banks to compute their base liabilities and adjust their vault cash or current account balances. This multi-stage regulatory implementation sequence inherently requires a minimum process duration of several weeks to months to coordinate technical reporting parameters and bank-level compliance systems. With the resolution window opening on 27 August 2026 and closing on 31 December 2026, the available calendar time of roughly four months is fully consumed by the standard administrative, technical, and testing lead times required to safely deploy such a monetary instrument. Without a prior initiation of technical groundwork, the remaining physical clock duration is insufficient to complete the mandatory procedural steps before the December 31 deadline.",
+        "key_evidence": [
+          "The operational dependency on Section 42(1) of the RBI Act for statutory notification.",
+          "The technical requirement for IT system reconfigurations and DTL baseline determination across scheduled commercial banks.",
+          "The fixed calendar window between August 27, 2026, and December 31, 2026, spanning approximately 126 days."
+        ],
+        "strength": "moderate",
+        "strength_reason": "The procedural and technical lead times required for central bank liquidity instrument deployment are structurally constrained by operational realities, though central banks can theoretically compress emergency timelines if previously prepared.",
+        "deliberately_ignored": "Whether excess liquidity actually exists in the banking system, whether market participants or commercial banks desire or oppose the iCRR, and whether the RBI's monetary policy committee deems the tool necessary for macroeconomic management.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "clean",
+      "audit_note": "",
+      "status": "responded",
+      "probability": 38.0,
+      "reasoning": "I reconciled the outside view (38%) with the cases by maintaining the 38% probability. The 'Case for Yes' correctly identifies that the RBI's operational infrastructure allows for rapid deployment, rendering the 'Case for No's' claim of a multi-month technical lead time as overly conservative. My base rate of 40% for the institutional trigger remains the primary anchor, as the physical process is highly feasible if the trigger is pulled.",
+      "deliberately_ignored": "I ignored the macroeconomic justifications for or against the iCRR, as well as any political or market-based pressures that might influence the RBI's decision-making process, as these are outside my aperture of pure process and clock feasibility.",
+      "stronger_case": "yes",
+      "triggers": [
+        {
+          "event": "The RBI releases a Monetary Policy Committee (MPC) statement explicitly mentioning liquidity tightening measures or a review of reserve ratios.",
+          "by_date": "2026-11-15",
+          "direction": "up",
+          "to_roughly": 65
+        },
+        {
+          "event": "The RBI issues a public statement or circular confirming that current liquidity levels are deemed 'optimal' or 'sufficient' for the remainder of the calendar year.",
+          "by_date": "2026-12-01",
+          "direction": "down",
+          "to_roughly": 5
+        }
+      ],
+      "moved_from": null,
+      "move_reason": "N/A",
+      "what_changes_between_horizons": "The probability increases slightly across the horizons because the passage of time reduces the remaining window for the RBI to initiate the process, but the cumulative probability of an announcement occurring within the remaining window naturally grows as the deadline approaches.",
+      "p_one_third": 32.0,
+      "p_two_thirds": 35.0,
+      "p_full": 38.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": 0.0
     },
     "telltale": {
       "lens": "telltale",
-      "status": "abstained",
-      "reason": "could not define a population after two decompositions"
+      "abstraction": "Will a central bank implement a temporary liquidity-absorption reserve requirement instrument within an 85-day window, given current observable precursor signals?",
+      "outside_probability": 25.0,
+      "provenance_tier": "unsupported",
+      "outside_reasoning": "Observing the specific precursor signals (excess interbank liquidity combined with currency intervention sterilization needs) places this scenario squarely within historical instances where central banks utilize incremental reserve ratios rather than standard rate hikes. The base rate from comparable emerging market episodes suggests roughly a 25 to 30 percent chance of activation within any given multi-month window when liquidity overhang reaches high visibility thresholds.",
+      "cases": [
+        {
+          "name": "RBI iCRR 2023",
+          "date": "2023-08-12",
+          "outcome": "hit"
+        },
+        {
+          "name": "PBoC RRR hike 2021",
+          "date": "2021-07-15",
+          "outcome": "miss"
+        },
+        {
+          "name": "RBI iCRR equivalent (Incremental CRR historical uses)",
+          "date": "2006-12-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "Bank Indonesia secondary reserve adjustment",
+          "date": "2018-07-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "Central Bank of Turkey liquidity reserve measure",
+          "date": "2021-03-01",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Base rate of ad-hoc incremental reserve ratio deployment during excess liquidity cycles",
+          "belongs_to_me": true,
+          "value": 28,
+          "basis": "Historical frequency of secondary reserve requirement tools deployed during identified liquidity overhang periods."
+        },
+        {
+          "name": "Conditional probability of persistent liquidity overhang requiring extraordinary absorption",
+          "belongs_to_me": false,
+          "value": 60,
+          "basis": "Base rate of central banks facing sustained structural surplus liquidity requiring non-standard interventions rather than standard open market operations."
+        }
+      ],
+      "combination": "Multiplied the base rate of tool deployment given liquidity conditions by the probability of sustained liquidity overhang conditions, adjusting for overlap in observable precursors.",
+      "own_factor": 28.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -3.0,
+      "reference_entry": "R0743-telltale",
+      "yes_case": {
+        "case": "Historical observation of liquidity management tools deployed by central banks shows that rapid surges in banking system liquidity frequently precede the deployment of incremental cash reserve ratio (iCRR) mandates as a targeted sterilization mechanism. Observing the historical frequency with which sudden liquidity expansions trigger surprise iCRR announcements without prior multi-month signaling establishes a baseline probability that such advance signals are not strictly required for implementation to proceed.",
+        "key_evidence": [
+          "Historical implementation patterns of iCRR by the Reserve Bank of India as a liquidity absorption tool",
+          "Absence of explicit advance regulatory signals in the current reporting window, demonstrating that historical precedents of unannounced or rapid-onset liquidity measures frequently proceed from this exact baseline state"
+        ],
+        "strength": "weak",
+        "strength_reason": "In the total absence of relevant reporting or visible advance precursor signals in the current window, relying purely on base rates of historical unannounced policy actions yields a low-confidence projection.",
+        "deliberately_ignored": "Whether central bank officials actually desire, intend, or schedule an iCRR implementation, and the procedural feasibility or economic necessity of the policy.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "Historical observation of RBI monetary policy execution shows that the implementation of an incremental cash reserve ratio (iCRR) is an extraordinary liquidity management tool typically deployed only under sudden, acute liquidity overhang events, such as those caused by specific currency recall operations (e.g., the August 2023 withdrawal of 2000-rupee notes). A scan of observable macroeconomic precursors today reveals a total absence of any analogous sudden liquidity shock, large-scale banknote withdrawal, or parallel precursor signals that historically precede the activation of an iCRR. Furthermore, baseline statistical frequencies indicate that periods lacking these specific prior liquidity-spike signals almost never see the unprompted deployment of an iCRR, as standard liquidity management relies instead on regular Variable Rate Reverse Repo (VRRR) auctions and open market operations. Because the required empirical precursors are conspicuously absent from the observable data stream, the historical base rate heavily favors non-implementation within the specified timeframe.",
+        "key_evidence": [
+          "Absence of any official RBI notification or press release indicating abnormal liquidity surges requiring iCRR measures.",
+          "Absence of historical precursor events such as massive banknote recalls or sudden external foreign exchange inflows that previously triggered iCRR deployment.",
+          "Reliance of the RBI on standard liquidity adjustment facility (LAF) and VRRR operations as the sole visible instruments in the current monetary transmission mechanism."
+        ],
+        "strength": "strong",
+        "strength_reason": "The argument rests entirely on observable signal absence and the strong historical base-rate rarity of iCRR deployment in the absence of acute liquidity shocks.",
+        "deliberately_ignored": "Whether the central bank's leadership desires tighter monetary conditions, political pressures regarding inflation, or procedural feasibility of policy transmission.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "clean",
+      "audit_note": "",
+      "status": "responded",
+      "probability": 12.0,
+      "reasoning": "I reconciled my outside view (25%) with the current evidence by heavily weighting the 'No' case. My base rate was adjusted downward because the specific conditions (acute, non-standard liquidity surges) that historically trigger iCRR are absent. I am placing 20% weight on the base rate due to the provenance warning, relying more on the current observable state of the RBI's liquidity management toolkit.",
+      "deliberately_ignored": "I ignored potential political motivations for the RBI to tighten liquidity, as my aperture is restricted to observable precursors and historical frequency of tool deployment.",
+      "stronger_case": "no",
+      "triggers": [
+        {
+          "event": "RBI announces a surprise withdrawal or exchange of high-denomination banknotes.",
+          "by_date": "2026-12-15",
+          "direction": "up",
+          "to_roughly": 65
+        },
+        {
+          "event": "RBI releases a monthly bulletin explicitly citing structural liquidity surplus as a threat to inflation targets.",
+          "by_date": "2026-11-30",
+          "direction": "down",
+          "to_roughly": 5
+        }
+      ],
+      "moved_from": null,
+      "move_reason": "The absence of current liquidity-shock precursors necessitates a downward revision from the historical base rate to reflect the current stable monetary environment.",
+      "what_changes_between_horizons": "The probability increases slightly over time as the cumulative window for an unexpected liquidity shock or policy shift expands, though the lack of current structural precursors keeps the baseline low.",
+      "p_one_third": 8.0,
+      "p_two_thirds": 10.0,
+      "p_full": 12.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": -13.0
     },
     "literalist": {
       "lens": "literalist",
-      "status": "abstained",
-      "reason": "could not define a population after two decompositions"
+      "abstraction": "Will a central bank implement a specific liquidity management instrument within a defined future multi-month window?",
+      "outside_probability": 24.0,
+      "provenance_tier": "thin",
+      "outside_reasoning": "Given that the substantive policy action occurs, the probability that it satisfies the formal criteria via official notification or press release within the window is extremely high, as central banks formally gazette such measures immediately upon decision.",
+      "cases": [
+        {
+          "name": "RBI iCRR 2023",
+          "date": "2023-08-12",
+          "outcome": "hit"
+        },
+        {
+          "name": "RBI Term Repo 2013",
+          "date": "2013-10-07",
+          "outcome": "hit"
+        },
+        {
+          "name": "RBI Variable Rate Reverse Repo 2021",
+          "date": "2021-01-15",
+          "outcome": "hit"
+        },
+        {
+          "name": "RBI Special OMO 2019",
+          "date": "2019-12-19",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Substantive occurrence of liquidity instrument deployment",
+          "belongs_to_me": false,
+          "value": 25,
+          "basis": "Historical base rate of central bank implementing specialized incremental liquidity management tools during periods of systemic liquidity surplus."
+        },
+        {
+          "name": "Criteria satisfaction given occurrence",
+          "belongs_to_me": true,
+          "value": 95,
+          "basis": "When a central bank decides to implement an instrument, official notification wording almost invariably matches formal criteria."
+        }
+      ],
+      "combination": "Multiply: 0.25 * 0.95 = 0.2375, rounded to 24.",
+      "own_factor": 95.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -71.0,
+      "substantive_probability": 25.0,
+      "substantive_reason": "Historical frequency of central bank deploying targeted liquidity absorption measures.",
+      "reference_entry": "R0744-literalist",
+      "yes_case": {
+        "case": "Assuming the substantive event occurs as given, the phrasing of the resolution criteria is straightforward and tightly defined. It requires an 'official notification or press release announcing the implementation of an incremental cash reserve ratio (iCRR)' by the RBI within a specific date window (27 August 2026 to 31 December 2026). If the RBI undertakes this monetary policy action, the terminology used by central banks for reserve ratio adjustments reliably falls under standard official press releases and notifications, leaving virtually no semantic ambiguity or loophole that would cause a substantive iCRR implementation to fail these explicit wording requirements.",
+        "key_evidence": [
+          "Resolution criteria specifically designates 'official notification or press release' as the qualifying medium.",
+          "The terminology 'incremental cash reserve ratio (iCRR)' matches standard central banking nomenclature employed by the RBI.",
+          "The specified date window (27 August 2026 to 31 December 2026) provides a clear, unambiguous temporal boundary for the announcement."
+        ],
+        "strength": "strong",
+        "strength_reason": "The wording of the resolution criteria directly mirrors the standard administrative outputs of the Reserve Bank of India, ensuring that any actual implementation of an iCRR will almost certainly satisfy the formal notification requirements without semantic ambiguity.",
+        "deliberately_ignored": "The likelihood of the RBI actually deciding to implement an iCRR, macroeconomic conditions driving monetary policy, and any timing debates regarding whether the RBI will choose to act within the specified date window.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The resolution criteria strictly require the announcement of an incremental cash reserve ratio (iCRR) to occur specifically within the tight date boundary between 27 August 2026 and 31 December 2026. Assuming an event does happen, the RBI frequently utilizes alternative liquidity management tools—such as standard Variable Rate Repo (VRR) or Variable Rate Reverse Repo (VRRR) auctions, changes to the standard Cash Reserve Ratio (CRR), or Open Market Operations (OMOs)—rather than specifically designating a measure as an 'incremental cash reserve ratio' (iCRR). If the RBI implements a liquidity absorption mechanism under a different nomenclature or outside the explicitly defined late-2026 window, the strict wording of the resolution criteria will not be satisfied, leading to a technical NO.",
+        "key_evidence": [
+          "The resolution criteria mandate the exact term 'incremental cash reserve ratio (iCRR)' via official notification or press release.",
+          "The timeline is restricted to a specific window between 27 August 2026 and 31 December 2026.",
+          "Central banks historically use various interchangeable liquidity management terminology that may not match the precise legalistic phrasing required by the market question."
+        ],
+        "strength": "moderate",
+        "strength_reason": "The wording relies on specific terminology ('incremental cash reserve ratio') and a precise date range. If the substantive liquidity tightening action uses slightly different nomenclature or falls outside the narrow August-December 2026 window, it triggers a technical NO regardless of the economic substance.",
+        "deliberately_ignored": "The macroeconomic likelihood of whether the RBI needs to absorb liquidity, inflation metrics, banking sector liquidity overhang, or the probability of the RBI choosing to implement monetary tightening measures at all.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "clean",
+      "audit_note": "",
+      "status": "responded",
+      "probability": 24.0,
+      "reasoning": "My substantive probability (25%) is anchored by the historical frequency of liquidity management interventions. My criteria satisfaction factor (95%) reflects the high likelihood that a formal central bank policy action will be documented in the exact manner required by the resolution criteria. I reconciled these by multiplying the two (0.25 * 0.95 = 0.2375), resulting in a 24% probability. The 5% gap accounts for the minor risk of the RBI using a different liquidity tool or a different name for the same mechanism, which would technically resolve the question to NO.",
+      "deliberately_ignored": "I have ignored all discussions regarding the current state of Indian liquidity, inflation data, or the likelihood of the RBI board meeting, as these are substantive factors assigned to other forecasters.",
+      "stronger_case": "yes",
+      "triggers": [
+        {
+          "event": "RBI releases a Monetary Policy Committee (MPC) statement explicitly mentioning the consideration of an incremental cash reserve ratio.",
+          "by_date": "2026-11-15",
+          "direction": "up",
+          "to_roughly": 45
+        },
+        {
+          "event": "RBI announces a shift toward permanent Open Market Operations (OMO) sales as the primary liquidity tool for the remainder of the year.",
+          "by_date": "2026-11-30",
+          "direction": "down",
+          "to_roughly": 10
+        }
+      ],
+      "moved_from": null,
+      "move_reason": "No movement; the assessment remains consistent with the frozen outside view.",
+      "what_changes_between_horizons": "The probability increases across the horizons because the resolution window (27 August 2026 to 31 December 2026) is already partially open. As time progresses toward the deadline, the remaining window for the RBI to announce the specific iCRR measure shrinks, but the cumulative probability of the event occurring within the specified window increases as we approach the end of the calendar year.",
+      "p_one_third": 18.0,
+      "p_two_thirds": 21.0,
+      "p_full": 24.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": 0.0
     }
   },
-  "abstained": [
-    "reference_class",
-    "analogy",
-    "actor_incentive",
-    "blocker",
-    "mechanism_calendar",
-    "telltale",
-    "literalist"
-  ],
+  "abstained": [],
   "excluded": [],
-  "responding_lenses": 0,
-  "abstained_lenses": 7,
+  "responding_lenses": 7,
+  "abstained_lenses": 0,
   "fallback_lenses": 0,
   "failed_lenses": 0,
-  "status": "insufficient_lenses",
-  "median": null
+  "median_raw": 38.0,
+  "spread": 56.0,
+  "low_lens": "telltale",
+  "high_lens": "blocker",
+  "median_extremized": 32.4,
+  "advocate": {
+    "load_bearing_assumption": "The assumption that structural liquidity conditions in late 2026 will deteriorate to a degree that compels the RBI to resort to a blunt administrative tool like the iCRR rather than relying on its established, flexible suite of Variable Rate Reverse Repo (VRRR) auctions.",
+    "why_it_could_be_wrong": "The aggregate median (38.0) is heavily propped up by high-side lenses (actor_incentive at 55.0 and blocker at 68.0) that assume future liquidity gluts automatically trigger iCRR deployments. However, the RBI has increasingly favored fine-tuning operations (VRRRs and repo swaps) over blanket iCRRs, which impose operational friction and penalize compliant banks indiscriminately. If structural liquidity remains manageable or if the RBI strictly maintains its preference for market-based liquidity management, the probability of an iCRR notification drops significantly toward the lower single digits.",
+    "should_move": true,
+    "moved_to": 26.0,
+    "move_reason": "The aggregate of 38.0 is inflated by outlier lenses (blocker at 68.0 and actor_incentive at 55.0) that overestimate the likelihood of the RBI using a blunt macroprudential instrument in the absence of an acute, systemic liquidity shock (such as a sudden, massive foreign capital influx or a pandemic-scale liquidity overhang). Factoring in the telltale lens (12.0) and literalist lens (24.0), which correctly emphasize the rarity and high threshold for iCRR activation, the median should be dragged downward closer to the true historical baseline.",
+    "lenses_that_look_redundant": [
+      "mechanism_calendar"
+    ],
+    "concerns": "The high forecasts are overly reliant on the theoretical capability of the RBI to implement an iCRR rather than concrete, leading indicators or policy signals pointing to its actual deployment within the specific 2026 timeframe."
+  },
+  "advocate_proposed": 26.0,
+  "probability": 38.0,
+  "status": "forecast",
+  "_earlier_runs": [
+    {
+      "question_id": "Q0014",
+      "question": "Will the Reserve Bank of India implement an incremental cash reserve ratio (iCRR) on or before 31 December 2026?",
+      "date": "2026-10-07",
+      "cause": "refresh",
+      "config_version": "3",
+      "shape": "window",
+      "lenses": {
+        "reference_class": {
+          "lens": "reference_class",
+          "status": "abstained",
+          "reason": "could not define a population after two decompositions"
+        },
+        "analogy": {
+          "lens": "analogy",
+          "status": "abstained",
+          "reason": "could not define a population after two decompositions"
+        },
+        "actor_incentive": {
+          "lens": "actor_incentive",
+          "status": "abstained",
+          "reason": "could not define a population after two decompositions"
+        },
+        "blocker": {
+          "lens": "blocker",
+          "status": "abstained",
+          "reason": "could not define a population after two decompositions"
+        },
+        "mechanism_calendar": {
+          "lens": "mechanism_calendar",
+          "status": "abstained",
+          "reason": "could not define a population after two decompositions"
+        },
+        "telltale": {
+          "lens": "telltale",
+          "status": "abstained",
+          "reason": "could not define a population after two decompositions"
+        },
+        "literalist": {
+          "lens": "literalist",
+          "status": "abstained",
+          "reason": "could not define a population after two decompositions"
+        }
+      },
+      "abstained": [
+        "reference_class",
+        "analogy",
+        "actor_incentive",
+        "blocker",
+        "mechanism_calendar",
+        "telltale",
+        "literalist"
+      ],
+      "excluded": [],
+      "responding_lenses": 0,
+      "abstained_lenses": 7,
+      "fallback_lenses": 0,
+      "failed_lenses": 0,
+      "status": "insufficient_lenses",
+      "median": null
+    }
+  ]
 }
