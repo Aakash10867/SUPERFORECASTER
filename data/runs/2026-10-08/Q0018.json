@@ -1,0 +1,667 @@
+{
+  "question_id": "Q0018",
+  "question": "Will the Union Finance Ministry implement the 0.4% Merchant Discount Rate (MDR) on UPI transactions above ₹2,000 as scheduled on 15 October 2026?",
+  "date": "2026-10-08",
+  "cause": "trigger",
+  "config_version": "3",
+  "shape": "point",
+  "lenses": {
+    "reference_class": {
+      "lens": "reference_class",
+      "abstraction": "Among cases where a regulatory body schedules the implementation of a complex financial policy with a multi-year lead time, how often does the policy take effect on the scheduled date without delay or stay?",
+      "outside_probability": 65.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "The base rate for scheduled financial policy rollouts sticking to their original calendar date is roughly 75% based on historical precedents of similar mandates in India. Factoring in typical friction or last-minute legal/industry pushback that occasionally delays complex fee structures brings the final combined outside probability to 65%.",
+      "cases": [
+        {
+          "name": "E-invoice implementation rollout phases",
+          "date": "2020-10-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "Tokenization of card transactions mandate",
+          "date": "2022-10-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "PAN-Aadhaar linking final mandatory deadline",
+          "date": "2023-07-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "RBI Tier-1 credit card issuer regulations deadline",
+          "date": "2022-07-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "GST 28% online gaming tax implementation",
+          "date": "2023-10-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "Draft digital personal data protection rules schedule",
+          "date": "2024-01-01",
+          "outcome": "miss"
+        },
+        {
+          "name": "LEI (Legal Entity Identifier) mandatory phase for large borrowers",
+          "date": "2021-04-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "Auto-debit (e-mandate) additional factor of authentication rule",
+          "date": "2021-10-01",
+          "outcome": "miss"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Historical adherence to scheduled financial policy rollout deadlines",
+          "belongs_to_me": true,
+          "value": 75,
+          "basis": "6 hits out of 8 comparable major regulatory implementation deadlines executed on time."
+        },
+        {
+          "name": "Absence of emergency judicial or political stays halting implementation",
+          "belongs_to_me": false,
+          "value": 80,
+          "basis": "Base rate for high-profile economic policy decrees avoiding last-minute injunctions is roughly 80%."
+        }
+      ],
+      "combination": "Multiply the two independent probabilities (0.75 * 0.80) yielding 60 percent, adjusted slightly upward for strong bureaucratic momentum in digital public infrastructure policies to 65.",
+      "own_factor": 75.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -10.0,
+      "reference_entry": "R0773-reference_class",
+      "status": "responded",
+      "audit_result": "n/a",
+      "probability": 65.0,
+      "p_full": 65.0,
+      "triggers": [
+        {
+          "event": "time passing with no qualifying action",
+          "direction": "down",
+          "to_roughly": ""
+        }
+      ]
+    },
+    "analogy": {
+      "lens": "analogy",
+      "abstraction": "Will a regulatory authority implement a newly announced financial transaction fee structure exactly on the scheduled deadline, despite prior industry resistance?",
+      "outside_probability": 55.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "While governments frequently stick to announced fiscal and digital infrastructure timelines to project regulatory resolve, merchant and aggregator resistance regarding UPI fee implementation historically creates significant friction, leading to a notable fraction of delays or watering down of terms.",
+      "cases": [
+        {
+          "name": "India RBI MDR capping and review announcements",
+          "date": "2019-12-01",
+          "outcome": "miss"
+        },
+        {
+          "name": "Equalisation Levy implementation on e-commerce supplies",
+          "date": "2020-04-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "Nigeria Electronic Money Transfer Levy enforcement",
+          "date": "2021-09-01",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Base rate of on-time implementation for contentious financial mandates",
+          "belongs_to_me": true,
+          "value": 67,
+          "basis": "Derived from 2 hits out of 3 similar past disputed fee implementation episodes."
+        },
+        {
+          "name": "Probability that merchant lobbying forces a delay before the deadline",
+          "belongs_to_me": false,
+          "value": 40,
+          "basis": "Historical tendency of fintech associations to secure temporary stays or extensions on new transaction costs."
+        }
+      ],
+      "combination": "Weighing the base rate of policy follow-through against the specific friction of merchant pushback, yielding a slightly lower net probability than the raw base rate alone.",
+      "own_factor": 67.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -12.0,
+      "reference_entry": "R0774-analogy",
+      "yes_case": {
+        "case": "The closest past episodes are the 2019 and 2022 attempts by the Ministry of Finance to introduce charges or restructure merchant monetization on digital payments, which were ultimately deferred or shelved due to fierce political pushback and merchant resistance. However, this episode differs fundamentally because the fiscal pressure on the exchequer—evidenced by recent reports of slipping central tax receipts and a 15% decline in total collections—creates an urgent imperative for monetization that did not exist with the same severity during prior rollouts. Furthermore, the ecosystem is now dominated by institutional maturity and heavy consolidation among payment aggregators (such as Cashfree's funding rounds and tighter RBI oversight like Paytm's removal from scheduled banks), leaving fewer rogue players capable of mounting a unified boycott. Unlike past deferrals driven by greenfield adoption strategies, this implementation is insulated by a mature digital public infrastructure that can absorb a modest 0.4% charge on transactions above ₹2,000 without threatening baseline financial inclusion metrics.",
+        "key_evidence": [
+          "Business Standard report on central tax receipts slipping in August 2026 driving a 15% decline in total collections",
+          "Mint report on Cashfree Payments raising $80-100 million, showing strong private capital backing in payment aggregators",
+          "Mint report on RBI removing Paytm Payments Bank from scheduled banks list, signaling a heavily cleaned-up regulatory landscape"
+        ],
+        "strength": "moderate",
+        "strength_reason": "The fiscal distress data points provide a sharp divergence from prior deferral episodes, though counter-proposals like the rumored January 2027 delay introduce contradictory signals.",
+        "deliberately_ignored": "I ignored procedural steps, bureaucratic timelines, committee schedules, and population-level adoption metrics or rates of UPI growth.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The closest past episodes to the current 0.4% UPI MDR implementation proposal are the 2019-2020 attempt to mandate zero-MDR without merchant compensation and the subsequent 2022 discussion paper on charges in payment systems where the Ministry indefinitely shelved merchant fee adjustments due to intense political sensitivity and merchant pushback. This episode differs fundamentally from those past cases because fresh reporting explicitly highlights active government consideration of a deferred timeline (moving the implementation window to January 1, 2027), shifting the policy trigger from a fixed rollout to active bureaucratic re-evaluation. Unlike the rigid adherence to arbitrary deadlines seen in historical rollouts of major digital infrastructure, the current environment shows active friction, mirroring the dynamic where merchant resistance forces last-minute deferrals.",
+        "key_evidence": [
+          "Business Standard report on the proposal to defer UPI merchant discount rates to January 1, 2027 under active consideration",
+          "Historical precedent of indefinite shelving of merchant fee adjustments following the 2022 discussion paper on payment charges"
+        ],
+        "strength": "strong",
+        "strength_reason": "The specific reporting of a deferred timeline directly maps to the historical pattern of policy retreats under pressure, distinguishing this episode from unconditional implementations.",
+        "deliberately_ignored": "I am ignoring macroeconomic volume metrics, procedural implementation calendars, and legal process details.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "excluded",
+      "audit_note": "Remove the downward adjustment based on the recent evidence of government consideration to defer the rollout. Re-derive the final estimate strictly by applying authorized prior work values to the outside view or base rate without reacting to new evidence.",
+      "status": "fallback_outside",
+      "probability": 55.0,
+      "p_full": 55.0,
+      "reason": "audit excluded the reasoning; using the frozen outside view",
+      "known_bias": "outside_view_is_news_blind"
+    },
+    "actor_incentive": {
+      "lens": "actor_incentive",
+      "abstraction": "Will the central economic authority implement a contentious digital transaction fee on a specific merchant class within a fixed short window, given that they possess the statutory power and explicit policy intent to do so?",
+      "outside_probability": 66.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "The principals possess both the clear intent and direct institutional capacity to enforce the MDR schedule. Historically, when the ministry sets a firm implementation schedule for digital payment structures, they follow through roughly 87.5% of the time. Factoring in the independent probability that no overriding procedural freeze stops it, the final calculated probability lands at 66%.",
+      "cases": [
+        {
+          "name": "MDR zero-rating mandate for UPI and RuPay",
+          "date": "2020-01-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "Mandatory interoperability and QR code guidelines",
+          "date": "2019-10-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "Implementation of automated payment merchant onboarding norms",
+          "date": "2021-06-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "Deferral of risk-based MDR tiers on specific wallet transactions",
+          "date": "2022-04-01",
+          "outcome": "miss"
+        },
+        {
+          "name": "Enforcement of standardized KYC for payment aggregators",
+          "date": "2022-10-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "Introduction of digital payment incentive schemes disbursement rules",
+          "date": "2021-01-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "Rollout of centralized fraud registry mandates",
+          "date": "2023-08-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "Implementation of offline payment transaction limits",
+          "date": "2022-09-01",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Principal will and implementation capability",
+          "belongs_to_me": true,
+          "value": 88,
+          "basis": "Based on 7 hits out of 8 historical comparable central payment policy enforcement actions."
+        },
+        {
+          "name": "Absence of external procedural or judicial stays (working assumption)",
+          "belongs_to_me": false,
+          "value": 75,
+          "basis": "Base rate for controversial economic rules avoiding preliminary injunctions or formal procedural freezes prior to effective date."
+        }
+      ],
+      "combination": "Multiply. The will and capability of the principals operate independently of whether an external procedural hurdle materializes, though strong principal resolve often correlates with pushing through minor friction.",
+      "own_factor": 88.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -22.0,
+      "reference_entry": "R0775-actor_incentive",
+      "yes_case": {
+        "case": "The Union Finance Ministry possesses the direct executive authority and ultimate administrative capability to mandate and enforce financial frameworks governing digital payments across the country. Through established channels of economic policy-making, the Ministry holds the levers to implement structural directives concerning transaction pricing. When the government decides to operationalize policy changes in the digital payments ecosystem, the intrinsic execution machinery of the Ministry is fully equipped to drive implementation on the designated date without requiring external operational validation.",
+        "key_evidence": [
+          "The Union Finance Ministry's direct oversight and administrative control over fiscal and digital payment policies.",
+          "The inherent structural capability of the Ministry to issue and operationalize payment system notifications."
+        ],
+        "strength": "strong",
+        "strength_reason": "The principals within the Finance Ministry hold direct regulatory command and execution authority over national financial frameworks, meaning their internal will directly translates into operational delivery.",
+        "deliberately_ignored": "Potential deferral proposals under consideration, industry pushback, merchant lobby resistance, third-party objections, procedural delays, and judicial interventions.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The revealed intent of the Union Finance Ministry demonstrates a lack of immediate will to execute the 0.4% Merchant Discount Rate (MDR) on UPI transactions above ₹2,000 as scheduled for October 15, 2026. Recent reporting explicitly indicates that a proposal to defer UPI merchant discount rates to January 1, 2027, is currently under active consideration within the ministry. When principals actively weigh a deferral proposal close to a designated implementation window, their revealed intent shifts away from execution toward postponement, confirming that the necessary push to deliver the policy on the original timeline is absent.",
+        "key_evidence": [
+          "Business Standard report on proposal to defer UPI merchant discount rates to January 1, 2027 under active consideration"
+        ],
+        "strength": "strong",
+        "strength_reason": "The evidence directly captures the internal policy stance of the principal agency regarding the exact timeline and schedule in question, showcasing a direct shift in will away from the October deadline.",
+        "deliberately_ignored": "Any procedural hurdles, industry lobby pushback, stakeholder meetings, legal challenges, or legislative and regulatory committee bottlenecks that might influence the delay from an external or institutional perspective.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "excluded",
+      "audit_note": "Remove all references to recent reporting and new evidence regarding the Ministry's deferral plans, and re-derive the estimate using only the frozen prior values and permitted baseline assumptions.",
+      "status": "fallback_outside",
+      "probability": 66.0,
+      "p_full": 66.0,
+      "reason": "audit excluded the reasoning; using the frozen outside view",
+      "known_bias": "outside_view_is_news_blind"
+    },
+    "blocker": {
+      "lens": "blocker",
+      "abstraction": "Within a fixed short window, will a scheduled state implementation of a contentious financial user-fee mandate proceed despite structural friction from intermediary resistance, or will structural friction cause a delay or cancellation?",
+      "outside_probability": 68.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "The principals are assumed to want this implemented strongly. The structural friction from merchant and ecosystem pushback represents a distinct hazard, but historical base rates suggest that friction of this specific type halts scheduled mandates only about 25% of the time within a tight window. Combining high administrative resolve with a 75% survival rate against friction yields a final probability of 68.",
+      "cases": [
+        {
+          "name": "Zero-MDR policy on UPI/RuPay implementation (2020)",
+          "date": "2020-01-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "RBI Discussion Paper on Charges in Payment Systems pushback (2022)",
+          "date": "2022-08-17",
+          "outcome": "miss"
+        },
+        {
+          "name": "Deferred implementation of credit card MDR caps in other major emerging markets (e.g., Brazil interchange caps phased rollout)",
+          "date": "2018-10-01",
+          "outcome": "miss"
+        },
+        {
+          "name": "Delayed enforcement of data localization directives under similar structural pressure in India",
+          "date": "2018-10-15",
+          "outcome": "miss"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Willingness and intent of principals to push through reform",
+          "belongs_to_me": false,
+          "value": 90,
+          "basis": "Base rate for high-priority national digital public infrastructure mandates being actively championed by central authorities."
+        },
+        {
+          "name": "Structural friction prevention rate",
+          "belongs_to_me": true,
+          "value": 25,
+          "basis": "Historical base rate of friction successfully halting or delaying digital payment fee mandates is 25% based on structured case analysis."
+        }
+      ],
+      "combination": "Since structural friction acts as a counterforce to intent, and assuming moderate dependence where strong intent reduces the efficacy of friction, we weight the intent heavily but adjust downward by the friction failure rate: 90 * (1 - 0.25) = 68.",
+      "own_factor": 25.0,
+      "assumed_factors": 1,
+      "scaffold_shift": 43.0,
+      "reference_entry": "R0776-blocker",
+      "yes_case": {
+        "case": "Examining the structural friction that stands in the way reveals no active blocking mechanisms—such as formal injunctions, judicial stays, or statutory interdictions by external veto players—currently in motion against the October 15 implementation. In the Indian regulatory and administrative architecture, when fiscal and financial policies are advanced by the Union Finance Ministry without an ongoing court stay or legislative override, external structural friction historically fails to halt execution in the vast majority of cases. Without an institutionalized veto point actively freezing the notification, administrative momentum routinely carries directives through to formal enactment. Therefore, the absence of an active legal or structural interdiction means the intervention will succeed in taking effect as scheduled.",
+        "key_evidence": [
+          "Absence of any formal judicial injunction or stay from the Supreme Court or High Courts blocking the 0.4% MDR implementation",
+          "No statutory veto or parliamentary blocking process invoked against the Finance Ministry's execution timeline"
+        ],
+        "strength": "moderate",
+        "strength_reason": "The argument relies strictly on the absence of formal blocking structures like judicial stays or veto interventions, which historically have a low success rate of stopping central administrative mandates unless actively deployed.",
+        "deliberately_ignored": "Preferences, intent, and track record of the principals, schedules and remaining days, and the Business Standard report regarding proposals under consideration to defer the MDR.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "Structural friction within the policy implementation machinery is actively blocking the Union Finance Ministry's scheduled rollout of the 0.4% Merchant Discount Rate (MDR) on UPI transactions above ₹2,000. Specifically, active blocking processes—evidenced by the ongoing high-level consideration of a proposal to defer UPI merchant discount rates to January 1, 2027—demonstrate that inter-departmental and stakeholder friction regularly halts financial mandates of this magnitude. Historically, institutional friction driven by merchant lobbying and banking compliance bottlenecks prevents timely enforcement in a significant majority of complex regulatory adjustments. When proposals reach the active deferral consideration stage, structural inertia and administrative pushback succeed in stalling implementation before the target date.",
+        "key_evidence": [
+          "Business Standard report confirming a proposal to defer UPI merchant discount rates to January 1, 2027 is under active consideration",
+          "Friction from merchant associations and payment ecosystem stakeholders creating structural resistance to transaction fee imposition"
+        ],
+        "strength": "strong",
+        "strength_reason": "The reporting explicitly demonstrates that an intervention process (deferral consideration) is already in active motion, matching the historical pattern where institutional and stakeholder friction successfully stalls complex financial mandates.",
+        "deliberately_ignored": "Whether the Finance Ministry officials or the Prime Minister personally want this policy to succeed, their intent, track record, and the exact number of days remaining on the calendar before October 15, 2026.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "excluded",
+      "audit_note": "Remove the adjustment based on the active proposal to defer and the recent bureaucratic evidence. Revert the friction prevention rate back to the frozen prior value of 25% (or 75% survival rate) without updating it based on new reporting.",
+      "status": "fallback_outside",
+      "probability": 68.0,
+      "p_full": 68.0,
+      "reason": "audit excluded the reasoning; using the frozen outside view",
+      "known_bias": "outside_view_is_news_blind"
+    },
+    "mechanism_calendar": {
+      "lens": "mechanism_calendar",
+      "abstraction": "Will a complex financial regulatory policy with a multi-step administrative and technical prerequisite chain be fully implemented within a remaining calendar window of 7 days?",
+      "outside_probability": 15.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "The concrete steps required—updating switch routing tables, notifying millions of merchants, recalibrating payment aggregator SDKs, and conducting end-to-end testing—physically require at least 3 to 6 weeks. With only 7 days remaining until October 15, 2026, the calendar does not permit full implementation without an operational delay or stay. Therefore, the probability of meeting the exact deadline is very low.",
+      "cases": [
+        {
+          "name": "RBI tokenisation mandate deadline enforcement extension",
+          "date": "2021-12-01",
+          "outcome": "miss"
+        },
+        {
+          "name": "RBI card-on-file tokenisation secondary deadline",
+          "date": "2022-06-30",
+          "outcome": "hit"
+        },
+        {
+          "name": "NPCI auto-debit processing rule strict enforcement",
+          "date": "2021-10-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "SEBI T+1 settlement cycle final tranche implementation",
+          "date": "2023-01-27",
+          "outcome": "hit"
+        },
+        {
+          "name": "Emergency UPI infrastructure zero-MDR circular enforcement",
+          "date": "2020-01-01",
+          "outcome": "miss"
+        },
+        {
+          "name": "GST e-invoicing threshold adjustment sudden enforcement",
+          "date": "2023-08-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "RBI bulk payment processing guideline immediate effect",
+          "date": "2022-10-15",
+          "outcome": "miss"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Physical time allowance and administrative step sequence feasibility",
+          "belongs_to_me": true,
+          "value": 20,
+          "basis": "Given a 7-day window, required technical API changes for payment aggregators and banks physically require a minimum of 30-45 days, making exact on-time schedule execution highly improbable under standard clock constraints."
+        },
+        {
+          "name": "Historical adherence rate to short-notice regulatory deadlines",
+          "belongs_to_me": false,
+          "value": 57,
+          "basis": "Base rate of 57% success for rushed financial circular implementations."
+        }
+      ],
+      "combination": "The strict physical clock constraint dominates: even if historical base rate is 57%, the explicit 7-day remaining window is mathematically insufficient for the necessary sequential IT integration steps, scaling the outside probability sharply downward.",
+      "own_factor": 20.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -5.0,
+      "reference_entry": "R0777-mechanism_calendar",
+      "yes_case": {
+        "case": "From a purely process-oriented and chronological perspective, the Union Finance Ministry possesses all required legal mechanisms and administrative pathways to issue notifications implementing the 0.4% Merchant Discount Rate on UPI transactions above ₹2,000. Under standard bureaucratic procedures in India, the final notification process involves drafting the executive order, securing internal bureaucratic sign-offs, and publishing the gazette notification. Given the standard lead times for financial policy announcements and electronic payment system updates managed by the Ministry and the Reserve Bank of India, the remaining window of time before October 15, 2026, physically accommodates the sequential execution of drafting, approval, and official publication.",
+        "key_evidence": [
+          "The target implementation date is set for October 15, 2026.",
+          "Standard administrative turnaround times for financial notifications and system adjustments allow for executive orders to be drafted, approved, and gazetted within a standard 7-day or multi-week operational window.",
+          "The procedural framework for implementing payment aggregator and gateway fee adjustments via Ministry of Finance notifications is well-established."
+        ],
+        "strength": "moderate",
+        "strength_reason": "The procedural mechanics of drafting and publishing a government notification are well within the standard operational capacity of the Finance Ministry, and physical time constraints alone do not preclude completion by October 15, 2026.",
+        "deliberately_ignored": "Market participant willingness, merchant or consumer pushback, political negotiations, lobbying efforts by fintech companies, and any external opposition or policy debates regarding whether the MDR should be deferred to 2027.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The remaining timeline of just seven days from the current date of October 8, 2026, to the scheduled implementation date of October 15, 2026, physically does not allow for the necessary administrative steps to be completed. According to recent reporting, a proposal to defer the UPI merchant discount rates to January 1, 2027, is already under active consideration. Even setting aside any procedural deliberation time, executing a major financial system transition involving a 0.4% MDR on transactions above ₹2,000 requires final notification drafting, publication in the official gazette, technical system reconfigurations across the National Payments Corporation of India (NPCI) and all participating banking infrastructure, and testing intervals that standardly take several weeks or months of calendar time. With only one week remaining, the physical time required to push code changes, update merchant acquiring systems, and complete statutory notifications exceeds the duration left on the calendar before October 15, making implementation by that exact deadline physically impossible.",
+        "key_evidence": [
+          "Current date is October 8, 2026, leaving exactly 7 days until the scheduled implementation deadline of October 15, 2026.",
+          "Business Standard reporting indicates that a proposal to defer UPI merchant discount rates to January 1, 2027, is currently under consideration.",
+          "Technical implementation of a new MDR structure across banking and payment networks requires software updates, integration testing, and formal notification processes that typically consume weeks of calendar time."
+        ],
+        "strength": "strong",
+        "strength_reason": "The argument relies strictly on calendar math and the physical lead-time required for administrative and technical execution of financial system changes within a strict 7-day window, directly supported by reporting on deferral considerations.",
+        "deliberately_ignored": "Reasons why stakeholders might lobby for or against the MDR implementation, stakeholder politics, government policy intent, or economic motivations of merchants and payment aggregators.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "retried_clean",
+      "audit_note": "Remove the reference to what the Ministry would avoid. Restrict the reasoning strictly to the mechanical time required for the technical deployment without evaluating actor preferences or risk avoidance.",
+      "status": "responded",
+      "probability": 12.0,
+      "reasoning": "My previous probability of 42 was likely too optimistic regarding the speed of bureaucratic and technical deployment. Re-evaluating through the aperture of physical time, the 7-day window is insufficient for the necessary software deployment cycles and merchant-facing updates required for a 0.4% MDR. Even with full cooperation, the 'friction' of system testing and propagation across the UPI stack exceeds the remaining 168 hours.",
+      "deliberately_ignored": "Political motivations, lobbying efforts by payment aggregators, and the economic impact of the MDR on merchant adoption.",
+      "stronger_case": "no",
+      "triggers": [
+        {
+          "event": "The Ministry of Finance issues an official gazette notification regarding the 0.4% MDR.",
+          "by_date": "2026-10-12",
+          "direction": "up",
+          "to_roughly": 85
+        },
+        {
+          "event": "The Reserve Bank of India issues a circular explicitly deferring the implementation date to 2027.",
+          "by_date": "2026-10-14",
+          "direction": "down",
+          "to_roughly": 0
+        }
+      ],
+      "moved_from": 42.0,
+      "move_reason": "The realization that the technical integration phase for UPI fee structures requires more than the 7 days remaining on the calendar, rendering the previous estimate of 42% inconsistent with the physical constraints of the aperture.",
+      "what_changes_between_horizons": "",
+      "p_one_third": null,
+      "p_two_thirds": null,
+      "p_full": 12.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": -3.0
+    },
+    "telltale": {
+      "lens": "telltale",
+      "abstraction": "Given which advance regulatory/fiscal implementation notices are and are not visible 7 days before a scheduled deadline, how often do mandated financial policy changes take effect on schedule without stay or delay?",
+      "outside_probability": 75.0,
+      "provenance_tier": "extrapolated",
+      "outside_reasoning": "With advance signals visible and a strong base rate of financial regulation execution on schedule (approx 83%), combined with a high likelihood of avoiding last-week stays (90%), the product yields roughly 75%.",
+      "cases": [
+        {
+          "name": "RBI Tokenisation Mandate Deadline",
+          "date": "2022-10-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "RBI Recurring Payment Additional Factor of Authentication Rule",
+          "date": "2021-10-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "Paytm Payments Bank Supervisory Action Deadline",
+          "date": "2024-03-15",
+          "outcome": "hit"
+        },
+        {
+          "name": "UPI Autopay Mandate Limit Enhancement",
+          "date": "2022-06-16",
+          "outcome": "hit"
+        },
+        {
+          "name": "RBI Credit Information Companies Data Refresh Mandate",
+          "date": "2023-01-01",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Historical adherence to announced financial policy implementation deadlines",
+          "belongs_to_me": true,
+          "value": 83,
+          "basis": "Base rate from 5 hits out of 6 major payment regulation deadlines in India."
+        },
+        {
+          "name": "Absence of court stays or political intervention freezing the specific policy",
+          "belongs_to_me": false,
+          "value": 90,
+          "basis": "General base rate for fiscal/financial notifications avoiding judicial or executive stays at the final week mark."
+        }
+      ],
+      "combination": "Multiply the two factors since procedural adherence and absence of legal/political stay are largely independent dimensions of policy execution.",
+      "own_factor": 83.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -8.0,
+      "reference_entry": "R0778-telltale",
+      "yes_case": {
+        "case": "The historical frequency of Ministry-scheduled implementation dates proceeding without court stays or intervening executive freezes in the absence of a formal, publicized deferral notification establishes the baseline for execution. In this specific signal state, while a proposal to defer has been noted in reporting, no formal postponement order or injunction has been issued as of the current date. Empirically, unstayed administrative schedules that reach the final week before the deadline proceed according to the calendar baseline in the vast majority of cases unless an official counter-mandate is published prior to the hour of implementation.",
+        "key_evidence": [
+          "No court injunction or formal government notification deferring the October 15, 2026 MDR implementation has been issued.",
+          "Historical execution rates of announced financial sector implementation dates show that unstayed schedules proceed as programmed."
+        ],
+        "strength": "moderate",
+        "strength_reason": "The aperture observes the absence of a blocking precursor (a formal deferral or stay), but accounts for the baseline reality that late-stage proposals are occasionally acted upon at the final juncture.",
+        "deliberately_ignored": "Whether officials want to implement the MDR, whether merchant lobbying pressures will succeed, and the political or economic feasibility of the policy.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The signal state directly matching historical precedents of last-minute deferrals is visibly present in the reporting. Specifically, Business Standard reporting indicates a concrete 'Proposal to defer UPI merchant discount rates to January 1, 2027 under consideration' by the relevant authorities. Historically, when proposals for deferral are under active consideration in this exact timeframe preceding an implementation date, the transition frequently proceeds to a delayed state rather than immediate execution on the originally scheduled date. Conspicuously absent are the final confirmatory operational readiness signals or gazette notifications that typically precede unyielding implementation without warning. Given how often signal states involving active deferral consideration result in a NO resolution, the historical frequency points directly to a delayed or stayed outcome.",
+        "key_evidence": [
+          "Business Standard report: 'Proposal to defer UPI merchant discount rates to January 1, 2027 under consideration'",
+          "Absence of final implementation notifications or readiness confirmation signals in the week prior to October 15, 2026"
+        ],
+        "strength": "strong",
+        "strength_reason": "The presence of an explicit deferral proposal under consideration closely mirrors historical patterns where scheduled financial implementation dates are postponed.",
+        "deliberately_ignored": "Actor motivations, political pressures from merchant associations or fintech firms, and policy preferences of the Ministry of Finance.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "excluded",
+      "audit_note": "Remove the adjustment based on the reported 'proposal to defer' and re-derive the probability using only the frozen outside view or valid observable precursors within your designated signal state frequency aperture.",
+      "status": "fallback_outside",
+      "probability": 75.0,
+      "p_full": 75.0,
+      "reason": "audit excluded the reasoning; using the frozen outside view",
+      "known_bias": "outside_view_is_news_blind"
+    },
+    "literalist": {
+      "lens": "literalist",
+      "abstraction": "Will a scheduled financial or tax policy implementation occur on its exact date without administrative delay, cancellation, or judicial stay?",
+      "outside_probability": 38.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "Out of 7 major Ministry of Finance/regulatory implementation milestones examined, 6 went live strictly on the appointed date while 1 faced a deferral (e-way bill). This yields a ~85% base rate for meeting strict wording criteria conditional on the event happening. Combining this with the frozen 45% substantive probability yields an overall probability of 38%.",
+      "cases": [
+        {
+          "name": "GST rollout implementation date",
+          "date": "2017-07-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "E-way bill system initial rollout",
+          "date": "2018-02-01",
+          "outcome": "miss"
+        },
+        {
+          "name": "TDS on e-commerce transactions (194-O)",
+          "date": "2020-10-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "New income tax e-filing portal rollout",
+          "date": "2021-06-07",
+          "outcome": "hit"
+        },
+        {
+          "name": "Tokenization mandate for card transactions",
+          "date": "2022-10-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "PAN-Aadhaar linking penalty deadline enforcement",
+          "date": "2023-07-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "RBI Tier-1 capital/Sovereign Green Bonds issuance schedules",
+          "date": "2023-02-01",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Substantive Event Probability",
+          "belongs_to_me": false,
+          "value": 45,
+          "basis": "Base rate for controversial fintech/tax mandates proceeding past initial proposal stage."
+        },
+        {
+          "name": "Criteria Satisfaction Probability",
+          "belongs_to_me": true,
+          "value": 85,
+          "basis": "Historical base rate of Ministry of Finance policies meeting scheduled implementation dates without delay or stay."
+        }
+      ],
+      "combination": "Multiply substantive probability by criteria satisfaction probability, reflecting independence between policy formulation and schedule adherence once initiated.",
+      "own_factor": 85.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -47.0,
+      "substantive_probability": 45.0,
+      "substantive_reason": "Fixed outside-stage base rate for such policy announcements.",
+      "reference_entry": "R0779-literalist",
+      "yes_case": {
+        "case": "Assuming the substantive event occurs, the resolution criteria simply require that a '0.4% MDR on UPI transactions exceeding ₹2,000 is officially applied or takes effect for merchants as per the government's notification' on October 15, 2026. The wording strictly binds the outcome to the formal application and taking effect of the rate according to the scheduled parameters, with no hidden definitional hurdles or ambiguous clauses in the criteria regarding the mechanism of application, provided it is not delayed, cancelled, or stayed.",
+        "key_evidence": [
+          "Resolution criteria explicitly define success as the 0.4% MDR on UPI transactions exceeding ₹2,000 being officially applied or taking effect for merchants as per the government's notification.",
+          "The timeline points precisely to the scheduled date of 15 October 2026."
+        ],
+        "strength": "moderate",
+        "strength_reason": "The wording of the resolution criteria is straightforward, tying the YES outcome directly to the official application and taking effect of the specified 0.4% MDR rate on the designated date without overly complex conditions.",
+        "deliberately_ignored": "Whether the Finance Ministry will actually implement the rate, potential delays, postponement proposals under consideration, or court stays, as these belong to the outside substantive estimate and forbidden aperture boundaries.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The resolution criteria explicitly states that the 0.4% MDR on UPI transactions exceeding ₹2,000 must be 'officially applied or takes effect for merchants as per the government's notification,' and that if implementation is 'delayed, cancelled, or stayed,' the answer is NO. Recent reporting highlights that a 'Proposal to defer UPI merchant discount rates to January 1, 2027 under consideration' is actively being reviewed. If the implementation date is adjusted, deferred, or re-notified even by a day or to a later date based on these ongoing considerations, the strict phrasing requiring it to take effect 'as scheduled on 15 October 2026' is technically missed, satisfying the condition for a NO resolution.",
+        "key_evidence": [
+          "Business Standard report on proposal to defer UPI merchant discount rates to January 1, 2027 under consideration",
+          "Resolution criteria requirement that the rate must be applied specifically 'as scheduled on 15 October 2026'"
+        ],
+        "strength": "strong",
+        "strength_reason": "The wording of the resolution criteria makes a strict temporal and procedural demand: the implementation must happen precisely as scheduled on October 15, 2026, and any deferral or modification results in a NO. Active reporting of a deferral proposal directly threatens the literal satisfaction of this clause.",
+        "deliberately_ignored": "Broader macroeconomic impacts, the political will of the Finance Ministry, stakeholder lobbying pressures, and the general probability of whether the government ultimately intends to implement UPI MDR.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "excluded",
+      "audit_note": "Remove the adjustment based on the specific reporting regarding a deferral to 2027. Use your originally frozen criteria satisfaction probability without modifying it based on new evidence, and re-derive the final calculation using that frozen value.",
+      "status": "fallback_outside",
+      "probability": 38.0,
+      "p_full": 38.0,
+      "reason": "audit excluded the reasoning; using the frozen outside view",
+      "known_bias": "outside_view_is_news_blind"
+    }
+  },
+  "abstained": [],
+  "excluded": [],
+  "fallbacks": [
+    "analogy",
+    "actor_incentive",
+    "blocker",
+    "telltale",
+    "literalist"
+  ],
+  "responding_lenses": 7,
+  "abstained_lenses": 0,
+  "fallback_lenses": 5,
+  "failed_lenses": 0,
+  "mostly_outside_view": true,
+  "median_raw": 65.0,
+  "spread": 63.0,
+  "low_lens": "mechanism_calendar",
+  "high_lens": "telltale",
+  "median_extremized": 71.7,
+  "advocate": {
+    "load_bearing_assumption": "The Union Finance Ministry will proceed with the controversial 0.4% MDR implementation on UPI transactions above ₹2,000 without any last-minute deferrals, suspensions, or delays in the next 7 days.",
+    "why_it_could_be_wrong": "UPI MDR is politically and economically sensitive in India, where the government has historically championed zero-fee digital transactions. Merchant backlash, lobby pressure, or technical unreadiness by banks and payment service providers frequently lead to last-minute postponements of such mandates. With only 7 days remaining, any delay or phased rollout pushes the implementation past the deadline, triggering a 'NO' resolution.",
+    "should_move": true,
+    "moved_to": 15.0,
+    "move_reason": "The aggregate of 65% is far too high given the imminent 7-day deadline. The mechanism_calendar lens (12%) correctly highlights that bureaucratic and technical deployments of this scale are highly prone to delays. Given the historical precedent of the Indian government deferring UPI charges to protect digital adoption, a last-minute delay is the most probable outcome.",
+    "lenses_that_look_redundant": [
+      "reference_class"
+    ],
+    "concerns": "The aggregate appears to be anchored on a generic policy-implementation baseline, failing to discount for the extreme proximity of the deadline (7 days) and the high political friction associated with ending free UPI transactions."
+  },
+  "advocate_proposed": 15.0,
+  "probability": 65.0,
+  "status": "forecast"
+}
