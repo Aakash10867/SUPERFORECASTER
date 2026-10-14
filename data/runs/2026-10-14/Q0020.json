@@ -1,0 +1,219 @@
+{
+  "question_id": "Q0020",
+  "question": "Will the US Congress pass comprehensive energy permitting reform legislation, including provisions for interstate pipeline approvals, on or before 31 December 2026?",
+  "date": "2026-10-14",
+  "cause": "creation",
+  "config_version": "3",
+  "shape": "window",
+  "lenses": {
+    "reference_class": {
+      "lens": "reference_class",
+      "abstraction": "Will a major structural reform bill passing both chambers of a divided federal legislature include complex, highly contested industry-specific streamlining provisions during a comparable legislative window?",
+      "outside_probability": 55.0,
+      "provenance_tier": "thin",
+      "outside_reasoning": "Historical precedent shows that when infrastructure or debt ceiling legislation moves under divided government, major reform and permitting provisions are successfully attached and passed roughly 80 percent of the time, yielding a moderate-to-high baseline probability for the broader class of events.",
+      "cases": [
+        {
+          "name": "104th Congress (1995-1996): Telecommunications Act / Major Regulatory Reform attempts",
+          "date": "1996-02-08",
+          "outcome": "hit"
+        },
+        {
+          "name": "109th Congress (2005-2006): Energy Policy Act of 2005",
+          "date": "2005-08-08",
+          "outcome": "hit"
+        },
+        {
+          "name": "111th Congress (2009-2010): American Recovery and Reinvestment Act infrastructure provisions",
+          "date": "2009-02-17",
+          "outcome": "hit"
+        },
+        {
+          "name": "114th Congress (2015-2016): FAST Act (Fixing America's Surface Transportation Act)",
+          "date": "2015-12-04",
+          "outcome": "hit"
+        },
+        {
+          "name": "117th Congress (2021-2022): Infrastructure Investment and Jobs Act",
+          "date": "2021-11-15",
+          "outcome": "hit"
+        },
+        {
+          "name": "118th Congress (2023-2024): Fiscal Responsibility Act permitting provisions",
+          "date": "2023-06-03",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Base rate of comprehensive infrastructure/permitting reform passage under divided government",
+          "belongs_to_me": true,
+          "value": 83,
+          "basis": "5 out of 6 major recent infrastructure/regulatory reform packages under divided control contained substantive streamlining provisions."
+        },
+        {
+          "name": "Legislative vehicle availability (debt ceiling or NDAA attachment likelihood)",
+          "belongs_to_me": false,
+          "value": 75,
+          "basis": "Historical base rate of major must-pass bills carrying secondary reform riders."
+        }
+      ],
+      "combination": "Multiply the base rate of historical inclusion by the likelihood of a must-pass vehicle being available, adjusting slightly downward for the extreme specificity of interstate pipeline provisions.",
+      "own_factor": 83.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -28.0,
+      "reference_entry": "R0871-reference_class",
+      "status": "responded",
+      "audit_result": "n/a",
+      "probability": 55.0,
+      "p_full": 55.0,
+      "p_one_third": 23.4,
+      "p_two_thirds": 41.3,
+      "triggers": [
+        {
+          "event": "time passing with no qualifying action",
+          "direction": "down",
+          "to_roughly": ""
+        }
+      ]
+    },
+    "analogy": {
+      "lens": "analogy",
+      "abstraction": "Will a legislature enact omnibus cross-jurisdictional infrastructure streamlining legislation within a defined multi-year window during divided government?",
+      "outside_probability": 62.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "Comparing the current setup to the 2022 Manchin miss and the 2023 Fiscal Responsibility Act hit reveals that energy permitting reform has evolved from a purely partisan wedge into a dual-demand problem (renewables need transmission, fossil fuels need pipelines). Unlike past episodes where single-sector opposition could sink a bill, the modern nexus of grid reliability concerns makes a legislative vehicle much harder for leadership to ignore before the end of 2026. However, legislative horse-trading over judicial review scope still creates significant friction, keeping the probability well below certainty.",
+      "cases": [
+        {
+          "name": "Bipartisan Infrastructure Law (IIJA)",
+          "date": "2021-11-15",
+          "outcome": "hit"
+        },
+        {
+          "name": "Manchin Permitting Reform Bill (DLS iteration)",
+          "date": "2022-09-30",
+          "outcome": "miss"
+        },
+        {
+          "name": "Fiscal Responsibility Act Permitting Provisions",
+          "date": "2023-06-03",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Historical base rate of passing targeted bipartisan infrastructure/permitting deals under legislative friction",
+          "belongs_to_me": false,
+          "value": 60,
+          "basis": "Derived from historical success rate of major bipartisan infrastructure and procedural compromise packages over the last decade."
+        },
+        {
+          "name": "Aperture-specific depth on case differences (urgency of grid modernization vs historical oil/gas pipeline polarization)",
+          "belongs_to_me": true,
+          "value": 65,
+          "basis": "Current convergence of renewable energy interconnection backlogs and fossil fuel export needs creates a broader coalition than past narrow pipeline-only fights."
+        }
+      ],
+      "combination": "Combined by taking a weighted synthesis, recognizing that the historical base rate provides a floor for bipartisan necessity, while the specific structural alignment of clean energy and fossil fuel advocates increases the probability slightly above the raw historical frequency.",
+      "own_factor": 65.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -3.0,
+      "reference_entry": "R0872-analogy",
+      "yes_case": {
+        "case": "The closest past episodes are the bipartisan infrastructure negotiations of 2021 and the debt ceiling energy permitting deals attempted in 2023. This instance differs fundamentally because of the unprecedented convergence of acute pressures from industrial manufacturing lobbies urging reform and surging utility demands driven by AI power constraints, as highlighted by recent reporting from The Wall Street Journal showing utilities getting tough on AI power and U.S. manufacturers urging Congress to act. Unlike past episodes where clean energy and fossil fuels were zero-sum obstacles, the current crisis encompasses immediate grid reliability threats (exemplified by Illinois electricity reliability concerns) that align both traditional energy and high-tech industrial sectors behind a singular imperative for interstate infrastructure streamlining.",
+        "key_evidence": [
+          "The Wall Street Journal reporting that U.S. Manufacturers Urge Congress to Pass Energy Permitting Reform",
+          "The Wall Street Journal reporting that Utilities Get Tough on AI Power",
+          "Chicago Tribune reporting that Illinois Faces Electricity Reliability Crises and Potential Shortages"
+        ],
+        "strength": "strong",
+        "strength_reason": "The depth of cross-sector pressure from both heavy manufacturing and high-tech utilities creates an alignment of lobbying power that differentiates this episode from previous stalemates.",
+        "deliberately_ignored": "Legislative voting counts, procedural steps, calendar schedules, and exact committee timelines.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The two closest past episodes of attempted comprehensive energy permitting reform are the bipartisan infrastructure negotiations of 2022 following the Inflation Reduction Act, and the repeated standalone permitting reform packages introduced by Senator Joe Manchin between 2022 and 2024. This current episode differs crucially from those past episodes in that the existing legislative landscape is deeply fractured by heightened partisan weaponization of high costs—as highlighted by Democrats tying inflation directly to Republican platforms—and immediate distracting geopolitical and economic frictions like surging motor-oil prices from the Iran conflict and strict suspensions of foreign-worker programs. Unlike 2022, when there was a fragile post-IRA grand bargain appetite involving distinct fossil-fuel and renewable concessions, the present climate is dominated by narrow, defensive regional fights (such as Susan Collins's hyper-focused earmark strategies and fierce battles over offshore wind permits and grid reliability crises in Illinois). Furthermore, while U.S. manufacturers are urging action, the current reporting reveals no bridging mechanism or unified stakeholder coalition capable of overriding the deep-seated congressional distrust that killed Manchin's previous bipartisan attempts, rendering this push just another isolated lobbying effort rather than a viable legislative vehicle.",
+        "key_evidence": [
+          "U.S. Manufacturers Urging Congress to Pass Energy Permitting Reform",
+          "Democrats Weaponize Washington Corruption to Tie High Costs to Republicans",
+          "Trump Administration Seeks to Reevaluate Permit for Rhode Island Offshore Wind Farm",
+          "Illinois Faces Electricity Reliability Crises and Potential Shortages"
+        ],
+        "strength": "strong",
+        "strength_reason": "The structural parallels to previous failed permitting compromises are clear, and the specific contemporary differences—intense partisan cost-blaming, localized grid crises, and a lack of a unified grand bargain vehicle—demonstrate why this legislative effort will stall just like its predecessors.",
+        "deliberately_ignored": "Probability calculations, exact vote counts, and the mechanical legislative steps or timeline calendars for bringing a bill to the floor.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "clean",
+      "audit_note": "",
+      "status": "responded",
+      "probability": 54.0,
+      "reasoning": "Balancing the frozen base rate and structural grid pressures with the severe partisan and regional frictions outlined in the negative case, the probability settles slightly below the outside view at 54%.",
+      "deliberately_ignored": "Macroeconomic inflation figures, specific partisan campaign rhetoric regarding broader corruption, and international oil price fluctuations.",
+      "stronger_case": "no",
+      "triggers": [
+        {
+          "event": "Senate Majority and Minority leaders jointly release a draft bipartisan permitting text for lame-duck consideration",
+          "by_date": "2026-11-20",
+          "direction": "up",
+          "to_roughly": 68
+        },
+        {
+          "event": "House leadership officially declares energy permitting reform dead for the current Congress due to offshore wind and grid dispute stalemates",
+          "by_date": "2026-12-10",
+          "direction": "down",
+          "to_roughly": 30
+        }
+      ],
+      "moved_from": null,
+      "move_reason": "Adjusted downward from the frozen outside view to account for the severe regional and partisan fractures highlighted in the case for no.",
+      "what_changes_between_horizons": "Between 2026-11-09 and 2026-12-05, the post-election landscape shifts from initial congressional posturing to lame-duck legislative bargaining where bipartisan leadership may attempt compromise. By 2026-12-31, the absolute legislative deadline forces a final up-or-down vehicle attachment.",
+      "p_one_third": 50.0,
+      "p_two_thirds": 53.0,
+      "p_full": 54.0,
+      "model": "gemini-3.5-flash-lite",
+      "inside_drift": -8.0
+    },
+    "actor_incentive": {
+      "lens": "actor_incentive",
+      "status": "abstained",
+      "reason": "could not define a population after two decompositions"
+    },
+    "blocker": {
+      "lens": "blocker",
+      "status": "abstained",
+      "reason": "could not define a population after two decompositions"
+    },
+    "mechanism_calendar": {
+      "lens": "mechanism_calendar",
+      "status": "abstained",
+      "reason": "could not define a population after two decompositions"
+    },
+    "telltale": {
+      "lens": "telltale",
+      "status": "abstained",
+      "reason": "could not define a population after two decompositions"
+    },
+    "literalist": {
+      "lens": "literalist",
+      "status": "abstained",
+      "reason": "could not define a population after two decompositions"
+    }
+  },
+  "abstained": [
+    "actor_incentive",
+    "blocker",
+    "mechanism_calendar",
+    "telltale",
+    "literalist"
+  ],
+  "excluded": [],
+  "responding_lenses": 2,
+  "abstained_lenses": 5,
+  "fallback_lenses": 0,
+  "failed_lenses": 0,
+  "status": "insufficient_lenses",
+  "median": null
+}
