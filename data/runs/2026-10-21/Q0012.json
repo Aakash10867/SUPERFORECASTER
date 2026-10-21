@@ -1,0 +1,700 @@
+{
+  "question_id": "Q0012",
+  "question": "Will the U.S. Congress pass a joint resolution to block the 30-year nuclear cooperation agreement with Saudi Arabia on or before 26 August 2027?",
+  "date": "2026-10-21",
+  "cause": "refresh",
+  "config_version": "3",
+  "shape": "window",
+  "lenses": {
+    "reference_class": {
+      "lens": "reference_class",
+      "abstraction": "Within a 309-day statutory review window following formal notification, how often does a legislative body successfully pass a joint resolution of disapproval to block a major executive-branch international nuclear cooperation agreement?",
+      "outside_probability": 3.0,
+      "provenance_tier": "thin",
+      "outside_reasoning": "Passing a joint resolution of disapproval requires majority votes in both chambers, and subsequently overriding a presidential veto requires a two-thirds supermajority in both. Historically, Congress has never successfully blocked a major 123 nuclear cooperation agreement through this mechanism due to the high constitutional hurdles required to overcome executive authority in foreign pacts.",
+      "cases": [
+        {
+          "name": "U.S.-UAE 123 Agreement review",
+          "date": "2009-05-21",
+          "outcome": "miss"
+        },
+        {
+          "name": "U.S.-Iran Nuclear Agreement review (JCPOA context)",
+          "date": "2015-09-17",
+          "outcome": "miss"
+        },
+        {
+          "name": "U.S.-Saudi Arabia nuclear cooperation informal/formal precursor reviews",
+          "date": "2018-05-15",
+          "outcome": "miss"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Base rate of successful legislative blockages of executive nuclear agreements via joint resolution",
+          "belongs_to_me": true,
+          "value": 5,
+          "basis": "Historical frequency is 0 out of 3, but assigning a non-zero floor for extreme political friction."
+        },
+        {
+          "name": "Executive veto override capability and party discipline threshold",
+          "belongs_to_me": false,
+          "value": 33,
+          "basis": "Historical base rate of two-thirds majorities overcoming presidential vetoes on foreign policy matters."
+        }
+      ],
+      "combination": "Combined by assessing that even if a resolution passes both chambers by simple majorities (rare), achieving the two-thirds threshold to override a guaranteed veto is exceptionally rare, yielding a low joint probability.",
+      "own_factor": 5.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -2.0,
+      "reference_entry": "R0956-reference_class",
+      "status": "responded",
+      "audit_result": "n/a",
+      "probability": 3.0,
+      "p_full": 3.0,
+      "p_one_third": 1.0,
+      "p_two_thirds": 2.0,
+      "triggers": [
+        {
+          "event": "time passing with no qualifying action",
+          "direction": "down",
+          "to_roughly": ""
+        }
+      ]
+    },
+    "analogy": {
+      "lens": "analogy",
+      "abstraction": "Within a 309-day window, will a legislature pass a joint resolution of disapproval to block a major bilateral executive-legislative foreign nuclear cooperation agreement?",
+      "outside_probability": 8.0,
+      "provenance_tier": "unsupported",
+      "outside_reasoning": "While political opposition to a Saudi nuclear deal is frequently intense, the structural hurdles are immense: a joint resolution must pass both houses and either avoid a veto or muster a two-thirds supermajority in both chambers to override it. Historically, no 123 agreement has ever been successfully blocked by this mechanism. Differences this time include heightened non-proliferation concerns and regional dynamics, but the structural difficulty of overriding a motivated executive branch remains formidable.",
+      "cases": [
+        {
+          "name": "U.S.-UAE 123 Agreement",
+          "date": "2009-05-21",
+          "outcome": "miss"
+        },
+        {
+          "name": "U.S.-Iran 123 Agreement (proposed historical context/non-submitted)",
+          "date": "N/A",
+          "outcome": "miss"
+        },
+        {
+          "name": "U.S.-Saudi Arabia previous informal reviews",
+          "date": "2018-2019",
+          "outcome": "miss"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Historical base rate of successful congressional blocks on 123 agreements",
+          "belongs_to_me": true,
+          "value": 2,
+          "basis": "Zero successful enactments out of roughly 25 submissions yields a near-zero base rate, bounded slightly above zero for unprecedented geopolitical friction."
+        },
+        {
+          "name": "Bipartisan consensus threshold for overriding a presidential veto on Middle Eastern arms/nuclear deals",
+          "belongs_to_me": false,
+          "value": 15,
+          "basis": "Historical veto override success rate on foreign policy and national security matters in Congress is historically low (under 15%)."
+        }
+      ],
+      "combination": "We combine the base rate of 123 agreement blocks with the extreme difficulty of achieving a veto-proof supermajority in both chambers. Since passing a joint resolution requires not just a majority but surviving a veto, the two factors heavily compound. Starting from the rare historical precedent of congressional opposition, we arrive at a low final probability.",
+      "own_factor": 2.0,
+      "assumed_factors": 1,
+      "scaffold_shift": 6.0,
+      "reference_entry": "R0957-analogy",
+      "yes_case": {
+        "case": "The strongest historical parallel for a bipartisan congressional pushback against a Middle Eastern nuclear cooperation framework is found in the 2015 Iran Nuclear Agreement (JCPOA) congressional review battles and the 2019 bipartisan resolutions passed to block arms sales to Saudi Arabia and the UAE under the Arms Export Control Act. This episode differs fundamentally from the 2015 JCPOA fight because the executive branch would be advancing a formal 123 Agreement requiring active congressional acquiescence or suffering a successful joint resolution of disapproval, which bypasses the supermajority Senate threshold required for treaties since the Atomic Energy Act of 1954 explicitly structures this as a privileged joint resolution that can pass with simple majorities and force a direct showdown. Furthermore, unlike the 2019 Saudi arms sale resolutions—which were largely symbolic messaging exercises vetoed by President Trump—a nuclear cooperation pact with Saudi Arabia touches deeply on nuclear proliferation sensitivities, making it uniquely vulnerable to bipartisan congressional non-proliferation hawks who view any civil nuclear concessions without strict 'gold standard' non-enrichment commitments as an unacceptable risk, creating a legislative alignment capable of overriding presidential hesitation.",
+        "key_evidence": [
+          "The statutory framework of the Atomic Energy Act of 1954 governing 123 agreements and privileged joint resolutions of disapproval",
+          "The 2019 bipartisan congressional votes on joint resolutions to block Saudi arms sales",
+          "The historical precedent of congressional opposition to Middle Eastern nuclear and military technology transfers"
+        ],
+        "strength": "moderate",
+        "strength_reason": "The structural mechanism of the Atomic Energy Act provides a clearer, lower-threshold path for a joint resolution of disapproval than standard legislation, but the lack of current reporting on a finalized text leaves the exact political alignment dependent on future diplomatic developments.",
+        "deliberately_ignored": "I left aside the vote counting in the current House and Senate, procedural timelines for committee hearings, whip counts, and calculations of presidential veto overrides.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The closest historical episodes are the 1981 sale of AWACS to Saudi Arabia and the 2019 bipartisan congressional rejection of Trump-era arms sales to Saudi Arabia and the UAE under the Arms Export Control Act. This episode differs fundamentally from 1981 because the current administration faces a deeply divided, fragile congressional majority where a bipartisan coalition of non-interventionist progressives and hawkish pro-Israel defenders cannot easily coalesce around a unified legislative veto mechanism for a complex civil nuclear pact. It differs from 2019 because that resolution was a direct response to an active humanitarian crisis (the war in Yemen) and occurred during an administration where Congress actively sought to rein in executive foreign policy; a 30-year nuclear agreement involves complex energy and geopolitical alignments regarding China and regional stability that typically generate significant executive-branch deference and division among lawmakers, preventing the two-thirds supermajority required to override a veto.",
+        "key_evidence": [
+          "The 1981 Reagan administration AWACS sale to Saudi Arabia, which survived a Senate vote due to intensive executive lobbying and fragmented opposition.",
+          "The 2019 congressional disapproval resolutions against Saudi arms sales, which successfully passed both chambers but ultimately failed to override presidential vetoes.",
+          "The unique statutory requirements of the Atomic Energy Act (Section 123) for nuclear cooperation agreements versus standard arms export notifications."
+        ],
+        "strength": "strong",
+        "strength_reason": "The structural difficulty of securing a veto-proof two-thirds majority in both chambers of Congress against a civil nuclear agreement—mirroring the historical failure to override vetoes on Middle East arms sales—provides a robust historical precedent for the NO outcome.",
+        "deliberately_ignored": "Procedural timelines, vote counting schedules, exact committee referral steps, and statistical probability distributions of congressional passage.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "retried_clean",
+      "audit_note": "Remove the adjustment based on the current legislative environment and recent coalition-building assessments. Re-derive the probability using only the frozen prior values and permitted comparative analysis of past episodes.",
+      "status": "responded",
+      "probability": 14.0,
+      "reasoning": "I am placing 20% weight on my base rate, acknowledging the 'unsupported' provenance warning by treating it as a heuristic for the extreme difficulty of blocking executive foreign policy rather than a strict statistical frequency. The 'Yes' case relies on the Atomic Energy Act's privileged resolution mechanism, which lowers the barrier to entry compared to a treaty. However, the 'No' case correctly identifies that the political coalition required to override a veto is fundamentally different from the coalition required to pass a simple resolution. I have lowered my probability slightly from 16 to 14 to reflect the persistent difficulty of achieving a veto-proof majority in a polarized Senate, even when bipartisan concerns exist.",
+      "deliberately_ignored": "I have ignored the broader geopolitical implications of the Saudi-China relationship and the specific details of the 'gold standard' non-enrichment clauses, as these are factors for other forecasters to assess regarding the likelihood of the deal being signed in the first place.",
+      "stronger_case": "no",
+      "triggers": [
+        {
+          "event": "A bipartisan group of 15 Senators introduces a formal joint resolution of disapproval citing specific non-proliferation concerns.",
+          "by_date": "2027-04-01",
+          "direction": "up",
+          "to_roughly": 25
+        },
+        {
+          "event": "The White House secures a public endorsement of the agreement from the Senate Foreign Relations Committee leadership.",
+          "by_date": "2027-06-01",
+          "direction": "down",
+          "to_roughly": 5
+        }
+      ],
+      "moved_from": 16.0,
+      "move_reason": "Refinement of the assessment regarding the difficulty of the veto-override threshold in the current Senate composition.",
+      "what_changes_between_horizons": "The probability increases as the legislative window narrows and the specific terms of the 123 agreement become public. Early horizons reflect the uncertainty of whether an agreement is even submitted; later horizons reflect the accumulation of political pressure and the crystallization of opposition as the deadline approaches.",
+      "p_one_third": 10.0,
+      "p_two_thirds": 12.0,
+      "p_full": 14.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": 6.0
+    },
+    "actor_incentive": {
+      "lens": "actor_incentive",
+      "abstraction": "Will a legislature with the constitutional capacity to block a major executive-negotiated international pact exercise its will to do so within the statutory review window?",
+      "outside_probability": 15.0,
+      "provenance_tier": "thin",
+      "outside_reasoning": "Looking solely through the aperture of will and capability, the historical record indicates that while congressional actors frequently introduce disapproval motions for signaling purposes, the actual institutional will to carry a joint resolution through to a veto-proof final passage against a major nuclear cooperation agreement is exceptionally rare. Combining this low base rate of principal will with the structural requirement for overlapping majorities yields a low final probability.",
+      "cases": [
+        {
+          "name": "1981 AWACS sale to Saudi Arabia",
+          "date": "1981-10-01",
+          "outcome": "miss"
+        },
+        {
+          "name": "1986 missile sale to Saudi Arabia",
+          "date": "1986-05-01",
+          "outcome": "miss"
+        },
+        {
+          "name": "1988 missile sale to Saudi Arabia",
+          "date": "1988-06-01",
+          "outcome": "miss"
+        },
+        {
+          "name": "2016 UAE/Saudi arms package informal review",
+          "date": "2016-09-01",
+          "outcome": "miss"
+        },
+        {
+          "name": "2019 emergency arms sales disapproval resolutions",
+          "date": "2019-07-24",
+          "outcome": "miss"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Congressional will and capability to complete a joint resolution of disapproval overcoming executive resistance",
+          "belongs_to_me": true,
+          "value": 10,
+          "basis": "Historical base rate shows Congress rarely musters the sustained supermajority bipartisan will required to successfully block executive-branch nuclear and strategic pacts through joint resolutions."
+        },
+        {
+          "name": "Executive branch prioritization and willingness to expend political capital to protect the agreement",
+          "belongs_to_me": false,
+          "value": 85,
+          "basis": "Administrations universally invest heavily to defend negotiated international agreements, keeping alignment strong among supporting legislators."
+        }
+      ],
+      "combination": "Multiply the executive protection factor by the inverse of the congressional will factor, yielding a low probability of successful congressional blocking action.",
+      "own_factor": 10.0,
+      "assumed_factors": 1,
+      "scaffold_shift": 5.0,
+      "reference_entry": "R0958-actor_incentive",
+      "yes_case": {
+        "case": "Key principals in the United States Congress—driven by long-standing bipartisan non-proliferation commitments, deep skepticism regarding Saudi Arabia's nuclear ambitions without strict enrichment limitations, and intense congressional prerogative over foreign nuclear agreements—possess the profound institutional will and the absolute constitutional mechanism to introduce, advance, and pass a joint resolution of disapproval. The principals who must act are members of both the House and Senate who control the legislative machinery necessary to force a vote and override executive preference, and they possess the full authority and capability to deliver this outcome under the Atomic Energy Act framework if an agreement is transmitted.",
+        "key_evidence": [
+          "The statutory framework of the Atomic Energy Act of 1954 (Section 123) explicitly empowers Congress to introduce and vote on a joint resolution of disapproval to block peaceful nuclear cooperation agreements.",
+          "Bipartisan majorities in both chambers of Congress have historically demonstrated sustained intent and capability to challenge executive branch nuclear cooperation initiatives regarding the Middle East.",
+          "Congressional principals possess the direct voting power and leadership controls required to bring such a resolution to the floor and pass it."
+        ],
+        "strength": "moderate",
+        "strength_reason": "The principals possess the direct legislative capacity and clear historical precedent of intent to block controversial nuclear pacts, though actual execution depends entirely on the formal submittal of the agreement.",
+        "deliberately_ignored": "The complex procedural timelines, committee referral hurdles, floor scheduling conflicts, potential presidential vetoes, the exact vote counts needed to override a veto, and the likelihood of judicial or third-party interventions.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The principals in Congress possess the absolute constitutional capability to introduce and pass a joint resolution of disapproval, but the essential ingredient of intent—specifically, a unified, sustained bipartisan will among the leadership and majorities of both chambers to actively block a major nuclear cooperation agreement—is absent. Passing a joint resolution of disapproval to halt a significant foreign policy and energy agreement requires a deliberate exertion of political will and capital from key legislative principals. Historically, the legislative principals who drive major foreign policy initiatives or blocks thereof must prioritize such measures against competing domestic priorities. The lack of active, stated intent from congressional leaders to mobilize their caucuses to kill this specific agreement demonstrates that the requisite internal desire to drive this outcome does not exist among the principals who hold the capability to make it happen.",
+        "key_evidence": [
+          "The constitutional authority of Congress to pass joint resolutions of disapproval under the Atomic Energy Act.",
+          "The absence of public, sustained intent or whip counts from congressional leadership indicating a push to block a Saudi nuclear agreement."
+        ],
+        "strength": "moderate",
+        "strength_reason": "While the capability to pass a resolution is structurally present for congressional principals, establishing a definitive lack of intent relies on the absence of active legislative initiatives, which is a strong indicator of will but can shift rapidly if political dynamics change.",
+        "deliberately_ignored": "The statutory review periods, committee jurisdictions, floor scheduling rules, presidential veto override mechanics, and the potential for court challenges or third-party lobbying opposition.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "retried_clean",
+      "audit_note": "Remove the adjustment based on the current political climate and retain the frozen prior value of 20% or the fixed arithmetic transition without incorporating fresh evidence.",
+      "status": "responded",
+      "probability": 18.0,
+      "reasoning": "I am placing 20% weight on the historical base rate, acknowledging it is thin but directional; it reinforces the difficulty of overcoming executive inertia. My reconciliation involves balancing the high capability of Congress (the 'Yes' case) against the low demonstrated will to expend the political capital required to override a President on a major nuclear deal (the 'No' case). The probability remains low because the 'No' case aligns with the structural reality that the executive branch effectively manages the legislative floor for international agreements.",
+      "deliberately_ignored": "I have ignored the specific procedural hurdles, committee referral timelines, and potential court challenges, as these are external to the principals' will and capability to act.",
+      "stronger_case": "no",
+      "triggers": [
+        {
+          "event": "A bipartisan group of at least 20 Senators publicly commits to co-sponsoring a joint resolution of disapproval immediately upon the agreement's transmission.",
+          "by_date": "2027-04-01",
+          "direction": "up",
+          "to_roughly": 35
+        },
+        {
+          "event": "The Senate Foreign Relations Committee issues a formal statement of support for the agreement, signaling a lack of appetite for a disapproval resolution.",
+          "by_date": "2027-06-01",
+          "direction": "down",
+          "to_roughly": 5
+        }
+      ],
+      "moved_from": 20.0,
+      "move_reason": "I have slightly lowered the probability to reflect a more conservative assessment of the 'will' factor, as recent legislative patterns suggest even higher executive control over foreign policy outcomes than previously estimated.",
+      "what_changes_between_horizons": "The probability increases slightly over time as the window for legislative action narrows and the specific terms of the agreement become public, allowing for a more accurate assessment of congressional appetite for a confrontation with the executive branch.",
+      "p_one_third": 12.0,
+      "p_two_thirds": 15.0,
+      "p_full": 18.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": 3.0
+    },
+    "blocker": {
+      "lens": "blocker",
+      "abstraction": "Will a legislature pass a joint resolution of disapproval to block a major executive-negotiated international civil nuclear cooperation agreement within the statutory review window?",
+      "outside_probability": 8.0,
+      "provenance_tier": "thin",
+      "outside_reasoning": "The structural hurdle required to block a 123 agreement—passing a joint resolution of disapproval through both chambers and overriding a near-certain presidential veto—has never succeeded in modern U.S. history. While structural friction exists in the form of committee oversight and bipartisan skepticism, the bar of a veto-proof legislative block remains exceptionally high. Based on the historical frequency of 0/3 for contested attempts, combined with the extreme difficulty of overriding executive action, the probability of a successful block is low.",
+      "cases": [
+        {
+          "name": "US-UAE 123 Agreement",
+          "date": "2009-05-21",
+          "outcome": "miss"
+        },
+        {
+          "name": "US-Vietnam 123 Agreement",
+          "date": "2013-12-14",
+          "outcome": "miss"
+        },
+        {
+          "name": "US-Iran Nuclear Deal Framework (JCPOA review)",
+          "date": "2015-09-10",
+          "outcome": "miss"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Structural friction and historical block rate for 123 agreements",
+          "belongs_to_me": true,
+          "value": 5,
+          "basis": "0 hits out of 3 major contested historical attempts, bounded above zero to account for extreme geopolitical friction."
+        },
+        {
+          "name": "Executive intent and push to finalize",
+          "belongs_to_me": false,
+          "value": 90,
+          "basis": "Assumed active executive push per instructions."
+        }
+      ],
+      "combination": "The prior factors are not independent because intense executive prioritization directly works to overcome legislative friction. We apply a low base rate of success for the blocking mechanism (near zero historically) adjusted slightly upward for unique geopolitical friction surrounding this specific case, yielding a low final probability.",
+      "own_factor": 5.0,
+      "assumed_factors": 1,
+      "scaffold_shift": 3.0,
+      "reference_entry": "R0959-blocker",
+      "yes_case": {
+        "case": "The structural friction blocking a 123 agreement with Saudi Arabia lies in the rigid statutory requirements of the Atomic Energy Act of 1954, specifically the mandatory congressional review period and the high threshold required to override a presidential veto. The structural mechanism for intervention is a joint resolution of disapproval. Historically, when Congress mobilizes bipartisan majorities against nuclear proliferation risks or Middle East arms transfers, structural veto-override mechanics and institutional prerogatives create a recurring failure rate for executive initiatives of this scale. The structural friction of committee jurisdiction in both chambers and the mandatory floor time rules provide predictable intervention points. When such legislative veto vehicles reach the floor, the combination of non-proliferation advocacy groups, bipartisan skepticism of Saudi governance, and institutional jealousy over Article I treaty and oversight powers historically succeeds in passing disapprovals at a notable baseline frequency, particularly when leveraging procedural privileges that bypass leadership bottlenecks.",
+        "key_evidence": [
+          "The Atomic Energy Act of 1954 establishes a mandatory statutory framework and review period for peaceful nuclear cooperation agreements (123 agreements).",
+          "A joint resolution of disapproval requires passage by both the House of Representatives and the Senate.",
+          "Bipartisan legislative vehicles targeting Saudi Arabia have a historical precedent of achieving significant floor support due to congressional unease over nuclear proliferation and regional security."
+        ],
+        "strength": "moderate",
+        "strength_reason": "The argument relies strictly on the institutional friction of the legislative process and the historical success rate of congressional opposition mechanisms, though overcoming a presidential veto remains a high structural bar.",
+        "deliberately_ignored": "Whether the current administration or Saudi leadership actually desires the agreement, their strategic intent, negotiating track record, or whether there is sufficient time on the legislative calendar to complete the votes.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The structural friction required to pass a joint resolution of disapproval in the U.S. Congress—requiring majority votes in both chambers followed by either presidential acquiescence or a two-thirds override of a presidential veto—presents an extraordinarily high institutional barrier. Historically, legislative vetoes and disapproval resolutions regarding executive branch foreign policy and arms/nuclear agreements face immense procedural bottlenecks, including committee referral hurdles, leadership control over floor time, and the difficulty of maintaining bipartisan supermajorities against executive branch resistance. Structural friction of this magnitude successfully halts outcomes of this type the vast majority of the time, as the baseline default for international agreements negotiated by the executive is entry into force unless actively intercepted by successfully enacted legislation.",
+        "key_evidence": [
+          "The statutory framework governing nuclear cooperation agreements (Section 123 of the Atomic Energy Act) requires concurrent action by both chambers to successfully block an agreement via a joint resolution of disapproval.",
+          "Bypassing a presidential veto requires a two-thirds supermajority in both the House of Representatives and the Senate, a threshold that historically neutralizes the vast majority of legislative interventions against executive foreign policy initiatives."
+        ],
+        "strength": "strong",
+        "strength_reason": "The constitutional and procedural architecture of the U.S. legislative process heavily privileges the executive's default outcome, making successful enactment of a blocking joint resolution a statistically rare event due to high procedural friction.",
+        "deliberately_ignored": "Whether the current administration or Saudi leadership actually desires the agreement, the specific timeline or calendar countdown of remaining days, and the legislative schedules or vote counts of individual members.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "clean",
+      "audit_note": "",
+      "status": "responded",
+      "probability": 10.0,
+      "reasoning": "I have adjusted my probability from 12 to 10. My previous estimate was slightly inflated by the potential for political volatility; however, upon re-evaluating the structural friction, the veto-override requirement remains the dominant constraint. I am placing moderate weight on the base rate (0/3), acknowledging it is a small sample but indicative of the extreme institutional difficulty in blocking 123 agreements. The 'Case for Yes' highlights valid procedural pathways, but these pathways consistently fail to overcome the supermajority threshold required to neutralize executive power.",
+      "deliberately_ignored": "I have ignored the specific geopolitical preferences of the Saudi government and the current administration's diplomatic strategy, as these belong to the lens of intent and preference, which I am instructed to treat as constant.",
+      "stronger_case": "no",
+      "triggers": [
+        {
+          "event": "A bipartisan group of at least 20 Senators introduces a joint resolution of disapproval with a public commitment to force a floor vote.",
+          "by_date": "2027-03-01",
+          "direction": "up",
+          "to_roughly": 25
+        },
+        {
+          "event": "The Senate Foreign Relations Committee votes to report the agreement favorably to the full Senate without recommending a resolution of disapproval.",
+          "by_date": "2027-06-01",
+          "direction": "down",
+          "to_roughly": 3
+        }
+      ],
+      "moved_from": 12.0,
+      "move_reason": "Refinement of the structural friction assessment; the veto-override barrier is more robust than previously weighted, necessitating a slight downward adjustment to reflect the extreme difficulty of the legislative path.",
+      "what_changes_between_horizons": "The probability increases slightly over time as the statutory review window progresses, providing more opportunities for legislative vehicles to be introduced and for bipartisan coalitions to form around specific procedural triggers.",
+      "p_one_third": 8.0,
+      "p_two_thirds": 9.0,
+      "p_full": 10.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": 2.0
+    },
+    "mechanism_calendar": {
+      "lens": "mechanism_calendar",
+      "abstraction": "Within a 309-day window, can a bicameral legislature complete all mandatory statutory stages—including committee referral, floor debate, amendments, passage in both chambers, reconciliation of differences, and transmission for executive signature or veto override—to enact a joint resolution blocking an executive-negotiated international agreement?",
+      "outside_probability": 5.0,
+      "provenance_tier": "thin",
+      "outside_reasoning": "From a pure process and clock perspective, passing a joint resolution of disapproval requires floor time in both chambers, committee discharge or markup, and crucially, either presidential signature (unlikely for an agreement the executive negotiated) or a two-thirds veto override in both the House and Senate. The remaining 309 days physically allow for the steps to be scheduled, but the historical base rate shows that completing this entire sequence successfully against executive opposition is extremely difficult within statutory timeframes, yielding a low final probability.",
+      "cases": [
+        {
+          "name": "UAE Nuclear Agreement Review (hypothetical/comparable AEA review)",
+          "date": "2008-05-01",
+          "outcome": "miss"
+        },
+        {
+          "name": "Iran Nuclear Agreement (JCPOA) Resolution of Disapproval",
+          "date": "2015-09-01",
+          "outcome": "miss"
+        },
+        {
+          "name": "Saudi Arabia Arms Sales Disapproval (Yemen)",
+          "date": "2019-07-01",
+          "outcome": "miss"
+        },
+        {
+          "name": "National Emergency Declaration Disapproval Joint Resolutions",
+          "date": "2019-03-01",
+          "outcome": "miss"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Executive intent to submit and maintain the agreement",
+          "belongs_to_me": false,
+          "value": 90,
+          "basis": "Base rate of executive branch proceeding with finalized negotiated agreements."
+        },
+        {
+          "name": "Congressional procedural compliance and time availability",
+          "belongs_to_me": true,
+          "value": 15,
+          "basis": "Empirical base rate of statutory disapproval resolutions successfully navigating bicameral hurdles and overcoming presidential vetoes within the strict calendar window."
+        }
+      ],
+      "combination": "Multiply the executive progression factor by the strict procedural enactment success rate, acknowledging that full legislative completion against executive resistance within a tight clock is historically rare.",
+      "own_factor": 15.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -10.0,
+      "reference_entry": "R0960-mechanism_calendar",
+      "yes_case": {
+        "case": "Under the Atomic Energy Act, a 30-year nuclear cooperation agreement (Section 123 agreement) submitted to Congress must lie before it for a continuous period of 90 days of continuous session. If Congress passes a joint resolution of disapproval within this statutory review window, and that resolution is enacted (either by mustering a two-thirds override of a presidential veto or if the President signs it), the agreement is blocked. From a pure process and calendar perspective, the statutory timeline provides ample procedural mechanism within the 309-day window. The procedural steps—introduction of the joint resolution, committee referral, floor debate, passage in both chambers, and potential veto override votes—can mechanically be executed within a matter of days or weeks when expedited, leaving the remaining time physically sufficient to complete all required legislative milestones before the August 26, 2027 deadline.",
+        "key_evidence": [
+          "The statutory review period for a Section 123 agreement requires 90 days of continuous session.",
+          "A joint resolution of disapproval can be introduced, reported out of committee, and brought to the floor under fast-track or standard parliamentary procedures in both the House and Senate.",
+          "The legislative calendar between the current date and August 26, 2027, contains sufficient days in session to complete floor votes in both chambers and process any subsequent veto override procedures."
+        ],
+        "strength": "moderate",
+        "strength_reason": "The procedural machinery for introducing and passing a joint resolution of disapproval exists within the statutory framework, and the calendar provides more than enough days in session to complete the mechanical steps of bicameral passage and veto overrides.",
+        "deliberately_ignored": "Whether members of Congress actually support or oppose the nuclear agreement, geopolitical motivations, executive-legislative branch negotiations, lobbying efforts, or the likelihood of securing a veto-proof majority.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "A joint resolution of disapproval to block a 123 agreement requires introduction, committee referral, hearings, markups, floor debates, and majority passage in both the House of Representatives and the Senate, followed by presentation to the President, potential veto, and subsequent two-thirds override votes in both chambers within strict statutory time limits under the Atomic Energy Act. Even assuming complete absence of opposition and seamless administrative cooperation at every phase, the cumulative duration of these sequential legislative milestones—including mandatory committee consideration periods and scheduling mechanics—exceeds the available calendar window or consumes sufficient process time that any minor logistical scheduling bottleneck prevents the completion of the entire multi-step bicameral sequence before the 26 August 2027 deadline, resulting in the agreement entering into force by default.",
+        "key_evidence": [
+          "The statutory framework for reviewing nuclear cooperation agreements under the Atomic Energy Act involves mandatory sequencing of committee referral and floor action.",
+          "Bicameral passage requires sequential or parallel navigation of House and Senate scheduling calendars, which inherently takes multiple weeks of floor time even with expedited procedures.",
+          "A veto override process, if triggered, requires roll-call votes in both chambers demanding dedicated floor time."
+        ],
+        "strength": "moderate",
+        "strength_reason": "The procedural timeline required for two separate legislative chambers to pass identical resolutions and manage potential veto overrides is lengthy, but pure clock-time feasibility depends heavily on when the statutory review period initiates.",
+        "deliberately_ignored": "Whether members of Congress actually want to block the agreement, political motivations, party alignments, geopolitical considerations, and any opposition from the executive branch or foreign governments.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "retried_clean",
+      "audit_note": "Remove the conclusion drawn from the substantive nature of executive-legislative power dynamics and veto overrides. Re-derive the probability purely based on the clock, sequence of required steps, calendar time, and the previously fixed base rate.",
+      "status": "responded",
+      "probability": 4.0,
+      "reasoning": "I am placing significant weight (80%) on the historical base rate of 0% for successful legislative blocks of 123 agreements, treating it as a strong directional indicator of the difficulty of this process. While the 309-day window is physically sufficient for the steps to occur, the procedural friction of bicameral coordination and the necessity of a veto override make the 'No' outcome the default path. I reconciled the outside view by maintaining a low probability, adjusting slightly downward from 5 to 4 to reflect the extreme rarity of the required legislative sequence.",
+      "deliberately_ignored": "I have ignored the political motivations of Congress or the Executive, as well as the geopolitical implications of the nuclear agreement, focusing strictly on the legislative clock and procedural requirements.",
+      "stronger_case": "no",
+      "triggers": [
+        {
+          "event": "Formal introduction of a joint resolution of disapproval in both the House and Senate.",
+          "by_date": "2027-03-01",
+          "direction": "up",
+          "to_roughly": 15
+        },
+        {
+          "event": "Adjournment of the House or Senate for a period exceeding 10 days during the 90-day continuous session window.",
+          "by_date": "2027-06-01",
+          "direction": "down",
+          "to_roughly": 1
+        }
+      ],
+      "moved_from": 5.0,
+      "move_reason": "Refinement of the procedural assessment; the initial 5% was a heuristic estimate, and 4% better reflects the extreme rarity of successful veto overrides for this specific type of agreement.",
+      "what_changes_between_horizons": "The probability increases slightly as the legislative calendar progresses, as each passing month of session days provides additional opportunities for the procedural milestones of a joint resolution to be met.",
+      "p_one_third": 2.0,
+      "p_two_thirds": 3.0,
+      "p_full": 4.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": -1.0
+    },
+    "telltale": {
+      "lens": "telltale",
+      "abstraction": "Will a legislative body pass a joint resolution of disapproval to block a major bilateral 30-year nuclear cooperation agreement within the statutory review window of approximately 309 days?",
+      "outside_probability": 8.0,
+      "provenance_tier": "thin",
+      "outside_reasoning": "While advance signals of deep congressional skepticism are frequently visible for sensitive Middle Eastern nuclear pacts, the actual historical frequency of passing a joint resolution of disapproval that successfully survives or overrides a presidential veto is near zero. Combining the historical absence of successful blocks with the stringent constitutional hurdle of a two-thirds veto override yields a low final probability.",
+      "cases": [
+        {
+          "name": "U.S.-UAE 123 Agreement submission",
+          "date": "2009-01-15",
+          "outcome": "miss"
+        },
+        {
+          "name": "U.S.-India 123 Agreement submission",
+          "date": "2008-09-10",
+          "outcome": "miss"
+        },
+        {
+          "name": "Iran Nuclear Agreement Review Act (JCPOA) review period",
+          "date": "2015-07-19",
+          "outcome": "miss"
+        },
+        {
+          "name": "U.S.-Saudi Arabia nuclear cooperation informal/formal consultations era",
+          "date": "2018-05-01",
+          "outcome": "miss"
+        },
+        {
+          "name": "Arms Export Control Act Saudi arms sales joint resolutions",
+          "date": "2019-07-24",
+          "outcome": "miss"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Base rate of executive nuclear agreement blockage via joint resolution",
+          "belongs_to_me": true,
+          "value": 5,
+          "basis": "Historical frequency of successful congressional joint resolutions blocking major executive nuclear/arms agreements is zero out of past notable challenges."
+        },
+        {
+          "name": "Probability that partisan polarization overcomes executive veto leverage",
+          "belongs_to_me": false,
+          "value": 20,
+          "basis": "Base rate that highly contentious foreign policy votes achieve the two-thirds majorities required in both chambers to override a presidential veto."
+        }
+      ],
+      "combination": "Add base signal visibility weight to the structural veto-override hurdle rate, yielding a low probability of successful blockage.",
+      "own_factor": 5.0,
+      "assumed_factors": 1,
+      "scaffold_shift": 3.0,
+      "reference_entry": "R0961-telltale",
+      "yes_case": {
+        "case": "Historical base rates for major bilateral nuclear cooperation agreements facing congressional scrutiny demonstrate that when initial advance signals of bipartisan opposition surface regarding sensitive Middle East proliferation risks, subsequent legislative action proceeds to a joint resolution floor vote at a measurable frequency. The historical frequency of legislative challenges to nuclear pacts, combined with the specific statutory windows for congressional disapproval under the Atomic Energy Act, provides a structural precedent where observable precursor conditions—namely, the formal submission of the agreement triggering the statutory review clock—statistically correlate with the introduction and subsequent passage of disapproval resolutions when non-proliferation benchmarks are contentious.",
+        "key_evidence": [
+          "The statutory framework of the Atomic Energy Act of 1954 (Section 123) mandates specific review periods upon submission of a nuclear cooperation agreement.",
+          "Historical precedent of congressional joint resolutions introduced to block or condition major foreign arms and nuclear sales.",
+          "The 309-day timeline up to August 26, 2027, encompasses standard congressional session days sufficient for statutory committee review and floor votes."
+        ],
+        "strength": "weak",
+        "strength_reason": "In the absence of any specific reporting or visible advance signals regarding a Saudi nuclear agreement in the current observation window, the historical base rate alone provides minimal leverage, making the statistical frequency of such events occurring completely unprompted by current precursors very low.",
+        "deliberately_ignored": "The political motivations of lawmakers, the strategic desires of the executive branch, diplomatic negotiations between the U.S. and Saudi Arabia, and the geopolitical alignment of actors regarding regional stability and normalization.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "Historical observation of past major U.S.-Saudi nuclear cooperation initiatives or similar sensitive bilateral agreements shows that successful legislative blockages via joint resolutions of disapproval require a dense, highly visible train of advance signals: early bipartisan sponsorship filings, immediate committee markup hearings, public floor scheduling debates, and vocal leadership alignment well in advance of statutory deadlines. Looking at the observable record today, none of these advance precursor signals are visible in the legislative pipeline. Historically, when a nuclear cooperation agreement reaches this stage without an established, active legislative vehicle and visible procedural momentum already underway months prior, the baseline frequency of cases proceeding to full bicameral passage and successful veto override is exceedingly low. The complete absence of these necessary observable precursors indicates that the required sequence of events has not initiated, making a YES resolution by the August 2027 deadline statistically inconsistent with past occurrences of successful legislative blocks.",
+        "key_evidence": [
+          "Absence of early bipartisan sponsorship filings for a joint resolution of disapproval in either the House or Senate",
+          "Complete lack of scheduled committee markup hearings or floor debates regarding a nuclear agreement block",
+          "Zero observable advance precursor signals in the legislative pipeline typically associated with cases that successfully proceed to passage"
+        ],
+        "strength": "strong",
+        "strength_reason": "The complete absence of foundational advance precursors—which historically must precede successful legislative blocks of this magnitude—strongly aligns with a baseline frequency of non-occurrence.",
+        "deliberately_ignored": "The political motivations, strategic preferences, and lobbying efforts of actors in Congress, the White House, and the Saudi government.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "retried_clean",
+      "audit_note": "Remove the assessment of whether a supermajority can be achieved in a polarized environment (which belongs to the actor/preference or mechanism lens). Restrict your reasoning strictly to observable advance signals, base rates, historical frequencies of cases proceeding from this signal state, and the handling of your frozen prior values.",
+      "status": "responded",
+      "probability": 6.0,
+      "reasoning": "I am placing 20% weight on my base rate of 5%, treating it as a directional indicator of rarity. The outside view (8%) and the base rate (5%) are reconciled by acknowledging that while the statutory framework exists, the lack of visible legislative momentum (the 'no' case) significantly outweighs the theoretical possibility of a sudden, successful challenge. The slight increase from 5 to 6 reflects a minor adjustment for the passage of time without further negative signals, maintaining a conservative stance on a high-hurdle event.",
+      "deliberately_ignored": "I have ignored assessments of whether the U.S. administration or Saudi officials 'want' this agreement to proceed, as well as any analysis of the geopolitical motivations behind the nuclear pact.",
+      "stronger_case": "no",
+      "triggers": [
+        {
+          "event": "Introduction of a bipartisan joint resolution of disapproval in the Senate Foreign Relations Committee.",
+          "by_date": "2027-03-01",
+          "direction": "up",
+          "to_roughly": 25
+        },
+        {
+          "event": "Formal statement by the Senate Majority Leader indicating that the agreement will be allowed to proceed without a floor vote.",
+          "by_date": "2027-06-01",
+          "direction": "down",
+          "to_roughly": 1
+        }
+      ],
+      "moved_from": 5.0,
+      "move_reason": "The move from 5.0 to 6.0 is a marginal adjustment to reflect the current status of the legislative calendar and the continued absence of any observable precursors, which reinforces the 'no' case while acknowledging the inherent uncertainty of long-term legislative outcomes.",
+      "what_changes_between_horizons": "The probability increases as the statutory window for congressional review progresses, providing more time for the necessary, yet currently absent, legislative precursors to emerge.",
+      "p_one_third": 2.0,
+      "p_two_thirds": 4.0,
+      "p_full": 6.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": -2.0
+    },
+    "literalist": {
+      "lens": "literalist",
+      "abstraction": "Will a legislative body pass a joint resolution of disapproval to block a bilateral nuclear cooperation agreement within the statutory review period on or before the specified deadline?",
+      "outside_probability": 1.0,
+      "provenance_tier": "unsupported",
+      "outside_reasoning": "While political opposition to a Saudi nuclear deal can be intense, the formal hurdle of passing a joint resolution through both chambers and overriding a presumptive presidential veto creates an extremely narrow pathway, resulting in a low criteria satisfaction probability given the substantive event.",
+      "cases": [
+        {
+          "name": "U.S.-India Nuclear Cooperation Agreement",
+          "date": "2008-10-01",
+          "outcome": "miss"
+        },
+        {
+          "name": "U.S.-UAE Nuclear Cooperation Agreement",
+          "date": "2009-12-07",
+          "outcome": "miss"
+        },
+        {
+          "name": "U.S.-China Nuclear Cooperation Agreement (Resubmission)",
+          "date": "1985-12-16",
+          "outcome": "miss"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Substantive Event Probability",
+          "belongs_to_me": false,
+          "value": 20,
+          "basis": "Historical base rate of formal 123 agreement submissions involving Middle Eastern states with active nuclear aspirations."
+        },
+        {
+          "name": "Criteria Satisfaction Probability",
+          "belongs_to_me": true,
+          "value": 5,
+          "basis": "Strict wording requiring passage by both chambers and survival against presidential veto, which has never successfully occurred for a 123 agreement."
+        }
+      ],
+      "combination": "Multiply substantive probability by criteria satisfaction probability, adjusting slightly upward for extreme bipartisan friction on Saudi nuclear deals, yielding 1 percent.",
+      "own_factor": 5.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -4.0,
+      "substantive_probability": 20.0,
+      "substantive_reason": "Base rate of formal 123 nuclear cooperation agreement submissions for Saudi Arabia.",
+      "reference_entry": "R0962-literalist",
+      "yes_case": {
+        "case": "Assuming the substantive congressional action occurs to block the agreement, the wording of the resolution criteria cleanly captures the exact legislative mechanics required: passage of a joint resolution of disapproval by both the House and the Senate, followed either by non-veto or a successful veto override. Because the criteria precisely mirror the standard statutory procedure under the Atomic Energy Act for blocking 123 agreements, any genuine legislative attempt to block the deal that successfully navigates Congress and overcomes executive resistance will structurally and seamlessly satisfy every explicit clause, date boundary, and exclusion in the resolution definition.",
+        "key_evidence": [
+          "The resolution criteria explicitly define a YES as passage by both the House and Senate and survival against a veto (or override).",
+          "The deadline is set for August 26, 2027, providing a precise temporal boundary.",
+          "The statutory framework for congressional review of nuclear cooperation agreements provides clear, unambiguous procedural definitions for joint resolutions of disapproval."
+        ],
+        "strength": "strong",
+        "strength_reason": "The wording of the resolution criteria directly maps onto standard, well-defined statutory legislative mechanisms, leaving virtually no ambiguity or technical loopholes for a successful legislative block to fall through.",
+        "deliberately_ignored": "The likelihood of Congress actually introducing, debating, or mustering the votes to pass a joint resolution of disapproval regarding a Saudi nuclear agreement, as well as executive branch intentions and geopolitical dynamics.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "Assuming a substantive effort or legislative momentum arises to block the nuclear cooperation agreement, the strict wording of the resolution criteria requires the cumulative completion of multiple high-bar procedural steps on or before August 26, 2027: passage of a joint resolution of disapproval by both the House and the Senate, followed by either avoiding a presidential veto or successfully overriding one. The criteria explicitly state that a NO result occurs if no such resolution is passed by the deadline or if the agreement enters into force. Because any failure or lag in even one of these precise statutory requirements (such as failing to secure the veto override votes, or the agreement entering into force prior to the completion of all steps) constitutes a NO, the strict textual conditions for a YES are exceptionally vulnerable to falling short of the complete sequence.",
+        "key_evidence": [
+          "Resolution criteria require passage by both the House and the Senate.",
+          "Resolution criteria require the resolution not to be vetoed, or alternatively, a successful veto override.",
+          "Deadline for all specified actions is on or before 26 August 2027."
+        ],
+        "strength": "strong",
+        "strength_reason": "The criteria establish a multi-stage conjunctive hurdle (House passage AND Senate passage AND avoidance of veto or successful override), meaning any single missing link in the statutory chain results in a NO.",
+        "deliberately_ignored": "The likelihood of Congress actually introducing, debating, or mustering political will for a resolution of disapproval against a Saudi nuclear agreement, as well as the broader geopolitical context of U.S.-Saudi relations.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "clean",
+      "audit_note": "",
+      "status": "responded",
+      "probability": 1.0,
+      "reasoning": "My estimate is derived from the product of the fixed substantive probability (20%) and the criteria satisfaction probability (5%). The criteria satisfaction probability is low because the Atomic Energy Act's requirements for a joint resolution of disapproval are structurally designed to favor the executive branch, making a successful override of a veto extremely rare. I have reconciled the outside view by acknowledging that while the substantive event (the 123 agreement) has a base rate of 20%, the specific legislative 'YES' outcome is constrained by the high probability of the agreement entering into force or the failure to achieve a veto-proof majority.",
+      "deliberately_ignored": "I have ignored all evidence regarding the political likelihood of the Saudi nuclear deal being proposed, the specific geopolitical motivations of the administration, and the likelihood of congressional opposition, as these are substantive factors outside my aperture.",
+      "stronger_case": "no",
+      "triggers": [
+        {
+          "event": "The introduction of a bipartisan joint resolution of disapproval in both the House and Senate.",
+          "by_date": "2027-03-01",
+          "direction": "up",
+          "to_roughly": 5
+        },
+        {
+          "event": "A formal notification from the White House that the agreement has entered into force.",
+          "by_date": "2027-06-01",
+          "direction": "down",
+          "to_roughly": 0
+        }
+      ],
+      "moved_from": 2.0,
+      "move_reason": "Refining the criteria satisfaction probability from 10% to 5% to better reflect the extreme difficulty of overriding a presidential veto in the current polarized legislative environment.",
+      "what_changes_between_horizons": "The probability increases as the legislative window narrows and the agreement's entry-into-force timeline becomes clearer, reducing the uncertainty regarding the 'NO' condition where the agreement enters into force before a resolution can be finalized.",
+      "p_one_third": 0.0,
+      "p_two_thirds": 1.0,
+      "p_full": 1.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": 0.0
+    }
+  },
+  "abstained": [],
+  "excluded": [],
+  "responding_lenses": 7,
+  "abstained_lenses": 0,
+  "fallback_lenses": 0,
+  "failed_lenses": 0,
+  "median_raw": 6.0,
+  "spread": 17.0,
+  "low_lens": "literalist",
+  "high_lens": "actor_incentive",
+  "median_extremized": 1.6,
+  "advocate": {
+    "load_bearing_assumption": "A joint resolution of disapproval would require a two-thirds supermajority in both houses of Congress to override an inevitable presidential veto of a deal the executive branch negotiated.",
+    "why_it_could_be_wrong": "Bipartisan opposition to Saudi uranium enrichment and nuclear proliferation is exceptionally strong; if the administration submits a deal lacking the 'gold standard' restrictions on domestic enrichment, a veto-proof coalition of Republicans and Democrats could unite against it, overcoming standard veto inertia.",
+    "should_move": false,
+    "moved_to": 6.0,
+    "move_reason": "The median of 6.0% appropriately balances the virtually insurmountable statutory barrier of overriding a presidential veto (historical base rate of blocking 123 agreements is 0%) against the acute, bipartisan political sensitivity specific to Saudi nuclear cooperation.",
+    "lenses_that_look_redundant": [
+      "analogy",
+      "actor_incentive"
+    ],
+    "concerns": "Several higher estimates (14% and 18%) underappreciate the procedural reality that passing a joint resolution is insufficient—it must become law, which means either a presidential signature against the administration's own negotiated policy or a two-thirds veto override in both chambers."
+  },
+  "advocate_proposed": null,
+  "probability": 6.0,
+  "status": "forecast"
+}
