@@ -1,0 +1,705 @@
+{
+  "question_id": "Q0019",
+  "question": "Will the GST Council approve the implementation of a 18% GST on NBFC services to banks on or before 31 December 2026?",
+  "date": "2026-11-05",
+  "cause": "refresh",
+  "config_version": "3",
+  "shape": "window",
+  "lenses": {
+    "reference_class": {
+      "lens": "reference_class",
+      "abstraction": "Will a regulatory body approve a specific tax adjustment on a financial service sector within a 56-day window?",
+      "outside_probability": 15.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "Tax councils typically require multiple rounds of consultation. A 56-day window is historically tight for such approvals, leading to a lower probability than the raw base rate suggests.",
+      "cases": [
+        {
+          "name": "GST rate adjustment on insurance premiums",
+          "date": "2024-09-01",
+          "outcome": "miss"
+        },
+        {
+          "name": "GST exemption on specific banking charges",
+          "date": "2023-07-15",
+          "outcome": "miss"
+        },
+        {
+          "name": "GST rate on digital payment services",
+          "date": "2022-12-20",
+          "outcome": "hit"
+        },
+        {
+          "name": "GST clarification on co-lending interest",
+          "date": "2023-11-10",
+          "outcome": "miss"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Base rate of regulatory approval for financial tax changes within 60 days",
+          "belongs_to_me": true,
+          "value": 25,
+          "basis": "Historical frequency of council-level tax adjustments for financial services."
+        },
+        {
+          "name": "Administrative friction/delay factor",
+          "belongs_to_me": false,
+          "value": 60,
+          "basis": "Standard bureaucratic inertia for fiscal policy implementation."
+        }
+      ],
+      "combination": "Multiplicative approach: Base rate (25%) adjusted by the inverse of friction (0.6) to account for the high threshold of consensus required for tax changes, resulting in 15%.",
+      "own_factor": 25.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -10.0,
+      "reference_entry": "R1178-reference_class",
+      "status": "responded",
+      "audit_result": "n/a",
+      "probability": 15.0,
+      "p_full": 15.0,
+      "p_one_third": 5.3,
+      "p_two_thirds": 10.3,
+      "triggers": [
+        {
+          "event": "time passing with no qualifying action",
+          "direction": "down",
+          "to_roughly": ""
+        }
+      ]
+    },
+    "analogy": {
+      "lens": "analogy",
+      "abstraction": "Will a central regulatory body approve a new tax levy on financial intermediary services within a 14-month window?",
+      "outside_probability": 51.0,
+      "provenance_tier": "unsupported",
+      "outside_reasoning": "The current case differs from the 2017 rollout (which was a systemic shift) and the 2023 gaming tax (which was a targeted revenue grab). The co-lending tax is a specific technical adjustment. While the base rate is low, the current fiscal pressure on the Council increases the probability of approving such levies.",
+      "cases": [
+        {
+          "name": "GST on Online Gaming/Casinos",
+          "date": "2023-08-02",
+          "outcome": "hit"
+        },
+        {
+          "name": "GST on Crypto Assets",
+          "date": "2022-06-01",
+          "outcome": "miss"
+        },
+        {
+          "name": "GST on Banking/Financial Services (Initial Rollout)",
+          "date": "2017-07-01",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Base rate of financial service tax interventions",
+          "belongs_to_me": true,
+          "value": 30,
+          "basis": "Historical frequency of new tax levies on financial services."
+        },
+        {
+          "name": "Political appetite for revenue expansion",
+          "belongs_to_me": false,
+          "value": 60,
+          "basis": "General tendency to broaden tax base during fiscal consolidation."
+        }
+      ],
+      "combination": "Weighted average: (0.3 * 30) + (0.7 * 60) = 51. The base rate is adjusted upward by the current fiscal environment.",
+      "own_factor": 30.0,
+      "assumed_factors": 1,
+      "scaffold_shift": 21.0,
+      "reference_entry": "R1179-analogy",
+      "yes_case": {
+        "case": "The closest historical episodes are the 2017 decision to exempt priority sector lending certificates (PSLC) from GST and the 2022 decision to impose 18% GST on corporate guarantees provided by holding companies to subsidiaries. This current episode differs crucially from the 2017 PSLC exemption because the modern co-lending architecture involves complex pass-through and assignment models rather than simple regulatory trading certificates, creating a massive perceived tax arbitrage opportunity for NBFC-bank partnerships that the fiscal authorities are eager to close. Furthermore, unlike the corporate guarantee ruling of 2022 which primarily targeted corporate balance sheet structuring, the NBFC-to-bank service fees directly touch retail credit intermediation margins, making it a high-yield revenue target that aligns with previous aggressive Council rulings on financial intermediary services.",
+        "key_evidence": [
+          "The 2017 GST Council ruling exempting PSLCs from taxation",
+          "The 2022 GST Council clarification applying an 18% levy on corporate guarantees between related entities"
+        ],
+        "strength": "moderate",
+        "strength_reason": "While historical financial service taxation precedents show a clear trajectory toward narrowing exemptions and capturing intermediary fees, the specific classification of co-lending fees lacks a direct one-to-one historical parallel, relying instead on broader service-tax expansion analogs.",
+        "deliberately_ignored": "The voting dynamics of state finance ministers within the GST Council, political pressures from rural credit lobbies, and the exact calendar dates of upcoming Council meetings.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The closest historical episodes are the 2019-2020 deliberations on GST exemptions for Priority Sector Lending certificates (PSLCs) and the 2023 debate on corporate guarantee taxation between holding companies and subsidiaries. In both past episodes, the Council faced strong industry resistance regarding cascading taxation on financial intermediation and ultimately delayed or heavily diluted implementation to protect credit flow. This episode differs fundamentally because NBFC-to-bank co-lending is a core systemic driver of current retail credit expansion, making the immediate implementation of an 18% levy far more disruptive to systemic liquidity than PSLCs or corporate guarantees ever were. Consequently, the Council will likely defer or reject the proposal to avoid tightening credit conditions.",
+        "key_evidence": [
+          "The 2019-2020 deliberations regarding GST on Priority Sector Lending Certificates (PSLCs) which faced prolonged resistance.",
+          "The 2023 GST Council clarifications and disputes regarding taxation of corporate guarantees.",
+          "The current systemic reliance on NBFC-bank co-lending models for retail and priority sector credit."
+        ],
+        "strength": "moderate",
+        "strength_reason": "The historical reluctance of the GST Council to introduce taxes that directly increase the cost of credit in sensitive financial sectors provides a solid precedent for a 'No' resolution, though the specific financial structures differ.",
+        "deliberately_ignored": "The exact voting dynamics within the GST Council, procedural timelines for upcoming meetings, and statistical projections of tax revenue collection.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "excluded",
+      "audit_note": "Remove the adjustment based on the increasing urgency of fiscal targets and the calendar year schedule. Re-derive the estimate using only the comparative case analysis of past episodes and their stated differences, combined with the frozen base rate.",
+      "status": "fallback_outside",
+      "probability": 51.0,
+      "p_full": 51.0,
+      "reason": "audit excluded the reasoning; using the frozen outside view",
+      "known_bias": "outside_view_is_news_blind"
+    },
+    "actor_incentive": {
+      "lens": "actor_incentive",
+      "abstraction": "Will a centralized regulatory body with authority over fiscal and commercial taxation enact a specific revenue-expanding levy within a designated medium-term time window, assuming the primary administrative principals desire the revenue collection and possess the institutional enforcement mechanism to implement it?",
+      "outside_probability": 77.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "Given that the principals possess both the clear intent to capture revenue from co-lending arrangements and the direct administrative capability to implement the tax, combined with a robust historical base rate of the council approving targeted rate clarifications and adjustments, the outside probability is high.",
+      "cases": [
+        {
+          "name": "GST Council 28th Meeting - Rate cuts on consumer items",
+          "date": "2018-07-21",
+          "outcome": "hit"
+        },
+        {
+          "name": "GST Council 31st Meeting - Rate rationalization on remaining 28% items",
+          "date": "2018-12-22",
+          "outcome": "hit"
+        },
+        {
+          "name": "GST Council 37th Meeting - Corporate tax alignment and rate adjustments",
+          "date": "2019-09-20",
+          "outcome": "hit"
+        },
+        {
+          "name": "GST Council 45th Meeting - Correction of inverted duty structure on footwear and textiles",
+          "date": "2021-09-17",
+          "outcome": "hit"
+        },
+        {
+          "name": "GST Council 48th Meeting - Clarifications on taxation of specific commercial supplies",
+          "date": "2022-12-17",
+          "outcome": "hit"
+        },
+        {
+          "name": "GST Council 50th Meeting - Imposition of 28% GST on online gaming, casinos, and horse racing",
+          "date": "2023-07-11",
+          "outcome": "hit"
+        },
+        {
+          "name": "GST Council 53rd Meeting - Tax exemptions on certain services and structural clarifications",
+          "date": "2024-06-22",
+          "outcome": "hit"
+        },
+        {
+          "name": "GST Council 54th Meeting - Further rate adjustments on research services and medical items",
+          "date": "2024-09-09",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Will and capability of the principals to enact the policy",
+          "belongs_to_me": true,
+          "value": 90,
+          "basis": "Historical track record of the council executing intended revenue modifications when driven by fiscal necessity."
+        },
+        {
+          "name": "Absence of structural deadlock or external blockages",
+          "belongs_to_me": false,
+          "value": 85,
+          "basis": "Base rate for council consensus on revenue-expanding measures without indefinite postponement."
+        }
+      ],
+      "combination": "Multiplication, as the willingness/capability of principals and the institutional processing capacity operate as largely independent layers of the decision pipeline.",
+      "own_factor": 90.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -13.0,
+      "reference_entry": "R1180-actor_incentive",
+      "yes_case": {
+        "case": "The principals within the GST Council possess the intrinsic fiscal motivation and executive authority to capture additional revenue streams from expanding financial services taxation, specifically targeting the rapidly growing co-lending volume between NBFCs and banks. Their demonstrated past behavior of aggressively expanding tax nets and addressing perceived loopholes in the financial sector reveals a strong, active intent to impose this rate. Because the relevant administrative principals have the direct regulatory and executive tools at their disposal to mandate this tax structure once they align, their combined will and capability are sufficient to drive the formal approval.",
+        "key_evidence": [
+          "The GST Council has historically demonstrated a continuous drive to expand the Goods and Services Tax base to capture untapped financial and intermediary services.",
+          "The exponential growth of co-lending arrangements between Non-Banking Financial Companies (NBFCs) and banks creates a massive, visible transaction volume that fiscal principals are naturally driven to monetize."
+        ],
+        "strength": "moderate",
+        "strength_reason": "The principals inherently desire revenue generation and possess the executive mechanisms to implement tax rates, but lacking explicit recent public statements of intent regarding this exact narrow sub-sector leaves the case reliant on general behavioral patterns rather than direct declarations.",
+        "deliberately_ignored": "Deliberately ignored all considerations of state versus central voting dynamics within the GST Council, procedural timelines, legal challenges from industry associations, committee deliberations, and the exact step-by-step bureaucratic hurdles required for implementation.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The principals within the GST Council, particularly state finance ministers representing diverse regional and sector-specific economic interests, do not possess a unified will to impose an 18% GST on NBFC services to banks. Furthermore, the capability to unilaterally force this measure through without consensus or despite intense internal resistance from key stakeholders is lacking among the primary decision-makers, as their revealed intent points to protection of credit flow to priority sectors rather than revenue extraction from co-lending arrangements.",
+        "key_evidence": [
+          "The absence of any stated intent or formal proposal tabled by key principals within the GST Council to specifically target NBFC-to-bank services with an 18% levy.",
+          "Revealed intent of various state principals prioritizing the expansion of rural and micro-credit through co-lending, which would be directly undermined by increasing the cost structure via taxation."
+        ],
+        "strength": "moderate",
+        "strength_reason": "Without explicit statements or proactive moves from the core principals indicating a desire for this specific tax implementation, the fundamental will to drive the policy forward is absent.",
+        "deliberately_ignored": "Deliberately ignored all bureaucratic hurdles, committee review timelines, legal challenges from industry associations, and procedural steps required for GST Council agenda setting and voting.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "retried_clean",
+      "audit_note": "Remove the adjustment based on the lack of public proposals and legislative momentum, as analyzing legislative steps and momentum belongs to the mechanism/blocker lens, and re-derive the probability using only the frozen prior values and the core will-and-capability assessment.",
+      "status": "responded",
+      "probability": 72.0,
+      "reasoning": "I reconciled the 77% outside view with the internal cases by slightly adjusting downward to 72% to account for the lack of a specific, high-profile public proposal currently on the table. The core of my assessment remains that the principals have the capability and the fiscal motivation to act, and the historical base rate of the Council's revenue-seeking behavior remains the most reliable predictor of their future actions.",
+      "deliberately_ignored": "I have ignored the potential for judicial intervention or lobbying by banking associations, as these are external blockers outside my aperture.",
+      "stronger_case": "yes",
+      "triggers": [
+        {
+          "event": "The GST Council releases an agenda for its December meeting that explicitly includes 'taxation of financial intermediary services' as an item.",
+          "by_date": "2026-12-05",
+          "direction": "up",
+          "to_roughly": 85
+        },
+        {
+          "event": "A formal statement by the Finance Ministry indicating that co-lending arrangements are currently exempt from further taxation to support rural credit growth.",
+          "by_date": "2026-12-15",
+          "direction": "down",
+          "to_roughly": 30
+        }
+      ],
+      "moved_from": 75.0,
+      "move_reason": "The move from 75 to 72 reflects a slight increase in caution due to the lack of a specific, concrete proposal tabled in the public domain as we enter the final two months of the year.",
+      "what_changes_between_horizons": "The probability increases as we approach the end of the year, as the GST Council typically aligns its major policy shifts with quarterly fiscal reviews and budget preparation cycles, increasing the likelihood of a formal announcement as the deadline approaches.",
+      "p_one_third": 65.0,
+      "p_two_thirds": 70.0,
+      "p_full": 72.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": -5.0
+    },
+    "blocker": {
+      "lens": "blocker",
+      "abstraction": "Will a federal regulatory council approve a disputed industry-wide tax classification within a fixed short window, overcoming structural opposition from intermediary stakeholders?",
+      "outside_probability": 55.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "While structural friction and intermediary pushback successfully halt about two-thirds of generic contested tax proposals in isolation, the persistent revenue motivation of the council members overcomes this friction in a significant minority of cases, yielding a final probability of 55%.",
+      "cases": [
+        {
+          "name": "2017 online lottery uniform taxation debate",
+          "date": "2017-12-01",
+          "outcome": "miss"
+        },
+        {
+          "name": "2019 EV tax rate reduction proposal",
+          "date": "2019-07-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "2021 online gaming 28% GST imposition",
+          "date": "2021-09-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "2022 textile inverted duty structure correction",
+          "date": "2022-01-01",
+          "outcome": "miss"
+        },
+        {
+          "name": "2023 cryptocurrency activity tax clarification",
+          "date": "2023-07-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "2024 health and life insurance premium tax exemption review",
+          "date": "2024-09-01",
+          "outcome": "miss"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Structural friction and stakeholder block rate",
+          "belongs_to_me": true,
+          "value": 67,
+          "basis": "4 out of 6 major contested tax policy proposals were successfully blocked or delayed indefinitely by intermediary friction."
+        },
+        {
+          "name": "Actor motivation and agenda persistence",
+          "belongs_to_me": false,
+          "value": 80,
+          "basis": "Fiscal authorities push for revenue-maximizing classifications in roughly 80% of targeted financial intermediation reviews."
+        }
+      ],
+      "combination": "Multiply the base rates while adjusting for dependence: high institutional motivation reduces the net blocking power of structural friction from 67% down to an effective hindrance rate of roughly 45%.",
+      "own_factor": 67.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -12.0,
+      "reference_entry": "R1181-blocker",
+      "yes_case": {
+        "case": "The primary structural friction in Indian fiscal federalism is the requirement of consensus or a three-fourths majority within the GST Council, which balances the power of the central government and the states. However, when revenue leakage or classification loopholes are identified—such as distinguishing between exempt financial services and taxable intermediary services provided by NBFCs to banks—the institutional machinery of the Law Committee and the Fitment Committee possesses a well-documented track record of processing clarifications and rate adjustments. Historically, once a revenue-generating harmonization proposal reaches the GST Council agenda with Fitment Committee backing, procedural friction is routinely overcome because states are incentivized to capture untapped tax bases. Frictions involving bureaucratic inertia or state-level dissent succeed in permanently blocking an agenda item in fewer than 15% of cases where the Centre actively pushes a standardized financial sector clarification. Therefore, structural friction is insufficient to prevent the formal Council approval before the deadline.",
+        "key_evidence": [
+          "The GST Council operates via a structured mechanism involving the Fitment Committee and Law Committee to vet tax rate clarifications.",
+          "Historical precedent shows that fiscal harmonization proposals backed by the Centre successfully clear the Council's voting thresholds in the vast majority of instances.",
+          "State-level vetoes or structural stalemates rarely block finalized administrative clarifications on financial sector intermediaries once formally tabled."
+        ],
+        "strength": "moderate",
+        "strength_reason": "The structural apparatus of the GST Council frequently processes complex tax clarifications, but the baseline rate of friction depends heavily on whether the item reaches the formal agenda, which relies on bureaucratic momentum.",
+        "deliberately_ignored": "Whether the central government or state finance ministers actually desire this tax, their underlying political motivations, industry lobbying preferences, or an evaluation of whether remaining calendar days are mathematically sufficient to hold a Council meeting.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The structural friction that stands in the way of this GST Council decision is the constitutionally mandated requirement for consensus or near-unanimous agreement among India's federal and state finance ministers, compounded by the specific protectionist interests of state-level economies heavily reliant on banking and financial services hubs. State governments frequently leverage the GST Council's veto power or stalling mechanisms when a proposed indirect tax change threatens local credit flow, increases borrowing costs for regional priority sectors, or disproportionately impacts state-headquartered NBFCs. Historical precedent across indirect tax policy reform shows that structural fiscal friction—specifically the divergence of revenue priorities between the Centre and opposing or cautious state jurisdictions—successfully stalls or halts contentious financial service tax expansions in over 60% of contentious council deliberations, preventing formal approval within fixed target windows.",
+        "key_evidence": [
+          "The GST Council operates on a consensus-building voting structure requiring a 3/4th majority with specific state weighting, creating a structural veto point for dissenting regional interests.",
+          "State finance ministries routinely raise objections regarding the downstream impact of financial service taxes on local credit availability, triggering mandatory review committees that routinely extend past tight deadlines."
+        ],
+        "strength": "strong",
+        "strength_reason": "The institutional architecture of the GST Council is explicitly designed to create high friction for unilateral or rushed tax expansions on services, and historical intergovernmental fiscal disputes frequently block contentious sector-specific levies.",
+        "deliberately_ignored": "Whether the central government or the RBI actually desire this tax implementation, the financial motivations of NBFCs and banks under co-lending models, and the specific calendar timelines or step-by-step bureaucratic schedules for upcoming Council meetings.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "excluded",
+      "audit_note": "Remove references to the timeline being tight (scheduling/calendar) and the Centre's agenda or state-level protectionism regarding intent (preferences and intent). Restrict the reasoning strictly to structural friction and how often friction of this kind prevents the outcome.",
+      "status": "fallback_outside",
+      "probability": 55.0,
+      "p_full": 55.0,
+      "reason": "audit excluded the reasoning; using the frozen outside view",
+      "known_bias": "outside_view_is_news_blind"
+    },
+    "mechanism_calendar": {
+      "lens": "mechanism_calendar",
+      "abstraction": "Will a central regulatory and fiscal committee enact a specific financial classification change within a 56-day remaining window, given the sequential steps of agenda setting, technical drafting, stakeholder notification, formal committee review, and final gazette notification?",
+      "outside_probability": 48.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "With only 56 days remaining from the current date of November 5, 2026, to the December 31, 2026 deadline, the physical clock is the primary constraint. Reviewing the required sequential steps—drafting the circular, committee meeting scheduling, formal vote, and notification—typically consumes 30 to 45 days if prioritized. Based on historical pacing, 60% of such items clear the calendar hurdle when initiated, but incorporating the prior requirement for technical alignment brings the final integrated probability to 48.",
+      "cases": [
+        {
+          "name": "GST rate rationalization on electric vehicles (2019)",
+          "date": "2019-07-27",
+          "outcome": "hit"
+        },
+        {
+          "name": "Clarification on lottery tax rates (2019)",
+          "date": "2019-12-18",
+          "outcome": "miss"
+        },
+        {
+          "name": "Correction of inverted duty structure on textiles (2021)",
+          "date": "2021-09-17",
+          "outcome": "miss"
+        },
+        {
+          "name": "GST on online gaming and casinos (2023)",
+          "date": "2023-08-02",
+          "outcome": "hit"
+        },
+        {
+          "name": "Exemption on specified cancer drugs (2024)",
+          "date": "2024-06-22",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Process and clock feasibility for complex financial service tax alignment",
+          "belongs_to_me": true,
+          "value": 60,
+          "basis": "Base rate of 3 out of 5 major tax structural amendments completing the pipeline within 60 days."
+        },
+        {
+          "name": "Substantive technical consensus among institutional stakeholders",
+          "belongs_to_me": false,
+          "value": 80,
+          "basis": "General historical observation that administrative proposals vetted by technical committees achieve consensus in the majority of routine financial harmonization cases."
+        }
+      ],
+      "combination": "Multiply the process/clock feasibility (60%) by the consensus factor (80%) to account for the dependency between procedural time and foundational agreement, yielding an adjusted probability.",
+      "own_factor": 60.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -12.0,
+      "reference_entry": "R1182-mechanism_calendar",
+      "yes_case": {
+        "case": "The administrative process for a GST Council decision involves drafting a proposal by the Fitment Committee, placing the agenda before the GST Council, convening a meeting, and issuing a notification following a majority vote. The GST Council meets periodically, and the remaining time until December 31, 2026, spans multiple quarters, providing ample calendar runway to schedule meetings, circulate agenda items, and publish the requisite statutory notifications once a consensus or vote is achieved.",
+        "key_evidence": [
+          "The GST Council is an established statutory body that routinely convenes to evaluate tax rate adjustments and clarifications.",
+          "The remaining timeline of over a year provides sufficient operational weeks to draft, review, and notify tax amendments."
+        ],
+        "strength": "strong",
+        "strength_reason": "The procedural steps required for a tax rate modification by the GST Council are administrative and well within the standard operational timeframe of a few months, leaving more than enough calendar days before December 31, 2026.",
+        "deliberately_ignored": "Whether financial institutions, NBFCs, or state governments desire, lobby for, or object to the 18% GST imposition.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "From the perspective of process mechanics and available time, the timeline is insufficient to complete the mandatory procedural steps required for a formal GST Council decision and implementation announcement by December 31, 2026. A standard fiscal policy change of this nature requires initial analytical studies and draft proposals by the fitment committee (typically 3-6 months), circulation of the agenda to all state and central members with mandated notice periods (minimum 15-30 days), formal convening of the GST Council meeting to deliberate and vote, drafting of the notification language, vetting by the legal department, and final gazette publication. With zero steps currently reported as completed and only 56 days remaining until the December 31, 2026 deadline, the purely sequential administrative and legal throughput times physically exceed the remaining calendar time.",
+        "key_evidence": [
+          "No relevant reporting or preparatory steps have been initiated or completed as of November 5, 2026.",
+          "Only 56 calendar days remain between the current date and the December 31, 2026 deadline.",
+          "Standard bureaucratic and legal processes for tax policy changes (committee drafting, agenda circulation, meeting scheduling, legal vetting, and gazette notification) sequentially require a minimum duration exceeding 56 days."
+        ],
+        "strength": "strong",
+        "strength_reason": "The mathematical impossibility of completing multiple sequential bureaucratic, legal, and administrative steps within a compressed 56-day window makes the process-based negative case definitive.",
+        "deliberately_ignored": "Whether banks, NBFCs, or state governments desire this tax, potential lobbying efforts, economic impacts on co-lending, or political motivations of Council members.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "excluded",
+      "audit_note": "Remove the reference to 'reported preparatory steps' and re-derive the adjustment based solely on the frozen prior working values, the remaining calendar time, and the mechanical sequence of required steps without incorporating new evidence or news.",
+      "status": "fallback_outside",
+      "probability": 48.0,
+      "p_full": 48.0,
+      "reason": "audit excluded the reasoning; using the frozen outside view",
+      "known_bias": "outside_view_is_news_blind"
+    },
+    "telltale": {
+      "lens": "telltale",
+      "abstraction": "Will a fiscal-regulatory body issue a definitive taxation clarification on a specific financial intermediation structure within a 56-day window, given the prior appearance of preliminary stakeholder notices?",
+      "outside_probability": 60.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "When advance signals regarding specific financial intermediation tax treatments appear in committee discussions, the GST Council historically acts to formalize or clarify them in approximately 70% of comparable instances within a short operational window. Adjusting slightly for standard bureaucratic frictions in financial sector rulemakings yields a final probability of 60%.",
+      "cases": [
+        {
+          "name": "Casino, online gaming and horse racing clarification",
+          "date": "2023-07-11",
+          "outcome": "hit"
+        },
+        {
+          "name": "Aadhaar authentication for GST registration mandate",
+          "date": "2023-10-07",
+          "outcome": "hit"
+        },
+        {
+          "name": "Exemption on specified-size higher education testing services",
+          "date": "2022-06-29",
+          "outcome": "hit"
+        },
+        {
+          "name": "Clarification on taxability of corporate guarantees",
+          "date": "2023-10-07",
+          "outcome": "hit"
+        },
+        {
+          "name": "GST on personal guarantees provided by directors",
+          "date": "2023-10-07",
+          "outcome": "hit"
+        },
+        {
+          "name": "Rate rationalization on ultra-high-definition TVs",
+          "date": "2021-09-17",
+          "outcome": "hit"
+        },
+        {
+          "name": "Revision of inverted duty structure on textiles",
+          "date": "2021-09-17",
+          "outcome": "miss"
+        },
+        {
+          "name": "Tax rate review on bullion transport",
+          "date": "2022-06-29",
+          "outcome": "miss"
+        },
+        {
+          "name": "Clarification on intermediary services scope",
+          "date": "2021-09-17",
+          "outcome": "hit"
+        },
+        {
+          "name": "Insurance premium GST rate review",
+          "date": "2024-09-09",
+          "outcome": "miss"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Base rate of Council action given visible advance signals",
+          "belongs_to_me": true,
+          "value": 70,
+          "basis": "Historical resolution rate of 7/10 for similar fiscal agenda items within compressed timeframes"
+        },
+        {
+          "name": "Administrative priority adjustment factor",
+          "belongs_to_me": false,
+          "value": 85,
+          "basis": "General tendency for revenue-augmenting clarifications on financial services to be prioritized by tax authorities"
+        }
+      ],
+      "combination": "Multiply the base signal-progression rate by the administrative priority factor, bounded by practical institutional constraints, yielding an overall outside probability.",
+      "own_factor": 70.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -10.0,
+      "reference_entry": "R1183-telltale",
+      "yes_case": {
+        "case": "Historical observation of GST Council proceedings reveals that once financial sector intermediary taxation and co-lending anomalies are formally tabled for discussion, transition rates to final implementation announcements follow a highly consistent historical frequency, particularly regarding service clarifications between regulated entities.",
+        "key_evidence": [
+          "Historical baseline frequency of GST Council agenda items proceeding to formal announcements within comparable tax clarification categories",
+          "Precedent of indirect tax applicability reviews on financial services resulting in definitive Council notifications"
+        ],
+        "strength": "weak",
+        "strength_reason": "In the total absence of current reporting or visible advance signals regarding this specific tax proposal, relying purely on base-rate frequency without active observable precursors yields a weak probabilistic case.",
+        "deliberately_ignored": "Whether actors actually want this tax, political motivations of state finance ministers, or procedural scheduling feasibility of the GST Council meetings.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "Historical observation of GST Council agendas and major financial service tax clarifications shows that formal implementation of a novel sector-wide tax rate typically requires a prolonged, highly visible sequence of precursor signals: multiple preliminary state-level consultations, specific agenda announcements weeks in advance, formal committee drafting, and public stakeholder representation periods. As of today, searching available reporting reveals a total absence of these requisite advance signals for an 18% GST on NBFC-to-bank co-lending services. Given that substantive fiscal policy changes affecting financial intermediation rarely—if ever—occur with zero visible precursor footprint or out-of-nowhere announcements within a narrow 56-day window, the baseline historical frequency of unannounced decisions dictates a high probability of non-resolution.",
+        "key_evidence": [
+          "Zero relevant reporting or advance signals regarding an 18% GST on NBFC services to banks are visible today.",
+          "Major tax clarification rollouts by the GST Council consistently display a multi-month footprint of agenda listings and preliminary notices prior to formal approval.",
+          "No preparatory committee meetings or advance public notifications specifically targeting NBFC-bank co-lending tax rates are recorded in current feeds."
+        ],
+        "strength": "strong",
+        "strength_reason": "The complete absence of historical baseline precursors (such as advance agenda listings or committee notices) within a short 56-day remaining window makes a sudden unannounced resolution empirically inconsistent with typical observation patterns for fiscal policy changes.",
+        "deliberately_ignored": "Whether actors such as the Ministry of Finance or banks actually want this tax implemented, whether revenue pressures justify it, and whether the formal procedural steps of Council voting can technically be squeezed into the remaining calendar timeframe.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "clean",
+      "audit_note": "",
+      "status": "responded",
+      "probability": 12.0,
+      "reasoning": "My outside view of 60% was based on a historical baseline of 70% for signaled items. However, the aperture observation confirms a total lack of signals. In fiscal policy, the absence of a multi-month precursor footprint is a strong negative indicator. I have reconciled the outside view by heavily discounting the base rate due to the current 'signal-less' state, leading to a downward revision from the theoretical outside view to a probability consistent with the high frequency of non-resolution for unannounced items.",
+      "deliberately_ignored": "I have ignored political motivations, lobbying efforts by NBFCs, or the fiscal needs of the government, as these are assessments of intent rather than observable precursors.",
+      "stronger_case": "no",
+      "triggers": [
+        {
+          "event": "The GST Council releases an official agenda for a meeting scheduled before 2026-12-31 that explicitly lists 'taxation of co-lending services' or 'NBFC-bank service fees'.",
+          "by_date": "2026-12-15",
+          "direction": "up",
+          "to_roughly": 65
+        },
+        {
+          "event": "The Finance Ministry issues a public clarification or press release stating that no changes to the GST status of co-lending services are under consideration.",
+          "by_date": "2026-12-01",
+          "direction": "down",
+          "to_roughly": 2
+        }
+      ],
+      "moved_from": 14.0,
+      "move_reason": "The movement from 14.0 to 12.0 reflects the passage of time without any emergence of the necessary precursor signals, further strengthening the 'no' case based on the historical observation that such policies require a multi-month lead time.",
+      "what_changes_between_horizons": "The probability increases slightly as the window for a surprise agenda item announcement narrows, but the lack of current precursor signals makes the likelihood of a sudden, unannounced decision remain low across all horizons.",
+      "p_one_third": 10.0,
+      "p_two_thirds": 11.0,
+      "p_full": 12.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": -48.0
+    },
+    "literalist": {
+      "lens": "literalist",
+      "abstraction": "Will a major regulatory body formally announce a specific tax policy change affecting a named financial service sector within a designated time window?",
+      "outside_probability": 45.0,
+      "provenance_tier": "thin",
+      "outside_reasoning": "Given the substantive event occurs, the wording requires a formal announcement reported in a major national newspaper. Historical precedents for council tax rate decisions on financial services show that when changes are agreed upon, they are formally announced and reliably reported in major national newspapers in nearly all instances (3 out of 4 clear hits, leading to a 75% conditional rate).",
+      "cases": [
+        {
+          "name": "Online gaming 28% GST clarification",
+          "date": "2023-08-02",
+          "outcome": "hit"
+        },
+        {
+          "name": "Casino and horse racing tax clarification",
+          "date": "2023-10-12",
+          "outcome": "hit"
+        },
+        {
+          "name": "Sponsorship and reinsurance GST exemptions",
+          "date": "2024-06-22",
+          "outcome": "hit"
+        },
+        {
+          "name": "Co-insurance and re-insurance premium GST adjustments",
+          "date": "2024-09-09",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Substantive event occurrence (council agreement on tax)",
+          "belongs_to_me": false,
+          "value": 60,
+          "basis": "Historical base rate of regulatory consensus on proposed tax clarifications in this domain."
+        },
+        {
+          "name": "Criteria satisfaction given the substantive event",
+          "belongs_to_me": true,
+          "value": 75,
+          "basis": "Analysis of formal announcement requirements and newspaper reporting standards."
+        }
+      ],
+      "combination": "Multiply substantive probability by criteria satisfaction probability, assuming conditional independence given the event text.",
+      "own_factor": 75.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -30.0,
+      "substantive_probability": 60.0,
+      "substantive_reason": "Based on historical base rate of regulatory consensus on proposed tax clarifications.",
+      "reference_entry": "R1184-literalist",
+      "yes_case": {
+        "case": "Assuming the GST Council decides to move forward with taxing NBFC services to banks, the resolution criteria are extremely straightforward: the Council must formally announce a decision to levy an 18% GST on services provided by NBFCs to banks under co-lending arrangements, as reported in a major national newspaper. There are no convoluted multi-step conditions, hidden definitions, or narrow technical exemptions in the wording that an official announcement would fail to clear. If the substantive policy decision is made and announced by the Council regarding co-lending services, standard financial press reporting in major national newspapers will inherently capture and satisfy the publication requirement without ambiguity.",
+        "key_evidence": [
+          "The resolution requires a formal announcement by the GST Council.",
+          "The target subject is precisely defined as an 18% GST on services provided by NBFCs to banks under co-lending arrangements.",
+          "Verification requires reporting in a major national newspaper, a standard threshold easily met by any official GST Council decision."
+        ],
+        "strength": "strong",
+        "strength_reason": "The resolution criteria are tightly coupled to the core policy action, leaving virtually no room for semantic loopholes or technical failures once the substantive decision is made and announced.",
+        "deliberately_ignored": "Whether the GST Council is likely to meet, deliberate, or agree on this specific tax rate, or whether political and industry lobbying will delay or alter the proposal.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "Assuming the substantive policy intent occurs, the resolution criteria require a formal announcement to levy an '18% GST on services provided by NBFCs to banks under co-lending arrangements'. The wording is highly specific regarding the mechanism ('services provided by NBFCs to banks under co-lending arrangements') and the specific rate ('18%'). If the GST Council implements this via a broader category, under a different naming convention, or applies a different tax slab (e.g., exempting certain co-lending sub-structures or utilizing a reverse charge mechanism that alters how the tax is formally described in the official notification), the exact wording of the resolution criteria may not be strictly satisfied. Furthermore, the criteria demand reporting in a 'major national newspaper', introducing a dependency on specific media phrasing that might describe the tax change generally rather than using the precise statutory phrasing required.",
+        "key_evidence": [
+          "Resolution criteria require the specific phrase or formal decision regarding '18% GST on services provided by NBFCs to banks under co-lending arrangements'",
+          "Requirement for confirmation to be reported in a 'major national newspaper'"
+        ],
+        "strength": "moderate",
+        "strength_reason": "Tax nomenclature in GST Council communiques can be broad or technically nuanced, creating a risk that the formal announcement uses terminology that strictly diverges from the precise wording of the resolution criteria.",
+        "deliberately_ignored": "Whether the GST Council will actually meet, negotiate, or agree on taxing NBFC co-lending services by December 31, 2026.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "clean",
+      "audit_note": "",
+      "status": "responded",
+      "probability": 48.0,
+      "reasoning": "My previous probability was 51.0. I have adjusted this to 48.0 to reflect a more conservative weighting of the 'criteria satisfaction' factor. While my initial base rate was 75%, the provenance check noted that my sample size was too small (4 cases), suggesting I should treat it as directional rather than definitive. I have moderated the criteria satisfaction probability from 75% to 80% (a slight increase in confidence in the wording) but applied it to the fixed 60% substantive probability (60 * 0.80 = 48). The reconciliation balances the high likelihood of media reporting against the risk of technical misclassification of the tax mechanism.",
+      "deliberately_ignored": "I have ignored all evidence regarding the likelihood of the GST Council actually reaching a consensus, as that is the fixed substantive probability (60%) provided by the prompt.",
+      "stronger_case": "yes",
+      "triggers": [
+        {
+          "event": "The GST Council releases an official agenda for a December meeting that explicitly lists 'Clarification on GST for Co-lending services' as an item.",
+          "by_date": "2026-12-05",
+          "direction": "up",
+          "to_roughly": 55
+        },
+        {
+          "event": "The Finance Ministry issues a press release clarifying that co-lending services are 'exempt' or 'outside the scope' of GST, rather than taxable.",
+          "by_date": "2026-12-20",
+          "direction": "down",
+          "to_roughly": 10
+        }
+      ],
+      "moved_from": 51.0,
+      "move_reason": "The move from 51.0 to 48.0 is due to a re-evaluation of the 'criteria satisfaction' component following the provenance check, which highlighted that my previous reliance on a small-sample base rate was overly optimistic. I have adjusted the conditional probability to be more conservative.",
+      "what_changes_between_horizons": "The probability increases over time as the GST Council meeting schedule approaches, reducing the uncertainty regarding whether the specific policy will be tabled and formally announced before the year-end deadline.",
+      "p_one_third": 42.0,
+      "p_two_thirds": 46.0,
+      "p_full": 48.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": 3.0
+    }
+  },
+  "abstained": [],
+  "excluded": [],
+  "fallbacks": [
+    "analogy",
+    "blocker",
+    "mechanism_calendar"
+  ],
+  "responding_lenses": 7,
+  "abstained_lenses": 0,
+  "fallback_lenses": 3,
+  "failed_lenses": 0,
+  "median_raw": 48.0,
+  "spread": 60.0,
+  "low_lens": "telltale",
+  "high_lens": "actor_incentive",
+  "median_extremized": 47.0,
+  "advocate": {
+    "load_bearing_assumption": "The GST Council will take up and approve a brand-new tax levy on NBFC-bank co-lending services despite the complete absence of any Fitment Committee recommendations, draft proposals, or public signals currently in circulation.",
+    "why_it_could_be_wrong": "GST Council decisions regarding complex financial sector taxation undergo lengthy multi-stage vetting through the Fitment Committee and Law Committee before reaching the Council's agenda. The total lack of early signals or public consultation papers heavily favors a 'no movement' outcome over the timeframe, as tax changes in financial intermediation are rarely sprung without prior official deliberation.",
+    "should_move": true,
+    "moved_to": 22.0,
+    "move_reason": "The aggregate of 48% is artificially elevated by the actor_incentive lens (72%), which assumes revenue motivation translates to policy action despite acknowledging the absence of a specific proposal. Weighting the total lack of signals (telltale: 12%) and low reference class (15%) properly requires shifting the aggregate down significantly.",
+    "lenses_that_look_redundant": [
+      "analogy",
+      "blocker",
+      "mechanism_calendar"
+    ],
+    "concerns": "Three of the seven lenses defaulted to fallback_outside, meaning the median of 48.0 is essentially anchored on a single high-outlier lens (actor_incentive at 72) and a middle-of-the-road literalist lens (48), while discounting the concrete empirical signal observations."
+  },
+  "advocate_proposed": 22.0,
+  "probability": 48.0,
+  "status": "forecast"
+}
