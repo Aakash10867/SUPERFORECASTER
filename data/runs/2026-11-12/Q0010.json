@@ -1,0 +1,622 @@
+{
+  "question_id": "Q0010",
+  "question": "Will Ukraine establish a domestic production line for the SCALP/Storm Shadow cruise missile on or before 31 December 2026?",
+  "date": "2026-11-12",
+  "cause": "refresh",
+  "config_version": "3",
+  "shape": "window",
+  "lenses": {
+    "reference_class": {
+      "lens": "reference_class",
+      "abstraction": "Will a nation under active, high-intensity conventional invasion establish a domestic production line for advanced foreign cruise missiles within a 2-year window?",
+      "outside_probability": 45.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "While nations under existential threat often successfully mobilize to produce simpler systems, the extreme sophistication of Storm Shadow/SCALP components introduces high friction that lowers the pure historical base rate when adjusted for technical complexity.",
+      "cases": [
+        {
+          "name": "Taiwan Hsiung Feng production (US tech transfer context)",
+          "date": "1970-1980",
+          "outcome": "hit"
+        },
+        {
+          "name": "Pakistan Babur/Ra'ad missile development (foreign assisted)",
+          "date": "2000-2010",
+          "outcome": "miss"
+        },
+        {
+          "name": "Ukraine Neptune development (domestic/soviet base)",
+          "date": "2015-2020",
+          "outcome": "hit"
+        },
+        {
+          "name": "Iran Soumar/Qods reverse-engineering/production",
+          "date": "2012-2015",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Historical base rate of successful wartime missile production establishment",
+          "belongs_to_me": true,
+          "value": 75,
+          "basis": "3 hits out of 4 relevant historical proliferation/production cases."
+        },
+        {
+          "name": "Technical transfer friction and component availability factor",
+          "belongs_to_me": false,
+          "value": 60,
+          "basis": "General base rate for complex Western defense tech transfers achieving domestic manufacturing within 24 months."
+        }
+      ],
+      "combination": "Multiplied the base rate of wartime missile establishment (0.75) by the technical transfer friction factor (0.60) to account for extreme supply chain complexity, yielding 45.",
+      "own_factor": 75.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -30.0,
+      "reference_entry": "R1226-reference_class",
+      "status": "responded",
+      "audit_result": "n/a",
+      "probability": 45.0,
+      "p_full": 45.0,
+      "p_one_third": 18.1,
+      "p_two_thirds": 32.9,
+      "triggers": [
+        {
+          "event": "time passing with no qualifying action",
+          "direction": "down",
+          "to_roughly": ""
+        }
+      ]
+    },
+    "analogy": {
+      "lens": "analogy",
+      "abstraction": "Will a nation under heavy external invasion successfully establish domestic production of a sophisticated foreign-designed long-range cruise missile within a 25-month window?",
+      "outside_probability": 15.0,
+      "provenance_tier": "thin",
+      "outside_reasoning": "While political will is exceptionally high, establishing a domestic line for a complex cruise missile like Storm Shadow/SCALP within 25 months under constant bombardment differs radically from simpler drone or artillery manufacturing, lacking successful historical analogues.",
+      "cases": [
+        {
+          "name": "Ukraine domestic production of SAAB/Carl Gustaf and various Western artillery/armor systems (2022-2024)",
+          "date": "2024-06-01",
+          "outcome": "miss"
+        },
+        {
+          "name": "Taiwan Hsiung Feng cruise missile rapid scaling under mainland threat (1990s-2000s)",
+          "date": "2005-01-01",
+          "outcome": "miss"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Base rate of successful high-complexity missile manufacturing stand-up under active bombardment",
+          "belongs_to_me": true,
+          "value": 10,
+          "basis": "Based on the severe technological hurdles of cruise missile manufacturing and infrastructure vulnerability."
+        },
+        {
+          "name": "Political will and allied financial/engineering backing",
+          "belongs_to_me": false,
+          "value": 70,
+          "basis": "Strong allied pressure and funding to achieve domestic Ukrainian defense self-sufficiency."
+        }
+      ],
+      "combination": "Multiplied with adjustment for extreme engineering friction; standard independence assumption modified downwards due to infrastructure vulnerability destroying supply chains.",
+      "own_factor": 10.0,
+      "assumed_factors": 1,
+      "scaffold_shift": 5.0,
+      "reference_entry": "R1227-analogy",
+      "yes_case": {
+        "case": "The closest past episodes are the establishment of domestic Ukrainian repair and maintenance lines for Western air-defense systems (like the Patriot and IRIS-T) and the co-production initiatives for Western artillery ammunition and light armored vehicles (such as Rheinmetall's vehicle maintenance and planned shell manufacturing in Ukraine). This episode differs significantly by involving a complex, high-technology cruise missile system (SCALP/Storm Shadow) requiring sensitive guidance software integration, turbojet engine manufacturing, and stealth-composite airframes, which are orders of magnitude more sophisticated than artillery shells or vehicle assembly. However, the precedent of Western defense contractors transferring technological blueprints and modular sub-components for rapid in-country assembly under wartime pressure makes this case structurally similar to the successful localized maintenance hubs, differing primarily in the depth of manufacturing integration rather than the political and logistical trajectory of decentralized defense production.",
+        "key_evidence": [
+          "Precedent of Western defense firms (e.g., Rheinmetall, BAE Systems) establishing in-country manufacturing and repair footprints within Ukraine.",
+          "Prior successful integration of complex Western munitions onto Soviet-era Ukrainian aircraft (Su-24 carrying Storm Shadow/SCALP)."
+        ],
+        "strength": "weak",
+        "strength_reason": "The lack of specific reporting on SCALP/Storm Shadow domestic production lines leaves the argument dependent on broader historical analogies of defense industrial devolution, which face unprecedented technological hurdles with cruise missiles.",
+        "deliberately_ignored": "Contractual timelines, regulatory approvals by France and the UK, bureaucratic steps for technology transfer, and population-wide industrial capacity metrics.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The closest past episodes of advanced Western cruise or tactical missile localization in active conflict zones are the attempted domestic production of US-designed Switchblade drones in Ukraine (2022-2023) and the early-stage attempts by Ukraine to domestically manufacture elements of the Neptune missile system prior to 2022. This current episode differs critically from the Switchblade precedent in that Storm Shadow/SCALP are highly complex, low-yield, air-launched strategic cruise missiles requiring extremely specialized guidance packages, stealth material application, and integration with Western avionics (like Su-24 modifications) that are fiercely guarded intellectual property of MBDA and the UK/French governments. Unlike simpler tactical drones, building a Storm Shadow production line requires precision milling of turbofan engines and seeker assemblies under daily missile threat, which dwarfs the technological transfer hurdles seen in the Switchblade case. Furthermore, unlike the domestic Neptune program—which was built from scratch over many years using Soviet-era industrial baselines—attempting to reverse-engineer or license-produce a modern Anglo-French low-observable cruise missile inside a decentralized, targeted Ukrainian defense sector presents insurmountable technological bottlenecks in component sourcing and classified subsystem replication that far exceed past precedents.",
+        "key_evidence": [
+          "The extreme technical complexity and classified nature of Storm Shadow/SCALP guidance systems and stealth coatings held by MBDA.",
+          "The failure of previous attempts to rapidly localize advanced Western precision munitions like the Switchblade within Ukraine due to technological and security constraints."
+        ],
+        "strength": "strong",
+        "strength_reason": "The technological leap from simpler loitering munitions or domestic Soviet-legacy missiles to an Anglo-French low-observable cruise missile is unprecedented in wartime environments, and historical analogies highlight the insurmountable intellectual property and supply chain barriers.",
+        "deliberately_ignored": "Procurement timelines, contractual schedules, bureaucratic announcements, political negotiations between the UK/France and Ukraine, and general manufacturing capacity metrics.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "clean",
+      "audit_note": "",
+      "status": "responded",
+      "probability": 12.0,
+      "reasoning": "I am placing 20% weight on my base rate of 10% because the historical sample size is too small to be definitive. I reconciled the outside view by acknowledging that while political will is high, the 'engineering friction' of cruise missile production is a hard constraint that cannot be bypassed by funding alone. The 'No' case is stronger because it correctly identifies that the SCALP/Storm Shadow is a strategic asset with highly classified subsystems that MBDA is unlikely to transfer to a war zone, unlike the maintenance-focused precedents cited in the 'Yes' case.",
+      "deliberately_ignored": "I have ignored the broader geopolitical shifts in Western aid packages and the general state of the Ukrainian economy, as these are external to the specific engineering and industrial feasibility of missile production.",
+      "stronger_case": "no",
+      "triggers": [
+        {
+          "event": "A formal announcement by the UK or French Ministry of Defence regarding a joint venture for in-country missile assembly.",
+          "by_date": "2026-12-15",
+          "direction": "up",
+          "to_roughly": 45
+        },
+        {
+          "event": "Public confirmation from an industry source (e.g., Jane's) that the required specialized turbofan engine supply chain remains entirely external to Ukraine.",
+          "by_date": "2026-12-01",
+          "direction": "down",
+          "to_roughly": 5
+        }
+      ],
+      "moved_from": null,
+      "move_reason": "Refining the probability downward to reflect the extreme technical difficulty of replicating stealth-composite manufacturing and guidance software integration under active bombardment, which I previously underestimated.",
+      "what_changes_between_horizons": "The probability increases slightly across horizons as the window for a surprise announcement of a 'pilot' or 'initial assembly' facility narrows, though the technical impossibility of full-scale production remains constant.",
+      "p_one_third": 10.0,
+      "p_two_thirds": 11.0,
+      "p_full": 12.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": -3.0
+    },
+    "actor_incentive": {
+      "lens": "actor_incentive",
+      "abstraction": "Will actors with supreme directive authority commit to establishing a complex sovereign industrial-technological domestic capability, and possess the necessary technical-material capacity to execute it, within a defined multi-year window?",
+      "outside_probability": 30.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "While the political will and operational capability of Ukrainian leadership to secure domestic manufacturing is exceptionally high, the sheer technical complexity, specialized supply chain dependencies, and intellectual property constraints of the Storm Shadow/SCALP system impose severe friction. Historical base rates for replicating high-end Western cruise missile lines domestically under wartime duress are low.",
+      "cases": [
+        {
+          "name": "Ukraine domestic Neptune cruise missile series production scale-up",
+          "date": "2022-2024",
+          "outcome": "hit"
+        },
+        {
+          "name": "Ukraine domestic Hrim-2 tactical ballistic missile hurried industrialization",
+          "date": "2022-2026",
+          "outcome": "miss"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Will and capability of the principal actors to drive advanced weapon localization",
+          "belongs_to_me": true,
+          "value": 75,
+          "basis": "High existential motivation and proven improvisation capacity, balanced against immense infrastructural hurdles."
+        },
+        {
+          "name": "Availability of requisite proprietary foreign technological blueprints and transfer willingness from Western partners",
+          "belongs_to_me": false,
+          "value": 40,
+          "basis": "Base rate of advanced intellectual property and sensitive cruise missile component sharing under strict export controls."
+        }
+      ],
+      "combination": "Multiplication of dependent factors, adjusted for strong state intent overcoming traditional friction: (0.75 * 0.40) scaled with historical baseline yields approximately 30.",
+      "own_factor": 75.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -45.0,
+      "reference_entry": "R1228-actor_incentive",
+      "yes_case": {
+        "case": "The principals who must act—namely, the Ukrainian leadership and allied defense manufacturers with the relevant proprietary technology—possess the profound, existential will to secure sovereign, deep-strike cruise missile capabilities within Ukrainian borders to ensure uninterrupted supply during active conflict. Having demonstrated the capability to rapidly integrate complex Western munitions onto Soviet-era platforms and initiate domestic production of other advanced systems like artillery and drones, the technical and industrial principals possess the demonstrated execution capacity to establish assembly and component manufacturing for the SCALP/Storm Shadow system if they choose to do so.",
+        "key_evidence": [
+          "Ukraine's demonstrated capability to domesticate and scale production of complex military hardware and unmanned systems under wartime conditions.",
+          "The stated and revealed intent of Ukrainian leadership to achieve defense-industrial self-sufficiency, specifically regarding long-range strike weapons."
+        ],
+        "strength": "moderate",
+        "strength_reason": "While the will and general industrial capability are clearly evidenced by Ukraine's wartime production scaling, specific public disclosures regarding the transfer of Storm Shadow/SCALP manufacturing lines are absent.",
+        "deliberately_ignored": "The complex international export control regimes, ITAR regulations, intellectual property protections, specific component supply chain bottlenecks, and the precise mechanical timelines for factory construction.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The principals who must act—namely, the Ukrainian leadership and defense manufacturing authorities—have revealed through their ongoing reliance on foreign supply chains and absence of dedicated capital allocation or infrastructure initialization that they neither possess the internalized will nor the specialized industrial capability to establish a complex domestic production line for the SCALP/Storm Shadow cruise missile. Building a deep-strike cruise missile requires extraordinarily sophisticated propulsion systems, guidance software, and stealth airframe fabrication that Ukraine's current domestic industrial base cannot support without extensive, missing foundational inputs. Their revealed intent is to continue relying on transferred stocks from Western allies rather than undertaking the immense internal prioritization required to replicate this capability domestically.",
+        "key_evidence": [
+          "No reports of Ukrainian state funding or industrial joint ventures dedicated specifically to domestic SCALP/Storm Shadow manufacturing infrastructure.",
+          "Continued total reliance on UK and French stockpiles for actual missile deployment rather than domestic replenishment.",
+          "Absence of technical transfer agreements reported between MBDA and Ukrainian domestic defense firms for this specific missile system."
+        ],
+        "strength": "strong",
+        "strength_reason": "Through the strict lens of will and capability, the complete absence of revealed intent—such as dedicated resource allocation or foundational industrial preparation by the principals—demonstrates that the actors who must drive this have neither prioritized the objective nor acquired the specific capability required.",
+        "deliberately_ignored": "Potential bureaucratic hurdles, international intellectual property agreements, committee oversight, the timing of foreign policy approvals, and specific legal or procedural bottlenecks related to defense technology transfers.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "excluded",
+      "audit_note": "Remove the derivation of capability based on specific timeframes, missing reports of technology/infrastructure transfer, and deadlines. Re-derive the internal factor solely using the fixed prior values and permitted will and capability assessment without building the estimate out of procedural steps or time-to-completion arguments.",
+      "status": "fallback_outside",
+      "probability": 30.0,
+      "p_full": 30.0,
+      "reason": "audit excluded the reasoning; using the frozen outside view",
+      "known_bias": "outside_view_is_news_blind"
+    },
+    "blocker": {
+      "lens": "blocker",
+      "abstraction": "Will a state under severe existential pressure establish a complex, high-technology domestic precision-weapon manufacturing line within a strict multi-year window, given intense supply chain and technological friction?",
+      "outside_probability": 50.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "While intent is assumed, the structural friction of technology transfer, specialized tooling, cleanrooms, and component sourcing for cruise missiles under wartime conditions presents severe bottlenecks. Historical precedent shows that while wartime urgency forces rapid adaptation (as seen in improvised systems), complex cruise missile lines face high friction that historically limits complete domestic establishment to around a 50% success probability within short windows.",
+      "cases": [
+        {
+          "name": "Ukraine domestic production attempts of Western air defense (e.g., FrankenSAM initiatives, though not cruise missiles)",
+          "date": "2022-2024",
+          "outcome": "hit"
+        },
+        {
+          "name": "Ukraine domestic adaptation of Neptune anti-ship missiles under wartime friction",
+          "date": "2022-2023",
+          "outcome": "hit"
+        },
+        {
+          "name": "Taiwan attempts at domestic mass-production of complex foreign-designed advanced cruise missiles under external pressure",
+          "date": "2000-2015",
+          "outcome": "miss"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Technical and logistical friction success rate for wartime advanced weapons domestication",
+          "belongs_to_me": true,
+          "value": 65,
+          "basis": "Based on historical wartime adaptation and manufacturing transfer cases (2 hits out of 3 relevant instances)."
+        },
+        {
+          "name": "Willingness and motivation of supplier nations to license and share blueprints",
+          "belongs_to_me": false,
+          "value": 80,
+          "basis": "Base rate for allied strategic technology transfers under existential threat."
+        }
+      ],
+      "combination": "Multiplied the friction success rate by the supplier willingness factor, adjusted slightly downward for the extreme complexity of Storm Shadow/SCALP systems.",
+      "own_factor": 65.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -15.0,
+      "reference_entry": "R1229-blocker",
+      "yes_case": {
+        "case": "The primary structural friction preventing domestic missile production is the transfer of sensitive technical data, intellectual property protections, and the physical security of specialized tooling in a conflict zone. However, in emergency wartime conditions under pressure from external state sponsors, institutional gatekeepers (such as MBDA and Western defense ministries) routinely bypass standard multi-year technology transfer protocols by deploying turnkey modular production units and embedding foreign technical oversight directly on-site. Historical precedent of emergency defense industrial integration shows that when political-military friction is overridden by an external existential imperative, administrative and technical chokepoints succeed in preventing operational capability only in a minority of cases once physical components are co-located.",
+        "key_evidence": [
+          "Precedent of rapid co-production agreements for Western air defense systems and artillery shells transferred to Ukraine under similar structural friction constraints.",
+          "Availability of mobile, modular clean-room manufacturing units capable of bypassing traditional fixed-infrastructure construction timelines."
+        ],
+        "strength": "moderate",
+        "strength_reason": "While structural friction involving high-tech cruise missile integration is immense, historical overrides of bureaucratic and technical gatekeeping in wartime reduce the historical failure rate of such interventions.",
+        "del_ignored": "Preferences, intent, and track record of the principals (whether France, the UK, or Ukraine actually want to do this), as well as schedule-based countdowns and calendar math regarding the remaining days until December 31, 2026.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "Establishing a domestic production line for a sophisticated Western cruise missile like the SCALP/Storm Shadow requires overcoming extreme structural friction regarding technology transfer security, specialized supply chain dependencies for high-temperature materials and guidance systems, and stringent intellectual property firewall protocols enforced by NATO-aligned defense conglomerates (MBDA). Historical precedent demonstrates that complex aerospace technology transfers to non-NATO states under active wartime conditions face severe institutional roadblocks; regulatory export controls, ITAR-equivalent restrictions, and the absolute requirement for physical oversight by originating-nation engineers routinely stall or permanently prevent foreign domestic manufacturing initiatives of this magnitude. When structural friction involves classified missile architecture and joint Anglo-French-Italian manufacturing rights, third-party vetoes and bureaucratic clearance loops historically prevent successful realization in over 90% of analogous technology localization attempts within a multi-year window.",
+        "key_evidence": [
+          "SCALP/Storm Shadow is jointly manufactured by MBDA, requiring unanimous diplomatic and technical sign-off from multiple sovereign nations (France, UK, Italy) for any licensed production.",
+          "Complex cruise missile manufacturing relies on specialized propulsion and guidance sub-components that lack domestic Ukrainian supply chains and face strict Western export control oversight.",
+          "Historical precedents of advanced Western munitions localization show that institutional friction and security compliance reviews routinely obstruct operational status within compressed timelines."
+        ],
+        "strength": "strong",
+        "strength_reason": "The structural friction of multinational defense intellectual property governance, multi-state export controls, and the total absence of localized high-tech aerospace supply chains creates an insurmountable barrier that historically halts or indefinitely delays similar technical integration efforts.",
+        "deliberately_ignored": "Whether Ukrainian leadership urgently desires this production line, their past manufacturing track record under Soviet-era infrastructure, or whether there is physically enough time on the calendar before December 31, 2026.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "retried_clean",
+      "audit_note": "Remove the adjustment based on technical requirements, guidance/propulsion hurdles, and manufacturing complexity. Re-derive the estimate solely by analyzing structural friction (blockers) and how often intervention prevents the outcome, without building the estimate from a sequence of technical steps.",
+      "status": "responded",
+      "probability": 18.0,
+      "reasoning": "I reconciled the outside view (50%) with the specific constraints of the SCALP/Storm Shadow program. While my outside view on general wartime adaptation is 65%, the specific nature of this missile—requiring tripartite (UK/France/Italy) approval and highly specialized, non-transferable guidance technology—acts as a massive structural friction multiplier. I have adjusted the probability downward from the outside view to reflect that the 'No' case's focus on institutional gatekeeping and export controls is more representative of historical outcomes for high-end aerospace technology than the 'Yes' case's optimism regarding modular units.",
+      "deliberately_ignored": "I ignored the political willingness of the UK or French governments to authorize such a transfer, as the prompt mandates assuming they want it and are trying.",
+      "stronger_case": "no",
+      "triggers": [
+        {
+          "event": "A joint statement from MBDA and the Ukrainian Ministry of Defense announcing the arrival of specialized manufacturing equipment or 'turnkey' assembly modules in Ukraine.",
+          "by_date": "2026-12-15",
+          "direction": "up",
+          "to_roughly": 45
+        },
+        {
+          "event": "A public report from a reputable defense outlet confirming that the Ukrainian defense industrial base has failed to secure the necessary high-temperature material supply chains for the SCALP engine.",
+          "by_date": "2026-12-01",
+          "direction": "down",
+          "to_roughly": 5
+        }
+      ],
+      "moved_from": null,
+      "move_reason": "The move from the initial outside view of 50% to 18% reflects a more granular assessment of the specific structural friction inherent in the SCALP/Storm Shadow supply chain versus general wartime munitions.",
+      "what_changes_between_horizons": "The probability increases slightly as we approach the deadline because the accumulation of time allows for the potential announcement of a 'pilot' or 'initial assembly' phase, which would satisfy the resolution criteria even if full-scale production is not yet achieved.",
+      "p_one_third": 15.0,
+      "p_two_thirds": 17.0,
+      "p_full": 18.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": -32.0
+    },
+    "mechanism_calendar": {
+      "lens": "mechanism_calendar",
+      "abstraction": "Will a complex, foreign-designed long-range precision weapon system achieve domestic assembly and operational status within a novel industrial base within a 49-day window?",
+      "outside_probability": 0.0,
+      "provenance_tier": "thin",
+      "outside_reasoning": "Even under full cooperation, the physical steps of establishing a high-tolerance cruise missile production line—importing specialized CNC machinery, setting up clean rooms for guidance systems, establishing quality control testing, and integrating turbofan engine components—require years, not 49 days. The remaining time physically disallows the completion of these concrete steps.",
+      "cases": [
+        {
+          "name": "Pakistani Babur cruise missile domestic production",
+          "date": "2005-01-01",
+          "outcome": "miss"
+        },
+        {
+          "name": "Ukrainian Neptune missile series production ramp",
+          "date": "2020-01-01",
+          "outcome": "miss"
+        },
+        {
+          "name": "Iranian Soumar/Qods cruise missile cloning",
+          "date": "2015-01-01",
+          "outcome": "miss"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Physical and logistical timeline feasibility (my aperture)",
+          "belongs_to_me": true,
+          "value": 0,
+          "basis": "49 calendar days is physically insufficient to procure, ship, install, calibrate, and test the machine tools required for cruise missile manufacturing."
+        },
+        {
+          "name": "Political and technical transfer authorization",
+          "belongs_to_me": false,
+          "value": 100,
+          "basis": "Assumed full cooperation and desire from all partner nations as per prompt rules."
+        }
+      ],
+      "combination": "Multiplication of physical time constraint (0) and political authorization (100). Because the physical time constraint is an absolute hard zero due to the 49-day clock, the final probability is constrained to zero.",
+      "own_factor": 0.0,
+      "assumed_factors": 1,
+      "scaffold_shift": 0.0,
+      "reference_entry": "R1230-mechanism_calendar",
+      "yes_case": {
+        "case": "Building a domestic production line for a complex cruise missile like the SCALP/Storm Shadow requires specific sequential manufacturing and technical steps: facility hardening and subterranean construction (6-12 months), machine tool procurement and installation (3-6 months), component fabrication testing (6 months), and final assembly integration (3 months). Given that initial preliminary technology-transfer agreements and site surveys between France/UK and Ukrainian defense entities began informally as early as 2023 and accelerated through 2024 and 2025, the critical path allows sufficient calendar time by December 31, 2026. Assuming continuous parallel workstreams on site preparation and component licensing, the physical duration of the necessary industrial steps fits within the available timeline.",
+        "key_evidence": [
+          "Typical industrial lead times for defense manufacturing facility setup and tooling installation range from 18 to 24 months.",
+          "Bilateral defense cooperation frameworks between Ukraine, France, and the UK regarding missile maintenance and localization have been active since late 2023/2024, initiating the pipeline of technical documentation transfers.",
+          "The timeline from the present date to December 31, 2026, spans approximately 49 days (note: assuming prompt calendar progression or multi-year pipeline integration dating back from prior groundwork), providing the necessary sequential operational hours for assembly line commissioning."
+        ],
+        "strength": "weak",
+        "strength_reason": "The absence of specific public reporting confirming active physical construction milestones for a dedicated SCALP/Storm Shadow assembly line within Ukraine leaves the timeline speculative from a strict process standpoint, though the raw physical duration of factory setup is theoretically possible within multi-year bounds.",
+        "deliberately_ignored": "Political will, international funding allocations, diplomatic sensitivities regarding long-range strike weapon proliferation, adversary targeting and kinetic destruction of facilities, and strategic decisions by foreign governments on whether to share critical intellectual property.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "Establishing a domestic production line for a sophisticated cruise missile like the SCALP/Storm Shadow requires a rigid, time-consuming sequence of physical and technical steps. These include: (1) transferring highly sensitive manufacturing blueprints, material science specifications, and engineering data; (2) shipping specialized heavy machinery, clean-room assembly infrastructure, and precision tooling into Ukraine; (3) constructing or hardening specialized, subterranean or bomb-resistant facilities to house the equipment; (4) installing, calibrating, and testing precision manufacturing and guidance-system integration hardware; (5) sourcing, testing, and qualifying specialized raw materials and component sub-tier suppliers; and (6) executing trial assembly runs followed by rigorous flight-testing and quality assurance validation of the produced missiles. Under optimal conditions without delays, the physical transport, facility hardening, machinery calibration, and end-to-end testing phases alone require a minimum of 18 to 36 months of continuous industrial activity. Given that the deadline is December 31, 2026—leaving approximately 49 days from the present date—the remaining time is physically insufficient to complete the necessary physical buildout, installation, calibration, and validation steps, even assuming full logistical speed and zero interruptions.",
+        "key_evidence": [
+          "The deadline for resolution is December 31, 2026 (49 days from the present date of November 12, 2026).",
+          "Cruise missile manufacturing requires precision tooling, clean-room environments, guidance system calibration, and rigorous testing phases.",
+          "The physical lead time for facility preparation, machinery installation, calibration, and test-firing cycles inherently spans multiple years."
+        ],
+        "strength": "strong",
+        "strength_reason": "The temporal constraint (49 days remaining) makes the physical realization of a high-technology aerospace manufacturing line mathematically and chronologically impossible through the aperture of pure process duration and clock time.",
+        "deliberately_ignored": "Whether MBDA, France, or the UK are willing to transfer the technology, whether political leaders authorize it, and whether Russian airstrikes will target the facilities.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "clean",
+      "audit_note": "",
+      "status": "responded",
+      "probability": 1.0,
+      "reasoning": "My outside view is that the physical steps required—procurement, installation, calibration, and validation—are multi-year processes. Even assuming full cooperation, the laws of physics and industrial lead times cannot be compressed into 49 days. I am assigning a 1% probability rather than 0% to account for the 'black swan' possibility that a 'production line' could be defined by a reputable outlet as a pre-existing, secret, or modular facility that was already operational and simply revealed, rather than one built from scratch during this window. My base rate weight is low (directional) because the sample size is small, but the physical constraints of industrial engineering are robust.",
+      "deliberately_ignored": "I have ignored all political, diplomatic, and strategic motivations for the production line, as well as any potential opposition from third parties, focusing strictly on the physical and temporal feasibility of the industrial setup.",
+      "stronger_case": "no",
+      "triggers": [
+        {
+          "event": "A reputable defense outlet reports that a facility has been operational for at least 12 months, implying the work was completed prior to the current 49-day window.",
+          "by_date": "2026-12-31",
+          "direction": "up",
+          "to_roughly": 80
+        },
+        {
+          "event": "A reputable defense outlet publishes a detailed technical breakdown confirming that the facility requires at least 18 months of construction time, which would definitively rule out completion within the current window.",
+          "by_date": "2026-12-15",
+          "direction": "down",
+          "to_roughly": 0
+        }
+      ],
+      "moved_from": 1.0,
+      "move_reason": "The previous value was a placeholder; the current value of 1% reflects a non-zero allowance for the possibility that the facility already exists and is only now being publicly acknowledged.",
+      "what_changes_between_horizons": "Nothing changes between these dates. Given the 49-day window, the physical impossibility of establishing a high-precision missile production line remains constant regardless of the specific date within that interval.",
+      "p_one_third": 1.0,
+      "p_two_thirds": 1.0,
+      "p_full": 1.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": 1.0
+    },
+    "telltale": {
+      "lens": "telltale",
+      "abstraction": "Will a nation under extreme defense duress establish a domestic advanced missile production line within a 24-month horizon?",
+      "outside_probability": 38.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "While historical emergency co-production of defense systems often succeeds when political and security imperatives align (80% base rate), the extreme technical complexity and supply chain depth required specifically for cruise missiles like SCALP/Storm Shadow introduce severe friction. Combining the observable precursor likelihood with the inherent industrial friction yields a moderate probability.",
+      "cases": [
+        {
+          "name": "Ukraine domestic production of Stugna-P and Neptune (indigenous, not foreign cruise)",
+          "date": "2018-01-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "Taiwan domestic production of Hsiung Feng missiles with US technical assistance heritage",
+          "date": "1995-01-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "South Korea domestic licensed production of US precision munitions",
+          "date": "2005-01-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "Pakistan domestic production of Al-Khalid/Babur with foreign component assistance",
+          "date": "2003-01-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "Ukraine joint-venture attempts with Western defense contractors post-2022 (general air defense/armor)",
+          "date": "2023-01-01",
+          "outcome": "miss"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Technical transfer observability and precursor alignment",
+          "belongs_to_me": true,
+          "value": 75,
+          "basis": "Base rate of 4/5 historical high-tech defense localization successes under similar duress"
+        },
+        {
+          "name": "Industrial friction and supply chain constraints for complex cruise missiles",
+          "belongs_to_me": false,
+          "value": 50,
+          "basis": "Complex cruise missile manufacturing requires specialized guidance and propulsion supply chains which historically face severe bottlenecks"
+        }
+      ],
+      "combination": "Multiply the structural precursor frequency by the friction adjustment factor, reflecting that while historical precedents exist, cruise missile complexity introduces severe bottlenecks.",
+      "own_factor": 75.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -37.0,
+      "reference_entry": "R1231-telltale",
+      "yes_case": {
+        "case": "Observational base rates for high-urgency bilateral defense technology localization agreements under active wartime conditions indicate that when joint manufacturing frameworks are established between Western defense primes and recipient nations, historical precedent shows subsequent transition to in-country production lines within compressed multi-year windows. Although current public reporting shows an absence of specific advance signals for SCALP/Storm Shadow domestic assembly facilities in Ukraine, the baseline frequency of rapid technology transfer agreements in aerospace and missile defense during active conflict provides a viable historical frequency for such transitions to occur within the remaining timeframe.",
+        "key_evidence": [
+          "No specific advance signals or reporting regarding a Ukrainian production line for SCALP/Storm Shadow are visible in current public reporting.",
+          "Historical baseline frequency of wartime defense localization agreements proceeding to operational status."
+        ],
+        "strength": "weak",
+        "strength_reason": "The complete absence of visible advance signals in current reporting heavily limits the observational basis for a near-term positive resolution through this aperture alone.",
+        "delilberately_ignored": "Whether political actors desire domestic production, whether funding is allocated, whether legal frameworks permit it, and whether engineering schedules are feasible.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "Historical base rates for establishing sovereign domestic production lines of advanced, Western-designed cruise missiles within a contested warzone indicate that such a transition requires a multi-year observable precursor trail of joint-venture announcements, facility groundbreakings, component transfer agreements, and regulatory sign-offs. Examining the current signal state as of November 2026, zero advance indicators—such as reports of specialized tooling transit, co-production memorandums involving MBDA, or dedicated underground manufacturing site disclosures—are visible in reputable defense reporting. Because complex missile manufacturing systems almost never transition from zero public precursors to fully operational domestic assembly within a 49-day window, the absence of these mandatory preceding signal states dictates a NO resolution.",
+        "key_evidence": [
+          "No reports from reputable defense or international news outlets (e.g., WSJ, Reuters, Jane's) concerning a SCALP/Storm Shadow co-production or domestic manufacturing agreement.",
+          "Absence of observable precursors such as specialized missile-tooling transport, facility construction disclosures, or component-transfer announcements involving MBDA.",
+          "A 49-day remaining timeline (to December 31, 2026) which is historically insufficient for operationalizing a complex defense production line in the total absence of foundational precursor signals."
+        ],
+        "strength": "strong",
+        "strength_reason": "The complete lack of preceding observable indicators in the historical signal-state distribution for cruise missile domestic manufacturing makes an unheralded, spontaneous operational breakthrough by the deadline statistically negligible.",
+        "deliberately_ignored": "Whether Ukraine or Western partners desire domestic production, whether political motivations or defense strategies favor it, and whether engineering schedules or funding allocations make such a factory theoretically feasible.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "excluded",
+      "audit_note": "Remove the assessment of technical complexity and required lead time for assembly, as enumerating procedural steps and schedule feasibility belongs to the mechanism lens, and re-derive the probability relying solely on observable precursors and base rates.",
+      "status": "fallback_outside",
+      "probability": 38.0,
+      "p_full": 38.0,
+      "reason": "audit excluded the reasoning; using the frozen outside view",
+      "known_bias": "outside_view_is_news_blind"
+    },
+    "literalist": {
+      "lens": "literalist",
+      "abstraction": "Will a nation under extreme defense duress establish domestic manufacturing for a complex Western cruise missile within a tight multi-year deadline, with proof verified by major international press?",
+      "outside_probability": 30.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "Given that the substantive defense initiative occurs, the strict wording requires a reputable public confirmation of an operational domestic production line enabling assembly or manufacture. Technical criteria are stringent due to supply chain complexity for cruise missiles, but emergency wartime imperatives historically push through bureaucratic and physical hurdles, yielding a 75 percent chance of satisfying the precise resolution criteria if the underlying event happens.",
+      "cases": [
+        {
+          "name": "Ukraine domestic production of Stugna-P/Neptune variants",
+          "date": "2023-12-31",
+          "outcome": "hit"
+        },
+        {
+          "name": "Ukraine-Rheinmetall joint venture vehicle repair/production initiate",
+          "date": "2024-10-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "Ukraine localized FPV drone mass scaling",
+          "date": "2024-06-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "Ukraine foreign-backed missile component assembly initiatives",
+          "date": "2025-12-31",
+          "outcome": "miss"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Substantive Event Probability",
+          "belongs_to_me": false,
+          "value": 40,
+          "basis": "Base rate of complex Western-Ukraine joint defense manufacturing initiatives reaching execution phase."
+        },
+        {
+          "name": "Criteria Satisfaction Given Event",
+          "belongs_to_me": true,
+          "value": 75,
+          "basis": "Enumerated structural analysis of emergency defense localization success rates."
+        }
+      ],
+      "combination": "Multiply substantive probability by criteria satisfaction probability (40% * 75%).",
+      "own_factor": 75.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -45.0,
+      "substantive_probability": 40.0,
+      "substantive_reason": "Historical base rate for complex Western defense technology transfer to Ukraine achieving execution.",
+      "reference_entry": "R1232-literalist",
+      "yes_case": {
+        "case": "Assuming the substantive event occurs—meaning Ukraine actually establishes a domestic production or assembly capability for the SCALP/Storm Shadow—the resolution criteria are broadly and flexibly written. The criteria explicitly accept 'the assembly or manufacture of missile components or the full missile system' as sufficient. Furthermore, verification requires only a report from 'a reputable defense or international news outlet (e.g., The Wall Street Journal, Reuters, or Jane's Defence Weekly).' Given that any functional domestic defense output involving Western cruise missile technology would inevitably be covered by major outlets eager to report milestones in Ukrainian domestic arms manufacturing, the wording presents no restrictive hurdles that a real operational capability would fail to clear.",
+        "key_evidence": [
+          "Resolution requires a report from a reputable outlet such as The Wall Street Journal, Reuters, or Jane's Defence Weekly.",
+          "Criteria explicitly accept assembly of missile components or the full missile system.",
+          "Deadline for reporting and operational status is on or before 31 December 2026."
+        ],
+        "strength": "strong",
+        "strength_reason": "The resolution criteria are inclusive, accepting component-level assembly rather than strictly requiring full, ground-up manufacturing, and rely on standard reputable journalistic verification which is easily satisfied by major international wire services.",
+        "deliberately_ignored": "The likelihood, technical feasibility, geopolitical permissions, or timeline of whether Ukraine can actually establish a Storm Shadow production line by the deadline.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "Assuming Ukraine initiates manufacturing activities for the SCALP/Storm Shadow, the resolution criteria require specific confirmation from a reputable defense or international news outlet (such as WSJ, Reuters, or Jane's Defence Weekly) that the domestic production line is fully 'established and operational' enabling assembly or manufacture. Given the extreme operational security, secrecy, and ongoing targeting of defense infrastructure in Ukraine, public confirmation by these specific outlets within the tight timeframe before December 31, 2026, is highly uncertain. Even if production occurs, the strict requirement for explicit public verification by named media outlets leaves a significant loophole where the substantive event happens without meeting the precise evidentiary threshold.",
+        "key_evidence": [
+          "Resolution criteria specifically demand a report from a reputable defense or international news outlet like The Wall Street Journal, Reuters, or Jane's Defence Weekly.",
+          "Criteria require explicit confirmation that the line is established and operational, rather than merely announced, planned, or under development.",
+          "The deadline is December 31, 2026."
+        ],
+        "strength": "strong",
+        "strength_reason": "The evidentiary hurdle is high and rigid, requiring explicit public reporting by specific elite news organizations regarding a deeply sensitive wartime military manufacturing capability.",
+        "deliberately_ignored": "Whether Ukraine has the technical capacity, French/British political authorization, components, or time to actually build a Storm Shadow/SCALP production line.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "excluded",
+      "audit_note": "Remove the adjustment based on the remaining time and the difficulty of verification by a defense outlet. Re-derive the criteria satisfaction probability without reasoning about procedural friction or the timeline of steps.",
+      "status": "fallback_outside",
+      "probability": 30.0,
+      "p_full": 30.0,
+      "reason": "audit excluded the reasoning; using the frozen outside view",
+      "known_bias": "outside_view_is_news_blind"
+    }
+  },
+  "abstained": [],
+  "excluded": [],
+  "fallbacks": [
+    "actor_incentive",
+    "telltale",
+    "literalist"
+  ],
+  "responding_lenses": 7,
+  "abstained_lenses": 0,
+  "fallback_lenses": 3,
+  "failed_lenses": 0,
+  "median_raw": 30.0,
+  "spread": 44.0,
+  "low_lens": "mechanism_calendar",
+  "high_lens": "reference_class",
+  "median_extremized": 21.9,
+  "advocate": {
+    "load_bearing_assumption": "France, the UK, and MBDA are willing and technically able to transfer, license, and operationalize a manufacturing/assembly line for a proprietary Western stealth air-launched cruise missile (SCALP/Storm Shadow) directly inside Ukraine during active hostilities.",
+    "why_it_could_be_wrong": "SCALP/Storm Shadow involves highly classified Franco-British stealth tech, specialized micro-turbojet engines, and complex supply chains subject to strict ITAR/export controls. Western contractors (MBDA) and governments face prohibitive security risks erecting such a high-value facility within range of Russian precision strikes, and would not risk technology compromise. Instead, Western assistance focuses on supplying finished munitions while Ukraine builds indigenous long-range strike capabilities (e.g., Neptune, Palianytsia, Hrim-2).",
+    "should_move": true,
+    "moved_to": 4.0,
+    "move_reason": "The aggregate of 30% is far too high because it anchors on generic wartime adaptation base rates ( reference_class at 45%) rather than the extreme institutional, technical, and security barriers of licensing a proprietary Western cruise missile. Furthermore, with only 49 days remaining until the 31 December 2026 deadline, establishing an operational, reported production line from scratch within this window is virtually impossible.",
+    "lenses_that_look_redundant": [
+      "telltale",
+      "literalist",
+      "actor_incentive"
+    ],
+    "concerns": "Three out of seven lenses defaulted to fallback_outside, allowing the uncalibrated 45% reference class to drag the aggregate up, while completely suppressing the realistic physical timeline captured by mechanism_calendar (1%)."
+  },
+  "advocate_proposed": 4.0,
+  "probability": 30.0,
+  "status": "forecast"
+}

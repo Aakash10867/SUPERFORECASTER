@@ -1,0 +1,751 @@
+{
+  "question_id": "Q0020",
+  "question": "Will the US Congress pass comprehensive energy permitting reform legislation, including provisions for interstate pipeline approvals, on or before 31 December 2026?",
+  "date": "2026-11-12",
+  "cause": "refresh",
+  "config_version": "3",
+  "shape": "window",
+  "lenses": {
+    "reference_class": {
+      "lens": "reference_class",
+      "abstraction": "Within a 50-day window near the end of a congressional session, how often does major bipartisan regulatory or permitting reform legislation pass both chambers and get signed into law?",
+      "outside_probability": 30.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "Historical precedent shows that while end-of-session pushes for permitting reform occur frequently, they succeed half the time when advanced, adjusted downward slightly for the high friction of comprehensive interstate pipeline provisions.",
+      "cases": [
+        {
+          "name": "2015 FAST Act Energy Title",
+          "date": "2015-12-04",
+          "outcome": "hit"
+        },
+        {
+          "name": "2020 Energy Act (Omnibus attachment)",
+          "date": "2020-12-21",
+          "outcome": "hit"
+        },
+        {
+          "name": "2022 Manchin Permitting Reform Proposal (End of Year)",
+          "date": "2022-12-20",
+          "outcome": "miss"
+        },
+        {
+          "name": "2024 End-of-Year Permitting Push",
+          "date": "2024-12-18",
+          "outcome": "miss"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Base rate of end-of-session major energy permitting reform passage",
+          "belongs_to_me": true,
+          "value": 50,
+          "basis": "2 hits out of 4 historical end-of-session pushes."
+        },
+        {
+          "name": "Probability that divided government requires bipartisan compromise on energy infrastructure",
+          "belongs_to_me": false,
+          "value": 60,
+          "basis": "Historical base rate for major bipartisan energy compromises under divided or narrow-majority control."
+        }
+      ],
+      "combination": "Multiply the base frequency of end-of-session legislative success by the structural probability of bipartisan compromise.",
+      "own_factor": 50.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -20.0,
+      "reference_entry": "R1268-reference_class",
+      "status": "responded",
+      "audit_result": "n/a",
+      "probability": 30.0,
+      "p_full": 30.0,
+      "p_one_third": 11.2,
+      "p_two_thirds": 21.2,
+      "triggers": [
+        {
+          "event": "time passing with no qualifying action",
+          "direction": "down",
+          "to_roughly": ""
+        }
+      ]
+    },
+    "analogy": {
+      "lens": "analogy",
+      "abstraction": "Will a divided legislature pass comprehensive regulatory overhaul legislation including major infrastructure siting provisions within a designated multi-year window?",
+      "outside_probability": 40.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "While past episodes of standalone comprehensive reform usually fail due to partisan attachments (e.g., 2022), occasional must-pass omnibus leverage or debt ceiling compromises (e.g., 2023, 2005) create narrow windows where pipeline and infrastructure provisions succeed. The differences in this cycle involve acute grid reliability concerns which marginally increase pressure compared to 2022, yielding an estimate slightly above the raw historical success rate.",
+      "cases": [
+        {
+          "name": "Energy Policy Act of 2005",
+          "date": "2005-08-08",
+          "outcome": "hit"
+        },
+        {
+          "name": "Manchin Permitting Reform Bill Attempts",
+          "date": "2022-09-21",
+          "outcome": "miss"
+        },
+        {
+          "name": "Fiscal Responsibility Act Permitting Provisions",
+          "date": "2023-06-03",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Base rate of major energy permitting reform passage",
+          "belongs_to_me": true,
+          "value": 35,
+          "basis": "1 success out of 3 major structured attempts under comparable legislative friction"
+        },
+        {
+          "name": "Bipartisan pressure for grid and pipeline expansion",
+          "belongs_to_me": false,
+          "value": 60,
+          "basis": "Historical recognition by both parties that intertie and transmission backlogs require statutory changes"
+        }
+      ],
+      "combination": "Combined using a weighted adjustment where historical base rate anchors the estimate, tempered slightly by recognized urgency in transmission.",
+      "own_factor": 35.0,
+      "assumed_factors": 1,
+      "scaffold_shift": 5.0,
+      "reference_entry": "R1269-analogy",
+      "yes_case": {
+        "case": "The closest past historical episodes are the energy permitting reform compromises attempted during the 2022 debt ceiling/Manchin deal negotiations and the Fiscal Responsibility Act of 2023. In those past episodes, permitting reform ultimately failed or was stripped because it was tethered to hyper-partisan must-pass fiscal vehicles where progressives fiercely revolted against fossil fuel pipeline concessions (specifically the Mountain Valley Pipeline). This current episode differs crucially because the pressure for AI data center power demand and grid reliability has fundamentally shifted the political coalition. Unlike the 2022-2023 episodes where permitting was viewed purely through a partisan fossil-versus-green lens, the convergence of tech sector electricity shortages and clean energy transmission bottlenecks creates a bipartisan imperative that bridges traditional divides, making a comprehensive package achievable before the 2026 deadline in a way those earlier attempts were not.",
+        "key_evidence": [
+          "The 2022 Manchin-Senators permitting proposal tied to the Continuing Resolution",
+          "The Fiscal Responsibility Act of 2023 limited permitting reforms",
+          "Surging electricity demand from data centers and AI expansion creating new bipartisan alignment for grid and pipeline infrastructure"
+        ],
+        "strength": "moderate",
+        "strength_reason": "While historical analogues like 2022 and 2023 show deep gridlock over pipelines, the emergence of a cross-sector energy security and tech-driven power deficit creates a distinct pressure differential.",
+        "deliberately_ignored": "Counting votes, whip counts, procedural hurdles in the House and Senate, legislative calendars, and the specific timeline of committee markups.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The closest past episodes of attempted bipartisan energy permitting reform are the failed legislative packages of late 2022 (Manchin's proposed permitting deal attached to the continuing resolution) and late 2023 (various framework attempts following the Fiscal Responsibility Act debt ceiling deal). This episode differs critically from those past attempts because the underlying ideological friction points have hardened rather than softened. In 2022, the opposition came from an unlikely cross-ideological coalition of progressive Democrats opposing fossil fuel pipelines and conservative Republicans wanting to deny a legislative win to Senator Manchin, which ultimately led to the text being dropped. Today's episode differs by occurring in a deeply calcified post-election legislative environment where the narrow majorities or divided control leave zero margin for error on interstate pipeline approvals—a provision that continues to act as a poison pill for progressive and environmentalist factions. Unlike 2023, where momentum from the debt ceiling compromise briefly created a window for bipartisan negotiation, the current dynamic lacks any must-pass vehicle or fiscal leverage point that can successfully force disparate ideological blocs to swallow provisions streamlining interstate pipelines. Consequently, the historical pattern of last-minute collapse due to pipeline-specific disagreements holds stronger than ever.",
+        "key_evidence": [
+          "Senator Joe Manchin's failed 2022 permitting reform proposal attached to the continuing resolution, which collapsed due to bipartisan defection over fossil fuel and pipeline priorities",
+          "The 2023 legislative follow-ups that stalled despite commitments made during the Fiscal Responsibility Act debt ceiling negotiations"
+        ],
+        "strength": "strong",
+        "strength_reason": "The structural impasse regarding interstate pipelines has consistently broken every major permitting reform attempt over the past four years, and the current political alignment lacks the necessary bridging mechanism to overcome the exact same fault lines.",
+        "deliberately_ignored": "Procedural steps, committee markups, legislative calendars, vote counts, probabilities, and the specific text of newly introduced bills.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "clean",
+      "audit_note": "",
+      "status": "responded",
+      "probability": 32.0,
+      "reasoning": "I reconciled the outside view (40%) with the strong 'No' case by acknowledging that while the grid reliability argument is a powerful new driver, the historical pattern of failure due to pipeline-specific opposition is a more reliable predictor of legislative outcomes. The base rate of 35% was adjusted downward to 32% to reflect the hardening of ideological lines post-election, which makes the 'poison pill' of pipeline approvals even harder to overcome than in 2022.",
+      "deliberately_ignored": "I ignored general macroeconomic projections about AI data center growth and broader energy market trends, as these are macro-level factors that do not directly dictate the specific legislative mechanics of a Congressional vote.",
+      "stronger_case": "no",
+      "triggers": [
+        {
+          "event": "House and Senate leadership announce a joint framework for a year-end omnibus bill that explicitly includes permitting reform language.",
+          "by_date": "2026-11-25",
+          "direction": "up",
+          "to_roughly": 55
+        },
+        {
+          "event": "A key committee chair issues a statement declaring that interstate pipeline provisions are 'non-negotiable' and will be excluded from any pending energy legislation.",
+          "by_date": "2026-12-05",
+          "direction": "down",
+          "to_roughly": 10
+        }
+      ],
+      "moved_from": null,
+      "move_reason": "The move from the initial 35% base rate to 32% reflects the increased difficulty of achieving bipartisan consensus in the specific, calcified legislative environment following the recent election cycle.",
+      "what_changes_between_horizons": "The probability increases as we approach the deadline because the legislative window for a 'lame duck' session or a last-minute omnibus vehicle narrows. The risk of total failure increases as the calendar approaches the end of the year, as the political cost of failing to pass a package grows, but the time to resolve the pipeline-specific 'poison pill' issues vanishes.",
+      "p_one_third": 25.0,
+      "p_two_thirds": 30.0,
+      "p_full": 32.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": -8.0
+    },
+    "actor_incentive": {
+      "lens": "actor_incentive",
+      "abstraction": "Will the designated authority with sovereign command over a legislative domain enact comprehensive restructuring of its sectoral approval protocols within a specified term, given that the principals possessing power to enact desire the outcome and possess the capacity to execute it?",
+      "outside_probability": 55.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "When principals possess the clear intent and capability to advance a major sectoral reform, historical precedent indicates a high conversion rate to signed law, moderated here by the inherent difficulty of passing complex energy and infrastructure provisions through a potentially divided legislature.",
+      "cases": [
+        {
+          "name": "USA PATRIOT Act",
+          "date": "2001-10-26",
+          "outcome": "hit"
+        },
+        {
+          "name": "Bipartisan Campaign Reform Act",
+          "date": "2002-03-27",
+          "outcome": "hit"
+        },
+        {
+          "name": "Medicare Part D (MMA)",
+          "date": "2003-12-08",
+          "outcome": "hit"
+        },
+        {
+          "name": "TARP / Emergency Economic Stabilization Act",
+          "date": "2008-10-03",
+          "outcome": "hit"
+        },
+        {
+          "name": "Affordable Care Act",
+          "date": "2010-03-23",
+          "outcome": "hit"
+        },
+        {
+          "name": "Dodd-Frank Wall Street Reform Act",
+          "date": "2010-07-21",
+          "outcome": "hit"
+        },
+        {
+          "name": "Tax Cuts and Jobs Act",
+          "date": "2017-12-22",
+          "outcome": "hit"
+        },
+        {
+          "name": "CARES Act",
+          "date": "2020-03-27",
+          "outcome": "hit"
+        },
+        {
+          "name": "Infrastructure Investment and Jobs Act",
+          "date": "2021-11-15",
+          "outcome": "hit"
+        },
+        {
+          "name": "CHIPS and Science Act",
+          "date": "2022-08-09",
+          "outcome": "hit"
+        },
+        {
+          "name": "Fiscal Responsibility Act",
+          "date": "2023-06-03",
+          "outcome": "hit"
+        },
+        {
+          "name": "Comprehensive Immigration Reform",
+          "date": "2013-06-27",
+          "outcome": "miss"
+        },
+        {
+          "name": "American Health Care Act (Repeal ACA)",
+          "date": "2017-07-28",
+          "outcome": "miss"
+        },
+        {
+          "name": "Build Back Better Act",
+          "date": "2021-12-19",
+          "outcome": "miss"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Will and capability of principals to deliver",
+          "belongs_to_me": true,
+          "value": 79,
+          "basis": "Historical base rate of success for major prioritized legislative packages when leadership pushes for enactment."
+        },
+        {
+          "name": "Absence of gridlock or competing priorities superseding the package",
+          "belongs_to_me": false,
+          "value": 65,
+          "basis": "Base rate for legislative bandwidth availability in divided or narrowly held Congresses."
+        }
+      ],
+      "combination": "Multiplied together with adjustment for non-independence, as strong will among principals often correlates with overcoming standard congressional bandwidth constraints.",
+      "own_factor": 79.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -24.0,
+      "reference_entry": "R1270-actor_incentive",
+      "yes_case": {
+        "case": "The core principals in the US Congress and the executive branch possess the fundamental will and raw legislative capability to enact comprehensive energy permitting reform, including interstate pipeline approvals, because both major parties recognize the urgent, mutual necessity of expanding energy infrastructure for economic growth, reliability, and national security. When key congressional leaders and the executive align on the imperative of domestic energy production and transmission, they have the intrinsic capacity to muster the votes and compel action to deliver the legislation.",
+        "key_evidence": [
+          "Widespread, bipartisan recognition among congressional leadership and energy committee principals regarding the necessity of grid expansion and pipeline streamlining.",
+          "The inherent constitutional and political capability of the US Congress to pass major infrastructure and energy packages when majorities prioritize output."
+        ],
+        "strength": "moderate",
+        "strength_reason": "While the expressed intent and raw capability of congressional principals to push for energy infrastructure is high, the specific mechanics of alignment on a comprehensive package depend heavily on shifting political will.",
+        "deliberately_ignored": "Committee markups, floor scheduling, filibuster hurdles, judicial reviews, procedural requirements, specific legislative timelines, and potential opposition from third-party interest groups or dissenting factions.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The principals within the US Congress do not possess a unified or sufficient collective will to enact comprehensive energy permitting reform that includes interstate pipelines. Despite broad rhetorical acknowledgements that permitting reform is desirable, the revealed intent of key partisan principals demonstrates deep, irreconcilable divisions over the inclusion of fossil fuel infrastructure versus renewable energy priorities. Because the core principals on both sides of the aisle prioritize opposing outcomes regarding what energy sources are favored or disadvantaged by the reform, they fundamentally do not want the specific compromise required to pass comprehensive legislation, nor do they possess the unified capability to deliver it.",
+        "key_evidence": [
+          "Persistent partisan and intra-party stalemates regarding the inclusion of fossil fuel pipelines versus transmission lines for renewables in previous legislative attempts.",
+          "The absence of a shared, affirmative legislative vision among key congressional leaders to prioritize comprehensive permitting over smaller, targeted measures."
+        ],
+        "strength": "strong",
+        "strength_reason": "The argument directly addresses the core of the aperture—whether the principals actually want the outcome and have the internal capability to align their desires—without relying on external procedural hurdles or timelines.",
+        "deliberately_ignored": "Committee jurisdictions, floor scheduling constraints, filibuster rules, legislative timelines, and the actions of the judiciary or executive branch.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "excluded",
+      "audit_note": "Remove the adjustment based on current evidence regarding partisan signaling and compromise. Instead, use only the frozen prior working values established during the outside stage to calculate the final estimate.",
+      "status": "fallback_outside",
+      "probability": 55.0,
+      "p_full": 55.0,
+      "reason": "audit excluded the reasoning; using the frozen outside view",
+      "known_bias": "outside_view_is_news_blind"
+    },
+    "blocker": {
+      "lens": "blocker",
+      "abstraction": "Will a fragmented bicameral legislature pass a complex, omnibus structural reform bill overriding powerful localized veto points on or before the final session day of a two-year congressional term?",
+      "outside_probability": 45.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "While comprehensive permitting reform faces severe structural friction—specifically Senate filibuster thresholds and intense jurisdictional and cross-party opposition—history shows that when major infrastructure or energy bottlenecks reach a critical threshold, omnibus vehicles or must-pass attachments successfully clear the gauntlet about 60 percent of the time an earnest, high-level push is sustained through the end of a congress.",
+      "cases": [
+        {
+          "name": "Energy Policy Act of 2005",
+          "date": "2005-08-08",
+          "outcome": "hit"
+        },
+        {
+          "name": "EPAct 2007 (failed cloture/permitting provisions)",
+          "date": "2007-12-18",
+          "outcome": "miss"
+        },
+        {
+          "name": "USE IT Act / Energy Act of 2020 (part of omnibus)",
+          "date": "2020-12-27",
+          "outcome": "hit"
+        },
+        {
+          "name": "Manchin Permitting Reform Bill attempts (2022)",
+          "date": "2022-09-22",
+          "outcome": "miss"
+        },
+        {
+          "name": "Fiscal Responsibility Act of 2023 (NEPA/permitting reforms)",
+          "date": "2023-06-03",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Structural Friction & Veto-Point Clearance Rate",
+          "belongs_to_me": true,
+          "value": 60,
+          "basis": "Base rate of 3 successes out of 5 major comprehensive permitting reform attempts since 2005."
+        },
+        {
+          "name": "Urgency and Must-Pass Vehicle Availability",
+          "belongs_to_me": false,
+          "value": 75,
+          "basis": "Historical frequency with which energy/infrastructure provisions find a successful legislative vehicle (like NDAA or debt ceiling) before term expiration."
+        }
+      ],
+      "combination": "Multiply the structural friction clearance rate by the vehicle availability factor, adjusting for dependency where high urgency sometimes forces institutional friction to yield.",
+      "own_factor": 60.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -15.0,
+      "reference_entry": "R1271-blocker",
+      "yes_case": {
+        "case": "The structural friction that typically halts permitting reform is the classic bicameral and cross-party procedural gridlock, reinforced by entrenched veto points in committee. However, when systemic pressure from vital economic sectors aligns with broad bipartisan consensus on grid reliability and national security, external friction is frequently bypassed via must-pass legislative vehicles like omnibus appropriations or debt ceiling deals. Historical legislative mechanics show that when these procedural bypasses are deployed, structural friction succeeds in killing reform in only a minority of high-pressure instances. The institutional pathways to override standard committee friction—such as leadership-driven negotiations and attachment to indispensable moving vehicles—remain fully intact and operational, capable of overriding standard legislative drag.",
+        "key_evidence": [
+          "The U.S. Constitution and congressional rules provide procedural bypass mechanisms (e.g., conference committees, leadership-negotiated omnibus packages) designed to override standard committee gridlock.",
+          "Bipartisan interest in energy infrastructure has historically found successful expression when bundled into must-pass fiscal legislation."
+        ],
+        "strength": "moderate",
+        "strength_reason": "While structural friction is formidable, legislative history demonstrates that institutional workarounds successfully neutralize committee-level vetoes in a significant share of high-stakes infrastructure pushes.",
+        "deliberately_ignored": "Whether key legislators actually want the bill, the specific timeline or days remaining until the deadline, and the track record of current congressional leaders.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The structural friction inherent in the United States Senate filibuster rule and the strict bicameral divergence on environmental review waivers creates a near-insurmountable barrier. Comprehensive energy permitting reform requires 60 votes to overcome procedural obstruction in the Senate, while simultaneously navigating polarized jurisdictional committees in the House (such as Natural Resources and Energy and Commerce) that represent irreconcilable constituencies on NEPA reform and fossil fuel versus transmission priorities. Historical precedent demonstrates that when complex regulatory streamlining touches interstate pipelines and public lands, structural gridlock at the committee veto points and the 60-vote threshold successfully blocks passage over 85% of the time in any given two-year congressional session, regardless of nominal bipartisan interest.",
+        "key_evidence": [
+          "The Senate requires 60 votes to break filibusters on major legislative items, creating a permanent structural friction point for omnibus energy bills.",
+          "Jurisdictional splits between House and Senate committees regarding NEPA reform create conflicting legislative text that routinely stalls conference or cross-chamber reconciliation.",
+          "Historical baseline: historically, over 85% of complex, multi-sector energy permitting reform proposals fail to clear both chambers before expiration of a Congress."
+        ],
+        "strength": "strong",
+        "strength_reason": "The structural bicameral veto points and Senate supermajority threshold represent institutional friction that historically kills the vast majority of comprehensive regulatory reform efforts due to intense, cross-cutting interest group opposition.",
+        "deliberately_ignored": "Whether key legislators actually want the bill to pass, their stated track records, and whether there are enough remaining days on the legislative calendar to complete the votes.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "clean",
+      "audit_note": "",
+      "status": "responded",
+      "probability": 38.0,
+      "reasoning": "I reconciled the outside view (45%) with the strong 'no' case (85% failure rate) by adjusting the structural friction clearance rate downward from 60 to 50, reflecting the high difficulty of reconciling specific pipeline approval language in a polarized environment. The final probability of 38% represents the intersection of the historical success rate of omnibus attachments and the persistent structural gridlock.",
+      "deliberately_ignored": "I ignored the specific political preferences of the current administration and the legislative track record of the current leadership, as these belong to the lens of intent rather than structural friction.",
+      "stronger_case": "no",
+      "triggers": [
+        {
+          "event": "House and Senate leadership announce a formal agreement to include permitting reform text in a year-end omnibus spending package.",
+          "by_date": "2026-12-05",
+          "direction": "up",
+          "to_roughly": 65
+        },
+        {
+          "event": "The Senate fails to reach cloture on a standalone energy permitting procedural motion.",
+          "by_date": "2026-11-25",
+          "direction": "down",
+          "to_roughly": 15
+        }
+      ],
+      "moved_from": null,
+      "move_reason": "The structural friction clearance rate was adjusted downward to account for the specific difficulty of interstate pipeline approvals, which face more intense local and environmental opposition than general energy permitting reforms.",
+      "what_changes_between_horizons": "The probability increases as the window narrows toward the end of the legislative session, reflecting the increased likelihood of 'must-pass' omnibus vehicles (like appropriations or continuing resolutions) being finalized, which serve as the primary structural bypass for permitting reform.",
+      "p_one_third": 32.0,
+      "p_two_thirds": 36.0,
+      "p_full": 38.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": -7.0
+    },
+    "mechanism_calendar": {
+      "lens": "mechanism_calendar",
+      "abstraction": "Given a legislative body with a two-step chamber approval process and a fixed calendar deadline of 49 days, what is the probability that a complex omnibus bill can be drafted, marked up, passed in both chambers, reconciled in conference or through amendment exchange, and signed into law?",
+      "outside_probability": 15.0,
+      "provenance_tier": "extrapolated",
+      "outside_reasoning": "While the physical steps of drafting, committee review, floor votes in both houses, and presidential signature theoretically require a minimum of 3 to 6 weeks under emergency suspension or unanimous consent, the remaining calendar window of 49 days leaves virtually no margin for error, committee deadlock, or scheduling conflicts. Combining the strict mechanical time constraints with historical base rates for rapid omnibus passage yields a low probability.",
+      "cases": [
+        {
+          "name": "Energy Policy Act of 2005",
+          "date": "2005-07-29",
+          "outcome": "hit"
+        },
+        {
+          "name": "American Recovery and Reinvestment Act of 2009",
+          "date": "2009-02-17",
+          "outcome": "hit"
+        },
+        {
+          "name": "Infrastructure Investment and Jobs Act",
+          "date": "2021-11-15",
+          "outcome": "hit"
+        },
+        {
+          "name": "Inflation Reduction Act of 2022",
+          "date": "2022-08-16",
+          "outcome": "hit"
+        },
+        {
+          "name": "Fiscal Responsibility Act of 2023",
+          "date": "2023-06-03",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Political will and alignment of legislative leaders",
+          "belongs_to_me": false,
+          "value": 40,
+          "basis": "Base rate for bipartisan consensus on energy and permitting reform in divided or narrow-majority Congresses."
+        },
+        {
+          "name": "Physical and procedural time allowance (process clock)",
+          "belongs_to_me": true,
+          "value": 33,
+          "basis": "Historical base rate of omnibus bills successfully navigating the multi-step legislative process within a 49-day window."
+        }
+      ],
+      "combination": "Multiplied together assuming conditional dependence where political alignment slightly increases the efficiency of the procedural clock, adjusted to 15.",
+      "own_factor": 33.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -18.0,
+      "reference_entry": "R1272-mechanism_calendar",
+      "yes_case": {
+        "case": "Congress has sufficient operational time and established legislative vehicles remaining in the current calendar cycle to enact comprehensive energy permitting reform. The legislative steps required to pass a bill—committee markup, floor debate and amendment in both chambers, bicameral conference or amendment exchange, and final enrollment and presidential signature—can be executed within the legislative calendar framework if fast-tracked through budget reconciliation, suspension of the rules, or attachment to must-pass omnibus appropriations legislation. Because the procedural machinery required to draft conference reports, conduct roll-call votes, and present a bill to the President can be compressed into a matter of days or weeks under expedited rules, the remaining time physically allows for the completion of all necessary legislative and executive procedures on or before December 31, 2026.",
+        "key_evidence": [
+          "Article I, Section 7 of the US Constitution outlines the standard legislative enactment process (bicameral passage and presentation to the President).",
+          "House and Senate rules permit expedited consideration, waiver of certain notice requirements, and privileged status for conference reports and reconciliation instructions.",
+          "The 2026 calendar contains adequate operational legislative days prior to December 31 for floor scheduling and executive signing."
+        ],
+        "strength": "moderate",
+        "strength_reason": "The procedural mechanisms exist to pass legislation rapidly, but the physical time required depends entirely on whether an existing vehicle is utilized or a standalone bill starts from committee referral.",
+        "deliberately_ignored": "Political motivations, party alignments, lobbying pressures, legislative dealmaking, industry preferences, and potential partisan opposition to interstate pipeline provisions.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "From the perspective of process and clock alone, passing comprehensive energy permitting reform legislation with interstate pipeline provisions by December 31, 2026, is physically constrained by the legislative calendar and the sheer duration of required procedural steps. As of today, November 12, 2026, the current 119th Congress has very few legislative days remaining before final adjournment. To enact a bill into law, the process requires: committee hearings and markups in both the House and Senate, floor debate and amendment processes in both chambers, passage of distinct versions in each chamber, a formal conference committee to reconcile differences (or inter-chamber ping-pong), re-voted passage of the identical conference report in both chambers, enrollment, and presidential signing. A typical major, complex regulatory and infrastructure bill requires months of sequential drafting and committee processing alone. With only 49 calendar days remaining until the December 31 deadline—interrupted by upcoming holiday recesses and the physical expiration of the current congressional session—the cumulative chronological duration of these mandatory legislative steps vastly exceeds the available time on the calendar.",
+        "key_evidence": [
+          "Current date is November 12, 2026, and the resolution deadline is December 31, 2026, leaving 49 calendar days.",
+          "Comprehensive energy permitting reform requires sequential committee consideration, floor votes in both chambers, reconciliation (conference or ping-pong), and presidential signature.",
+          "The physical time required for standard legislative drafting, committee markups, and multi-chamber floor procedures exceeds the remaining calendar duration of the current legislative session."
+        ],
+        "strength": "strong",
+        "strength_reason": "The temporal mismatch between the mandatory sequential steps of the legislative process and the strict calendar deadline of 49 remaining days creates an insurmountable physical barrier to enactment.",
+        "deliberately_ignored": "Whether lawmakers, industry groups, or political parties support or oppose the permitting reform legislation, and whether negotiations between factions or chambers are deadlocked due to policy disagreements.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "retried_clean",
+      "audit_note": "Remove the reference to legislative machinery compression via suspension of the rules or attachment to appropriations, and re-derive the estimate based solely on the fixed step-by-step physical duration required versus the remaining 49 days.",
+      "status": "responded",
+      "probability": 25.0,
+      "reasoning": "My previous estimate of 35 was too optimistic regarding the speed of legislative mechanics. Re-evaluating the aperture, the physical steps of drafting, committee review, and bicameral synchronization are highly unlikely to be completed within the remaining 49 days, even under expedited rules. I have adjusted the probability downward to 25 to reflect the severe time compression.",
+      "deliberately_ignored": "I have ignored the political motivation of party leaders and the likelihood of bipartisan support, as these belong to the political forecaster's aperture.",
+      "stronger_case": "no",
+      "triggers": [
+        {
+          "event": "The House Rules Committee schedules a hearing for a comprehensive energy permitting bill.",
+          "by_date": "2026-11-25",
+          "direction": "up",
+          "to_roughly": 55
+        },
+        {
+          "event": "Congress adjourns for the Thanksgiving recess without a committee-reported energy bill.",
+          "by_date": "2026-11-27",
+          "direction": "down",
+          "to_roughly": 5
+        }
+      ],
+      "moved_from": 35.0,
+      "move_reason": "Refinement of the procedural clock analysis, recognizing that the remaining calendar days are insufficient for the standard multi-step legislative process required for comprehensive reform.",
+      "what_changes_between_horizons": "The probability increases as the legislative window narrows because the passage of a bill requires the initiation of specific procedural vehicles (e.g., a conference report or a suspension vote) that become increasingly visible and verifiable as the deadline approaches.",
+      "p_one_third": 10.0,
+      "p_two_thirds": 20.0,
+      "p_full": 25.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": 10.0
+    },
+    "telltale": {
+      "lens": "telltale",
+      "abstraction": "Will a major structural legislative reform package containing complex, cross-cutting industrial and infrastructural provisions pass both chambers and be signed into law within a 24-month congressional session window?",
+      "outside_probability": 40.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "While historical major energy reform packages succeed roughly 60% of the time when advance signals and active pushes are visible, the specific inclusion of contentious interstate pipeline approvals and transmission siting creates acute partisan and sectional friction. Adjusting the baseline downward for current hyper-polarization yields a final probability of 40.",
+      "cases": [
+        {
+          "name": "Energy Policy Act of 2005",
+          "date": "2005-08-08",
+          "outcome": "hit"
+        },
+        {
+          "name": "Energy Independence and Security Act of 2007",
+          "date": "2007-12-19",
+          "outcome": "hit"
+        },
+        {
+          "name": "Energy Policy Modernization Act attempts (114th Congress)",
+          "date": "2016-12-31",
+          "outcome": "miss"
+        },
+        {
+          "name": "Energy Act of 2020 (Division of Omnibus Appropriations)",
+          "date": "2020-12-27",
+          "outcome": "hit"
+        },
+        {
+          "name": "Manchin Permitting Reform Bill Attempts (117th/118th Congress)",
+          "date": "2024-12-31",
+          "outcome": "miss"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Base rate of major energy reform passage given visible advance signals",
+          "belongs_to_me": true,
+          "value": 60,
+          "basis": "3 hits out of 5 major historical legislative push cycles"
+        },
+        {
+          "name": "Probability that divided government or narrow majorities induce stalemate on contentious infrastructure provisions",
+          "belongs_to_me": false,
+          "value": 70,
+          "basis": "Historical base rate of omnibus policy failure under divided or hyper-polarized Congresses absent emergency override"
+        }
+      ],
+      "combination": "Multiply the base rate of structural reform success by the structural friction factor (adjusted for interdependence where high polarization suppresses the baseline historical success rate).",
+      "own_factor": 60.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -20.0,
+      "reference_entry": "R1273-telltale",
+      "yes_case": {
+        "case": "In the historical sequence of major bipartisan legislative packages that pass in lame-duck sessions or early congressional years, the specific precursor state of intense, unresolved jurisdictional friction combined with persistent gridlock frequently precedes sudden, omnibus-style compromise vehicles. The signal state visible today includes the recurrent cyclical necessity for must-pass legislation (such as continuing resolutions or defense authorizations) to which complex structural reforms like permitting are routinely attached at the final hour. Historical base rates indicate that when energy permitting reform reaches the level of sustained legislative friction and repeated near-miss negotiations over multiple sessions, a subsequent resolution occurs within a 12-to-24-month window approximately 40% of the time, driven by the mechanical accumulation of text and bipartisan amendments that eventually align with a legislative vehicle.",
+        "key_evidence": [
+          "Repeated multi-year legislative attempts and committee hearings addressing energy permitting reform in both chambers of Congress",
+          "Historical baseline frequency of complex infrastructure reforms attaching to must-pass omnibus legislation during end-of-session or early-session periods"
+        ],
+        "strength": "weak",
+        "strength_reason": "The complete absence of recent reporting or visible advance signals specific to the 2026 window leaves the historical base rate as the primary observable indicator, which provides only weak predictive certainty without concurrent text-level precursors.",
+        "deliberately_ignored": "Legislative intent, strategic preferences of key lawmakers, and the specific political motivations or compromises driving the negotiators.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "Historical base rates for comprehensive energy permitting reform passing through Congress within a defined two-year window show that the complete absence of active committee markups, text agreement, and floor scheduling signals just weeks before a deadline strongly aligns with the vast majority of such proposals that fail to materialize. In signal states where major infrastructure and pipeline provisions have been debated without reaching legislative text publication or bipartisan precursor agreements at this stage of a legislative lifecycle, passage before the final expiration date occurs in a negligible percentage of historical instances.",
+        "key_evidence": [
+          "Absence of published legislative text combining interstate pipeline approvals and comprehensive permitting reform in the current Congressional record",
+          "Zero active floor scheduling or conference committee signals visible in the reporting",
+          "Historical baseline frequency of complex energy packages passing in late-stage lame-duck or compressed timeframes without prior precursor milestones"
+        ],
+        "strength": "strong",
+        "strength_reason": "The complete absence of visible legislative precursors—such as reported text, committee markups, or leadership scheduling commitments—matches the exact profile of historical legislative failures where bills die on the calendar.",
+        "deliberately_ignored": "Whether lawmakers, lobbyists, or the administration genuinely want the bill to pass, and whether procedural maneuvers could theoretically bypass standard committee processes.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "clean",
+      "audit_note": "",
+      "status": "responded",
+      "probability": 12.0,
+      "reasoning": "I reconciled the outside view (40%) with the current signal state (near-zero activity). The outside view accounts for the possibility of a 'surprise' omnibus attachment, but the current lack of observable precursors (text, markups, or leadership statements) forces a significant downward adjustment from the 40% baseline toward the 10-15% range, reflecting the high historical failure rate of late-stage, non-precursor-backed reforms.",
+      "deliberately_ignored": "I have ignored assessments regarding whether legislators 'want' to pass this reform or whether they are motivated by energy security or political legacy, as these are subjective preferences rather than observable legislative precursors.",
+      "stronger_case": "no",
+      "triggers": [
+        {
+          "event": "Publication of a bipartisan legislative text including interstate pipeline permitting reform in the Congressional Record.",
+          "by_date": "2026-12-05",
+          "direction": "up",
+          "to_roughly": 45
+        },
+        {
+          "event": "House or Senate leadership explicitly announces the exclusion of energy permitting reform from the final end-of-year legislative vehicle.",
+          "by_date": "2026-12-10",
+          "direction": "down",
+          "to_roughly": 2
+        }
+      ],
+      "moved_from": 10.0,
+      "move_reason": "The slight increase from 10 to 12 reflects the mechanical reality that as the session enters its final weeks, the probability of a 'must-pass' vehicle being finalized increases, even if the likelihood of inclusion remains low.",
+      "what_changes_between_horizons": "The probability increases as the legislative window narrows because the only viable path for such a complex, contentious bill is inclusion in a must-pass end-of-year omnibus or continuing resolution. As the deadline approaches, the likelihood of a 'take-it-or-leave-it' package being introduced increases, though the base rate for failure remains dominant.",
+      "p_one_third": 10.0,
+      "p_two_thirds": 11.0,
+      "p_full": 12.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": -28.0
+    },
+    "literalist": {
+      "lens": "literalist",
+      "abstraction": "Will a legislative body pass comprehensive regulatory reform incorporating specific infrastructure approval provisions within a fixed multi-year window, such that the formal enactment meets the written statutory definitions?",
+      "outside_probability": 38.0,
+      "provenance_tier": "thin",
+      "outside_reasoning": "Once a bill containing comprehensive energy permitting reform passes both houses and is signed by the President, the inclusion of specific provisions streamlining interstate pipeline approvals is standard for such legislative vehicles. Historical precedent shows that drafted statutory language in enacted omnibus energy bills consistently satisfies the defined resolution criteria without technical failure.",
+      "cases": [
+        {
+          "name": "Energy Policy Act of 2005",
+          "date": "2005-08-08",
+          "outcome": "hit"
+        },
+        {
+          "name": "Energy Independence and Security Act of 2007",
+          "date": "2007-12-19",
+          "outcome": "hit"
+        },
+        {
+          "name": "FAST Act (Title X on permitting)",
+          "date": "2015-12-04",
+          "outcome": "hit"
+        },
+        {
+          "name": "Infrastructure Investment and Jobs Act (Division D)",
+          "date": "2021-11-15",
+          "outcome": "hit"
+        },
+        {
+          "name": "Fiscal Responsibility Act of 2023 (NEPA reforms)",
+          "date": "2023-06-03",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Substantive event probability",
+          "belongs_to_me": false,
+          "value": 40,
+          "basis": "Historical base rate of major bipartisan energy permitting reform legislation passing in a divided or unified Congress over a two-year session window."
+        },
+        {
+          "name": "Criteria satisfaction given substantive event",
+          "belongs_to_me": true,
+          "value": 95,
+          "basis": "When Congress successfully enacts omnibus energy permitting reform, the statutory text invariably satisfies standard reporting and sign-off criteria for interstate pipelines."
+        }
+      ],
+      "combination": "Multiply the substantive event probability by the criteria satisfaction probability (40% * 95% = 38%), reflecting that once passed, technical wording almost always matches the prompt criteria.",
+      "own_factor": 95.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -57.0,
+      "substantive_probability": 40.0,
+      "substantive_reason": "Based on the historical frequency of major energy permitting reform passage in recent congressional history.",
+      "reference_entry": "R1274-literalist",
+      "yes_case": {
+        "case": "Assuming Congress passes and the President signs a comprehensive energy permitting reform bill by December 31, 2026, the language of the resolution criteria is straightforwardly satisfied. The criteria require the President to sign into law a bill that 'includes specific provisions streamlining the approval process for interstate energy infrastructure, including pipelines.' Any standard bipartisan or reconciliation package addressing permitting reform will inevitably target NEPA timelines, judicial review, and the Federal Energy Regulatory Commission (FERC) review process for interstate pipelines, as pipelines are the primary catalyst and central focus of federal energy permitting debates. The phrasing 'including pipelines' is directly met by standard energy infrastructure bills, meaning no niche definitional traps or exclusionary clauses threaten to invalidate the substance of the enacted law.",
+        "key_evidence": [
+          "Resolution criteria require a signed law with specific provisions streamlining interstate energy infrastructure and pipelines.",
+          "Standard federal energy permitting reform proposals consistently target FERC and NEPA review processes for interstate pipelines."
+        ],
+        "strength": "strong",
+        "strength_reason": "The resolution criteria use standard legislative terminology that aligns directly with the core mechanisms of any foreseeable energy permitting reform bill, leaving very little room for ambiguity regarding whether interstate pipelines are sufficiently addressed.",
+        "deliberately_ignored": "The likelihood that Congress will actually pass the legislation, the partisan dynamics, legislative delays, procedural friction, or the specific political will of lawmakers and the President.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "Assuming energy permitting reform legislation is passed and signed, the resolution criteria strictly require provisions 'including pipelines' and 'specifically streamlining the approval process for interstate energy infrastructure, including pipelines'. If a compromise bill passes that focuses heavily on transmission lines, grid access, or renewable energy leasing while intentionally omitting or watering down specific, enforceable provisions for interstate pipelines to secure bipartisan votes, it would fail the literal wording of the resolution criteria. Furthermore, the criteria demand 'specific provisions streamlining the approval process' rather than a mere mandate to study, report on, or direct a federal agency to later formulate rules, creating a high bar for the exact statutory text required.",
+        "key_evidence": [
+          "Resolution criteria require 'specific provisions streamlining the approval process for interstate energy infrastructure, including pipelines'",
+          "Legislative negotiations often trade away specific pipeline mandates to achieve consensus on transmission or permitting reform"
+        ],
+        "strength": "moderate",
+        "strength_reason": "The wording 'including pipelines' is explicit, but omnibus energy packages frequently use broad or ambiguous language regarding 'energy infrastructure' that leaves pipeline inclusion open to legal or arbiter interpretation.",
+        "deliberately_ignored": "Whether Congress has the political will, votes, or bipartisan agreement to pass any energy permitting bill at all before December 31, 2026.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "clean",
+      "audit_note": "",
+      "status": "responded",
+      "probability": 38.0,
+      "reasoning": "My substantive probability is fixed at 40%. I maintain a 95% confidence that if a bill passes, it will contain the necessary language to satisfy the criteria, as 'permitting reform' in the current political climate is synonymous with pipeline and grid streamlining. 40% * 95% = 38%. I am weighting my thin base rate (100% success in 5 cases) at 20% of my total confidence, using it as a directional indicator that legislative drafting rarely fails to include the core infrastructure components that define the bill's purpose.",
+      "deliberately_ignored": "I have ignored all political analysis regarding the likelihood of the bill passing, the specific congressional leaders involved, or the procedural hurdles in the Senate, as these are outside my aperture.",
+      "stronger_case": "yes",
+      "triggers": [
+        {
+          "event": "Release of a bipartisan bill text that explicitly excludes interstate pipeline provisions to favor transmission-only reform.",
+          "by_date": "2026-12-10",
+          "direction": "down",
+          "to_roughly": 15
+        },
+        {
+          "event": "Public statement by the Speaker of the House or Senate Majority Leader confirming that a 'comprehensive energy permitting' package has been finalized for a floor vote.",
+          "by_date": "2026-12-15",
+          "direction": "up",
+          "to_roughly": 90
+        }
+      ],
+      "moved_from": 8.0,
+      "move_reason": "The previous estimate of 8.0 was an error in calculation that failed to correctly apply the fixed substantive probability of 40%. I have corrected this to align with the 38% derived from the 40% substantive probability and 95% criteria satisfaction rate.",
+      "what_changes_between_horizons": "The probability increases as the legislative window narrows toward the deadline, reflecting the increasing likelihood that any final omnibus package will have been finalized and signed into law.",
+      "p_one_third": 32.0,
+      "p_two_thirds": 35.0,
+      "p_full": 38.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": 0.0
+    }
+  },
+  "abstained": [],
+  "excluded": [],
+  "fallbacks": [
+    "actor_incentive"
+  ],
+  "responding_lenses": 7,
+  "abstained_lenses": 0,
+  "fallback_lenses": 1,
+  "failed_lenses": 0,
+  "median_raw": 32.0,
+  "spread": 43.0,
+  "low_lens": "telltale",
+  "high_lens": "actor_incentive",
+  "median_extremized": 24.4,
+  "advocate": {
+    "load_bearing_assumption": "A bipartisan 'grand bargain' pairing electric transmission streamlining with interstate fossil fuel pipeline approvals can command 60 votes in the Senate and pass a narrowly divided House.",
+    "why_it_could_be_wrong": "Permitting reform for interstate gas/oil pipelines is non-viable under budget reconciliation (subject to the Byrd Rule) and requires regular legislative order. Progressive Democrats view explicit statutory streamlining for fossil fuel pipelines as an unacceptable climate concession, while conservative Republicans reject federal eminent domain and preemption for electric transmission grid lines. Because both sides view their opposing partner's priority as a poison pill rather than a tradeable chip, the coalition collapses entirely into legislative gridlock.",
+    "should_move": true,
+    "moved_to": 22.0,
+    "move_reason": "The aggregate of 32% anchored heavily on optimistic lenses (literalist and blocker at 38%) that overestimate structural clearance rates for 60-vote legislation. It underweights the telltale lens (12%) and mechanical friction (25%). Given that non-fiscal permitting rules cannot bypass the Senate filibuster via reconciliation, the required bipartisan compromise on pipelines has a long history of total breakdown.",
+    "lenses_that_look_redundant": [
+      "analogy",
+      "reference_class"
+    ],
+    "concerns": "The aggregate relies on baseline historical passage rates for general energy bills without properly accounting for the Byrd Rule restriction, which prevents party-line passage of pipeline procedural reforms via reconciliation."
+  },
+  "advocate_proposed": 22.0,
+  "probability": 32.0,
+  "status": "forecast"
+}

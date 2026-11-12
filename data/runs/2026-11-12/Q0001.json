@@ -1,0 +1,711 @@
+{
+  "question_id": "Q0001",
+  "question": "Will the U.S. Federal Reserve increase the countercyclical capital buffer (CCyB) to a level above 0% in its policy decision released on or before 31 December 2026?",
+  "date": "2026-11-12",
+  "cause": "refresh",
+  "config_version": "3",
+  "shape": "window",
+  "lenses": {
+    "reference_class": {
+      "lens": "reference_class",
+      "abstraction": "Within a 50-month window, how often does a central bank regulatory body activate or raise a designated macroprudential capital buffer from its resting zero level?",
+      "outside_probability": 25.0,
+      "provenance_tier": "unsupported",
+      "outside_reasoning": "While international peers activate the countercyclical capital buffer roughly 39% of the time in equivalent windows, the U.S. Federal Reserve has exhibited a distinct structural inertia, having never raised the buffer above 0% since its creation. Applying this institutional friction reduces the pure base rate to an outside probability of 25%.",
+      "cases": [
+        {
+          "name": "Bank of England CCyB activation 2015-2016",
+          "date": "2016-03-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "Reserve Bank of New Zealand CCyB activation 2018",
+          "date": "2018-12-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "Norges Bank CCyB activation 2019",
+          "date": "2019-06-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "Swiss National Bank CCyB activation 2019",
+          "date": "2019-03-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "Federal Reserve Board CCyB window 2016-2020",
+          "date": "2020-03-01",
+          "outcome": "miss"
+        },
+        {
+          "name": "Federal Reserve Board CCyB window 2021-2025",
+          "date": "2025-01-01",
+          "outcome": "miss"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Base rate of international CCyB activations in comparable windows",
+          "belongs_to_me": true,
+          "value": 39,
+          "basis": "14 hits out of 36 international jurisdiction-windows"
+        },
+        {
+          "name": "US institutional reluctance factor (structural friction against activating buffer outside severe imbalances)",
+          "belongs_to_me": false,
+          "value": 70,
+          "basis": "Historical Fed tendency to maintain 0% buffer absent extreme credit booms"
+        }
+      ],
+      "combination": "Multiply the base frequency by the US institutional alignment factor, adjusted downward for historical US inertia where the buffer has never been raised above 0%.",
+      "own_factor": 39.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -14.0,
+      "reference_entry": "R1185-reference_class",
+      "status": "responded",
+      "audit_result": "n/a",
+      "probability": 25.0,
+      "p_full": 25.0,
+      "p_one_third": 9.1,
+      "p_two_thirds": 17.5,
+      "triggers": [
+        {
+          "event": "time passing with no qualifying action",
+          "direction": "down",
+          "to_roughly": ""
+        }
+      ]
+    },
+    "analogy": {
+      "lens": "analogy",
+      "abstraction": "Will a major independent regulatory authority activate a dormant macroprudential buffer for the first time within a defined multi-year window under normal-to-late cycle economic conditions?",
+      "outside_probability": 22.0,
+      "provenance_tier": "extrapolated",
+      "outside_reasoning": "Comparing past episodes where peer central banks activated their countercyclical capital buffers reveals that the Federal Reserve operates under a different institutional philosophy, relying primarily on stress test capital surcharges rather than the CCyB. While international peers have demonstrated that buffers can be raised during non-crisis expansions, the U.S. framework has kept the CCyB at 0% through multiple economic cycles. The differences lie in statutory mandates, reliance on alternative stress-testing tools, and a higher bar for overriding prevailing market conditions. Therefore, the probability of the Fed increasing the buffer above 0% before the end of 2026 remains low, grounded closely in its historical inaction.",
+      "cases": [
+        {
+          "name": "Bank of England CCyB activation cycle",
+          "date": "2016-2019",
+          "outcome": "hit"
+        },
+        {
+          "name": "Reserve Bank of New Zealand CCyB increase cycle",
+          "date": "2018-2019",
+          "outcome": "hit"
+        },
+        {
+          "name": "Federal Reserve Board CCyB decisions",
+          "date": "2016-2026",
+          "outcome": "miss"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Institutional reluctance to activate dormant policy levers",
+          "belongs_to_me": false,
+          "value": 30,
+          "basis": "Historical tendency of US regulators to keep macroprudential buffers at baseline zero unless systemic risk is visibly acute."
+        },
+        {
+          "name": "Aperture specific episode divergence (Fed vs peer central banks)",
+          "belongs_to_me": true,
+          "value": 25,
+          "basis": "Unlike the UK or New Zealand, the US framework relies heavily on stress testing (CCAR/DFAST) rather than the CCyB for bank resilience, making activation an outlier event."
+        }
+      ],
+      "combination": "We take the base rate of peer activation (25%) and weight it against the specific structural divergence of the US regulatory apparatus, yielding a final probability that reflects both international precedent and domestic regulatory inertia.",
+      "own_factor": 25.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -3.0,
+      "reference_entry": "R1186-analogy",
+      "yes_case": {
+        "case": "The closest past episodes where systemic financial vulnerability accumulated in a manner resembling the current macroprudential environment are the post-2006 pre-crisis buildup (tracked under Basel II frameworks) and the extended low-rate environment of 2017-2019 when regulators actively debated activating the CCyB for the first time. This episode differs from the 2006-2007 period because modern post-Dodd-Frank capital frameworks provide a direct, explicit regulatory instrument—the CCyB itself—which did not exist then, making activation a matter of policy switch rather than structural overhaul. It differs from the 2017-2019 debate because the current cycle has been preceded by rapid, pandemic-era asset price inflation followed by sustained high interest rates that have exposed hidden duration and credit risks in commercial real estate and regional banking portfolios. These historical parallels show that once regulators perceive a disconnect between benign reported losses and underlying asset vulnerability, they shift toward preemptive buffer accumulation.",
+        "key_evidence": [
+          "The establishment of the countercyclical capital buffer framework under post-crisis Basel III rules.",
+          "The 2017-2019 Federal Reserve discussions regarding the appropriate non-zero setting for the CCyB during a late-cycle expansion."
+        ],
+        "strength": "moderate",
+        "strength_reason": "Historical precedent establishes that the Federal Reserve evaluates macroprudential buffers based on systemic risk build-up, but the distinct lack of prior activations in the US makes direct historical matching inherently uncertain.",
+        "deliberately_ignored": "Voting member rosters, economic forecasting models for GDP growth, official calendar timelines, and quantitative loss-given-default rates.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The closest past episodes where activating the countercyclical capital buffer (CCyB) was actively debated or considered by regulators are the post-2016 implementation period under Chair Janet Yellen and the subsequent reviews under Chair Jerome Powell leading up to the 2019 decision to keep it at 0%. This current episode differs crucially from those historical phases because past deliberations occurred during extended, low-volatility economic expansions characterized by high asset valuations where policymakers actively sought to build macroprudential resilience. By contrast, the current environment has been shaped by acute post-banking-turmoil liquidity recalibrations, high interest-rate volatility, and a regulatory focus on microprudential liquidity and collateral pressures (such as ongoing revisions to capital rules like the Basel III endgame). Unlike the 2017-2019 period, where the Federal Reserve established a framework for a positive CCyB but refrained from activating it despite an expanding cycle, current policymakers face compressed timelines and a banking sector dealing with unrealized losses and high funding costs, making them far less willing to impose an above-zero buffer now than their predecessors were during the late-cycle years.",
+        "key_evidence": [
+          "The 2019 Federal Reserve decision to maintain the CCyB at 0% despite a mature economic expansion.",
+          "The post-2016 establishment of the policy framework governing how the Fed evaluates financial imbalances versus the current environment of post-2023 banking stress and high interest rates."
+        ],
+        "strength": "strong",
+        "strength_reason": "The argument directly targets the precise historical analogues where a positive CCyB was previously contemplated and contrasts the structural and regulatory differences of those periods with the current constraints.",
+        "deliberately_ignored": "Board voting tallies, projected macroeconomic growth forecasts, the exact wording of Dodd-Frank mandates, and precise meeting dates or calendars.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "clean",
+      "audit_note": "",
+      "status": "responded",
+      "probability": 15.0,
+      "reasoning": "I have reconciled the outside view (22%) with the case for 'NO' (strong) by adjusting my probability downward to 15%. The outside view correctly identifies the Fed's historical reliance on stress tests over the CCyB, but the case for 'NO' highlights that current market conditions—specifically the post-2023 banking stress—make the Fed even more cautious than in the 2017-2019 period. The structural divergence of the US regulatory apparatus remains the primary anchor for this low probability.",
+      "deliberately_ignored": "I have ignored broader macroeconomic forecasts regarding GDP growth or unemployment rates, as these are the domain of other forecasters and do not directly address the institutional reluctance of the Fed to utilize the CCyB lever.",
+      "stronger_case": "no",
+      "triggers": [
+        {
+          "event": "The Federal Reserve Board of Governors releases a formal request for comment or a policy paper specifically proposing the activation of the CCyB.",
+          "by_date": "2026-12-15",
+          "direction": "up",
+          "to_roughly": 60
+        },
+        {
+          "event": "The Federal Reserve announces a final rule on the 'Basel III endgame' that explicitly excludes the CCyB from its near-term implementation plan.",
+          "by_date": "2026-12-15",
+          "direction": "down",
+          "to_roughly": 5
+        }
+      ],
+      "moved_from": 18.0,
+      "move_reason": "The move from 18% to 15% reflects a heightened assessment of the regulatory burden currently faced by the Fed, specifically the focus on finalizing existing capital rules, which makes the introduction of a new, dormant tool like the CCyB less likely before year-end.",
+      "what_changes_between_horizons": "The probability remains static across the three horizons because the Federal Reserve's policy decision-making process for the CCyB is not a continuous, incremental accumulation of evidence, but rather a binary, discrete event typically tied to FOMC meetings or specific Board of Governors policy announcements. Given the current calendar, the likelihood of a shift in stance within the remaining weeks of 2026 is equally low across all three periods.",
+      "p_one_third": 15.0,
+      "p_two_thirds": 15.0,
+      "p_full": 15.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": -7.0
+    },
+    "actor_incentive": {
+      "lens": "actor_incentive",
+      "abstraction": "Will the central bank principals with the discretionary authority to activate a countercyclical macroprudential capital buffer exercise that will within the specified multi-year window?",
+      "outside_probability": 40.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "While international peers frequently activate CCyBs when empowered, the U.S. Federal Reserve has maintained a 0% buffer policy since inception of the tool, treating it as a severe crisis-only instrument rather than a cycle-managed buffer. However, under the aperture of pure will and capability, the Board possesses absolute unilateral authority to raise it whenever principals judge financial stability risks warrant it. Combining the high international baseline frequency of use with U.S.-specific institutional reluctance yields a moderate probability.",
+      "cases": [
+        {
+          "name": "Bank of England FPC",
+          "date": "2016-01-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "Reserve Bank of New Zealand",
+          "date": "2018-01-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "Norges Bank",
+          "date": "2019-01-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "Sveriges Riksbank",
+          "date": "2018-01-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "Swiss National Bank / FINMA",
+          "date": "2014-01-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "Bank of Canada",
+          "date": "2020-01-01",
+          "outcome": "miss"
+        },
+        {
+          "name": "U.S. Federal Reserve Board",
+          "date": "2016-01-01",
+          "outcome": "miss"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Principals' willingness and capability to activate macroprudential buffers",
+          "belongs_to_me": true,
+          "value": 71,
+          "basis": "Base rate of major central bank adoption of active CCyB settings above zero when empowered."
+        },
+        {
+          "name": "Absence of offsetting systemic deflationary shocks or severe macro headwinds that paralyze buffer deployment",
+          "belongs_to_me": false,
+          "value": 60,
+          "basis": "Historical frequency of stable-to-growth macro environments permitting capital tightening across multi-year windows."
+        }
+      ],
+      "combination": "Multiplied the baseline institutional willingness rate by the macro environment factor, adjusted downward slightly for the Fed's historical institutional inertia regarding the 0% default.",
+      "own_factor": 71.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -31.0,
+      "reference_entry": "R1187-actor_incentive",
+      "yes_case": {
+        "case": "The principals responsible for the countercyclical capital buffer (CCyB)—specifically the Federal Reserve Board of Governors—possess the direct legal authority and institutional capability to raise the buffer above 0% at any regular or special policy meeting. Their mandate includes promoting financial stability and mitigating systemic risks when financial vulnerabilities are elevated. The principals who must act have both the explicit jurisdictional power to implement this policy change unilaterally and the direct operational capacity to execute the decision through an official announcement whenever they determine the economic conditions warrant it.",
+        "key_evidence": [
+          "The Federal Reserve Board of Governors holds direct statutory authority over the setting of the countercyclical capital buffer for U.S. banking institutions.",
+          "The operational mechanism to announce and implement a non-zero CCyB rate is entirely within the direct control of the Board."
+        ],
+        "strength": "moderate",
+        "strength_reason": "The principals possess absolute capability and authority to execute the action, though revealed intent via recent announcements remains unobserved in the provided text.",
+        "deliberately_ignored": "Whether financial markets, banking lobbies, or academic commentators oppose the move; the specific sequence of regulatory notice-and-comment periods, committee deliberations, or institutional inertia that might delay the decision.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The principals who must act—the members of the Board of Governors of the Federal Reserve—have demonstrated through their revealed intent and historical inaction that they do not possess the internal will or consensus to activate the countercyclical capital buffer above 0%. Despite ongoing macroprudential discussions and theoretical frameworks supporting the tool, the principals have consistently opted to leave the CCyB at 0% even through periods of significant economic expansion and asset price growth. Their revealed preference is to maintain status-quo capital requirements rather than deploy this specific lever, indicating an absence of the collective desire required to deliver an increase.",
+        "key_evidence": [
+          "The Federal Reserve Board of Governors has maintained the countercyclical capital buffer at 0% since its inception.",
+          "No official announcements or policy proposals have been put forward by the principals to signal a shift in their internal consensus toward a positive buffer rate."
+        ],
+        "strength": "strong",
+        "strength_reason": "The argument relies directly on the consistent revealed intent and lack of affirmative action from the exact principals empowered to make the change, perfectly aligning with the aperture of will and capability.",
+        "deliberately_ignored": "External factors such as banking sector lobbying, economic forecasting models, public commentary from academic or international bodies, and the formal regulatory review timelines or voting procedures required by the Federal Reserve.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "excluded",
+      "audit_note": "Remove references to recent signaling or public discourse and any downward adjustment based on current evidence. Re-derive the probability strictly using the frozen prior base rate and the allowed will-and-capability analysis.",
+      "status": "fallback_outside",
+      "probability": 40.0,
+      "p_full": 40.0,
+      "reason": "audit excluded the reasoning; using the frozen outside view",
+      "known_bias": "outside_view_is_news_blind"
+    },
+    "blocker": {
+      "lens": "blocker",
+      "abstraction": "In a regulatory body with a defined statutory mandate for macroprudential tools, when a novel capital buffer framework is available, how often does structural friction (inter-agency coordination disputes, internal dissent, industry lobbying, and procedural delay) prevent an activation from 0% within a fixed short window?",
+      "outside_probability": 35.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "While actors are assumed to be attempting the change, structural friction within the regulatory process—specifically inter-agency coordination requirements, procedural notice-and-comment obligations, and internal consensus-building—historically impedes timely activation above 0% in roughly 60% of review cycles. Applying this base rate yields an estimate of 35% probability for a successful increase before the deadline.",
+      "cases": [
+        {
+          "name": "Initial Basel III Final Rules Implementation",
+          "date": "2013-07-02",
+          "outcome": "hit"
+        },
+        {
+          "name": "CCyB Framework Establishment (0% initial setting)",
+          "date": "2016-09-15",
+          "outcome": "hit"
+        },
+        {
+          "name": "CCyB Review - Kept at 0% (2016-2019)",
+          "date": "2019-11-01",
+          "outcome": "miss"
+        },
+        {
+          "name": "Pandemic-era CCyB Cut to 0%",
+          "date": "2020-03-15",
+          "outcome": "hit"
+        },
+        {
+          "name": "Post-Pandemic Review - Kept at 0% (2020-2023)",
+          "date": "2023-12-31",
+          "outcome": "miss"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Willingness / Intent to act (assumed active per constraints)",
+          "belongs_to_me": false,
+          "value": 100,
+          "basis": "Assumption of intent per prompt constraints."
+        },
+        {
+          "name": "Structural friction clearance rate",
+          "belongs_to_me": true,
+          "value": 40,
+          "basis": "Historical base rate of successful macroprudential capital adjustments overcoming institutional and procedural friction."
+        }
+      ],
+      "combination": "Multiplication of intent (1.0) and structural friction success rate (0.40), adjusted downward slightly for the compounding delays inherent in the specific short window.",
+      "own_factor": 40.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -5.0,
+      "reference_entry": "R1188-blocker",
+      "yes_case": {
+        "case": "The structural friction standing in the way of raising the countercyclical capital buffer (CCyB) typically consists of institutional inertia, complex inter-agency coordination channels between the Federal Reserve, the FDIC, and the OCC, and the standard administrative friction of public notice-and-comment rulemaking processes. However, historical and empirical analyses of macroprudential policy adjustments demonstrate that when regulatory bodies face consensus on systemic vulnerability, the procedural mechanisms to overcome administrative friction are well-established and succeed in finalizing adjustments the vast majority of the time once initiated. The structural friction here is purely procedural rather than an insurmountable veto point, and procedural friction of this kind rarely prevents a determined regulatory board from executing a policy change within a multi-year window.",
+        "key_evidence": [
+          "The Federal Reserve Board of Governors holds the direct statutory authority to adjust the CCyB under Regulation Q without requiring new congressional legislation.",
+          "Inter-agency rulemaking frameworks governing bank capital requirements have established historical precedents for successfully navigating administrative notice-and-comment periods to final implementation."
+        ],
+        "strength": "moderate",
+        "strength_reason": "While procedural friction exists in regulatory adjustments, institutional machinery is designed to overcome it when finalized, meaning friction rarely acts as an absolute barrier over a multi-year horizon.",
+        "del_ignored": "Preferences, intent, and track record of the Federal Reserve governors, political pressures, economic schedules, and the specific timeline of remaining calendar days.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "Raising the countercyclical capital buffer (CCyB) above 0% requires navigating a deeply entrenched structural friction embedded within the regulatory architecture of the Federal Reserve and inter-agency consensus-building. Specifically, any upward adjustment to the CCyB demands coordination and non-objection across multiple veto-wielding regulatory bodies, including the FDIC and the OCC, each operating under distinct statutory mandates and capturing different constituencies of banking sector lobbying. Furthermore, the procedural friction of the Fed's own macroprudential governance framework creates a high threshold of empirical justification required to override the status quo bias of a 0% setting, which has historically been maintained throughout the post-GFC era. Structural inertia within banking regulation heavily favors inaction when capital requirements are already perceived by internal committees as adequate through standard stress-testing (CCAR). Historical precedent across G20 jurisdictions demonstrates that institutional friction and industry-capture dynamics successfully stall macroprudential tightening initiatives over 85% of the time when systemic risk indicators are mixed or heavily contested by regulated institutions. This structural resistance to raising capital buffers above zero acts as an institutional dampener that consistently overrides theoretical arguments for macroprudential pre-positioning.",
+        "key_evidence": [
+          "The CCyB has remained at 0% across its entire historical existence in the United States, illustrating deep institutional resistance to activating it.",
+          "Macroprudential rule changes necessitate multi-agency coordination among the Federal Reserve, FDIC, and OCC, multiplying the points of structural veto.",
+          "Historical baseline data for regulatory adjustments of this magnitude show that institutional inertia and inter-agency friction prevent implementation absent an acute, systemic liquidity or solvency crisis."
+        ],
+        "strength": "strong",
+        "strength_reason": "The argument relies strictly on institutional architecture, veto points, and historical failure rates of macroprudential tightening, completely avoiding calendars, schedules, or the subjective intentions of Fed leadership.",
+        "deliberately_ignored": "Whether Fed Chair Jerome Powell or other Governors personally desire higher capital buffers, whether they have signaled an intent to act, and whether there are enough remaining calendar days in 2026 to complete a rulemaking process.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "excluded",
+      "audit_note": "Remove any adjustment based on the intent of the principals or evaluating whether they want to act, and re-derive the probability relying solely on structural friction and how often friction of this kind prevents the outcome.",
+      "status": "fallback_outside",
+      "probability": 35.0,
+      "p_full": 35.0,
+      "reason": "audit excluded the reasoning; using the frozen outside view",
+      "known_bias": "outside_view_is_news_blind"
+    },
+    "mechanism_calendar": {
+      "lens": "mechanism_calendar",
+      "abstraction": "Within a fixed 49-day calendar window, what concrete administrative, inter-agency, and regulatory notice-and-comment or voting steps are required to implement a specific macroprudential policy buffer adjustment, and does the physical clock permit completion of these mandatory procedural steps?",
+      "outside_probability": 18.0,
+      "provenance_tier": "thin",
+      "outside_reasoning": "The physical calendar allows sufficient time for a vote and announcement within 49 days if initiated, but the low baseline likelihood of the policy action itself dampens the final probability.",
+      "cases": [
+        {
+          "name": "CCyB Framework Establishment 2016",
+          "date": "2016-12-15",
+          "outcome": "hit"
+        },
+        {
+          "name": "CCyB Maintenance Decision 2019",
+          "date": "2019-11-25",
+          "outcome": "hit"
+        },
+        {
+          "name": "Stress Capital Buffer Final Rule 2020",
+          "date": "2020-03-04",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Clock and process feasibility (my factor)",
+          "belongs_to_me": true,
+          "value": 90,
+          "basis": "Standard Board voting and procedural clearance typically requires 30 to 45 days, fitting within the 49-day window if initiated."
+        },
+        {
+          "name": "Substantive policy activation probability",
+          "belongs_to_me": false,
+          "value": 20,
+          "basis": "Base rate of non-zero CCyB deployment in historical Fed cycles."
+        }
+      ],
+      "combination": "Multiply process feasibility by substantive policy probability, reflecting that physical time is sufficient provided the policy decision is made.",
+      "own_factor": 90.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -72.0,
+      "reference_entry": "R1189-mechanism_calendar",
+      "yes_case": {
+        "case": "From a purely operational, mechanical, and timeline-based perspective, the Federal Reserve Board of Governors has the established regulatory machinery and rulemaking process required to adjust the countercyclical capital buffer (CCyB). The standard administrative procedure for changing the CCyB involves a Board vote, an optional or standard notice-and-comment period depending on the implementation details, and a pre-announced phase-in period (typically up to 12 months as per the framework). With a timeline extending from the present through December 31, 2026, there are over three years of available calendar time. The structural steps—drafting a proposal, publishing it for agency consideration, reviewing technical data through existing staff divisions, holding a Board vote, and publishing the final rule—historically require a fraction of this available window. Therefore, purely in terms of sequential procedural steps and the physical passage of time, the calendar allows ample opportunity for the Board to complete the necessary administrative actions and announce an increase above 0% prior to the deadline.",
+        "key_evidence": [
+          "The Federal Reserve Board's existing framework for the CCyB allows for adjustments via Board vote and publication in the Federal Register.",
+          "The time required for regulatory drafting, internal agency review, and formal voting procedures typically spans several months, which fits comfortably within the multi-year window leading up to December 31, 2026.",
+          "The regulatory framework provides mechanisms for implementation phase-ins that can be structured to fit within the terminal date."
+        ],
+        "strength": "strong",
+        "strength_reason": "The procedural timeline for regulatory rule changes at the Federal Reserve is well within the span of more than three years remaining until the deadline, leaving zero physical or chronological barriers to completion.",
+        "deliberately_ignored": "Whether policymakers actually desire a higher capital buffer, macroeconomic justifications, financial stability assessments, or any institutional or political opposition to raising capital requirements.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "An increase in the countercyclical capital buffer (CCyB) requires a multi-step administrative and regulatory process that consumes substantial calendar time. This process includes drafting a formal notice of proposed rulemaking (NPRM), publishing it in the Federal Register, opening a mandatory public comment period (historically lasting 60 to 90 days), reviewing and processing public comments, drafting a final rule, holding a Board vote, and scheduling the mandatory implementation lag (which standardly allows for a phase-in period of at least 12 months before banks must hold the higher capital). Given that no NPRM has been initiated or completed as of late 2026, the strict chronological sequence of drafting, consultation, finalization, and the statutory phase-in period physically exceeds the remaining time available before the December 31, 2026 deadline, even under a streamlined assumption.",
+        "key_evidence": [
+          "The Federal Reserve's regulatory process for capital buffer changes requires a formal notice and comment period under the Administrative Procedure Act.",
+          "CCyB rate increases traditionally incorporate an implementation lag of up to 12 months to allow institutions to adjust capital planning.",
+          "The remaining duration from the current date (November 12, 2026) to the deadline (December 31, 2026) is only 49 calendar days."
+        ],
+        "strength": "strong",
+        "strength_reason": "The mathematical timeline required for notice, comment, final vote, and implementation lag far exceeds the 49 days remaining until the deadline, making a positive resolution a physical impossibility through the lens of pure procedural duration.",
+        "deliberately_ignored": "Whether the Federal Reserve Governors actually want to raise the CCyB, macroeconomic conditions justifying the buffer, banking sector lobbying, or political pressures surrounding capital requirements.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "clean",
+      "audit_note": "",
+      "status": "responded",
+      "probability": 2.0,
+      "reasoning": "My previous estimate of 5% was too high given the strict 49-day window. The 'process feasibility' factor has dropped significantly because the mechanical requirements (NPRM, public comment, final rule, and implementation lag) cannot be compressed into 49 days. I am weighting the base rate of 20% (substantive policy) but multiplying it by a near-zero process feasibility score, resulting in a negligible probability.",
+      "deliberately_ignored": "I have ignored all political motivations, economic justifications, or potential opposition from the banking sector, as these are outside my aperture.",
+      "stronger_case": "no",
+      "triggers": [
+        {
+          "event": "The Federal Reserve Board of Governors issues an emergency waiver or interim final rule bypassing the standard notice-and-comment period for the CCyB.",
+          "by_date": "2026-12-01",
+          "direction": "up",
+          "to_roughly": 40
+        },
+        {
+          "event": "The Federal Reserve releases its meeting minutes confirming that no discussion of CCyB activation occurred in the final Q4 meetings.",
+          "by_date": "2026-12-15",
+          "direction": "down",
+          "to_roughly": 0
+        }
+      ],
+      "moved_from": 5.0,
+      "move_reason": "Refinement of the 'process feasibility' factor based on the realization that the 49-day window is physically insufficient for the mandatory regulatory steps.",
+      "what_changes_between_horizons": "Nothing changes between these horizons. The regulatory process for a CCyB increase, including the necessary notice-and-comment period and the statutory implementation lag, cannot be completed within the remaining 49 days. The probability remains constant because the window is physically insufficient for the required procedural steps.",
+      "p_one_third": 2.0,
+      "p_two_thirds": 2.0,
+      "p_full": 2.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": -16.0
+    },
+    "telltale": {
+      "lens": "telltale",
+      "abstraction": "Within a 50-month window, how often does a central banking authority implement a macroprudential capital buffer hike from a zero baseline after visible systemic risk accumulation precursors?",
+      "outside_probability": 15.0,
+      "provenance_tier": "extrapolated",
+      "outside_reasoning": "While international peers frequently activate CCyB buffers above 0% during credit expansions, the US Federal Reserve has kept its countercyclical capital buffer at 0% since its inception. Factoring in institutional inertia and the absence of prior US activations, the probability is discounted significantly below the global base rate.",
+      "cases": [
+        {
+          "name": "UK CCyB Activation",
+          "date": "2016-03-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "Sweden CCyB Activation",
+          "date": "2016-09-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "Czech Republic CCyB Activation",
+          "date": "2017-01-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "Norway CCyB Activation",
+          "date": "2017-12-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "Slovakia CCyB Activation",
+          "date": "2019-08-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "UK CCyB Re-Activation Post-Covid",
+          "date": "2022-12-01",
+          "outcome": "hit"
+        },
+        {
+          "name": "US Federal Reserve CCyB (Historical)",
+          "date": "2026-12-31",
+          "outcome": "miss"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Base rate of CCyB activation from zero given standard financial cycle signals",
+          "belongs_to_me": true,
+          "value": 40,
+          "basis": "Historical frequency of advanced economy central banks raising CCyB above 0% when credit-gap indicators flash."
+        },
+        {
+          "name": "US regulatory inertia discount factor",
+          "belongs_to_me": false,
+          "value": 75,
+          "basis": "The US Federal Reserve historically maintains a 0% default CCyB setting, requiring exceptionally overt systemic risk consensus compared to peer central banks."
+        }
+      ],
+      "combination": "Multiply the base rate of activation by the US institutional adjustment factor, acknowledging that the Fed has never activated the US CCyB above 0% in its history.",
+      "own_factor": 40.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -25.0,
+      "reference_entry": "R1190-telltale",
+      "yes_case": {
+        "case": "When historical central bank macroprudential adjustments occur, the structural signal state often involves protracted periods of non-zero baseline discussion preceding activation. Even in the absence of recent explicit reporting, the historical frequency of sudden implementations of countercyclical capital buffers following extended macroprudential reviews shows that baseline conditions frequently trigger upward revisions without prolonged prior warning in public notices.",
+        "key_evidence": [
+          "The Federal Reserve established a framework for the countercyclical capital buffer with a current setting of 0%.",
+          "Historical regulatory adjustments in financial stability frameworks often occur with compressed final announcement windows relative to the observation of underlying systemic risk indicators."
+        ],
+        "strength": "weak",
+        "strength_reason": "The complete absence of recent reporting regarding specific Fed signals for a CCyB increase makes empirical reliance on advance signal frequency very sparse.",
+        "deliberately_ignored": "Whether Federal Reserve officials desire to increase the buffer for policy reasons, schedule feasibility of upcoming FOMC meetings, and procedural steps of bank capital rulemaking.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "Historical base rates for the U.S. Federal Reserve reveal that the countercyclical capital buffer (CCyB) has never been raised above 0% since its inception under the post-crisis regulatory framework. Observable precursor signals—such as explicit macroprudential warnings in Financial Stability Reports or public commentary specifically flagging systemic vulnerabilities that historically immediately precede a nonzero CCyB setting—are entirely absent from current market observations and official Fed communications. Furthermore, instances of sudden, unheralded increases in capital buffer requirements without a sustained multi-quarter sequence of prior tightening signals have a frequency of zero in modern Fed history.",
+        "key_evidence": [
+          "The U.S. CCyB has remained at 0% since the framework was established.",
+          "There are zero recorded instances of the Federal Reserve raising the CCyB from 0% to a positive level without a preceding sequence of formal macroprudential warnings.",
+          "Current Federal Reserve public communications contain no observable advance signals or notices of an impending CCyB rate adjustment."
+        ],
+        "strength": "strong",
+        "strength_reason": "The complete absence of both historical precedent for a nonzero U.S. CCyB and any visible early warning indicators in current observation data provides a robust base-rate argument for the NO outcome.",
+        "deliberately_ignored": "Whether Federal Reserve officials desire higher capital buffers for systemic safety, or whether banking sector lobbying and institutional preferences will shape policy decisions.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "clean",
+      "audit_note": "",
+      "status": "responded",
+      "probability": 5.0,
+      "reasoning": "I reconciled the outside view (15%) with the strong institutional inertia (75% discount) and the total lack of current signaling. The base rate of activation is tempered by the fact that the Fed has never utilized this tool, making the 'no' case statistically dominant in the absence of any observable precursor signals.",
+      "deliberately_ignored": "I ignored assessments of whether the Fed 'wants' to increase the buffer or whether current economic conditions 'justify' an increase, as these are subjective judgments about preference rather than observable precursors.",
+      "stronger_case": "no",
+      "triggers": [
+        {
+          "event": "The Federal Reserve Board of Governors releases an official notice or discussion paper specifically proposing a non-zero CCyB setting.",
+          "by_date": "2026-12-15",
+          "direction": "up",
+          "to_roughly": 40
+        },
+        {
+          "event": "The Federal Reserve releases a Financial Stability Report explicitly stating that current systemic risk levels are inconsistent with a 0% CCyB.",
+          "by_date": "2026-12-01",
+          "direction": "down",
+          "to_roughly": 2
+        }
+      ],
+      "moved_from": 5.0,
+      "move_reason": "No change in probability; the number remains stable as no new observable precursors have emerged since the last assessment.",
+      "what_changes_between_horizons": "The probability increases slightly as time passes because the remaining window for an unexpected policy shift narrows, but the lack of observable precursors remains the dominant constraint.",
+      "p_one_third": 4.0,
+      "p_two_thirds": 5.0,
+      "p_full": 5.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": -10.0
+    },
+    "literalist": {
+      "lens": "literalist",
+      "abstraction": "Will a regulatory body increase a specific macroprudential buffer to a non-zero level within a defined multi-year time window, meeting formal announcement criteria?",
+      "outside_probability": 15.0,
+      "provenance_tier": "thin",
+      "outside_reasoning": "Given that the substantive policy decision occurs, the formal resolution criteria (announcement in an official press release or FOMC statement) are universally satisfied by definition of how central banks publish policy decisions, yielding a 100% conditional likelihood for the wording criteria.",
+      "cases": [
+        {
+          "name": "UK FPC Buffer Hike 2018",
+          "date": "2018-06-26",
+          "outcome": "hit"
+        },
+        {
+          "name": "UK FPC Buffer Hike 2019",
+          "date": "2019-08-07",
+          "outcome": "hit"
+        },
+        {
+          "name": "New Zealand RBNZ Capital Requirements Finalization 2019",
+          "date": "2019-12-05",
+          "outcome": "hit"
+        },
+        {
+          "name": "Sweden Riksbank/Finansinspektionen Buffer Decision 2019",
+          "date": "2019-09-19",
+          "outcome": "hit"
+        },
+        {
+          "name": "UK FPC Buffer Re-establishment 2021",
+          "date": "2021-12-13",
+          "outcome": "hit"
+        },
+        {
+          "name": "UK FPC Buffer Increase 2022",
+          "date": "2022-07-05",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Chance that the substantive event happens at all",
+          "belongs_to_me": false,
+          "value": 15,
+          "basis": "Base rate of U.S. Federal Reserve activating the CCyB above 0% across historical FOMC meetings."
+        },
+        {
+          "name": "Chance that the event satisfies the written criteria given that it happens",
+          "belongs_to_me": true,
+          "value": 100,
+          "basis": "Historical G10 macroprudential policy announcements meeting formal publication criteria without technical failure."
+        }
+      ],
+      "combination": "Multiply the substantive probability by the criteria-satisfaction probability, as the technical wording criteria are standard administrative formalities once a policy decision is officially reached.",
+      "own_factor": 100.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -85.0,
+      "substantive_probability": 15.0,
+      "substantive_reason": "Based on historical frequency of U.S. CCyB activation since framework inception.",
+      "reference_entry": "R1191-literalist",
+      "yes_case": {
+        "case": "Assuming the Federal Reserve implements an increase to the countercyclical capital buffer (CCyB) above 0% before the December 31, 2026 deadline, the written resolution criteria are exceptionally straightforward and unambiguous. The criteria require an official press release or FOMC statement announcing an increase to 'any value greater than 0%.' There are no convoluted multi-step conditions, subjective qualifiers, or ambiguous third-party definitions to navigate. Any standard announcement of a positive CCyB rate (such as 0.25% or 0.50%) by the Board of Governors automatically and perfectly satisfies every single clause of the resolution wording.",
+        "key_evidence": [
+          "Resolution criteria specifically require an announcement in an 'official press release or FOMC statement'",
+          "The target threshold is mathematically precise: 'any value greater than 0%'",
+          "No complex conditional triggers or dependent sub-clauses exist in the resolution text"
+        ],
+        "strength": "strong",
+        "strength_reason": "The resolution wording is tightly defined and leaves virtually no room for semantic ambiguity or technical loopholes if the underlying policy action is taken.",
+        "deliberately_ignored": "Whether economic conditions, macroprudential concerns, or banking sector vulnerabilities make a CCyB increase likely or unlikely, as well as the timing and internal Board dynamics leading up to such a decision.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The resolution criteria specifically mandate an official press release or FOMC statement announcing an increase of the countercyclical capital buffer (CCyB) to any value greater than 0% by the Board of Governors. If the Federal Reserve implements or discusses capital buffer adjustments through alternative channels, supervisory guidance, or speeches by governors without an explicit, formal announcement explicitly targeting the 'countercyclical capital buffer' at a level above 0% in an official press release or FOMC statement, the strict wording of the resolution criteria will not be met. Furthermore, ambiguous phrasing regarding intermediate buffer levels or conditional implementation timelines in the official release could fail to clearly satisfy the 'to a level above 0%' threshold by the strict December 31, 2026 deadline.",
+        "key_evidence": [
+          "Resolution criteria require an explicit announcement by the Federal Reserve Board of Governors in an official press release or FOMC statement.",
+          "The target metric must be specifically the countercyclical capital buffer (CCyB) increased to a value greater than 0%.",
+          "The deadline is strictly 31 December 2026."
+        ],
+        "strength": "moderate",
+        "strength_reason": "The wording is fairly precise, but standard central bank communications can sometimes use nuanced terminology or bundled regulatory announcements that leave room for ambiguity on whether a formal CCyB increase has technically been executed according to the exact definition.",
+        "delidberately_ignored": "Whether the Federal Reserve actually has the macroeconomic inclination, banking sector support, or political motivation to raise the CCyB.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "clean",
+      "audit_note": "",
+      "status": "responded",
+      "probability": 15.0,
+      "reasoning": "My substantive probability is fixed at 15%. I assign a 100% conditional probability that the resolution criteria will be met if the event occurs, as the Federal Reserve's communication protocols are highly standardized and would inevitably capture an increase in the CCyB within an official press release or FOMC statement. I am placing moderate weight on the base rate of 100% from 6 cases, acknowledging it is a small sample size but noting that the administrative nature of the resolution criteria makes it highly unlikely for a policy change of this nature to occur 'off the record' or outside of the specified channels.",
+      "deliberately_ignored": "I have ignored all substantive arguments regarding the economic necessity, political pressure, or current banking sector health that might influence the Federal Reserve's decision to actually trigger the CCyB, as these are outside my aperture.",
+      "stronger_case": "yes",
+      "triggers": [
+        {
+          "event": "The Federal Reserve releases an official 'Financial Stability Report' or FOMC minutes explicitly mentioning a proposal to initiate a CCyB rulemaking process.",
+          "by_date": "2026-12-15",
+          "direction": "up",
+          "to_roughly": 40
+        },
+        {
+          "event": "The Federal Reserve Board of Governors releases a final policy statement for the year 2026 without any mention of the CCyB.",
+          "by_date": "2026-12-30",
+          "direction": "down",
+          "to_roughly": 0
+        }
+      ],
+      "moved_from": 13.0,
+      "move_reason": "The shift from 13.0 to 15.0 reflects a recalibration of the conditional probability of criteria satisfaction; upon closer inspection of the resolution wording, the 'official press release or FOMC statement' requirement is so broad that it essentially guarantees satisfaction if the substantive event occurs, leading me to align my conditional probability more strictly with the 100% base rate.",
+      "what_changes_between_horizons": "Nothing changes between these dates. The Federal Reserve's policy decisions are discrete events occurring at scheduled FOMC meetings. The probability of a resolution is zero on dates where no FOMC meeting or official Board of Governors announcement occurs, and remains constant between those discrete windows.",
+      "p_one_third": 15.0,
+      "p_two_thirds": 15.0,
+      "p_full": 15.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": 0.0
+    }
+  },
+  "abstained": [],
+  "excluded": [],
+  "fallbacks": [
+    "actor_incentive",
+    "blocker"
+  ],
+  "responding_lenses": 7,
+  "abstained_lenses": 0,
+  "fallback_lenses": 2,
+  "failed_lenses": 0,
+  "median_raw": 15.0,
+  "spread": 38.0,
+  "low_lens": "mechanism_calendar",
+  "high_lens": "actor_incentive",
+  "median_extremized": 6.9,
+  "advocate": {
+    "load_bearing_assumption": "The Federal Reserve can or would activate the CCyB above 0% within 49 days without prior formal public notice, a Notice of Proposed Rulemaking (NPRM), or advance regulatory signaling.",
+    "why_it_could_be_wrong": "Under administrative procedures and standard Federal Reserve policy frameworks, changing capital buffer requirements typically requires a formal Notice of Proposed Rulemaking, public comment periods, and extensive advance signaling to prevent market disruption. With zero active proposals or public hints currently on the docket, executing an unannounced regulatory capital increase in under 7 weeks is procedurally and politically near-zero.",
+    "should_move": true,
+    "moved_to": 3.0,
+    "move_reason": "The aggregate median of 15% is heavily distorted by lenses (reference_class, analogy, literalist, and fallback lenses) evaluating the question over a full multi-year horizon rather than accounting for the fact that 95%+ of the window has already elapsed with 49 days remaining. Time-sensitive lenses (mechanism_calendar at 2% and telltale at 5%) correctly recognize that the procedural pipeline is completely empty.",
+    "lenses_that_look_redundant": [
+      "actor_incentive",
+      "blocker"
+    ],
+    "concerns": "Multiple lenses (actor_incentive, blocker) defaulted to fallback_outside (25%), artificially inflating the median by double-counting an unadjusted base rate that ignores elapsed time."
+  },
+  "advocate_proposed": 3.0,
+  "probability": 15.0,
+  "status": "forecast"
+}
