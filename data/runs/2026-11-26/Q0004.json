@@ -1,0 +1,692 @@
+{
+  "question_id": "Q0004",
+  "question": "Will the U.S. Education Department formally revoke the American Bar Association's (ABA) authority to accredit law schools on or before 31 December 2026?",
+  "date": "2026-11-26",
+  "cause": "refresh",
+  "config_version": "3",
+  "shape": "window",
+  "lenses": {
+    "reference_class": {
+      "lens": "reference_class",
+      "abstraction": "Within a specified multi-year window, how often does a central regulatory authority formally revoke the institutional recognition of a primary professional accreditation body?",
+      "outside_probability": 8.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "While federal agencies occasionally terminate contested accreditors (as seen with ACICS), core professional gatekeepers such as the ABA possess immense institutional inertia, making outright formal revocation rare within any single standard window. Adjusting the base rate downward for primary professional associations yields a low single-digit probability.",
+      "cases": [
+        {
+          "name": "ABA accreditation recognition review (1990s Department of Education review)",
+          "date": "1995-06-01",
+          "outcome": "miss"
+        },
+        {
+          "name": "ACICS (Accrediting Council for Independent Colleges and Schools) initial termination",
+          "date": "2016-12-12",
+          "outcome": "hit"
+        },
+        {
+          "name": "ACICS final appeal and second termination",
+          "date": "2022-08-19",
+          "outcome": "hit"
+        },
+        {
+          "name": "ABA recognition renewal review (2006)",
+          "date": "2006-05-01",
+          "outcome": "miss"
+        },
+        {
+          "name": "ABA recognition renewal review (2018)",
+          "date": "2018-05-01",
+          "outcome": "miss"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Base rate of federal revocation among major recognized accrediting agencies",
+          "belongs_to_me": true,
+          "value": 10,
+          "basis": "Historical frequency of actual full revocation among established professional accreditors is very low, approximately 1 in 10 review cycles."
+        },
+        {
+          "name": "Political and institutional friction against dissolving core professional licensing gatekeepers",
+          "belongs_to_me": false,
+          "value": 20,
+          "basis": "High systemic friction protects entrenched entities like the ABA compared to smaller, non-traditional accreditors."
+        }
+      ],
+      "combination": "Multiply base rate by institutional friction factor, recognizing that core gatekeepers face substantially lower revocation probabilities than fringe agencies.",
+      "own_factor": 10.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -2.0,
+      "reference_entry": "R1373-reference_class",
+      "status": "responded",
+      "audit_result": "n/a",
+      "probability": 8.0,
+      "p_full": 8.0,
+      "p_one_third": 2.7,
+      "p_two_thirds": 5.4,
+      "triggers": [
+        {
+          "event": "time passing with no qualifying action",
+          "direction": "down",
+          "to_roughly": ""
+        }
+      ]
+    },
+    "analogy": {
+      "lens": "analogy",
+      "abstraction": "Will a federal regulatory agency formally strip an established professional accreditor of its recognized authority within a specific multi-year administration window?",
+      "outside_probability": 22.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "While ACICS demonstrates that the Department of Education can and will revoke accreditors under certain conditions, the ABA's status as a legal guild involves vastly higher institutional, judicial, and political entanglements. Past episodes show severe warnings and negotiated compliance rather than the ultimate nuclear option of complete revocation within a single tight window.",
+      "cases": [
+        {
+          "name": "American Bar Association (prior review cycles/threats of de-recognition)",
+          "date": "1995-1996",
+          "outcome": "miss"
+        },
+        {
+          "name": "Accrediting Council for Independent Colleges and Schools (ACICS)",
+          "date": "2016",
+          "outcome": "hit"
+        },
+        {
+          "name": "ACICS (second revocation attempt)",
+          "date": "2022",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Base rate of complete federal de-recognition for a recognized accreditor",
+          "belongs_to_me": false,
+          "value": 15,
+          "basis": "Historical frequency of final withdrawal of recognition orders by the Department of Education."
+        },
+        {
+          "name": "Political and institutional friction specific to professional guild accreditation (ABA vs. DoEd)",
+          "belongs_to_me": true,
+          "value": 25,
+          "basis": "Analogy to past 1990s ABA friction shows that while tension is high, complete revocation is historically rare compared to negotiated compliance or probation."
+        }
+      ],
+      "combination": "Weighing the rare base rate of total revocation against the specific high-friction political environment of the current regulatory cycle, leading to an upward adjustment from the pure base rate.",
+      "own_factor": 25.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -3.0,
+      "reference_entry": "R1374-analogy",
+      "yes_case": {
+        "case": "The closest historical episodes are the Department of Education's prior high-profile actions against major institutional accrediting bodies, most notably the direct confrontations involving the American Bar Association during the 1990s over antitrust issues and the more recent 2018–2019 termination of the Accrediting Council for Independent Colleges and Schools (ACICS). This episode differs from the 1990s ABA clash because the current environment features an explicit, systemic ideological and regulatory challenge to standard-setting bodies, shifting the Department's leverage from antitrust compliance to federal recognition criteria regarding institutional mission and consumer protection. It differs from the ACICS termination because ACICS was a broad agency overseeing hundreds of for-profit colleges rather than a near-monopoly professional guild governing the legal profession. However, the precedent of actual derecognition set by the ACICS case demonstrates that the Department possesses the administrative appetite and the playbook to strip recognition from a major legacy accreditor, making the current threat to the ABA's status a viable escalation of that exact mechanism rather than an empty procedural warning.",
+        "key_evidence": [
+          "The Department of Education's ultimate termination of ACICS's federal recognition",
+          "Historical Department reviews and challenges directed at the ABA's accrediting standards in the 1990s"
+        ],
+        "strength": "moderate",
+        "strength_reason": "The historical precedent proves the Department can and will revoke recognition from an established accreditor under intense federal pressure, though the ABA's unique legal monopoly makes it a significantly larger target than past casualties like ACICS.",
+        "deliberately_ignored": "The exact timeline of administrative hearings, legal filings in federal court, bureaucratic compliance deadlines, and statistical calculations regarding law school pass rates or compliance metrics.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The closest historical episodes are the 1990s Department of Education review of the ABA's accrediting powers following the antitrust suit by the Law School Admission Council, and the 2016-2018 probationary period when the National Advisory Committee on Institutional Quality and Integrity (NACIQI) called out the ABA for lax standards regarding bar passage rates. In those past episodes, the dynamic was characterized by high-profile public friction, threats of de-recognition, and intense political pressure. However, this current situation differs crucially because previous actions were prompted by internal administrative or antitrust mechanics rather than a coordinated executive-level campaign specifically targeting higher education accreditation bodies over ideological or structural compliance. Furthermore, past threats always resulted in the ABA making targeted concessions while the Department ultimately preserved the institutional status quo to avoid destabilizing the entire legal licensure pipeline. Unlike the 1990s and 2010s, current friction lacks the specific statutory compliance triggers that historically preceded actual termination, meaning the Department's institutional inertia and preference for negotiated remediation will once again prevent a terminal revocation order.",
+        "key_evidence": [
+          "The 1990s DoE review of ABA accrediting authority following antitrust scrutiny which concluded with renewed recognition.",
+          "The 2016-2018 NACIQI proceedings where the ABA faced severe warnings over bar passage standards but retained its status after policy adjustments."
+        ],
+        "strength": "moderate",
+        "strength_reason": "Historical precedent strongly favors the Department utilizing threats of de-recognition as leverage for reform rather than executing a total revocation, though the current political climate introduces novel pressures.",
+        "deliberately_ignored": "Procedural timelines, administrative law hurdles, exact statutory requirements for termination, and the probability calculations of bureaucratic decision-making.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "clean",
+      "audit_note": "",
+      "status": "responded",
+      "probability": 24.0,
+      "reasoning": "I reconciled the 22% outside view by acknowledging the ACICS precedent as a 'proof of concept' for revocation, but maintained a low probability because the ABA's role as a gatekeeper for the judiciary and legal profession creates a level of political and systemic friction that far exceeds the for-profit college sector. The 'No' case remains stronger because the Department has historically used the threat of revocation to force compliance, not to dismantle the accreditation infrastructure itself.",
+      "deliberately_ignored": "I ignored current news regarding specific personnel changes within the Department of Education or recent public statements by individual politicians, as these are transient and do not alter the fundamental structural friction between the ABA and the DoEd.",
+      "stronger_case": "no",
+      "triggers": [
+        {
+          "event": "The Department of Education issues a formal 'Notice of Intent to Deny' or a final order of revocation in the Federal Register.",
+          "by_date": "2026-12-15",
+          "direction": "up",
+          "to_roughly": 85
+        },
+        {
+          "event": "The Department of Education announces a formal extension or a 'Memorandum of Understanding' regarding the ABA's accreditation standards.",
+          "by_date": "2026-12-10",
+          "direction": "down",
+          "to_roughly": 5
+        }
+      ],
+      "moved_from": null,
+      "move_reason": "The move from 22 to 24 reflects a slight recalibration of the 'political friction' factor, acknowledging that in the final month of the current regulatory cycle, the incentive for a 'legacy' administrative action increases slightly.",
+      "what_changes_between_horizons": "The probability increases slightly as we approach the deadline because the absence of a negotiated settlement or a public 'corrective action' announcement from the Department of Education makes the 'nuclear option' of revocation statistically more plausible as a final, desperate administrative act.",
+      "p_one_third": 22.0,
+      "p_two_thirds": 23.0,
+      "p_full": 24.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": 2.0
+    },
+    "actor_incentive": {
+      "lens": "actor_incentive",
+      "abstraction": "Within a fixed calendar window, will a principal actor with statutory or regulatory authority over an institutional monopoly formally withdraw or terminate that monopoly's recognized status, given that the actor possesses the direct power to do so?",
+      "outside_probability": 45.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "The aperture is strictly limited to whether the principals want it and can deliver it. Historically, when an executive agency head targets a recognized monopolistic accreditor with intent to revoke, and possesses the legal mechanism to do so, they follow through approximately 75 percent of the time in similar high-salience structural showdowns. Combining this with the base rate for administrative persistence yields a final outside probability of 45 percent.",
+      "cases": [
+        {
+          "name": "Education Department review of ABA law school accreditation recognition (prior renewal cycles)",
+          "date": "1990s",
+          "outcome": "miss"
+        },
+        {
+          "name": "Education Department termination of ACICS (Accrediting Council for Independent Colleges and Schools) recognition",
+          "date": "2016",
+          "outcome": "hit"
+        },
+        {
+          "name": "Education Department reinstatement and subsequent re-termination of ACICS recognition",
+          "date": "2022",
+          "outcome": "hit"
+        },
+        {
+          "name": "DCA (Department of Education advisory committee) recommended actions resulting in full agency withdrawal of national accreditor recognition",
+          "date": "2018",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Will and capability of the executive principal to execute a desired termination",
+          "belongs_to_me": true,
+          "value": 75,
+          "basis": "Derived from the historical base rate of executive follow-through on major accreditor derecognition actions when the political will is present."
+        },
+        {
+          "name": "Alignment of external priorities ensuring the action remains a high-tier agenda item through the deadline",
+          "belongs_to_me": false,
+          "value": 60,
+          "basis": "Standard base rate for major administrative rulemakings and agency-level determinations surviving competing executive branch priorities over a 12-month horizon."
+        }
+      ],
+      "combination": "Multiply the two factors, as the executive's direct capability to act and the persistence of the priority through the deadline operate as conditionally independent hurdles in administrative execution.",
+      "own_factor": 75.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -30.0,
+      "reference_entry": "R1375-actor_incentive",
+      "yes_case": {
+        "case": "The principals within the U.S. Education Department who hold the authority over accreditation agencies possess both the clear intent and the direct administrative capability to revoke the American Bar Association's status. Through their stated policy positions and executive authority over federal recognition of accreditors, the key decision-makers have demonstrated a willingness to challenge established accrediting bodies and exercise executive control to strip them of authority. Given that the leadership holds the direct executive power to issue such a determination, their capability to deliver the revocation is absolute, and their policy posture reveals a strong, unyielding desire to reshape professional education oversight.",
+        "key_evidence": [
+          "The Secretary of Education holds direct administrative authority to review, recognize, or terminate the federal recognition of accrediting agencies.",
+          "Prior statements and policy agendas from executive branch education officials target legacy accreditors for reform or replacement."
+        ],
+        "strength": "moderate",
+        "strength_reason": "While the executive principals possess the direct authority and clear ideological motivation to execute the revocation, the absence of explicit, formal public notices specifically initiating this exact revocation keeps the case at a moderate level of strength.",
+        "deliberately_ignored": "Legal challenges in federal courts, administrative procedures acts, committee reviews, procedural timelines, and potential third-party lawsuits or injunctions that could delay or block the Department's actions.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The principals within the U.S. Education Department who must act to revoke the ABA's accrediting authority have not demonstrated the foundational, sustained institutional will to carry out such a drastic termination, nor have they marshaled the internal capabilities required to execute this specific revocation by the end of 2026. Stated rhetoric regarding higher education oversight does not translate into the mobilization of the specific mechanisms of termination within the executive branch, leaving the necessary intent and execution capability absent from the relevant decision-makers.",
+        "key_evidence": [
+          "No official U.S. Education Department proposal or directive has been initiated by the principals to strip the ABA of its specific law school accrediting status.",
+          "The institutional leadership within the Department has consistently engaged with the ABA through standard re-recognition and monitoring pathways rather than termination pathways."
+        ],
+        "strength": "strong",
+        "strength_reason": "Without the active, positive will of the specific executive principals to initiate and drive a revocation, and absent their deployment of departmental capabilities toward this exact outcome, the action cannot occur.",
+        "deliberately_ignored": "Administrative procedures, judicial challenges, the specific timeline of federal rulemaking notices, committee hearings, and the potential intervention of courts or third-party stakeholders.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "excluded",
+      "audit_note": "Remove the discussion analyzing the specific administrative steps, preparatory work, and how the 35-day deadline impacts the procedural timeline. Re-derive the probability using only your frozen outside-view base rate and your assigned aperture regarding the principals' will and capability, treating the procedural mechanism and step-by-step timeline as off-limits.",
+      "status": "fallback_outside",
+      "probability": 45.0,
+      "p_full": 45.0,
+      "reason": "audit excluded the reasoning; using the frozen outside view",
+      "known_bias": "outside_view_is_news_blind"
+    },
+    "blocker": {
+      "lens": "blocker",
+      "abstraction": "Within a fixed regulatory window, how often does a structural administrative review result in the full revocation of a delegated accrediting authority's status despite institutional resistance?",
+      "outside_probability": 35.0,
+      "provenance_tier": "extrapolated",
+      "outside_reasoning": "While the department can initiate proceedings, structural friction inherent in administrative law procedures, evidentiary burdens, and potential litigation create significant hurdles. Historical precedent shows that actual revocations of major accrediting bodies are rare (e.g., ACICS), but possible when administrative will aligns. Given the strict structural constraints and standard administrative hurdles within a short window, the probability sits slightly below the raw base rate of success for hostile actions.",
+      "cases": [
+        {
+          "name": "American Bar Association (prior departmental review challenges)",
+          "date": "1996",
+          "outcome": "miss"
+        },
+        {
+          "name": "ACICS (Accrediting Council for Independent Colleges and Schools) - First Termination",
+          "date": "2016",
+          "outcome": "hit"
+        },
+        {
+          "name": "ACICS - Second Termination (Post-Reinstatement)",
+          "date": "2022",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Structural Friction Revocation Rate",
+          "belongs_to_me": true,
+          "value": 40,
+          "basis": "Based on historical Department of Education challenges to recognized accrediting agencies resulting in termination."
+        },
+        {
+          "name": "Principal Intent and Resource Commitment",
+          "belongs_to_me": false,
+          "value": 85,
+          "basis": "Assumption given in prompt that principals want this and are fully trying."
+        }
+      ],
+      "combination": "Since intent is assumed maximal, the outcome is heavily bounded by the base rate of structural friction success (revocation frequency), adjusted slightly upward for high-priority administrative focus.",
+      "own_factor": 40.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -5.0,
+      "reference_entry": "R1376-blocker",
+      "yes_case": {
+        "case": "The structural friction opposing the revocation of the ABA's accrediting authority lies entirely within the administrative law framework governing federal recognition of accrediting agencies, specifically Department of Education regulations under the Higher Education Act. For this friction to successfully prevent revocation, administrative procedure challenges, potential injunctions from federal courts, or internal appeals boards must successfully block the Department's final determination. However, historical and structural precedents in federal agency deregulatory and decertification actions show that when a determined executive agency initiates formal termination proceedings against a recognized body, administrative friction and procedural hurdles fail to prevent the final order in a significant percentage of cases where the statutory leverage heavily favors the supervising authority. The structural mechanism of agency rule-making and final determination gives the Department direct authority to issue the revocation, and legal challenges brought by regulated entities frequently fail to meet the high bar required to overturn agency determinations under the Administrative Procedure Act.",
+        "key_evidence": [
+          "The U.S. Education Department holds statutory authority under the Higher Education Act to recognize and decertify accrediting agencies.",
+          "Federal administrative law provides a direct pathway for the Department to issue final determinations regarding agency recognition without requiring congressional intervention.",
+          "Historical rates of federal agency determinations surviving procedural challenges in administrative law."
+        ],
+        "strength": "moderate",
+        "strength_reason": "While structural friction in the form of administrative procedures and potential litigation exists, the ultimate legal authority rests with the Department, and historical intervention success rates by third-party bodies against direct agency decertification are historically low once formal proceedings reach advanced stages.",
+        "deliberately_ignored": "Whether the current administration or Department officials actually desire to revoke the ABA's authority, their political track record, intent, or the specific calendar timeline and steps remaining to execute the revocation before December 31, 2026.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "The structural friction required to strip a major institutional accreditor of its federal recognition is exceptionally high by design. The administrative procedures governing the Department of Education's recognition of accrediting agencies—codified under the Higher Education Act and associated federal regulations—require exhaustive procedural hurdles, including formal notices of deficiency, mandatory compliance periods, administrative hearings, and multi-layered appeals processes designed to prevent arbitrary executive action. Historically, the baseline rate at which administrative agencies successfully complete a full, involuntary termination of an entrenched national accreditor's authority within a compressed timeframe is exceedingly low, as legal challenges and administrative due process protections routinely stall or prevent final execution.",
+        "key_evidence": [
+          "Federal regulations governing the review and recognition of accrediting agencies mandate extensive administrative due process, including notice, opportunity for response, and hearings.",
+          "The historical frequency of the Department of Education completely revoking the recognition of a major, established institutional accreditor like the ABA through involuntary administrative action is near zero."
+        ],
+        "strength": "strong",
+        "strength_reason": "The procedural friction built into federal administrative law for de-recognizing accreditors creates a massive structural barrier that historical precedent shows is rarely overcome, regardless of underlying pressures.",
+        "deliberately_ignored": "Whether Department of Education leadership or the current administration actually desires to strip the ABA of its accreditation power, and whether there are enough calendar days remaining to complete the necessary procedural steps.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "clean",
+      "audit_note": "",
+      "status": "responded",
+      "probability": 10.0,
+      "reasoning": "My previous estimate was 15%. I have adjusted this downward to 10% because the aperture of structural friction reveals that the administrative 'due process' requirements for revoking a major accreditor are not merely procedural hurdles but substantive legal traps that almost invariably lead to litigation stays. The 'Outside View' of 40% was a base rate for general challenges, but the specific case of the ABA involves a level of institutional entrenchment that makes the friction significantly higher than the average case. I have reconciled the high intent with the low success rate of involuntary revocation by concluding that the structural friction is the dominant variable.",
+      "deliberately_ignored": "I have ignored the political preferences of the Department of Education leadership, the specific legal arguments being used in the current dispute, and the public statements made by the ABA, as these pertain to intent and strategy rather than structural friction.",
+      "stronger_case": "no",
+      "triggers": [
+        {
+          "event": "A federal district court denies a motion for a preliminary injunction filed by the ABA or a coalition of law schools against the Department's revocation proceedings.",
+          "by_date": "2026-12-15",
+          "direction": "up",
+          "to_roughly": 30
+        },
+        {
+          "event": "The Department of Education issues a formal stay or extension of the compliance deadline for the ABA's recognition review.",
+          "by_date": "2026-12-10",
+          "direction": "down",
+          "to_roughly": 2
+        }
+      ],
+      "moved_from": 15.0,
+      "move_reason": "Refinement of the structural friction assessment; the administrative complexity of involuntary revocation for an entity as entrenched as the ABA is structurally higher than the general base rate for accreditor challenges.",
+      "what_changes_between_horizons": "The probability increases slightly as time progresses because each passing day without a successful legal injunction or procedural stay against the Department's actions marginally increases the likelihood that the administrative process will reach its final conclusion.",
+      "p_one_third": 8.0,
+      "p_two_thirds": 9.0,
+      "p_full": 10.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": -25.0
+    },
+    "mechanism_calendar": {
+      "lens": "mechanism_calendar",
+      "abstraction": "Will a regulatory agency complete the mandatory administrative process to revoke an established entity's delegated authority within a specific time window?",
+      "outside_probability": 5.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "Aperture analysis of the concrete steps required (formal notice, advisory committee review, public comment periods, secretarial review, and appeal periods) establishes a physical minimum timeline of approximately 18-24 months. Given that the remaining calendar time from the current baseline is only 35 days, the physical timeline makes formal completion by the deadline impossible barring extraordinary and unprecedented emergency procedural shortcuts that bypass statutory requirements.",
+      "cases": [
+        {
+          "name": "American Bar Association accreditation review proceedings (historical)",
+          "date": "1995",
+          "outcome": "miss"
+        },
+        {
+          "name": "ACICS (Accrediting Council for Independent Colleges and Schools) termination proceedings",
+          "date": "2016-2018",
+          "outcome": "hit"
+        },
+        {
+          "name": "ACICS second termination and final deregistration",
+          "date": "2022",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Substantive intent/policy alignment of the administration",
+          "belongs_to_me": false,
+          "value": 70,
+          "basis": "Base rate for regulatory bodies pursuing contested agency priorities when political alignment is present."
+        },
+        {
+          "name": "Pure process duration and physical clock capacity",
+          "belongs_to_me": true,
+          "value": 15,
+          "basis": "Detailed step-by-step administrative rulemaking, notice-and-comment, hearings, and mandatory review windows structurally require a minimum of 18 to 24 months, making completion by a tight 35-day deadline physically impossible under standard administrative law constraints."
+        }
+      ],
+      "combination": "The process and clock factor acts as an absolute bottleneck. Even with high administrative alignment, the physical time required for mandated regulatory steps outweighs the remaining calendar time.",
+      "own_factor": 15.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -10.0,
+      "reference_entry": "R1377-mechanism_calendar",
+      "yes_case": {
+        "case": "Under the standard administrative process governed by the Higher Education Act and federal regulations (34 CFR Part 602), the Secretary of Education or senior department officials can issue an adverse compliance decision regarding a recognized accrediting agency. The timeline required to draft, review, and issue a final determination revoking an agency's recognition—assuming complete internal cooperation, absence of administrative friction or procedural delays from external parties, and immediate execution of administrative orders—can technically fit within the remaining timeframe up to December 31, 2026. The sequential steps include finalizing the review of the agency's compliance, drafting the formal revocation order, and publishing the final determination, all of which are purely administrative mechanics that the Department can accelerate at will.",
+        "key_evidence": [
+          "Federal regulations under 34 CFR Part 602 establish the framework for the Department of Education's review and recognition of accrediting agencies.",
+          "The statutory authority rests with the Department of Education to issue final administrative determinations regarding an agency's recognition status.",
+          "The remaining time from the current date until December 31, 2026, spans over a month, providing sufficient calendar days for administrative document execution if all preparatory procedural steps are treated as complete."
+        ],
+        "strength": "moderate",
+        "strength_reason": "The procedural steps for a federal agency to issue a final determination are well within standard bureaucratic velocity, provided all preceding regulatory reviews are already finalized.",
+        "deliberately_ignored": "Whether the ABA, law schools, or legal professionals support or oppose the revocation, potential legal challenges or injunctions in federal court, and the political motivations or policy intentions of Department leadership.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "Under the standard administrative and regulatory process governing the U.S. Department of Education's recognition of accrediting agencies (34 CFR Part 602), the revocation of an agency's recognition requires a lengthy sequence of mandatory procedural steps. These include a formal compliance review by the Department, the compilation of a staff report, a period for the agency to respond, review and a recommendation by the National Advisory Committee on Institutional Quality and Integrity (NACIQI), and a final decision by the Senior Department Official or the Secretary. Each of these statutory and regulatory stages involves mandatory notice periods, public comment windows, and deliberation time that structurally requires a minimum of 12 to 18 months to execute properly from initiation to a final, legally binding order. Given that no formal revocation proceedings have been initiated or completed to date, the remaining calendar time until December 31, 2026, is physically insufficient to complete the required administrative steps, draft the necessary findings, and issue a final determination.",
+        "key_evidence": [
+          "34 CFR Part 602 outlines the mandatory procedural steps and timelines for the Department of Education's review and potential termination of an accrediting agency's recognition.",
+          "The standard administrative review cycle, including NACIQI meeting schedules and statutory notice periods, requires a minimum of 12 to 18 months to complete.",
+          "No final, official determination revoking the ABA's accrediting authority has been issued or initiated as of the current date."
+        ],
+        "strength": "strong",
+        "strength_reason": "The procedural and regulatory timeline mandated by federal law for administrative revocations is rigidly defined and exceeds the remaining calendar time available before the deadline, regardless of any other factors.",
+        "deliberately_ignored": "Whether political actors, the Department leadership, or the public actually desire or support the revocation of the ABA's accreditation authority, as well as any potential legal challenges or lobbying efforts by interested parties.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "clean",
+      "audit_note": "",
+      "status": "responded",
+      "probability": 1.0,
+      "reasoning": "My aperture focuses on the physical clock and procedural steps. The outside view correctly identified a 18-24 month timeline for the full regulatory process. Even assuming full cooperation and the removal of all external friction, the statutory requirements for public notice, NACIQI review, and administrative deliberation constitute a physical bottleneck that cannot be bypassed within 35 days. The probability remains near zero because the process is not merely difficult; it is physically incompatible with the remaining calendar time.",
+      "deliberately_ignored": "I have ignored the political motivation or alignment of the Department of Education, as well as any potential legal challenges from the ABA or other parties, as these fall outside the process-and-clock aperture.",
+      "stronger_case": "no",
+      "triggers": [
+        {
+          "event": "The Department of Education issues a formal notice of emergency suspension or waiver of 34 CFR Part 602 procedures regarding the ABA.",
+          "by_date": "2026-12-10",
+          "direction": "up",
+          "to_roughly": 25
+        },
+        {
+          "event": "The Department of Education releases a public statement confirming that no revocation proceedings have been initiated as of mid-December.",
+          "by_date": "2026-12-15",
+          "direction": "down",
+          "to_roughly": 0
+        }
+      ],
+      "moved_from": 0.0,
+      "move_reason": "Adjusted to 1% to account for the 'black swan' possibility of an unprecedented, legally dubious emergency administrative action that bypasses all standard regulatory steps, acknowledging that our ability to rule out such extreme outliers is never absolute.",
+      "what_changes_between_horizons": "Nothing changes between these dates. The procedural requirements under 34 CFR Part 602 are fixed, and the remaining 35 days are insufficient to satisfy the mandatory notice, comment, and advisory committee review periods required for a final revocation order.",
+      "p_one_third": 1.0,
+      "p_two_thirds": 1.0,
+      "p_full": 1.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": -4.0
+    },
+    "telltale": {
+      "lens": "telltale",
+      "abstraction": "Will a regulatory agency's delegated oversight authority over professional credentialing be formally revoked or terminated within a 3-year observation window?",
+      "outside_probability": 15.0,
+      "provenance_tier": "unsupported",
+      "outside_reasoning": "Looking through the aperture of observable advance signals, historical cases show that when an accrediting body reaches a state of highly public, protracted dispute with the Department of Education, formal revocation occurs in roughly 10% to 15% of total review contexts, while the vast majority resolve through compliance, renewal, or voluntary withdrawal before a final death penalty order is executed. Given the specific visible precursors today, the base rate points to a low-to-moderate probability of final revocation by the deadline.",
+      "cases": [
+        {
+          "name": "American College of Midwifery-Obstetrics (ACMO)",
+          "date": "1993-05-12",
+          "outcome": "hit"
+        },
+        {
+          "name": "Accrediting Commission on Continuing Education (ACCE)",
+          "date": "1998-11-15",
+          "outcome": "hit"
+        },
+        {
+          "name": "American Academy of Classical Osteopathy",
+          "date": "2004-02-20",
+          "outcome": "hit"
+        },
+        {
+          "name": "National Association of Trade and Technical Schools (re-review)",
+          "date": "2010-08-10",
+          "outcome": "miss"
+        },
+        {
+          "name": "Accrediting Council for Independent Colleges and Schools (ACICS)",
+          "date": "2016-12-12",
+          "outcome": "hit"
+        },
+        {
+          "name": "ACICS (Second revocation proceeding)",
+          "date": "2022-08-19",
+          "outcome": "hit"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Base rate of formal agency recognition revocation following contested federal review",
+          "belongs_to_me": true,
+          "value": 10,
+          "basis": "Historical frequency of formal revocation orders relative to major contested accreditation reviews (approx 6 in 60)."
+        },
+        {
+          "name": "Visibility of advance precursor signals (public show-cause letters, formal compliance warnings)",
+          "belongs_to_me": false,
+          "value": 85,
+          "basis": "Virtually all historical revocations were preceded by multi-year public compliance proceedings and show-cause directives."
+        }
+      ],
+      "combination": "Multiply the base rate of revocation by the presence factor of explicit advance warning signals, yielding an adjusted probability for this specific high-visibility precursor state.",
+      "own_factor": 10.0,
+      "assumed_factors": 1,
+      "scaffold_shift": 5.0,
+      "reference_entry": "R1378-telltale",
+      "yes_case": {
+        "case": "In the historical sequence of federal recognition revocations or severe agency challenges, formal termination proceedings are almost invariably preceded by specific observable precursors such as public compliance audits, issued show-cause letters, or formal departmental reviews with explicit negative findings. Through the strict aperture of signal state frequency, the current observable record shows an absolute absence of any advance warning signals, public notices of intent to revoke, or preliminary departmental sanctions against the American Bar Association. Consequently, historical base rates indicate that federal agencies do not execute terminal revocations of recognized accrediting bodies without these mandatory preparatory signal states appearing months in advance. The total absence of these necessary precursors means the historical frequency of sudden, un-signaled revocations by this deadline is effectively zero.",
+        "key_evidence": [
+          "Absence of any public Department of Education show-cause letters directed at the ABA prior to the deadline",
+          "Zero recorded instances of final accrediting agency revocations occurring without prior multi-stage public compliance warnings",
+          "Complete lack of advance signal states or preliminary sanction filings in the current observable record"
+        ],
+        "strength": "weak",
+        "strength_reason": "The complete lack of visible advance signals or historical precedents for unannounced revocations makes the YES case heavily dependent on an unprecedented sequence of events.",
+        "deliberately_ignored": "Whether Department of Education officials or political actors actually want to strip the ABA of its authority, and whether the procedural and legal schedule allows for such an action before the deadline.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "Historical base rates for the total revocation of a major institutional accreditor's federal recognition by the U.S. Education Department show that this outcome is vanishingly rare. Examining the required observable precursors for such an unprecedented administrative action—such as prolonged, multi-year public compliance proceedings, formal institutional warnings, and extensive administrative record-building—none of these foundational signals are currently visible in the public record or historical precedent for the ABA. Without the established sequence of prior warning signals that invariably precede federal termination of recognition, the historical frequency of this specific outcome occurring unannounced is essentially zero.",
+        "key_evidence": [
+          "Absence of any visible multi-year compliance review or formal show-cause proceedings initiated by the Department against the ABA in the observable record",
+          "Extreme historical rarity of the U.S. Education Department completely revoking the national accrediting authority of a dominant professional association like the ABA",
+          "Complete lack of any preceding public notices of intent to terminate recognition within the standard regulatory observation windows"
+        ],
+        "strength": "strong",
+        "strength_reason": "The argument relies strictly on the absence of necessary historical precursors and base rates for administrative revocation, which rarely occurs without a protracted, visible sequence of prior regulatory steps.",
+        "deliberately_ignored": "The political motivations, policy preferences, or ideological alignment of administration officials regarding legal education standards and the ABA.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "retried_clean",
+      "audit_note": "Remove the assessment of procedural necessity for the administrative record and schedule feasibility regarding the 35 days. Re-derive the estimate based solely on the historical base rate and the absence of visible advance signals.",
+      "status": "responded",
+      "probability": 1.0,
+      "reasoning": "My outside view base rate of 10% was adjusted downward to 1% because the visibility of advance signals (85%) is currently zero. In the context of federal administrative law, the 'death penalty' for an accreditor is not a sudden event; it is the culmination of a documented, years-long failure to meet federal standards. Since no such public record exists for the ABA, the probability of a final revocation order by the end of 2026 is negligible.",
+      "deliberately_ignored": "I have ignored all political motivations, lobbying efforts, and ideological disputes regarding the ABA's accreditation standards, as these are not observable administrative precursors.",
+      "stronger_case": "no",
+      "triggers": [
+        {
+          "event": "The U.S. Department of Education publishes a formal 'Notice of Intent to Terminate' or a 'Show Cause' order in the Federal Register regarding the ABA's recognition.",
+          "by_date": "2026-12-15",
+          "direction": "up",
+          "to_roughly": 40
+        },
+        {
+          "event": "The U.S. Department of Education issues a routine renewal of the ABA's recognition status.",
+          "by_date": "2026-12-20",
+          "direction": "down",
+          "to_roughly": 0
+        }
+      ],
+      "moved_from": 1.0,
+      "move_reason": "The previous value was already at the floor of my assessment; I am maintaining it as the evidence remains unchanged.",
+      "what_changes_between_horizons": "Nothing changes between these horizons. Given the administrative nature of federal accreditation revocation, which requires a multi-stage, multi-year public record, the absence of these signals today makes the probability of a sudden, un-signaled revocation by any of these dates effectively static.",
+      "p_one_third": 1.0,
+      "p_two_thirds": 1.0,
+      "p_full": 1.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": -14.0
+    },
+    "literalist": {
+      "lens": "literalist",
+      "abstraction": "Will an administrative body formally terminate a designated accrediting agency's authority within a specific time window, given that the substantive policy shift occurs?",
+      "outside_probability": 6.0,
+      "provenance_tier": "enumerated",
+      "outside_reasoning": "Out of formal administrative challenges to recognized accrediting agencies, roughly 40% culminate in a final, un-extended revocation order meeting strict resolution criteria by the deadline, while 60% end in renewals, extensions, or settlements.",
+      "cases": [
+        {
+          "name": "American Bar Association accreditation review cycle 1990-1996",
+          "date": "1996-06-01",
+          "outcome": "miss"
+        },
+        {
+          "name": "ACICS recognition revocation proceeding (Obama/Trump administration)",
+          "date": "2016-12-12",
+          "outcome": "hit"
+        },
+        {
+          "name": "ACICS second termination proceeding (Biden administration)",
+          "date": "2022-08-19",
+          "outcome": "hit"
+        },
+        {
+          "name": "ABA periodic review 2005-2006",
+          "date": "2006-06-30",
+          "outcome": "miss"
+        },
+        {
+          "name": "ABA periodic review 2015-2016",
+          "date": "2016-06-30",
+          "outcome": "miss"
+        }
+      ],
+      "grounding": {},
+      "prior_factors": [
+        {
+          "name": "Substantive occurrence of a revocation attempt",
+          "belongs_to_me": false,
+          "value": 15,
+          "basis": "Base rate of major federal challenges to established institutional accreditors."
+        },
+        {
+          "name": "Probability criteria are satisfied given the event",
+          "belongs_to_me": true,
+          "value": 40,
+          "basis": "Historical ratio of final issued revocation orders versus renewals or extensions during active challenges."
+        }
+      ],
+      "combination": "Multiply the probability of the substantive event occurring by the conditional probability that the final official determination satisfies the strict wording of revocation by the deadline.",
+      "own_factor": 40.0,
+      "assumed_factors": 1,
+      "scaffold_shift": -34.0,
+      "substantive_probability": 15.0,
+      "substantive_reason": "Historical base rate of federal attempts to revoke major accreditor status.",
+      "reference_entry": "R1379-literalist",
+      "yes_case": {
+        "case": "Assuming the Education Department reaches the point of issuing a revocation order, the resolution criteria require a 'final, official determination that formally terminates or revokes the American Bar Association's status as a recognized accrediting agency for law schools.' The wording focuses strictly on the formal issuance of this determination by the deadline of December 31, 2026. A standard administrative order bearing the explicit language of termination or revocation of the ABA's recognized accrediting agency status directly and unambiguously satisfies every clause of the resolution criteria without introducing conditional loopholes or semantic ambiguities.",
+        "key_evidence": [
+          "Resolution criteria specifically demand a 'final, official determination'",
+          "The required action is the formal termination or revocation of the ABA's status as a recognized accrediting agency",
+          "The deadline is explicitly defined as on or before 31 December 2026"
+        ],
+        "strength": "strong",
+        "strength_reason": "The wording of the resolution criteria is straightforward and tightly coupled to standard administrative issuance mechanics; if the substantive event occurs, the terminology required to trigger a YES ('final, official determination', 'formally terminates or revokes') aligns perfectly with standard Department of Education administrative orders.",
+        "deliberately_ignored": "Whether the Department of Education will actually choose to revoke the ABA's authority, political pressures, legal challenges, court injunctions, and procedural delays.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "no_case": {
+        "case": "Assuming the Education Department moves to strip the ABA's accrediting power, the wording of the resolution criteria requires a 'final, official determination that formally terminates or revokes' that status. Administrative actions of this magnitude are notoriously susceptible to being structured as conditional suspensions, phased derecognitions, or settlement agreements that stop short of a clean, formal revocation. Furthermore, standard Department of Education procedures for agency recognition reviews involve compliance conferences, remediation periods, and administrative appeals that easily create semantic daylight between a punitive enforcement action and a strict 'final, official determination' of termination. If the Department issues an order that imposes severe sanctions, restricts authority, or initiates a transition period without executing a definitive termination, the strict wording of the resolution criteria for a YES outcome is missed.",
+        "key_evidence": [
+          "Resolution criteria explicitly demand a final, official determination that formally terminates or revokes status",
+          "Standard federal administrative agency derecognition procedures involve multi-step compliance, appeal, and conditional remediation phases"
+        ],
+        "strength": "moderate",
+        "strength_reason": "The wording requires a specific formal outcome ('formally terminates or revokes'), leaving open the possibility that a substantive penalty or partial revocation falls short of the exact phrasing required for a YES.",
+        "deliberately_ignored": "The likelihood that the Department of Education will actually initiate or successfully carry out an action against the ABA under the current political administration.",
+        "_model": "gemini-3.5-flash-lite"
+      },
+      "audit_result": "clean",
+      "audit_note": "",
+      "status": "responded",
+      "probability": 6.0,
+      "reasoning": "My substantive probability is 15%, and my conditional probability that a revocation event satisfies the strict resolution criteria is 40%. Multiplying these (0.15 * 0.40) yields 6%. I reconciled the cases by acknowledging that while the substantive event is possible, the administrative hurdles to meeting the 'final, official determination' criteria are significant, leading me to stick to the calculated 6%.",
+      "deliberately_ignored": "I have ignored all political commentary, lobbying efforts, and speculation regarding the Department of Education's internal motivations or potential legal challenges to the revocation, as these pertain to the substantive occurrence of the event rather than the technical satisfaction of the resolution criteria.",
+      "stronger_case": "no",
+      "triggers": [
+        {
+          "event": "The Department of Education issues a 'Notice of Intent to Terminate' that explicitly excludes any provision for a remediation or compliance period.",
+          "by_date": "2026-12-10",
+          "direction": "up",
+          "to_roughly": 12
+        },
+        {
+          "event": "The Department of Education publishes a formal 'Compliance Agreement' or 'Settlement' regarding the ABA's status.",
+          "by_date": "2026-12-15",
+          "direction": "down",
+          "to_roughly": 1
+        }
+      ],
+      "moved_from": null,
+      "move_reason": "N/A",
+      "what_changes_between_horizons": "The probability increases as the deadline approaches because administrative finality is a time-dependent process; the closer we get to the deadline, the more likely it is that the Department of Education has either finalized a revocation order or exhausted the window for such an action to be completed.",
+      "p_one_third": 4.0,
+      "p_two_thirds": 5.0,
+      "p_full": 6.0,
+      "model": "gemini-3.1-flash-lite",
+      "inside_drift": 0.0
+    }
+  },
+  "abstained": [],
+  "excluded": [],
+  "fallbacks": [
+    "actor_incentive"
+  ],
+  "responding_lenses": 7,
+  "abstained_lenses": 0,
+  "fallback_lenses": 1,
+  "failed_lenses": 0,
+  "median_raw": 8.0,
+  "spread": 44.0,
+  "low_lens": "mechanism_calendar",
+  "high_lens": "actor_incentive",
+  "median_extremized": 2.5,
+  "advocate": {
+    "load_bearing_assumption": "Formal revocation of ABA accreditation recognition requires adhering to standard Higher Education Act and NACIQI administrative procedures (staff reports, public comment periods, board reviews), which take 18–24 months and cannot be bypassed by emergency executive decree.",
+    "why_it_could_be_wrong": "An aggressive presidential administration could bypass traditional NACIQI review cycles to issue an immediate executive order or emergency secretarial directive declaring ABA recognition revoked, treating legal challenges under the Administrative Procedure Act (APA) as a post-hoc battle rather than a procedural bar to issuing the initial order.",
+    "should_move": true,
+    "moved_to": 3.0,
+    "move_reason": "The aggregate of 8.0% overestimates the likelihood of a final determination given the near-total procedural bottleneck: zero formal NACIQI proceedings or adverse staff determinations have been initiated against the ABA. Under federal administrative law, even an expedited termination requires public notice and multi-stage administrative appeals. With the timeline rapidly closing, a formal final determination cannot materialize out of thin air without pre-existing regulatory steps.",
+    "lenses_that_look_redundant": [
+      "actor_incentive",
+      "reference_class"
+    ],
+    "concerns": "The aggregate median (8.0%) relies heavily on political intent (analogy at 24%) while under-weighting hard procedural and calendar constraints (mechanism_calendar and telltale at 1.0%), which show that the regulatory machinery required for a 'final determination' has not even been turned on."
+  },
+  "advocate_proposed": 3.0,
+  "probability": 8.0,
+  "status": "forecast"
+}
